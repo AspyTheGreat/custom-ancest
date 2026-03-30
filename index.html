@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Ancestry Calculator</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1, h2 { color: #689FD9; }
+
+        .section {
+            background-color: #1e1e1e;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .points-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #242424;
+            padding: 15px;
+            border: 2px solid #689FD9;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 100;
+        }
+
+        #creature-points-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #689FD9;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #242424;
+            min-width: 280px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+            z-index: 10;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #747474;
+            padding: 10px;
+        }
+
+        .dropdown-content label {
+            display: block;
+            padding: 5px;
+            font-size: 13px;
+        }
+
+        .dropdown-content label:hover {
+            background-color: #333;
+        }
+
+        .show { display: block; }
+
+        select, .my-button {
+            background-color: #242424;
+            color: white;
+            border: 1px solid #747474;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 200px;
+        }
+
+        .my-button:hover { background-color: #689FD9; }
+
+        .cost-input {
+            width: 50px;
+            background: transparent;
+            border: none;
+            color: #888;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="points-display">
+        <div>Remaining Points</div>
+        <span id="creature-points-text">120</span>
+    </div>
+
+    <h1>Custom Ancestry Builder</h1>
+    <p>Spend 120 trait points to shape your unique history.</p>
+
+    <div class="section">
+        <h2>Basic Statistics</h2>
+        
+        <div class="control-group">
+            <label>Creature Type:</label>
+            <select id="creature-type" onchange="updateValue()">
+                <option value="0" data-value="0">Humanoid (0)</option>
+                <option value="5" data-value="5">Fey (5)</option>
+                <option value="-20" data-value="-20">Construct (-20)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>Speed:</label>
+            <select id="creature-speed" onchange="updateValue()">
+                <option value="0" data-value="-40">20 ft. (-40)</option>
+                <option value="0" data-value="-20">25 ft. (-20)</option>
+                <option value="0" data-value="0" selected>30 ft. (0)</option>
+                <option value="0" data-value="20">35 ft. (20)</option>
+                <option value="0" data-value="40">40 ft. (40)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>Darkvision:</label>
+            <select id="creature-darkvision" onchange="updateValue()">
+                <option value="0" data-value="0">None (0)</option>
+                <option value="60" data-value="9">60 ft. (9)</option>
+                <option value="120" data-value="14">120 ft. (14)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>Ability Scores:</label>
+            <select id="creature-abilityscores" onchange="updateValue()">
+                <option data-value="-23">+1, +1 (-23)</option>
+                <option data-value="-21">+2 (-21)</option>
+                <option data-value="0" selected>+1, +1, +1 / +2, +1 (0)</option>
+                <option data-value="23">+2, +1, +1 (23)</option>
+                <option data-value="25">+2, +2 (25)</option>
+                <option data-value="50">+1 All (50)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Traits & Proficiencies</h2>
+        
+        <div class="control-group">
+            <div class="dropdown">
+                <button class="my-button" onclick="toggleDropdown('movement-type-dropdown')">Movement Types</button>
+                <div id="movement-type-dropdown" class="dropdown-content">
+                    <label><input type="checkbox" value="10" onchange="updateValue()"> Swimming (10)</label>
+                    <label><input type="checkbox" value="10" onchange="updateValue()"> Climbing (10)</label>
+                    <label><input type="checkbox" value="40" onchange="updateValue()"> Flying (Light/No Armor) (40)</label>
+                    <label><input type="checkbox" value="45" onchange="updateValue()"> Flying (Medium/No Armor) (45)</label>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="my-button" onclick="toggleDropdown('prof-dropdown')">Racial Proficiencies</button>
+                <div id="prof-dropdown" class="dropdown-content">
+                    <label><input type="checkbox" value="5" onchange="updateValue()"> Elf: Keen Senses (5)</label>
+                    <label><input type="checkbox" value="12" onchange="updateValue()"> Half-elf: Skill Versatility (12)</label>
+                    <label><input type="checkbox" value="6" onchange="updateValue()"> Human: Skills (6)</label>
+                    <label><input type="checkbox" value="10" onchange="updateValue()"> Tabaxi: Cat's Talent (10)</label>
+                    <label><input type="checkbox" value="8" onchange="updateValue()"> Satyr: Reveler (8)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>Natural Armor:</label>
+            <select id="creature-natural-armor" onchange="updateValue()">
+                <option data-value="0">None (0)</option>
+                <option data-value="8">Lizardfolk (8)</option>
+                <option data-value="18">Loxodon (18)</option>
+                <option data-value="28">Tortle (28)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Major Features</h2>
+        <div class="dropdown">
+            <button class="my-button" style="width: 100%" onclick="toggleDropdown('major-traits-dropdown')">Select Major Traits</button>
+            <div id="major-traits-dropdown" class="dropdown-content" style="width: 100%">
+                <label><input type="checkbox" value="120" onchange="updateValue()"> Custom Lineage: Feat (120)</label>
+                <label><input type="checkbox" value="60" onchange="updateValue()"> Changeling: Shapechanger (60)</label>
+                <label><input type="checkbox" value="70" onchange="updateValue()"> Eladrin: Fey Step (70)</label>
+                <label><input type="checkbox" value="50" onchange="updateValue()"> Halfling: Lucky (50)</label>
+                <label><input type="checkbox" value="80" onchange="updateValue()"> Shadar-kai: Blessing (80)</label>
+                <label><input type="checkbox" value="35" onchange="updateValue()"> Magic Resistance (35)</label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            const isShow = dropdown.classList.contains('show');
+            // Close all first
+            document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
+            if (!isShow) dropdown.classList.add('show');
+        }
+
+        function updateValue() {
+            let totalSpent = 0;
+
+            // 1. Handle Selects
+            const selects = [
+                'creature-type', 
+                'creature-speed', 
+                'creature-darkvision', 
+                'creature-abilityscores',
+                'creature-natural-armor'
+            ];
+            
+            selects.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const val = parseInt(el.options[el.selectedIndex].getAttribute('data-value') || 0);
+                    totalSpent += val;
+                }
+            });
+
+            // 2. Handle Checkboxes
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkboxes.forEach(cb => {
+                totalSpent += parseInt(cb.value || 0);
+            });
+
+            // 3. Final Math
+            const remaining = 120 - totalSpent;
+            const display = document.getElementById('creature-points-text');
+            display.innerText = remaining;
+
+            // Color coding for over-spending
+            display.style.color = remaining < 0 ? "#ff4444" : "#689FD9";
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.my-button')) {
+                document.querySelectorAll('.dropdown-content').forEach(d => {
+                    d.classList.remove('show');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
