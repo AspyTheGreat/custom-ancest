@@ -182,10 +182,20 @@
 </head>
 <body>
 
-    <div class="points-display">
-        <div>Remaining Points</div>
-        <span id="creature-points-text">120</span>
+   <div class="points-display">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+        <button onclick="clearAll()" class="my-button" style="width: auto; padding: 8px 12px;">
+            Clear Selections
+        </button>
+
+        <div style="text-align: center;">
+            <div>Remaining Points</div>
+            <span id="creature-points-text">120</span>
+        </div>
     </div>
+
+</div>
 
 <div id="description-panel">
     <h3>Feature Descriptions</h3>
@@ -1267,6 +1277,42 @@ updateValue = function() {
      updateAllDescriptions();
 };
 
+function clearAll() {
+    // Reset all selects
+    document.querySelectorAll("select").forEach(select => {
+        select.selectedIndex = 0;
+    });
+
+    // ✅ Force specific defaults
+    document.getElementById("creature-speed").selectedIndex = 2; // 30 ft
+    document.getElementById("creature-abilityscores").selectedIndex = 2; // +1+1+1 / +2+1
+
+    // Reset all checkboxes
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+    });
+
+    // Reset all radio groups
+    document.querySelectorAll('input[type="radio"]').forEach(rb => {
+        if (rb.hasAttribute("checked")) {
+            rb.checked = true;
+        }
+    });
+
+    // Reset language button text
+    document.getElementById('language-button').textContent = "Languages: Common";
+
+    // Clear summaries
+    document.querySelectorAll("#summary-panel ul").forEach(ul => ul.innerHTML = "");
+
+    // Clear descriptions
+    document.getElementById("description-content").innerHTML = "";
+
+    // Recalculate everything
+    updateValue();
+    updateFullSummary();
+    updateAllDescriptions();
+}
 document.addEventListener("DOMContentLoaded", updateFullSummary);
         
     </script>
