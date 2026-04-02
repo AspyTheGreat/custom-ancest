@@ -988,6 +988,14 @@
     dropdown.classList.toggle('show');
 }
 
+function updateResistanceDesc() {
+    const select = document.getElementById("creature-damage-condition-resistance");
+    const option = select.options[select.selectedIndex];
+    const desc = option ? option.getAttribute("data-desc") : "";
+
+    document.getElementById("creature-resistance-desc").innerText = desc || "";
+}
+
 function updateDragonmarkDesc() {
     const select = document.getElementById("dragonmark-spells");
     const option = select.options[select.selectedIndex];
@@ -1057,6 +1065,7 @@ function updateAllDescriptions() {
         "creature-type",
         "creature-speed",
         "creature-natural-armor",
+        "creature-damage-condition-resistance",
         "racial-spellcasting",
         "dragonmark-spells"
     ];
