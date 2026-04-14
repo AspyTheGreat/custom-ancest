@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Ancestry Calculator</title>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: #121212;
             color: #e0e0e0;
@@ -178,6 +182,141 @@
     visibility: visible;
     opacity: 1;
 }
+
+/* Popup Modal Styles */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-overlay.show {
+    display: flex;
+}
+
+.popup-content {
+    background-color: #1e1e1e;
+    border: 2px solid #689FD9;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #333;
+    background-color: #242424;
+    border-radius: 10px 10px 0 0;
+}
+
+.popup-header h3 {
+    margin: 0;
+    color: #689FD9;
+}
+
+.popup-close {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.popup-close:hover {
+    color: #ff4444;
+}
+
+.popup-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.popup-body label {
+    display: block;
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: background-color 0.2s;
+}
+
+.popup-body label:hover {
+    background-color: #333;
+}
+
+.popup-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #333;
+    background-color: #242424;
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-footer .selected-count {
+    color: #689FD9;
+    font-weight: bold;
+}
+
+.popup-search {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+.popup-search:focus {
+    outline: none;
+    border-color: #689FD9;
+}
+
+/* Popup Trait Tooltips */
+.popup-body label {
+    position: relative;
+}
+
+.popup-body label[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    max-width: 400px;
+    background-color: #2a2a2a;
+    color: #ddd;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #689FD9;
+    font-size: 11px;
+    line-height: 1.4;
+    z-index: 1001;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    white-space: normal;
+    word-wrap: break-word;
+}
     </style>
 </head>
 <body>
@@ -192,6 +331,9 @@
         <div style="text-align: center;">
             <div>Remaining Points</div>
             <span id="creature-points-text">120</span>
+            <div style="font-size: 12px; color: #888; margin-top: 4px;">
+                Spent: <span id="creature-points-spent">0</span> / 120
+            </div>
         </div>
     </div>
 
@@ -231,7 +373,7 @@
 
     <div class="section">
         <h2>Basic Statistics</h2>
-        
+
         <div class="control-group">
     <label>Creature Type:</label>
     <select id="creature-type" onchange="updateValue(); updateCreatureTypeDesc();">
@@ -285,16 +427,15 @@
     </select>
 </div>
 
-<div id="creature-speed-desc" style="font-size: 12px; color: #f8f8f8; margin-top: 5px;"></div>
 
 <div id="creature-speed-desc" style="font-size: 12px; color: #f8f8f8; margin-top: 5px;"></div>
 
         <div class="control-group">
             <label>Darkvision:</label>
             <select id="creature-darkvision" onchange="updateValue()">
-                <option value="0" data-value="0">None (0)</option>
-                <option value="60" data-value="9">60 ft. (9)</option>
-                <option value="120" data-value="14">120 ft. (14)</option>
+                <option data-value="0">None (0)</option>
+                <option data-value="9">60 ft. (9)</option>
+                <option data-value="14">120 ft. (14)</option>
             </select>
         </div>
 
@@ -314,7 +455,7 @@
 
     <div class="section">
         <h2>Traits & Proficiencies</h2>
-        
+
         <div class="control-group">
             <div class="dropdown">
                 <button class="my-button" onclick="toggleDropdown('movement-type-dropdown')">Movement Types</button>
@@ -341,7 +482,7 @@
 
     <label> <input type="radio" name="racial-prof" value="8" data-desc="proficiency in Performance, Persuasion and a musical instrument of your choice." onchange="updateValue()"> Satyr: Reveler (8) </label>
 
-    <label> <input type="radio" name="racial-prof" value="9" data-desc="proficiency in two of: deception, insight, intimidation and persuasion." onchange="updateValue()"> Changeling: changeling instincts (9) </label> 
+    <label> <input type="radio" name="racial-prof" value="9" data-desc="proficiency in two of: deception, insight, intimidation and persuasion." onchange="updateValue()"> Changeling: changeling instincts (9) </label>
 
     <label> <input type="radio" name="racial-prof" value="3" data-desc="Intimidation proficiency." onchange="updateValue()"> Half-orc: Menacing (3) </label>
 
@@ -351,7 +492,7 @@
 
     <label> <input type="radio" name="racial-prof" value="2" data-desc="Proficiency in Battleaxes, Handaxes, Light hammers and Warhammers." onchange="updateValue()"> Dwarf: Dwarven combat training (2) </label>
 
-    <label> <input type="radio" name="racial-prof" value="2" data-desc="Proficiency in rapiers, shortswords and hand crossbows." onchange="updateValue()"> Elf(drow): Drow weapon training (3) </label>
+    <label> <input type="radio" name="racial-prof" value="3" data-desc="Proficiency in rapiers, shortswords and hand crossbows." onchange="updateValue()"> Elf(drow): Drow weapon training (3) </label>
 
     <label> <input type="radio" name="racial-prof" value="3" data-desc="Proficiency in longswords, shortswords, shortbows and longbows." onchange="updateValue()"> Elf: Elf weapon training (3) </label>
 
@@ -383,12 +524,12 @@
     <button class="my-button" onclick="toggleDropdown('skill-traits-dropdown')">
         Skill Enhancing Traits
     </button>
-    
+
 
     <div id="skill-traits-dropdown" class="dropdown-content">
 
         <label> <input type="radio" name="skill-trait" value="0" checked onchange="updateValue();"> None (0) </label>
-        
+
         <label class="tooltip"> <input type="radio" name="skill-trait" value="7" data-desc="You have proficiency in Stealth, and can move through and stop in spaces large enough for small creatures without squeezing." onchange="updateValue();"> Bugbear: Sneaky (7) <span class="tooltip-text"></span> </label>
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="12" data-desc="Gain two proficiencies of your choice." onchange="updateValue();"> Reborn: Ancestral Legacy (12) <span class="tooltip-text"></span> </label>
@@ -437,14 +578,14 @@
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="16" data-desc="You can add a d6 to any skill check. You can do so a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue();"> Knowledge from a past life (16) <span class="tooltip-text"></span> </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="10" data-desc="You gain proficiency in one of the following skills: arcana, history, investigation, medicine, performance, sleight of hand and a tool of your choice When you make an ability check with the chosen skill or tool, you can add a d4 to the check's total." onchange="updateValue();"><span class="tooltip-text">Add d4 to Investigation or Thieves’ Tools.</span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" value="10" data-desc="You gain proficiency in one of the following skills: arcana, history, investigation, medicine, performance, sleight of hand and a tool of your choice. When you make an ability check with the chosen skill or tool, you can add a d4 to the check's total." onchange="updateValue();"> Skilled Proficiency (10) <span class="tooltip-text"></span> </label>
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="12" data-desc="You gain proficiency in Stealth. you can walk on two feet or four without impediment and can move through non-magical terrain or a creature's space without penalty to your movement." onchange="updateValue();"> Sneaky scurry (12) <span class="tooltip-text"></span> </label>
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="You gain proficiency in persuasion, and can gain advantage on a persuasion roll once per short or long rest." onchange="updateValue();"> Bright-eyed and bushy-tailed (6) <span class="tooltip-text"></span> </label>
 
         <!-- Optional: None option -->
-        
+
 
     </div>
 </div>
@@ -535,7 +676,7 @@
 
 <div class="control-group">
             <label>Damage/Condition resistances:</label>
-           <select id="creature-damage-condition-resistance" 
+           <select id="creature-damage-condition-resistance"
         onchange="updateValue(); updateResistanceDesc();">
 
     <option data-value="0" data-desc="No inherent resistances or condition advantages."> None (0) </option>
@@ -577,16 +718,19 @@
     <option data-value="23" data-desc="Resistance to cold damage, and a swimming speed equal to your walking speed."> Vermkin: Riverborn (23) </option>
 
     <option data-value="12" data-desc="Advantage on checks and saving throws against being moved or going prone."> Warforged: Steadfast (12) </option>
-    
+
     <option data-value="11" data-desc="Advantage against effects that alter your form agaisnt your will. can change size between medium and large as an action."> Warforged: Transformative subroutine (11) </option>
 
 </select>
+<div id="creature-resistance-desc"
+     style="font-size: 12px; color: #f8f8f8; margin-top: 5px;">
+</div>
         </div>
 
         <div class="control-group">
             <label>Natural Armor:</label>
-            <select id="creature-natural-armor" 
-            
+            <select id="creature-natural-armor"
+
         onchange="updateValue(); updateArmorDesc();">
 
     <option data-value="0" data-desc="No natural armor. You rely on worn armor for defense. 10 + dexterity AC">
@@ -610,7 +754,7 @@
     </option>
 
 </select>
-<div id="creature-armor-desc" 
+<div id="creature-armor-desc"
      style="font-size: 12px; color: #f8f8f8; margin-top: 5px;">
 </div>
         </div>
@@ -618,20 +762,28 @@
 
    <div class="section">
     <h2>Major Features</h2>
-    <div class="dropdown">
-        <button class="my-button" style="width: 100%" 
-                onclick="toggleDropdown('racial-traits-dropdown'); event.stopPropagation()">
-            Select Racial Traits
+    <div class="control-group">
+        <button class="my-button" style="width: 100%"
+                onclick="openRacialTraitsPopup()">
+            Select Racial Traits (<span id="racial-traits-count">0</span> selected)
         </button>
+    </div>
 
-<div id="racial-traits-desc" 
+<div id="racial-traits-desc"
      style="font-size: 12px; color: #f8f8f8; margin-top: 5px;">
 </div>
 
-        <div id="racial-traits-dropdown" 
-             class="dropdown-content" 
-             style="width: 100%" 
-             onclick="event.stopPropagation()">
+<!-- Racial Traits Popup Modal -->
+<div id="racial-traits-popup" class="popup-overlay" onclick="closeRacialTraitsPopup(event)">
+    <div class="popup-content" onclick="event.stopPropagation()">
+        <div class="popup-header">
+            <h3>Select Racial Traits</h3>
+            <button class="popup-close" onclick="closeRacialTraitsPopup()">&times;</button>
+        </div>
+        <div class="popup-body">
+            <input type="text" class="popup-search" id="racial-traits-search"
+                   placeholder="Search traits..." onkeyup="filterRacialTraits()">
+            <div id="racial-traits-list">
 
            <label> <input type="checkbox" value="10" data-desc="As an action, you can touch a creature and roll a number of d4s equal to your proficiency bonus. The creature regains a number of hit points equal to the total rolled. Once you use this trait, you can't use it again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar:healing hands (10) </label>
 
@@ -841,7 +993,15 @@
 
 <label> <input type="checkbox" value="22" data-desc="Must have autognome/warforged primary race. You gain +1 AC and can integrate armor into your body over 1 hour. Integrated armor can't be removed against your will." onchange="updateValue(); updateTraitDesc();"> Warforged: Integrated Protection (22) </label>
 
+            </div>
         </div>
+        <div class="popup-footer">
+            <span class="selected-count">Selected: <span id="popup-traits-count">0</span> traits</span>
+            <button class="my-button" onclick="closeRacialTraitsPopup()">Done</button>
+        </div>
+    </div>
+</div>
+
         <div class="control-group">
 
     <!-- Racial Spellcasting -->
@@ -932,7 +1092,7 @@
 <option data-value="17" data-desc="Poison spray, Animal friendship (snakes only, unlimited), Suggestion (lvl 3). Choose Int, Wis or Cha as your spellcasting ability."> Yuan-ti: Serpentine spellcasting (17) </option>
 
 </select>
-<div id="racial-spellcasting-desc" 
+<div id="racial-spellcasting-desc"
      style="font-size: 12px; color: #f8f8f8; margin-top: 5px;">
 </div>
         </div>
@@ -965,17 +1125,13 @@
 
 <option data-value="56" data-desc="Compelled duel, shield of faith, warding bond, zone of truth, counterspell, protection from energy, death ward, guardian of faith, Bigby's hand."> Human (mark of sentinel): Mark of Sentinel spells (56) </option>
 </select>
-<div id="dragonmark-desc" 
+<div id="dragonmark-desc"
      style="font-size: 12px; color: #f8f8f8; margin-top: 5px;">
 </div>
         </div>
     </div>
 
-    
-</div>
-    </div>
 
-   
 
 
 
@@ -999,6 +1155,43 @@ function updateDragonmarkDesc() {
     const desc = option ? option.getAttribute("data-desc") : "";
 
     document.getElementById("dragonmark-desc").innerText = desc || "";
+}
+
+function updateSpeedDesc() {
+    const select = document.getElementById("creature-speed");
+    const option = select.options[select.selectedIndex];
+    const desc = option ? option.getAttribute("data-desc") : "";
+
+    document.getElementById("creature-speed-desc").innerText = desc || "";
+}
+
+function updateArmorDesc() {
+    const select = document.getElementById("creature-natural-armor");
+    const option = select.options[select.selectedIndex];
+    const desc = option ? option.getAttribute("data-desc") : "";
+
+    document.getElementById("creature-armor-desc").innerText = desc || "";
+}
+
+function updateCreatureTypeDesc() {
+    const select = document.getElementById("creature-type");
+    const option = select.options[select.selectedIndex];
+    const desc = option ? option.getAttribute("data-desc") : "";
+
+    document.getElementById("creature-type-desc").innerText = desc || "";
+}
+
+function updateSpellcastingDesc() {
+    const select = document.getElementById("racial-spellcasting");
+    const option = select.options[select.selectedIndex];
+    const desc = option ? option.getAttribute("data-desc") : "";
+
+    document.getElementById("racial-spellcasting-desc").innerText = desc || "";
+}
+
+function updateTraitDesc() {
+    // This function triggers update of all descriptions including traits
+    updateAllDescriptions();
 }
  function handleLanguageChange(clickedBox) {
     const selectedBoxes = document.querySelectorAll('.language-checkbox:checked');
@@ -1147,16 +1340,16 @@ function copySummary() {
 
             // 1. Handle Selects
              const selects = [
-    'creature-type', 
-    'creature-speed', 
-    'creature-darkvision', 
+    'creature-type',
+    'creature-speed',
+    'creature-darkvision',
     'creature-abilityscores',
     'creature-natural-armor',
     'creature-damage-condition-resistance',
     'racial-spellcasting',
     'dragonmark-spells'
 ];
-            
+
             selects.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
@@ -1183,14 +1376,16 @@ if (selectedProf) {
     totalSpent += parseInt(selectedProf.value || 0);
 }
 // Natural weapon
-const selectedWeapon = document.querySelector('input[name="natural-weapon-dropdown"]:checked');
+const selectedWeapon = document.querySelector('input[name="natural-weapon"]:checked');
 if (selectedWeapon) {
     totalSpent += parseInt(selectedWeapon.value || 0);
 }
             // 3. Final Math
             const remaining = 120 - totalSpent;
             const display = document.getElementById('creature-points-text');
+            const spentDisplay = document.getElementById('creature-points-spent');
             display.innerText = remaining;
+            if (spentDisplay) spentDisplay.innerText = totalSpent;
 
             // Color coding for over-spending
             display.style.color = remaining < 0 ? "#ff4444" : "#689FD9";
@@ -1270,7 +1465,7 @@ setList(
 
     setList(
         "summary-major",
-        Array.from(document.querySelectorAll("#racial-traits-dropdown input:checked"))
+        Array.from(document.querySelectorAll("#racial-traits-list input:checked"))
             .map(el => el.parentElement.textContent.trim())
     );
     setSingle("summary-spellcasting", getText("racial-spellcasting"));
@@ -1322,7 +1517,75 @@ function clearAll() {
     updateAllDescriptions();
 }
 document.addEventListener("DOMContentLoaded", updateFullSummary);
-        
+
+// Keyboard accessibility - Escape key closes all dropdowns and popups
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        document.querySelectorAll('.dropdown-content').forEach(d => {
+            d.classList.remove('show');
+        });
+        closeRacialTraitsPopup();
+    }
+});
+
+// Racial Traits Popup Functions
+function openRacialTraitsPopup() {
+    document.getElementById('racial-traits-popup').classList.add('show');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    document.getElementById('racial-traits-search').focus();
+    updateTraitsCount();
+}
+
+function closeRacialTraitsPopup(event) {
+    // If called from overlay click, only close if clicking the overlay itself
+    if (event && event.target !== document.getElementById('racial-traits-popup')) {
+        return;
+    }
+    document.getElementById('racial-traits-popup').classList.remove('show');
+    document.body.style.overflow = ''; // Restore scrolling
+}
+
+function filterRacialTraits() {
+    const searchTerm = document.getElementById('racial-traits-search').value.toLowerCase();
+    const labels = document.querySelectorAll('#racial-traits-list label');
+
+    labels.forEach(label => {
+        const text = label.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            label.style.display = 'block';
+        } else {
+            label.style.display = 'none';
+        }
+    });
+}
+
+function updateTraitsCount() {
+    const count = document.querySelectorAll('#racial-traits-list input[type="checkbox"]:checked').length;
+    document.getElementById('racial-traits-count').textContent = count;
+    document.getElementById('popup-traits-count').textContent = count;
+}
+
+// Override updateValue to also update traits count
+const originalUpdateValueForTraits = updateValue;
+updateValue = function() {
+    originalUpdateValueForTraits();
+    updateTraitsCount();
+};
+
+// Initialize tooltips for racial traits
+function initRacialTraitTooltips() {
+    const labels = document.querySelectorAll('#racial-traits-list label');
+    labels.forEach(label => {
+        const checkbox = label.querySelector('input[type="checkbox"]');
+        if (checkbox && checkbox.dataset.desc) {
+            label.setAttribute('data-tooltip', checkbox.dataset.desc);
+        }
+    });
+}
+
+// Run on DOM load
+document.addEventListener("DOMContentLoaded", initRacialTraitTooltips);
+
     </script>
 </body>
 </html>
