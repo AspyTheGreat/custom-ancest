@@ -381,10 +381,10 @@
         <option value="0" data-value="0" data-desc="Standard humanoid creature.">
             Humanoid (0)
         </option>
-        <option value="5" data-value="5" data-desc="Fey creatures are magical beings tied to nature and emotion, and are unnafected by effects that only target humanoids, such as the hold person spell.">
+        <option value="5" data-value="5" data-desc="Must have a primary race with fey ancestry. Fey creatures are magical beings tied to nature and emotion, and are unnafected by effects that only target humanoids, such as the hold person spell.">
             Fey (5)
         </option>
-        <option value="-20" data-value="-20" data-desc="Constructs do not need to eat, drink, or breathe, and are unaffected by most healing magic.">
+        <option value="-20" data-value="-20" data-desc="Must have warforged or autognome as your primary race. Constructs do not need to eat, drink, or breathe, and are unaffected by most healing magic.">
             Construct (-20)
         </option>
     </select>
@@ -642,11 +642,6 @@ Warforged: Specialized Design (8)
 <label>
     <input type="radio" name="weapon-prof" value="2" data-desc="Proficiency in spears, tridents, crossbows, and nets." onchange="updateValue()">
     Sea Elf Training (2)
-</label>
-
-<label>
-    <input type="radio" name="weapon-prof" value="3" data-desc="Proficiency in two tools of your choice." onchange="updateValue()">
-    Autognome: Specialized Design (3)
 </label>
 
 <label>
@@ -1469,10 +1464,20 @@ if (prof) addDesc(prof.getAttribute("data-desc"));
     const skill = document.querySelector('input[name="skill-trait"]:checked');
     if (skill) addDesc(skill.getAttribute("data-desc"));
 
+// WEAPON PROFICIENCY (FIX)
+const weaponProf = document.querySelector('#weapon-dropdown input[name="weapon-prof"]:checked');
+if (weaponProf && weaponProf.dataset.desc) {
+    addDesc(weaponProf.dataset.desc);
+}
     // Racial proficiency (radio)
 // ADD THIS inside updateAllDescriptions()
 
 document.querySelectorAll('.resistance-checkbox:checked').forEach(el => {
+    addDesc(el.getAttribute("data-desc"));
+});
+
+// RACIAL TRAITS (FIX)
+document.querySelectorAll('#racial-traits-list input[type="checkbox"]:checked').forEach(el => {
     addDesc(el.getAttribute("data-desc"));
 });
 
