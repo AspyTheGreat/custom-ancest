@@ -20,8 +20,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   text-align: center;
+
   background: radial-gradient(circle at 30% 30%, #2a1a4a, #0b0b0f),
               linear-gradient(120deg, #1a0033, #000814);
   background-blend-mode: screen;
@@ -62,14 +62,15 @@ h1 {
   color: #0b0b0f;
 }
 
-/* ================= WORLDS PAGE ================= */
-.page {
+/* ================= PAGES ================= */
+.page, .detail {
   display: none;
   min-height: 100vh;
   padding: 40px;
   text-align: center;
 }
 
+/* GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 180px);
@@ -97,14 +98,7 @@ h1 {
   color: #0b0b0f;
 }
 
-/* ================= WORLD DETAIL ================= */
-.detail {
-  display: none;
-  min-height: 100vh;
-  padding: 40px;
-  text-align: center;
-}
-
+/* WORLD DETAIL */
 .tabs {
   display: flex;
   justify-content: center;
@@ -119,6 +113,7 @@ h1 {
   cursor: pointer;
 }
 
+/* BACK BUTTON */
 .back {
   margin-top: 40px;
   display: inline-block;
@@ -139,11 +134,11 @@ h1 {
 
   <div class="tile-container">
     <div class="tile" onclick="showWorlds()">WORLDS</div>
-    <div class="tile">CHRONICLES</div>
+    <div class="tile" onclick="showChronicles()">CHRONICLES</div>
   </div>
 </div>
 
-<!-- ================= WORLDS LIST ================= -->
+<!-- ================= WORLDS ================= -->
 <div id="worlds" class="page">
   <h2>WORLDS</h2>
 
@@ -172,26 +167,50 @@ h1 {
   <div class="back" onclick="backToWorlds()">← Back</div>
 </div>
 
+<!-- ================= CHRONICLES ================= -->
+<div id="chronicles" class="page">
+  <h2 style="font-size: 3rem; letter-spacing: 4px;">CHRONICLES</h2>
+
+  <div class="grid">
+    <div class="world-card">Previous Battles</div>
+    <div class="world-card">Track Chronicles</div>
+  </div>
+
+  <div class="back" onclick="showHome()">← Back</div>
+</div>
+
 <script>
 function showWorlds() {
-  document.getElementById("home").style.display = "none";
+  hideAll();
   document.getElementById("worlds").style.display = "block";
 }
 
+function showChronicles() {
+  hideAll();
+  document.getElementById("chronicles").style.display = "block";
+}
+
 function showHome() {
-  document.getElementById("worlds").style.display = "none";
+  hideAll();
   document.getElementById("home").style.display = "flex";
 }
 
 function openWorld(name) {
-  document.getElementById("worlds").style.display = "none";
+  hideAll();
   document.getElementById("worldDetail").style.display = "block";
   document.getElementById("worldTitle").innerText = name.toUpperCase();
 }
 
 function backToWorlds() {
-  document.getElementById("worldDetail").style.display = "none";
+  hideAll();
   document.getElementById("worlds").style.display = "block";
+}
+
+function hideAll() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("worlds").style.display = "none";
+  document.getElementById("worldDetail").style.display = "none";
+  document.getElementById("chronicles").style.display = "none";
 }
 </script>
 
