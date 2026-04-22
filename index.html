@@ -1,1810 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Ancestry Calculator</title>
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
+<meta charset="UTF-8">
+<title>Nat 1 Archive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-        }
-
-        h1, h2 { color: #689FD9; }
-
-        .section {
-            background-color: #1e1e1e;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
-
-        .points-display {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #242424;
-            padding: 15px;
-            border: 2px solid #689FD9;
-            border-radius: 10px;
-            text-align: center;
-            z-index: 100;
-        }
-
-        #creature-points-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: #689FD9;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-            margin: 5px 0;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #242424;
-            min-width: 280px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-            z-index: 10;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #747474;
-            padding: 10px;
-        }
-
-        .dropdown-content label {
-            display: block;
-            padding: 5px;
-            font-size: 13px;
-        }
-
-        .dropdown-content label:hover {
-            background-color: #333;
-        }
-
-        .show { display: block; }
-
-        select, .my-button {
-            background-color: #242424;
-            color: white;
-            border: 1px solid #747474;
-            padding: 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 200px;
-        }
-
-        .my-button:hover { background-color: #689FD9; }
-
-        .cost-input {
-            width: 50px;
-            background: transparent;
-            border: none;
-            color: #888;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        #summary-panel {
-    position: fixed;
-    right: 20px;
-    top: 150px; /* sits just below the points box */
-
-    width: 260px;
-    background: #1e1e1e;
-    color: white;
-    padding: 15px;
-
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.4);
-
-    max-height: 75vh;
-    overflow-y: auto;
-
-    z-index: 99; /* ensures it stays above content */
-}
-.tooltip {
-    position: relative;
-    cursor: help;
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #f0f0ff;
+  background: linear-gradient(135deg, #14002b, #020024);
 }
 
-.tooltip .tooltip-text {
-    visibility: hidden;
-    opacity: 0;
+/* ================= HOME ================= */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
-    position: absolute;
-    left: 105%;
-    top: 50%;
-    transform: translateY(-50%);
-
-    width: 220px;
-    background-color: #2a2a2a;
-    color: #ddd;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #555;
-
-    font-size: 12px;
-    line-height: 1.4;
-
-    transition: opacity 0.2s ease;
-    z-index: 200;
+  background: radial-gradient(circle at 30% 30%, #2a1a4a, #0b0b0f),
+              linear-gradient(120deg, #1a0033, #000814);
+  background-blend-mode: screen;
 }
 
-#description-panel {
-    position: fixed;
-    left: 20px;
-    top: 150px;
-
-    width: 280px;
-    max-height: 75vh;
-    overflow-y: auto;
-
-    background: #1e1e1e;
-    color: white;
-    padding: 15px;
-
-    border-radius: 10px;
-    border: 1px solid #333;
-    box-shadow: 0 0 10px rgba(0,0,0,0.4);
-
-    z-index: 99;
+h1 {
+  font-size: 6rem;
+  margin: 0;
+  letter-spacing: 6px;
+  color: #d6c6ff;
 }
 
-#description-content div {
-    margin-bottom: 8px;
-    padding-left: 6px;
-    border-left: 2px solid #689FD9;
-    font-size: 12px;
+.coming-soon {
+  margin-top: 10px;
+  font-size: 1rem;
+  opacity: 0.7;
+  letter-spacing: 2px;
 }
 
-.tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
+/* TILES */
+.tile-container {
+  margin-top: 40px;
+  display: flex;
+  gap: 20px;
 }
 
-/* Popup Modal Styles */
-.popup-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
+.tile {
+  padding: 16px 28px;
+  border: 1px solid #6a5acd;
+  background: rgba(106, 90, 205, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.popup-overlay.show {
-    display: flex;
+.tile:hover {
+  background: #6a5acd;
+  color: #0b0b0f;
 }
 
-.popup-content {
-    background-color: #1e1e1e;
-    border: 2px solid #689FD9;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 700px;
-    max-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+/* ================= PAGES ================= */
+.page, .detail {
+  display: none;
+  min-height: 100vh;
+  padding: 40px;
+  text-align: center;
 }
 
-.popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #333;
-    background-color: #242424;
-    border-radius: 10px 10px 0 0;
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 180px);
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
 }
 
-.popup-header h3 {
-    margin: 0;
-    color: #689FD9;
+.world-card {
+  width: 180px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(106, 90, 205, 0.2);
+  border: 1px solid #6a5acd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.popup-close {
-    background: none;
-    border: none;
-    color: #888;
-    font-size: 28px;
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
-    transition: color 0.2s;
+.world-card:hover {
+  background: #6a5acd;
+  color: #0b0b0f;
 }
 
-.popup-close:hover {
-    color: #ff4444;
+/* WORLD DETAIL */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
-.popup-body {
-    padding: 20px;
-    overflow-y: auto;
-    flex: 1;
+.tab {
+  padding: 10px 18px;
+  border: 1px solid #6a5acd;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.popup-body label {
-    display: block;
-    padding: 8px 10px;
-    margin-bottom: 4px;
-    border-radius: 4px;
-    font-size: 13px;
-    transition: background-color 0.2s;
+/* BACK BUTTON */
+.back {
+  margin-top: 40px;
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid #888;
+  border-radius: 6px;
+  cursor: pointer;
 }
-
-.popup-body label:hover {
-    background-color: #333;
-}
-
-.popup-footer {
-    padding: 15px 20px;
-    border-top: 1px solid #333;
-    background-color: #242424;
-    border-radius: 0 0 10px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.popup-footer .selected-count {
-    color: #689FD9;
-    font-weight: bold;
-}
-
-.popup-search {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    background-color: #2a2a2a;
-    border: 1px solid #555;
-    border-radius: 6px;
-    color: #e0e0e0;
-    font-size: 14px;
-}
-
-.popup-search:focus {
-    outline: none;
-    border-color: #689FD9;
-}
-
-/* Popup Trait Tooltips */
-.popup-body label {
-    position: relative;
-}
-
-.popup-body label[data-tooltip]:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: 0;
-    top: 100%;
-    width: 100%;
-    max-width: 400px;
-    background-color: #2a2a2a;
-    color: #ddd;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #689FD9;
-    font-size: 11px;
-    line-height: 1.4;
-    z-index: 1001;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    white-space: normal;
-    word-wrap: break-word;
-}
-    </style>
+</style>
 </head>
+
 <body>
 
-   <div class="points-display">
+<!-- ================= HOME ================= -->
+<div id="home" class="hero">
+  <h1>NAT 1</h1>
+  <div class="coming-soon">COMING SOON</div>
 
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-        <button onclick="clearAll()" class="my-button" style="width: auto; padding: 8px 12px;">
-            Clear Selections
-        </button>
-
-        <div style="text-align: center;">
-            <div>Remaining Points</div>
-            <span id="creature-points-text">120</span>
-            <div style="font-size: 12px; color: #888; margin-top: 4px;">
-                Spent: <span id="creature-points-spent">0</span> / 120
-            </div>
-        </div>
-    </div>
-
+  <div class="tile-container">
+    <div class="tile" onclick="showWorlds()">WORLDS</div>
+    <div class="tile" onclick="showChronicles()">CHRONICLES</div>
+    <div class="tile" onclick="window.location.href='custom_ancest.html'">CUSTOM ANCESTRY</div>
+  </div>
 </div>
 
-<div id="description-panel">
-    <h3>Feature Descriptions</h3>
-    <div id="description-content"></div>
+<!-- ================= WORLDS ================= -->
+<div id="worlds" class="page">
+  <h2>WORLDS</h2>
+
+  <div class="grid">
+    <div class="world-card" onclick="openWorld('Tolivric')">Tolivric</div>
+    <div class="world-card" onclick="openWorld('Infinitum')">Infinitum</div>
+    <div class="world-card" onclick="openWorld('Epalux')">Epalux</div>
+    <div class="world-card" onclick="openWorld('Convulux')">The Convulux</div>
+    <div class="world-card" onclick="openWorld('Midgard')">Midgard / Ravenfall</div>
+  </div>
+
+  <div class="back" onclick="showHome()">← Back</div>
 </div>
 
-    <!-- ✅ PUT SUMMARY PANEL HERE -->
-<div id="summary-panel">
-    <h3>Selected Attributes</h3>
+<!-- ================= WORLD DETAIL ================= -->
+<div id="worldDetail" class="detail">
+  <h2 id="worldTitle">WORLD</h2>
 
-    <div><strong>Creature Type:</strong><ul id="summary-creature-type"></ul></div>
-    <div><strong>Size:</strong><ul id="summary-size"></ul></div>
-    <div><strong>Speed:</strong><ul id="summary-speed"></ul></div>
-    <div><strong>Darkvision:</strong><ul id="summary-darkvision"></ul></div>
-    <div><strong>Ability Scores:</strong><ul id="summary-abilityscores"></ul></div>
-    <div><strong>Movement Types:</strong><ul id="summary-movement"></ul></div>
-    <div><strong>Skill & Tool Proficiencies:</strong><ul id="summary-profs"></ul></div>
-    <div><strong>Weapon Proficiencies:</strong><ul id="summary-toolweapons"></ul></div>
-    <div><strong>Skill Traits:</strong><ul id="summary-skilltraits"></ul></div>
-    <div><strong>Natural Weapons:</strong><ul id="summary-weapons"></ul></div>
-    <div><strong>Languages:</strong><ul id="summary-languages"></ul></div>
-    <div><strong>Resistances:</strong><ul id="summary-resistances"></ul></div>
-    <div><strong>Natural Armor:</strong><ul id="summary-armor"></ul></div>
-    <div><strong>Racial Traits:</strong><ul id="summary-major"></ul></div>
-    <div><strong>Racial Spellcasting:</strong><ul id="summary-spellcasting"></ul></div>
-    <div><strong>Dragonmark Spells:</strong><ul id="summary-dragonmark"></ul></div>
-    <button onclick="copySummary()" class="my-button" style="width:100%; margin-top:10px;">
-    Copy Summary
-</button>
+  <div class="tabs">
+    <div class="tab">Lore</div>
+    <div class="tab">Characters</div>
+    <div class="tab">Combats</div>
+    <div class="tab">Timeline</div>
+  </div>
+
+  <div class="back" onclick="backToWorlds()">← Back</div>
 </div>
 
-    <h1>Custom Ancestry Builder</h1>
-    <p>Spend 120 trait points to shape your unique history.</p>
-    <a href="Lore_cloud.html">Get lore here!</a>
+<!-- ================= CHRONICLES ================= -->
+<div id="chronicles" class="page">
+  <h2 style="font-size: 3rem; letter-spacing: 4px;">CHRONICLES</h2>
 
-    <div class="section">
-        <h2>Basic Statistics</h2>
+  <div class="grid">
+    <div class="world-card">Previous Battles</div>
+    <div class="world-card">Track Chronicles</div>
+  </div>
 
-        <div class="control-group">
-    <label>Creature Type:</label>
-    <select id="creature-type" onchange="updateValue(); updateCreatureTypeDesc();">
-        <option value="0" data-value="0" data-desc="Standard humanoid creature.">
-            Humanoid (0)
-        </option>
-        <option value="5" data-value="5" data-desc="Must have a primary race with fey ancestry. Fey creatures are magical beings tied to nature and emotion, and are unnafected by effects that only target humanoids, such as the hold person spell.">
-            Fey (5)
-        </option>
-        <option value="-20" data-value="-20" data-desc="Must have warforged or autognome as your primary race. Constructs do not need to eat, drink, or breathe, and are unaffected by most healing magic.">
-            Construct (-20)
-        </option>
-    </select>
-
-    <div id="creature-type-desc" style="font-size: 12px; color: #f8f8f8; margin-top: 5px;"></div>
+  <div class="back" onclick="showHome()">← Back</div>
 </div>
 
-<div class="control-group">
-    <label>Creature Size:</label>
-    <select id="creature-size" onchange="updateValue(); updateSizeDesc();">
-        <option data-value="0" data-desc="Small creatures occupy less space and may have advantages in squeezing or stealth.">
-            Small (0)
-        </option>
-        <option data-value="0" data-desc="Medium creatures are the standard size for most humanoids.">
-            Medium (0)
-        </option>
-    </select>
-
-    <div id="creature-size-desc" style="font-size: 12px; color: #f8f8f8; margin-top: 5px;"></div>
-</div>
-
-       <div class="control-group">
-    <label>Movement Speed:</label>
-
-    <select id="creature-speed" onchange="updateValue(); updateSpeedDesc();">
-        <option data-value="-40" data-desc="Very slow movement. Must have tortle primary race.">
-            20 ft. (-40)
-        </option>
-        <option data-value="-20" data-desc="Below average movement speed.">
-            25 ft. (-20)
-        </option>
-        <option data-value="0" data-desc="Standard humanoid movement speed." selected>
-            30 ft. (0)
-        </option>
-        <option data-value="20" data-desc="Faster than average movement speed.">
-            35 ft. (20)
-        </option>
-        <option data-value="40" data-desc="Exceptional speed. Must have the equine build racial trait.">
-            40 ft. (40)
-        </option>
-    </select>
-</div>
-
-
-<div id="creature-speed-desc" style="font-size: 12px; color: #f8f8f8; margin-top: 5px;"></div>
-
-        <div class="control-group">
-            <label>Darkvision:</label>
-            <select id="creature-darkvision" onchange="updateValue()">
-                <option data-value="0">None (0)</option>
-                <option data-value="9">60 ft. (9)</option>
-                <option data-value="14">120 ft. (14)</option>
-            </select>
-        </div>
-
-        <div class="control-group">
-            <label>Ability Scores:</label>
-            <select id="creature-abilityscores" onchange="updateValue()">
-                <option data-value="-23">+1, +1 (-23)</option>
-                <option data-value="-21">+2 (-21)</option>
-                <option data-value="0" selected>+2, +1 (0)</option>
-                <option data-value="0">+1, +1, +1 (0)</option>
-                <option data-value="23">+2, +1, +1 (23)</option>
-                <option data-value="25">+2, +2 (25)</option>
-                <option data-value="40">+1 All (40)</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Traits & Proficiencies</h2>
-
-        <div class="control-group">
-            <div class="dropdown">
-                <button class="my-button" onclick="toggleDropdown('movement-type-dropdown')">Movement Types</button>
-                <div id="movement-type-dropdown" class="dropdown-content">
-                    <label><input type="checkbox" value="10" onchange="updateValue()"> Swimming (10)</label>
-                    <label><input type="checkbox" value="10" onchange="updateValue()"> Climbing (10)</label>
-                    <label><input type="checkbox" value="40" onchange="updateValue()"> Flying (Light/No Armor) (40)</label>
-                    <label><input type="checkbox" value="45" onchange="updateValue()"> Flying (Medium/No Armor) (45)</label>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button id="prof-button" class="my-button" onclick="toggleDropdown('prof-dropdown')"> Skill & Tool Proficiencies </button>
-                        <div id="prof-dropdown" class="dropdown-content" onclick="event.stopPropagation()">
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="5"
-data-name="Elf: Keen Senses"
-data-desc="Perception proficiency."
-onchange="handleProfChange(this)">
-Elf: Keen Senses (5)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="12"
-data-name="Half-elf: Skill Versatility"
-data-desc="Proficiency in two skills of your choice."
-onchange="handleProfChange(this)">
-Half-elf: Skill Versatility (12)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="6"
-data-name="Human: Skills"
-data-desc="Proficiency in one skill of your choice."
-onchange="handleProfChange(this)">
-Human: Skills (6)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="10"
-data-name="Tabaxi: Cat's Talent"
-data-desc="Proficiency in Stealth and Perception."
-onchange="handleProfChange(this)">
-Tabaxi: Cat's Talent (10)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="7"
-data-name="Satyr: Reveler"
-data-desc="Proficiency in Performance, Persuasion and a musical instrument of your choice."
-onchange="handleProfChange(this)">
-Satyr: Reveler (7)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="9"
-data-name="Changeling: Changeling Instincts"
-data-desc="Proficiency in two of: deception, insight, intimidation and persuasion."
-onchange="handleProfChange(this)">
-Changeling: Changeling Instincts (9)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="3"
-data-name="Half-orc: Menacing"
-data-desc="Intimidation proficiency."
-onchange="handleProfChange(this)">
-Half-orc: Menacing (3)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="7"
-data-name="Changeling: Changeling Instincts"
-data-desc="Proficiency in one skill or tool of your choice, replaceable with another skill or tool when you finish a long rest."
-onchange="handleProfChange(this)">
-Khoravar: Skill versatility (7)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="11"
-data-name="Lizardfolk: Nature's Intuition"
-data-desc="Proficiency in two of: animal handling, medicine, nature, perception, stealth or survival."
-onchange="handleProfChange(this)">
-Lizardfolk: Nature's Intuition (11)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="5"
-data-name="Tortle: Nature's Intuition"
-data-desc="Proficiency in one of: animal handling, medicine, nature, perception, stealth or survival."
-onchange="handleProfChange(this)">
-Tortle: Nature's Intuition (5)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="3"
-data-name="Autognome: Specialized Design"
-data-desc="Proficiency in two tools of your choice."
-onchange="handleProfChange(this)">
-Autognome: Specialized Design (3)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="1"
-data-name="Dwarf: Tool Proficiency"
-data-desc="Proficiency in one of: Smith's tools, Brewer's supplies or Mason's tools."
-onchange="handleProfChange(this)">
-Dwarf: Tool Proficiency (1)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="1"
-data-name="Vermkin (Dykentail): Housecarving"
-data-desc="Proficiency in one of: Woodcarver's tools or Carpenter's tools."
-onchange="handleProfChange(this)">
-Vermkin (Dykentail): Housecarving (1)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="3"
-data-name="Warforged (Artifex)"
-data-desc="Expertise in one tool of your choice."
-onchange="handleProfChange(this)">
-Warforged (Artifex) (3)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="8"
-data-name="Githyanki: Astral Knowledge"
-data-desc="Proficiency in one skill and one weapon/tool of your choice. Can be changed at the end of a long rest."
-onchange="handleProfChange(this)">
-Githyanki: Astral Knowledge (8)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="7"
-data-name="Half-leberi: Skilled Artisan"
-data-desc="Proficiency in one skill and one weapon/tool of your choice."
-onchange="handleProfChange(this)">
-Half-leberi: Skilled Artisan (7)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="3"
-data-name="Shadar-kai / Astral Elf: Trance Proficiency"
-data-desc="Must have trance racial trait. Proficiency in one weapon/tool, can be changed at the end of a long rest."
-onchange="handleProfChange(this)">
-Shadar-kai / Astral Elf: Trance Proficiency (3)
-</label>
-
-<label>
-<input type="checkbox" class="prof-checkbox" value="8"
-data-name="Warforged: Specialized Design"
-data-desc="Proficiency in a skill and tool of your choice."
-onchange="handleProfChange(this)">
-Warforged: Specialized Design (8)
-</label>
-
-</div>
-
-<div class="dropdown">
-    <button class="my-button" onclick="toggleDropdown('weapon-dropdown')">
-        Weapon Proficiencies
-    </button>
-
-    <div id="weapon-dropdown" class="dropdown-content">
-
-       <label>
-    <input type="radio" name="weapon-prof" value="0" checked onchange="updateValue()">
-    None (0)
-</label>
-
-<label>
-    <input type="radio" name="weapon-prof" value="2" data-desc="Proficiency in battleaxes, handaxes, light hammers, and warhammers." onchange="updateValue()">
-    Dwarf: Dwarven Combat Training (2)
-</label>
-
-<label>
-    <input type="radio" name="weapon-prof" value="3" data-desc="Proficiency in longswords, shortswords, shortbows, and longbows." onchange="updateValue()">
-    Elf: Weapon Training (3)
-</label>
-
-<label>
-    <input type="radio" name="weapon-prof" value="2" data-desc="Proficiency in spears, tridents, crossbows, and nets." onchange="updateValue()">
-    Sea Elf Training (2)
-</label>
-
-<label>
-    <input type="radio" name="weapon-prof" value="1" data-desc="Proficiency in one martial weapon." onchange="updateValue()">
-    Warforged: Combat Patterns (1)
-</label>
-
-    </div>
-</div>
-            </div>
-        </div>
-
-        <div class="dropdown">
-    <button class="my-button" onclick="toggleDropdown('skill-traits-dropdown')">
-        Skill Enhancing Traits
-    </button>
-
-
-    <div id="skill-traits-dropdown" class="dropdown-content">
-
-        <label> <input type="radio" name="skill-trait" value="0" checked onchange="updateValue();"> None (0) </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="7" data-desc="You have proficiency in Stealth, and can move through and stop in spaces large enough for small creatures without squeezing." onchange="updateValue();"> Bugbear: Sneaky (7) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="12" data-desc="Gain two proficiencies of your choice." onchange="updateValue();"> Reborn: Ancestral Legacy (12) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="5" data-desc="You can make Stealth checks with advantage a number of times equal to your proficiency bonus, regaining expended uses when you finish a long rest." onchange="updateValue();"> Deep gnome: Svirfneblin Camouflage (5) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="5" data-desc="You can make intimidation or persuasion checks with advantage once per short or long rest." onchange="updateValue();"> Draconblood: Chromatic Warding (5) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to investigation and thieves' tools checks." onchange="updateValue();"> Warder's Intuition (6) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to performance and stealth checks." onchange="updateValue();"> Cunning Intuition (6) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="You have advantage on investigation and insight checks." onchange="updateValue();"> Elf(Pallid): Incisive sense (6) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="14" data-desc="Advantage on strength checks and saves. Count as one size larger while carrying, pushing, lifting, etc." onchange="updateValue();"> Giff: Hippo build (14) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="2" data-desc="Must have a dragonmark spell list. You can add a d4 to history and calligrapher's supplies checks." onchange="updateValue();"> Gifted scribe (2) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="1" data-desc="Add twice your proficiency bonus to history checks related to magic items, alchemical objects or technological devices." onchange="updateValue();"> Gnome(Rock): Artificer's Lore (1) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="4" data-desc="Gain proficiency in athletics, and count as once size larger when lifting, carrying, pushing etc." onchange="updateValue();"> Goliath: Little giant (4) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="10" data-desc="Must have a dragonmark spell list. You can add a d4 to investigation and insight checks." onchange="updateValue();"> Deductive intuition (10) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="4" data-desc="Must have a dragonmark spell list. You can add a d4 to acrobatics and navigator's tools checks." onchange="updateValue();"> Windwright's Intuition (4) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="9" data-desc="Must have a dragonmark spell list. You can add a d4 to survival and perception checks." onchange="updateValue();"> Hunter's intuition (9) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="3" data-desc="Must have a dragonmark spell list. You can add a d4 to medicine and herbalism kit checks." onchange="updateValue();"> Medical intuition (3) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to persuasion, brewer's supplies and cook's utensils checks." onchange="updateValue();"> Ever hospitable (6) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="4" data-desc="Must have a dragonmark spell list. You can add a d4 to animal handling and nature checks." onchange="updateValue();"> Wild intuition (4) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="10" data-desc="Must have a dragonmark spell list. You can add a d4 to arcana and any artisan's tools checks." onchange="updateValue();"> Artisan's intuition (10) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="4" data-desc="Must have a dragonmark spell list. You can add a d4 to acrobatics and checks to use and maintain land vehicles." onchange="updateValue();"> Intuitive motion (4) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="9" data-desc="Must have a dragonmark spell list. You can add a d4 to insight and perception checks." onchange="updateValue();"> Sentinel's intuition (9) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="23" data-desc="You gain proficiency in two skills of your choice. You can give yourself advantage on any checks that you are proficient in. You can do so a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue();"> Kenku recall (23) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="3" data-desc="You have advantage on perception, survival and investigation checks that involve smell." onchange="updateValue();"> Loxodon: Keen smell (3) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="2" data-desc="You always know which direction is north, and you have advantage on survival checks made in order to navigate or track." onchange="updateValue();"> Labyrinthine recall (2) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="16" data-desc="You can add a d6 to any skill check. You can do so a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue();"> Knowledge from a past life (16) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="10" data-desc="You gain proficiency in one of the following skills: arcana, history, investigation, medicine, performance, sleight of hand and a tool of your choice. When you make an ability check with the chosen skill or tool, you can add a d4 to the check's total." onchange="updateValue();"> Skilled Proficiency (10) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="12" data-desc="You gain proficiency in Stealth. you can walk on two feet or four without impediment and can move through non-magical terrain or a creature's space without penalty to your movement." onchange="updateValue();"> Sneaky scurry (12) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="You gain proficiency in persuasion, and can gain advantage on a persuasion roll once per short or long rest." onchange="updateValue();"> Bright-eyed and bushy-tailed (6) <span class="tooltip-text"></span> </label>
-
-        <!-- Optional: None option -->
-
-
-    </div>
-</div>
-
-<div class="dropdown">
-    <button class="my-button" onclick="toggleDropdown('natural-weapons-dropdown')">
-        Natural Weapons
-    </button>
-
-    <div id="natural-weapons-dropdown" class="dropdown-content">
-
-        <label> <input type="radio" name="natural-weapon" value="0" checked onchange="updateValue();"> None (0) </label>
-
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="7" data-desc="You have claws that deal 1d6 + strength slashing damage." onchange="updateValue();"> Talons (7) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="10" data-desc="Must have a primary race with powerful build or adjacent feature. You have hooves that deal 1d6 + strength bludgeoning damage." onchange="updateValue();"> Hooves (10) <span class="tooltip-text">1d6 piercing damage.</span> </label>
-
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="3" data-desc="You have Claws that deal 1d4 + strength slashing damage and can be used for special attacks." onchange="updateValue();"> Claws (3) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="10" data-desc="You have a powerful bite that deals 1d6 + strength slashing damage." onchange="updateValue();"> Bite (10) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="10" data-desc="You have sharp horns that deals 1d6 + strength piercing damage." onchange="updateValue();"> Horns (10) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="10" data-desc="You have Sturdy horns that deals 1d6 + strength bludgeoning damage." onchange="updateValue();"> Ram (10) <span class="tooltip-text"></span> </label>
-
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="5" data-desc="You have claws that deal 1d6 + strength slashing damage." onchange="updateValue();"> Cat's claws (5) <span class="tooltip-text"></span> </label>
-
-    </div>
-</div>
-        <div class="dropdown">
-    <button id="language-button" class="my-button" onclick="toggleDropdown('language-dropdown')">
-    Languages: Common
-</button>
-    <div id="language-dropdown" class="dropdown-content" onclick="event.stopPropagation()">
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Abanasinian" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Abanasinian (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Abyssal" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Abyssal (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Aglarondan" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Aglarondan (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Alzhedo" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Alzhedo (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Bothii" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Bothii (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Celestial" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Celestial (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Chessentan" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Chessentan (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Chondathan" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Chondathan (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Common sign language" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Common sign language (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Damaran" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Damaran (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Dambrathan" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Dambrathan (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Deep speech" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Deep Speech (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Draconic" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Draconic (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Dwarvish" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Dwarvish (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Elvish" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Elvish (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Ergot" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Ergot (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Giant" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Giant (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Gnomish" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Gnomish (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Goblin" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Goblin (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Halfling" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Halfling (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Illuskan" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Illuskan (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Infernal" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Infernal (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Istarian" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Istarian (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Kenderspeak" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Kenderspeak (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Kharolian" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Kharolian (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Khur" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Khur (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Kothian" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Kothian (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Kraul" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Kraul (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Lantanese" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Lantanese (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Loxodon" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Loxodon (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Merfolk" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Merfolk (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Midani" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Midani (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Minotaur" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Minotaur (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Mulhorandi" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Mulhorandi (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Nerakese" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Nerakese (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Netherese" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Netherese (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Nordmarian" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Nordmarian (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Ogre" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Ogre (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Orc" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Orc (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Primordial" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Primordial (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Rashemi" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Rashemi (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Reghedjic" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Reghedjic (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Riedran" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Riedran (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Sespech" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Sespech (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Solamnic" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Solamnic (1)</label>
-        <label><input type="checkbox" class="language-checkbox" value="1" data-name="Sphinx" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Sphinx (1)</label>
-<label><input type="checkbox" class="language-checkbox" value="1" data-name="Sylvan" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Sylvan (1)</label>
-<label><input type="checkbox" class="language-checkbox" value="1" data-name="Turmic" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Turmic (1)</label>
-<label><input type="checkbox" class="language-checkbox" value="1" data-name="Undercommon" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Undercommon (1)</label>
-<label><input type="checkbox" class="language-checkbox" value="1" data-name="Untheric" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Untheric (1)</label>
-<label><input type="checkbox" class="language-checkbox" value="1" data-name="Vedalken" onchange="handleLanguageChange(this)" onclick="event.stopPropagation()"> Vedalken (1)</label>
-    </div>
-</div>
-
-<div class="dropdown">
-    <button id="resistance-button" class="my-button" onclick="toggleDropdown('resistance-dropdown')">
-        Damage and condition Resistances (0/2)
-    </button>
-
-    <div id="resistance-dropdown" class="dropdown-content" onclick="event.stopPropagation()">
-
-        <label><input type="checkbox" class="resistance-checkbox" value="31" data-name="Aasimar: Celestial Resistance" data-desc="Cannot pick any other resistance. Resistance to radiant and necrotic damage." onchange="handleResistanceChange(this)"> Aasimar: Celestial Resistance (31)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="8" data-name="Fey Ancestry" data-desc="Advantage vs charm, magic can't put you to sleep." onchange="handleResistanceChange(this)"> Fey Ancestry (8)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="26" data-name="Autognome: Mechanical Nature" data-desc="Resistance to poison damage, advantage vs poisoned/paralyzed, no need to eat/drink/breathe." onchange="handleResistanceChange(this)"> Autognome: Mechanical Nature (26)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="18" data-name="Dragonborn: Draconic Resilience" data-desc="Resistance to your draconic damage type." onchange="handleResistanceChange(this)"> Dragonborn: Draconic Resilience (18)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="14" data-name="Duergar: Psionic Fortitude" data-desc="Advantage vs charmed or stunned." onchange="handleResistanceChange(this)"> Duergar: Psionic Fortitude (14)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="26" data-name="Halfling: Stout Resilience" data-desc="Advantage vs poison, resistance to poison damage." onchange="handleResistanceChange(this)"> Halfling: Stout Resilience (26)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="18" data-name="Shadar-kai: Necrotic Resistance" data-desc="Resistance to necrotic damage." onchange="handleResistanceChange(this)"> Shadar-kai: Necrotic Resistance (18)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="16" data-name="Fire Genasi: Fire Resistance" data-desc="Resistance to fire damage." onchange="handleResistanceChange(this)"> Fire Genasi: Fire Resistance (16)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="8" data-name="Water Genasi: Acid Resistance" data-desc="Resistance to acid damage." onchange="handleResistanceChange(this)"> Water Genasi: Acid Resistance (8)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="12" data-name="Air Genasi: Lightning Resistance" data-desc="Resistance to lightning damage." onchange="handleResistanceChange(this)"> Air Genasi: Lightning Resistance (12)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="9" data-name="Half-leberi: Sour Blood" data-desc="Advantage vs poison and disease." onchange="handleResistanceChange(this)"> Half-leberi: Sour Blood (9)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="11" data-name="Halfling: Brave" data-desc="Advantage vs frightened." onchange="handleResistanceChange(this)"> Halfling: Brave (11)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="7" data-name="Kalashtar: Mental Discipline" data-desc="Resistance to psychic damage." onchange="handleResistanceChange(this)"> Kalashtar: Mental Discipline (7)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="17" data-name="Kender: Fearless" data-desc="Advantage vs frightened, auto succeed once per rest." onchange="handleResistanceChange(this)"> Kender: Fearless (17)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="18" data-name="Leberi: Pungent Blood" data-desc="Resistance to poison, immunity to disease." onchange="handleResistanceChange(this)"> Leberi: Pungent Blood (18)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="17" data-name="Loxodon: Serenity" data-desc="Advantage vs charmed and frightened." onchange="handleResistanceChange(this)"> Loxodon: Serenity (17)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="21" data-name="Vermkin: Iron Gut" data-desc="Advantage vs poison/disease, resistance to poison damage." onchange="handleResistanceChange(this)"> Vermkin: Iron Gut (21)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="23" data-name="Vermkin: Riverborn" data-desc="Resistance to cold damage, swim speed." onchange="handleResistanceChange(this)"> Vermkin: Riverborn (23)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="12" data-name="Warforged: Steadfast" data-desc="Advantage vs being moved or knocked prone." onchange="handleResistanceChange(this)"> Warforged: Steadfast (12)</label>
-
-        <label><input type="checkbox" class="resistance-checkbox" value="11" data-name="Warforged: Transformative Subroutine" data-desc="Advantage vs forced form change, can resize." onchange="handleResistanceChange(this)"> Warforged: Transformative Subroutine (11)</label>
-
-    </div>
-</div>
-
-<div id="creature-resistance-desc" style="font-size: 12px; color: #f8f8f8; margin-top: 5px;"></div>
-
-        <div class="control-group">
-            <label>Natural Armor:</label>
-            <select id="creature-natural-armor"
-
-        onchange="updateValue(); updateArmorDesc();">
-
-    <option data-value="0" data-desc="No natural armor. You rely on worn armor for defense. 10 + dexterity AC">
-        None (0)
-    </option>
-
-    <option data-value="15" data-desc="Autognome or Warforged primary race. 13 + dexterity AC.">
-        Autognome:armored casing (15)
-    </option>
-
-    <option data-value="15" data-desc="Scaly/reptilian primary race. 13 + dexterity AC.">
-        Lizardfolk:Natural armor (15)
-    </option>
-
-    <option data-value="8" data-desc="Primary race with thick hide. 12 + constitution AC">
-        Loxodon:natural armor (8)
-    </option>
-
-    <option data-value="18" data-desc="Tortle primary race, cannot wear any armor besides shields. 17 AC">
-        Tortle:natural armor (18)
-    </option>
-
-</select>
-<div id="creature-armor-desc"
-     style="font-size: 12px; color: #f8f8f8; margin-top: 5px;">
-</div>
-        </div>
-    </div>
-
-   <div class="section">
-    <h2>Major Features</h2>
-    <div class="control-group">
-        <button class="my-button" style="width: 100%"
-                onclick="openRacialTraitsPopup()">
-            Select Racial Traits (<span id="racial-traits-count">0</span> selected)
-        </button>
-    </div>
-
-<div id="racial-traits-desc"
-     style="font-size: 12px; color: #f8f8f8; margin-top: 5px;">
-</div>
-
-<!-- Racial Traits Popup Modal -->
-<div id="racial-traits-popup" class="popup-overlay" onclick="closeRacialTraitsPopup(event)">
-    <div class="popup-content" onclick="event.stopPropagation()">
-        <div class="popup-header">
-            <h3>Select Racial Traits</h3>
-            <button class="popup-close" onclick="closeRacialTraitsPopup()">&times;</button>
-        </div>
-        <div class="popup-body">
-            <input type="text" class="popup-search" id="racial-traits-search"
-                   placeholder="Search traits..." onkeyup="filterRacialTraits()">
-            <div id="racial-traits-list">
-
-           <label> <input type="checkbox" value="10" data-desc="As an action, you can touch a creature and roll a number of d4s equal to your proficiency bonus. The creature regains a number of hit points equal to the total rolled. Once you use this trait, you can't use it again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar:healing hands (10) </label>
-
-<label> <input type="checkbox" value="26" data-desc="Must have aasimar primary race. cannot pick any other celestial revelation. Frighten creatures of your choice within 10 feet of you until the end of your next turn, save DC = 8 + prof + cha. Deal extra necrotic damage equal to prof once per turn with an attack or a spell for 1 minute. Recharge on long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar: Necrotic Shroud (26) </label>
-
-<label> <input type="checkbox" value="28" data-desc="Must have aasimar primary race. cannot pick any other celestial revelation. Deal prof radiant damage to creatures of your choice within 10 feet of you. Deal extra radiant damage equal to your prof once per turn for 1 minute. Recharge on long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar: Radiant Consumption (28) </label>
-
-<label> <input type="checkbox" value="36" data-desc="Must have aasimar primary race. cannot pick any other celestial revelation. Gain flying speed equal to walking speed for 1 minute and deal extra radiant damage equal to your prof once per turn with attacks and spells during transformation. Recharge on long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar: Radiant Soul (36) </label>
-
-<label> <input type="checkbox" value="24" data-desc="Add a d4 to an attack roll, ability check, or saving throw after seeing the roll, PB times per long rest." onchange="updateValue(); updateTraitDesc();"> Autognome: Built for Success (24) </label>
-
-<label> <input type="checkbox" value="15" data-desc="Must have construct creature type. If the mending spell is cast on you, you can spend a Hit Die to heal. You can also benefit from cure wounds, healing word, mass cure wounds, mass healing word, and spare the dying." onchange="updateValue(); updateTraitDesc();"> Autognome: Healing Machine (15) </label>
-
-<label> <input type="checkbox" value="4" data-desc="Must have autognome/warforged primary race. When you take a long rest, you remain motionless but conscious instead of sleeping." onchange="updateValue(); updateTraitDesc();"> Autognome/Warforged: Sentry's Rest (4) </label>
-
-<label> <input type="checkbox" value="20" data-desc="Your melee attacks have 5 feet of additional reach on your turn." onchange="updateValue(); updateTraitDesc();"> Bugbear: Long-Limbed (20) </label>
-
-<label> <input type="checkbox" value="35" data-desc="Deal an extra 2d6 damage to creatures that haven't acted yet in combat." onchange="updateValue(); updateTraitDesc();"> Bugbear: Surprise Attack (35) </label>
-
-<label> <input type="checkbox" value="4" data-desc="You count as one size larger when determining carrying capacity and push/drag/lift limits." onchange="updateValue(); updateTraitDesc();"> Bugbear/Goliath: Powerful Build (4) </label>
-
-<label> <input type="checkbox" value="13" data-desc="Must have Hooves natural weapon. After moving 30 feet straight, you can make a bonus action hooves attack." onchange="updateValue(); updateTraitDesc();"> Centaur: Charge (13) </label>
-
-<label> <input type="checkbox" value="0" data-desc="Must have centaur primary race. You count as one size larger for carrying, and climbing costs extra movement." onchange="updateValue(); updateTraitDesc();"> Centaur: Equine Build (0) </label>
-
-<label> <input type="checkbox" value="65" data-desc="Must have changeling primary race. As an action, you can change your appearance and your voice. You determine the specifics of the changes, including your coloration, hair length, and sex. You can also adjust your height and weight, but not so much that your size changes. You can make yourself appear as a member of another race, though none of your game statistics change. You can't duplicate the appearance of a creature you've never seen, and you must adopt a form that has the same basic arrangement of limbs that you have. Your clothing and equipment aren't changed by this trait. While you are transformed, you have advantage on all charisma checks. You stay in the new form until you use an action to revert to your true form or until you die." onchange="updateValue(); updateTraitDesc();"> Changeling: Shapechanger (65) </label>
-
-<label> <input type="checkbox" value="7" data-desc="When you roll initiative, you can immediately move up to half your speed, provided you don't have disadvantage on the initiative roll." onchange="updateValue(); updateTraitDesc();"> Changeling (lorwyn): unpredictable movement </label>
-
-<label> <input type="checkbox" value="120" data-desc="Gain one feat of your choice for which you qualify." onchange="updateValue(); updateTraitDesc();"> Custom Lineage: Feat (120) </label>
-
-<label> <input type="checkbox" value="10" data-desc="You don’t need to breathe." onchange="updateValue(); updateTraitDesc();"> Dhampir: Deathless Nature (10) </label>
-
-<label> <input type="checkbox" value="20" data-desc="Climb speed equal to walking speed; at level 3, can climb walls and ceilings hands-free." onchange="updateValue(); updateTraitDesc();"> Dhampir: Spider Climb (20) </label>
-
-<label> <input type="checkbox" value="18" data-desc="Natural bite attack (1d4 piercing). Can heal or gain bonuses based on damage dealt." onchange="updateValue(); updateTraitDesc();"> Dhampir: Vampiric Bite (18) </label>
-
-<label> <input type="checkbox" value="25" data-desc="Must have draconic ancestry trait. Can replace an attack with a breath weapon. Exhale a 30-foot line or a 5ft wide 15 ft cone, forcing a dexterity saving throw (DC= 8 + con + prof). deal 1d10 damage of your chosen draconic ancestry on a failed save, or half as much on a successful one. Damage increases to 2d10 at lvl 5, 3d10 at lvl 11 and 4d10 at lvl 17." onchange="updateValue(); updateTraitDesc();"> Dragonborn: Breath Weapon (25) </label>
-
-<label> <input type="checkbox" value="0" data-desc="Must have a reptilian primary race. Choose one of the following draconic ancestry determining your breath weapon and damage resistance: Black (acid), Blue (lightning), Brass (fire), Bronze (lightning), Copper (acid), Gold (fire), Green (poison), Red (fire), Silver (cold), White (cold), Amethyst (force), Crystal (radiant), Emerald (psychic), Sapphire (thunder), Topaz (necrotic)." onchange="updateValue(); updateTraitDesc();"> Dragonborn: Draconic Ancestry (0) </label>
-
-<label> <input type="checkbox" value="20" data-desc="Must have draconic ancestry trait. Gain flying speed equal to your walking speed at level 5 for 1 minute. You can use this feature once per long rest." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Gem): Gem Flight (20) </label>
-
-<label> <input type="checkbox" value="10" data-desc="Telepathically communicate with creatures within 30 feet. The creature must be able to understand atleast one language to understand you." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Gem): Psionic Mind (10) </label>
-
-<label> <input type="checkbox" value="20" data-desc="Must have the breath weapon trait. At 5th level, gain a secondary breath weapon with a 15 foot cone (DC = 8 + con + prof). You can use one of the following breaths when you use this feature:- Enervating breath: creatures in the cone must succeed on a constitution saving throw or become incapacitated until the start of your next turn. Repulsion breath: each creature in the cone must succeed on a strength saving throw or be pushed 20 feet away from you and be knocked prone. Once you use either of these breaths, you cannot do so again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Metallic): Metallic Breath Weapon (20) </label>
-
-<label> <input type="checkbox" value="5" data-desc="When you take damage from a creature within your weapon's reach, you can use your reaction to make a weapon attack against the attacker. Once you use this trait, you cannot do so again until you finish a short or long rest." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Ravenite): Vengeful Assault (5) </label>
-
-<label> <input type="checkbox" value="-25" data-desc="Disadvantage on attack rolls and sight-based Perception checks when your target is in direct sunlight." onchange="updateValue(); updateTraitDesc();"> Drow/Duergar: Sunlight Sensitivity (-25) </label>
-
-<label> <input type="checkbox" value="18" data-desc="Gain tremorsense (60 ft) while on stone surfaces as a bonus action for 10 minutes. You can use this feature a number of times equal to your prof bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Dwarf: Stonecunning (18) </label>
-
-<label> <input type="checkbox" value="25" data-desc="Your hit point maximum increases by 1 per level." onchange="updateValue(); updateTraitDesc();"> Dwarf (Hill): Dwarven Toughness (25) </label>
-
-<label> <input type="checkbox" value="55" data-desc="Teleport up to 30 feet as a bonus action." onchange="updateValue(); updateTraitDesc();"> Elf (Astral): Starlight Step (55) </label>
-
-<label> <input type="checkbox" value="7" data-desc="You don’t sleep and complete long rests in 4 hours via trance." onchange="updateValue(); updateTraitDesc();"> Elf: Trance (7) </label>
-
-<label> <input type="checkbox" value="70" data-desc="Elvish primary race. As a bonus action, you can teleport 30 feet to an unoccupied space that you can see. When you reach 3rd level, the teleport gains an additional effect based on your season, if the effect requries a saving throw, the DC is equal to 8 + prof + cha. You can change your season whenever you finish a long rest. Autumn: force up to 2 creatures within 10 feet of your destination to make a wisdom saving throw, being charmed by you for 1 minute or until you or your companions damage it on a failure. Winter: One creature within 5 feet of you before you teleport must make a wisdom saving throw or be frightened until the end of your next turn. Spring: You can touch and teleport a willing creature within 5 feet of you instead of yourself. Summer: Each creature of your choice that you can see within 5 feet of the destination takes fire damage equal to your cha modifier." onchange="updateValue(); updateTraitDesc();"> Eladrin: Fey Step (70) </label>
-
-<label> <input type="checkbox" value="2" data-desc="Must have an aquatic primary race. You can communicate simple ideas to any beast that has a swimming speed. It can understand your words, though you cannot understand it back." onchange="updateValue(); updateTraitDesc();"> Elf (sea)/ Triton: Emmisary of the sea (2) </label>
-
-<label> <input type="checkbox" value="3" data-desc="You can attempt to hide evne when you are only lightly obsscured by foliage, heavy rain, falling snow, mist, and other natural phenomena." onchange="updateValue(); updateTraitDesc();"> Elf (wood): Mask of the wild (3) </label>
-
-<label> <input type="checkbox" value="35" data-desc="You can turn invisible as a bonus action until your next turn or until you make an attack, damage roll or force a saving throw. You can use this feature a number of times equal to your prof bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Firbolg: Hidden Step (35) </label>
-
-<label> <input type="checkbox" value="4" data-desc="You can communicate with beasts, plants and vegetation. They can understand your words though you cannot understand them in return. You have advantage on all charisma checks make in order to influence them." onchange="updateValue(); updateTraitDesc();"> Firbolg: Speech of beast and leaf (4) </label>
-
-<label> <input type="checkbox" value="12" data-desc="You can hold your breath indefinitely while you are not incapacitated." onchange="updateValue(); updateTraitDesc();"> Genasi (Air): Unending Breath (12) </label>
-
-<label> <input type="checkbox" value="6" data-desc="You can move across difficult terrain made of earth or stone without expending extra movement." onchange="updateValue(); updateTraitDesc();">  Genasi (Earth): Earth Walk (6) </label>
-
-<label> <input type="checkbox" value="8" data-desc="You can breathe both air and water." onchange="updateValue(); updateTraitDesc();"> Genasi / Triton: Amphibious (8) </label>
-
-<label> <input type="checkbox" value="18" data-desc="You can choose to deal extra force damage equal to your Prof bonus when you hit a target with a simple or martial weapon. You can use this trait a number of times equal to your prof bonus, no more than once per turn. You regain expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Giff: Astral Spark (18) </label>
-
-<label> <input type="checkbox" value="35" data-desc="You gain Proficiency with firearms, and ignore the loading property of firearms. In addition, attacking at long range wtih a firearm does not impose disadvantage on your attack roll." onchange="updateValue(); updateTraitDesc();"> Giff: Firearms Mastery (35) </label>
-
-<label> <input type="checkbox" value="25" data-desc="Advantage on Intelligence, Wisdom, and Charisma saving throws against spells." onchange="updateValue(); updateTraitDesc();"> Gnome: Gnomish Magic Resistance (25) </label>
-
-<label> <input type="checkbox" value="35" data-desc="Advantage on mental saving throws against magic effects." onchange="updateValue(); updateTraitDesc();"> Gnome (Forest/Rock): Gnome Cunning (35) </label>
-
-<label> <input type="checkbox" value="10" data-desc="You have proficiency with artisan's tools (tinker's tools). Using those tools, you can spend 1 hour and 10 gp worth of materials to construct a Tiny clockwork device (AC 5, 1 hp). The device ceases to function after 24 hours unless you spend 1 hour repairing it. You can have up to three such devices active at a time. When you create a device, choose one of the following options: Clockwork Toy: This toy is a clockwork animal, monster, or person (such as a frog, mouse, bird, dragon, or soldier). When placed on the ground, it moves 5 feet in a random direction on each of your turns and makes noises appropriate to the creature it represents. Fire Starter: The device produces a miniature flame, which you can use to light a candle, torch, or campfire. Using the device requires your action. Music Box: When opened, the music box plays a single song at a moderate volume. It stops when the song ends or when it is closed." onchange="updateValue(); updateTraitDesc();"> Gnome (Rock): Tinker (10) </label>
-
-<label> <input type="checkbox" value="37" data-desc="Take the Disengage or Hide action as a bonus action." onchange="updateValue(); updateTraitDesc();"> Goblin: Nimble Escape (37) </label>
-
-<label> <input type="checkbox" value="23" data-desc="Must have small creature size. When you damage a creature with an attack or a spell against a creature larger than you, you can choose to deal extra damage equal to your proficiency bonus. You can use this feature a number of times equal to your prof bonus and no more than once per turn, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goblin: Fury of the Small (23) </label>
-
-<label> <input type="checkbox" value="55" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. As a bonus action, you can magically teleport up to 30 feet to an unoccupied space you can see. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Cloud's Jaunt (55) </label>
-
-<label> <input type="checkbox" value="27" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you hit a creature with an attack roll and deal damage, you can deal an additional 1d10 fire damage to that target. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Fire's Burn (27) </label>
-
-<label> <input type="checkbox" value="26" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you hit a target with an attack roll and deal damage to it, you can also deal 1d6 cold damage to that target and reduce its speed by 10 feet until the start of your next turn. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Frost's Chill (26) </label>
-
-<label> <input type="checkbox" value="32" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you hit a target with an attack roll and deal damage to it, you can give that target the prone condition." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Hill's Tumble (32) </label>
-
-<label> <input type="checkbox" value="19" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you take damage, you can use your reaction to roll 1d12. Add your constitution modifier to the number rolled and reduce the damage by that total." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Stone's Endurance (19) </label>
-
-<label> <input type="checkbox" value="13" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you take damage from a creature within 60 feet of you, you can take a reaction to deal 1d8 thunder damage to that creature." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Storm's Thunder (13) </label>
-
-<label> <input type="checkbox" value="28" data-desc="Must have primary race with powerful build. At level 5, you can change your size to large as a bonus action if you're in a big enough space. This transformation lasts for 10 minutes or until you end it (no action required). For that duration, you have advantage on Strength checks, and your speed increases by 10 feet. Once you use this trait, you can't use it again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Large Form (28) </label>
-
-<label> <input type="checkbox" value="3" data-desc="As a bonus action, you can use your feet to manipulate an object, open or close a door or container, or pick up or set down a Tiny object." onchange="updateValue(); updateTraitDesc();"> Hadozee: Dexterous Feet (3) </label>
-
-<label> <input type="checkbox" value="7" data-desc="Must have primary race with wings/psuedo-wings. When you fall at least 10 feet above the ground, you can use your reaction to extend your skin membranes to glide horizontally a number of feet equal to your walking speed, taking no damage from the fall. You determine the direction of the glide." onchange="updateValue(); updateTraitDesc();"> Hadozee: Glide (7) </label>
-
-<label> <input type="checkbox" value="17" data-desc="When you take damage, you can use your reaction to roll a d6 and add your proficiency bonus, reducing the damage you take by the total (minimum of 0 damage). You can use this feature a number of times equal to your proficiency bonus, regaining all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Hadozee: Hadozee Dodge (17) </label>
-
-<label> <input type="checkbox" value="35" data-desc="You can attune to one additional magic item, provided at least one of your attuned items is a tattoo." onchange="updateValue(); updateTraitDesc();"> Half-Leberi: Otherworldly Trace (35) </label>
-
-<label> <input type="checkbox" value="50" data-desc="You can reroll natural 1s on d20 rolls. You must use the new roll." onchange="updateValue(); updateTraitDesc();"> Halfling: Lucky (50) </label>
-
-<label> <input type="checkbox" value="8" data-desc="You can speak telepathically to any creature within 30 feet of you, provided you share a language. You can communicate with one creature at a time." onchange="updateValue(); updateTraitDesc();"> Halfling (Ghostwise): Silent Speech (8) </label>
-
-<label> <input type="checkbox" value="5" data-desc="Must have small creature size. You can attempt to hide even when obscured only by a creature at least one size larger than you." onchange="updateValue(); updateTraitDesc();"> Halfling (Lightfoot): Naturally Stealthy (5) </label>
-
-<label> <input type="checkbox" value="7" data-desc="Ability checks made to track you have disadvantage, and you can move across nonmagical plant and undergrowth difficult terrain without extra movement." onchange="updateValue(); updateTraitDesc();"> Halfling (Lotusden): Timberwalk (7) </label>
-
-<label> <input type="checkbox" value="28" data-desc="Add proficiency bonus to initiative rolls." onchange="updateValue(); updateTraitDesc();"> Harengon: Hare Trigger (28) </label>
-
-<label> <input type="checkbox" value="40" data-desc="As a bonus action, you can jump a number of feet equal to five times your proficiency bonus, without provoking opportunity attacks. You can use this trait only if your speed is greater than 0. You can use it a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Harengon: Rabbit Hop (40) </label>
-
-<label> <input type="checkbox" value="8" data-desc="When you fail a Dexterity saving throw, you can use your reaction to roll a d4 and add it to the save, potentially turning it into a success. You can't use this reaction if you're prone or your speed is 0." onchange="updateValue(); updateTraitDesc();"> Harengon: Lucky Footwork (8) </label>
-
-<label> <input type="checkbox" value="26" data-desc="When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You can't use this feature again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Half-Orc: Relentless Endurance (26) </label>
-
-<label> <input type="checkbox" value="15" data-desc="When you score a critical hit with a melee weapon attack, you can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit." onchange="updateValue(); updateTraitDesc();"> Half-Orc: Savage Attacks (15) </label>
-
-<label> <input type="checkbox" value="26" data-desc="As a bonus action, you can create a magical token from part of your body (hair, nail, or tooth). While within 10 miles, you can use the token to do one of the following:- Telepathic Message: As an action, you can send a telepathic message to the creature holding or carrying the token, as long as you are within 10 miles of it. The message can contain up to twenty-five words. Remote Viewing: If you are within 10 miles of the token, you can enter a trance as an action. The trance lasts for 1 minute, but it ends early if you dismiss it (no action required) or are incapacitated. During this trance, you can see and hear from the token as if you were located where it is. While you are using your senses at the token's location, you are blinded and deafened in regard to your own surroundings. When the trance ends, the token is harmlessly destroyed. Once you create a token using this feature, you can't do so again until you finish a long rest, at which point your missing part regrows." onchange="updateValue(); updateTraitDesc();"> Hexblood: Eerie Token (26) </label>
-
-<label> <input type="checkbox" value="19" data-desc="You can take the Help action as a bonus action a number of times equal to your proficiency bonus per long rest. At 3rd level, choose one of the following additional effects to apply whenever you use this feature:- Hospitality: You and the creature you help each gain a number of temporary hit points equal to 1d6 plus your proficiency bonus. Passage: You and the creature you help each increase your walking speeds by 10 feet until the start of your next turn. Spite: Until the start of your next turn, the first time the creature you help hits a target with an attack roll, that target has disadvantage on the next attack roll it makes within the next minute." onchange="updateValue(); updateTraitDesc();"> Hobgoblin: Fey Gift (19) </label>
-
-<label> <input type="checkbox" value="21" data-desc="When you miss an attack roll or fail an ability check or saving throw, you can gain a bonus equal to the number of allies you can see within 30 feet (maximum +3). Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Hobgoblin: Fortune from the Many (21) </label>
-
-<label> <input type="checkbox" value="12" data-desc="You can speak telepathically to any creature you can see, provided the creature is within a number of feet of you equal to 10 times your level. You don't need to share a language with the creature for it to understand your telepathic utterances, but the creature must be able to understand at least one language.When you're using this trait to speak telepathically to a creature, you can use your action to give that creature the ability to speak telepathically with you for 1 hour or until you end this effect as an action. To use this ability, the creature must be able to see you and must be within this trait's range. You can give this ability to only one creature at a time; giving it to a creature takes it away from another creature who has it." onchange="updateValue(); updateTraitDesc();"> Kalashtar: Mind Link (12) </label>
-
-<label> <input type="checkbox" value="40" data-desc="You have advantage on Wisdom saving throws." onchange="updateValue(); updateTraitDesc();"> Kalashtar: Dual Mind (40) </label>
-
-<label> <input type="checkbox" value="3" data-desc="You are immune to magical effects that require you to dream, though not to effects that put you to sleep." onchange="updateValue(); updateTraitDesc();"> Kalashtar: Severed from Dreams (3) </label>
-
-<label> <input type="checkbox" value="21" data-desc="As a bonus action, you can force a creature within 60 feet of you to make a Wisdom saving throw (DC= 8 + prof + int/wis/cha, chosen when you pick this feature.) or have disadvantage on attacks against targets other than you until the start of your next turn. You can use this feature a number of times equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Kender: Taunt (21) </label>
-
-<label> <input type="checkbox" value="7" data-desc="When you copy writing or craftwork produced by yourself or someone else, you have advantage on any ability checks you make to produce an exact duplicate." onchange="updateValue(); updateTraitDesc();"> Kenku: Expert Duplication (7) </label>
-
-<label> <input type="checkbox" value="20" data-desc="You can accurately mimic sounds you have heard, including voices. A creature that hears the sounds you make can tell they are imitations only with a successful Wisdom (Insight) check against a DC of 8 + your proficiency bonus + your Charisma modifier." onchange="updateValue(); updateTraitDesc();"> Kenku: Mimicry (20) </label>
-
-<label> <input type="checkbox" value="52" data-desc="Must have a bestial primary race. As a bonus action, you let out a cry at your enemies within 10 feet of you. Until the start of your next turn, you and your allies have advantage on attack rolls against any of those enemies who could hear you. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Kobold: Draconic Cry (52) </label>
-
-<label> <input type="checkbox" value="11" data-desc="Must not have the draconic sorcery racial spellcasting. Choose one of the following options: gain proficiency in a chosen skill (Arcana, Investigation, Medicine, Sleight of Hand, or Survival), OR gain advantage on saving throws to avoid or end being frightened." onchange="updateValue(); updateTraitDesc();"> Kobold: Legacy (11) </label>
-
-<label> <input type="checkbox" value="3" data-desc="When you fail a saving throw to avoid or end the unconscious condition, you can succeed instead. Once you use this trait, you cant do so until 1d4 long rests." onchange="updateValue(); updateTraitDesc();"> Khoravar: Lethargy resilience (3) </label>
-
-<label> <input type="checkbox" value="40" data-desc="You lose one or more senses (smell/taste, sight, or hearing) and gain an eldritch invocation with no prerequisites." onchange="updateValue(); updateTraitDesc();"> Leberi: Sensory Sacrifice (40) </label>
-
-<label> <input type="checkbox" value="8" data-desc="Must have a bestial primary race. As a bonus action, you can let out an especially menacing roar. Creatures of your choice within 10 feet of you that can hear you must succeed on a Wisdom saving throw or become frightened of you until the end of your next turn. The DC of the save equals 8 + your proficiency bonus + your Constitution modifier. Once you use this trait, you can't use it again until you finish a short or long rest." onchange="updateValue(); updateTraitDesc();"> Leonin: Daunting Roar (8) </label>
-
-<label> <input type="checkbox" value="10" data-desc="You can hold your breath for up to 15 minutes at a time." onchange="updateValue(); updateTraitDesc();"> Lizardfolk: Hold Breath (10) </label>
-
-<label> <input type="checkbox" value="14" data-desc="Must have the bite natural weapon. As a bonus action, you can make a special attack with your Bite. If the attack hits, it deals its normal damage, and you gain temporary hit points equal to your proficiency bonus. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Lizardfolk: Hungry Jaws (14) </label>
-
-<label> <input type="checkbox" value="25" data-desc="Must have loxodon primary race. You can grasp things with your trunk, and you can use it as a snorkel. It has a reach of 5 feet, and it can lift a number of pounds equal to five times your Strength score. You can use it to do the following simple tasks: lift, drop, hold, push, or pull an object or a creature; open or close a door or a container; grapple someone; or make an unarmed strike. Your DM might allow other simple tasks to be added to that list of options. You can grasp things with your trunk, and you can use it as a snorkel. It has a reach of 5 feet, and it can lift a number of pounds equal to five times your Strength score. You can use it to do the following simple tasks: lift, drop, hold, push, or pull an object or a creature; open or close a door or a container; grapple someone; or make an unarmed strike. Your DM might allow other simple tasks to be added to that list of options." onchange="updateValue(); updateTraitDesc();"> Loxodon: Trunk (25) </label>
-
-<label> <input type="checkbox" value="14" data-desc="Must have horns or ram natural weapon. Immediately after you use the Dash action on your turn and move at least 20 feet, you can make one melee attack with your horns as a bonus action." onchange="updateValue(); updateTraitDesc();"> Minotaur: Goring Rush (14) </label>
-
-<label> <input type="checkbox" value="26" data-desc="You can take the Dash action as a bonus action, gaining temporary hit points equal to your proficiency bonus. You can use this feature a number of times equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Orc: Adrenaline Rush (26) </label>
-
-<label> <input type="checkbox" value="58" data-desc="Must have reborn, dhampir or hexblood primary race. Advantage on saving throws against being poisoned and diseases, resistance to poison damage, no need to eat, drink, breathe, or sleep. Can finish a long rest in 4 hours, laying in a motionless, conscious state." onchange="updateValue(); updateTraitDesc();"> Reborn: Deathless Nature (58) </label>
-
-<label> <input type="checkbox" value="2" data-desc="When you make a long or high jump, you can add 1d8 feet to the distance. The extra distance uses your movement speed." onchange="updateValue(); updateTraitDesc();"> Satyr: Mirthful Leaps (2) </label>
-
-<label> <input type="checkbox" value="35" data-desc="Advantage on saving throws against spells." onchange="updateValue(); updateTraitDesc();"> Satyr/Yuan-ti: Magic Resistance (35) </label>
-
-<label> <input type="checkbox" value="80" data-desc="Must have elvish primary race. As a bonus action, you can magically teleport up to 30 feet to an unoccupied space you can see. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.Starting at 3rd level, you also gain resistance to all damage when you teleport using this trait. The resistance lasts until the start of your next turn. During that time, you appear ghostly and translucent.." onchange="updateValue(); updateTraitDesc();"> Shadar-kai: Blessing of the Raven Queen (80) </label>
-
-<label> <input type="checkbox" value="37" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x prof and an additional 1d6 + level + Constitution modifier temporary hit points and +1 AC. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Beasthide): Shifting (37) </label>
-
-<label> <input type="checkbox" value="22" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x proftemporary hit points and a natural bite attack dealing 1d6 + Strength modifier piercing damage. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Longtooth): Shifting (22) </label>
-
-<label> <input type="checkbox" value="40" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x proftemporary hit points, +10 movement speed, and the ability to move 10 feet as a reaction without provoking opportunity attacks when a creature ends its turn within 5 feet of you. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Swiftstride): Shifting (40) </label>
-
-<label> <input type="checkbox" value="31" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x prof temporary hit points, advantage on Wisdom checks, and preventing creatures within 30 feet from gaining advantage on attacks against you unless you are incapacitated. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Wildhunt): Shifting (31) </label>
-
-<label> <input type="checkbox" value="15" data-desc="You can double your speed for a turn. You must move 0 feet on a later turn before using this feature again." onchange="updateValue(); updateTraitDesc();"> Tabaxi: Feline Agility (15) </label>
-
-<label> <input type="checkbox" value="10" data-desc="Must have tortle primary race. You can withdraw into your shell, gaining +4 AC and advantage on Strength and Constitution saves, but your speed becomes 0 and you have other limitations." onchange="updateValue(); updateTraitDesc();"> Tortle: Shell Defense (10) </label>
-
-<label> <input type="checkbox" value="55" data-desc="Gain one Origin feat of your choice for which you qualify." onchange="updateValue(); updateTraitDesc();"> Variant Human: Feat (55) </label>
-
-<label> <input type="checkbox" value="80" data-desc="Advantage on all Intelligence, Wisdom, and Charisma saving throws." onchange="updateValue(); updateTraitDesc();"> Vedalken: Dispassion (80) </label>
-
-<label> <input type="checkbox" value="6" data-desc="You can breathe underwater for up to 1 hour per long rest." onchange="updateValue(); updateTraitDesc();"> Vedalken: Partially Amphibious (6) </label>
-
-<label> <input type="checkbox" value="4" data-desc="When rolling Hit Dice during a short rest, you can reroll 1s or 2s." onchange="updateValue(); updateTraitDesc();"> Verdan: Black Blood Healing (4) </label>
-
-<label> <input type="checkbox" value="6" data-desc="You can telepathically speak to any creature you can see within 30 feet of you. You don't need to share a language with the creature for it to understand your telepathy, but it must be able to understand at least one language. This process of communication is slow and limited, allowing you to transmit and receive only simple ideas and straightforward concepts." onchange="updateValue(); updateTraitDesc();"> Verdan: Limited Telepathy (6) </label>
-
-<label> <input type="checkbox" value="63" data-desc="You have advantage on Wisdom and Charisma saving throws." onchange="updateValue(); updateTraitDesc();"> Verdan: Telepathic Insight (63) </label>
-
-<label> <input type="checkbox" value="3" data-desc="You can walk on two feet or four without impediment and can move through any creature's space without penalty to your movement." onchange="updateValue(); updateTraitDesc();"> Vermkin: Scurry (3) </label>
-
-<label> <input type="checkbox" value="6" data-desc="While you aren't incapacitated, you do not take damage from falling and can move upto 2 feet for every 1 foot that you descend." onchange="updateValue(); updateTraitDesc();"> Vermkin (Dreyfolk): Free Gliders (6) </label>
-
-<label> <input type="checkbox" value="45" data-desc="You have advantage on attack rolls against a creature if at least one of your allies is within 5 feet of it and not incapacitated." onchange="updateValue(); updateTraitDesc();"> Vermkin (Prickleback): Rat Tactics (45) </label>
-
-<label> <input type="checkbox" value="16" data-desc="As a reaction to melee attack against you within 5 feet, you may impale the attacker on the needles on your back. The attacker takes damage equal to your Constitution modifier + half your level (rounded down)." onchange="updateValue(); updateTraitDesc();"> Vermkin (Prickleback): Vengeful Prick (16) </label>
-
-<label> <input type="checkbox" value="6" data-desc="When a creature attacks you, you can use a reaction to force the creature to make a Wisdom save (DC = 8 + Proficiency Bonus + Charisma Modifier). If the being is sentient, it may redirect the attack or make it against you with disadvanatage. You regain use of this feature after a short rest." onchange="updateValue(); updateTraitDesc();"> Vermkin (Softfur): Button Eyed (6) </label>
-
-<label> <input type="checkbox" value="14" data-desc="Must have autognome/warforged primary race, and not have small size. You have a platform built into your chassis. While large, a small creature can ride on the platform without squeezing. To make a melee attack against a target within 5 feet of you, they must use spears, a similar polearm or weapons with reach." onchange="updateValue(); updateTraitDesc();"> Warforged: Battle Platform (14) </label>
-
-<label> <input type="checkbox" value="22" data-desc="Must have autognome/warforged primary race. You gain +1 AC and can integrate armor into your body over 1 hour. Integrated armor can't be removed against your will." onchange="updateValue(); updateTraitDesc();"> Warforged: Integrated Protection (22) </label>
-
-            </div>
-        </div>
-        <div class="popup-footer">
-            <span class="selected-count">Selected: <span id="popup-traits-count">0</span> traits</span>
-            <button class="my-button" onclick="closeRacialTraitsPopup()">Done</button>
-        </div>
-    </div>
-</div>
-
-        <div class="control-group">
-
-    <!-- Racial Spellcasting -->
-    <div class="control-group">
-            <label>Racial spellcasting:</label>
-            <select id="racial-spellcasting" onchange="updateValue(); updateSpellcastingDesc();">
-    <option data-value="0" data-desc="You have no innate spellcasting."> None (0) </option>
-    <option data-value="4" data-desc="Gust of wind (lvl 3), free cast once per day. Choose int, wis or cha as your spellcasting ability."> Aarakocra: Wind Caller (4) </option>
-    <option data-value="3" data-desc="Light cantrip. Cha is your spellcasting ability."> Aasimar: Light Bearer (3) </option>
-    <option data-value="5" data-desc="One of light, dancing lights or sacred flame cantrips. Choose int, wis or cha as your spellcasting ability."> Elf (Astral): Astral Fire (5) </option>
-    <option data-value="9" data-desc="Disguise self (lvl 3), Nondetection (lvl 5) free cast both once per day. Choose int, wis or Cha as your spellcasting ability."> Deep gnome: Gift of the svirfneblin (9) </option>
-    <option data-value="14" data-desc="Enlarge/reduce (lvl 3, self only), Invisibility (lvl 5, self only) free cast both once per day. Choose int, wis or Cha as your spellcasting ability."> Duergar: Duergar magic (14) </option>
-    <option data-value="11" data-desc="Alarm, Mage armor, Arcane lock (lvl 5) free cast all once per day. Choose int, wis or Cha as your spellcasting ability."> Dwarf (Mark of warding): Wards and Seals (11) </option>
-    <option data-value="19" data-desc="Faerie fire (lvl 3, self only), Darkness (lvl 5) free cast both once per day. int, wis or Cha is your spellcasting ability."> Elf (drow): Drow magic (19) </option>
-    <option data-value="8" data-desc="Cantrip of your choice from the wizard spell list. Int is your spellcasting ability."> High elf: High elf cantrip (8) </option>
-    <option data-value="22" data-desc="Cantrip of your choice in the wizard spell list, switchable on long rest. Detect magic (lvl 3), Misty step (lvl 5), both castable without spell slot once per long rest. Int, wis or Cha is your spellcasting ability."> High elf magic (22) </option>
-    <option data-value="13" data-desc="Minor illusion, Invisibility (lvl 3) free cast both once per day. Cha is spellcasting ability."> Elf(Mark of shadow): Shape shadows (13) </option>
-    <option data-value="11" data-desc="Light, Sleep (lvl 3), Invisibility (lvl 5, self only) free cast both once per day. Cha is your spellcasting ability."> Elf (Pallid): Blessing of the moon weaver (11) </option>
-    <option data-value="17" data-desc="Thorn whip, Command (lvl 3), Silence (lvl 5) free cast both once per day. Int, wis or cha is your spellcasting ability."> Lorwyn elf magic (17) </option>
-    <option data-value="13" data-desc="Starry wisp, Heroism (lvl 3), Gentle repose (lvl 5) free cast both once per day. Int, wis or cha is your spellcasting ability."> Shadowmoor elf magic (13) </option>
-    <option data-value="20" data-desc="Druidcraft, Longstrider (lvl 3), Pass without trace (lvl 5) free cast both once per day. Int, wis or cha is your spellcasting ability."> Wood elf magic (20) </option>
-    <option data-value="17" data-desc="Druidcraft, Enlarge/reduce (lvl 3), Faerie fire (lvl 5) free cast both once per day. Choose Int, wis or Cha as your spellcasting ability."> Fairy: Fairy magic (17) </option>
-
-<option data-value="13" data-desc="Detect magic, Disguise self (up to 3 feet taller/shorter). Choose Int, Wis or Cha as your spellcasting ability."> Firbolg: Firbolg magic (13) </option>
-
-<option data-value="15" data-desc="Shocking grasp, Feather fall (lvl 3), Levitate (lvl 5). Choose Int, Wis or Cha as your spellcasting ability."> Genasi (air): Mingle with the wind (15) </option>
-
-<option data-value="31" data-desc="Blade ward (bonus action, PB times per day), Pass without trace (lvl 5). Choose Int, Wis or Cha as your spellcasting ability."> Genasi (earth): Merge with stone (31) </option>
-
-<option data-value="12" data-desc="Produce flame, Burning hands (lvl 3), Flame blade (lvl 5). Choose Int, Wis or Cha as your spellcasting ability."> Genasi (fire): Mingle with the wind (12) </option>
-
-<option data-value="11" data-desc="Acid splash, Create or destroy water (lvl 3), Water walk (lvl 5). Choose Int, Wis or Cha as your spellcasting ability."> Genasi (water): Mingle with the wind (11) </option>
-
-<option data-value="23" data-desc="Mage hand (invisible), Jump (lvl 3), Misty step (lvl 5). Choose Int, Wis or Cha as your spellcasting ability."> Githyanki: Githyanki psionics (23) </option>
-
-<option data-value="36" data-desc="Shield, Detect thoughts (lvl 5). Choose Int, Wis or Cha as your spellcasting ability."> Githzerai: Githzerai psionics (36) </option>
-
-<option data-value="4" data-desc="Minor illusion cantrip. Int is your spellcasting ability."> Gnome (forest): Natural illusionist (4) </option>
-
-<option data-value="11" data-desc="Message, Comprehend languages, Magic mouth (lvl 5). Int is your spellcasting ability."> Gnome (mark of scribing): Scribe's insight (11) </option>
-
-<option data-value="8" data-desc="Detect magic, Detect poison and disease, See invisibility (lvl 3). Wis is your spellcasting ability."> Half-elf (mark of detection): Magical detection (8) </option>
-
-<option data-value="9" data-desc="Gust, Gust of wind (lvl 3). Cha is your spellcasting ability."> Half-elf (mark of the storm): Storm's boon (9) </option>
-
-<option data-value="18" data-desc="Hunter's mark, Locate object (lvl 3). Wis is your spellcasting ability."> Half-orc/human (mark of finding): Finder's magic (18) </option>
-
-<option data-value="25" data-desc="Druidcraft, Entangle (lvl 3), Spike growth (lvl 5). Wis is your spellcasting ability."> Halfling (lotusden): Child of the wood (25) </option>
-
-<option data-value="23" data-desc="Cure wounds, Lesser restoration (lvl 3). Wis is your spellcasting ability."> Halfling (mark of healing): Healing touch (23) </option>
-
-<option data-value="13" data-desc="Prestidigitation, Purify food and drink, Unseen servant. Cha is your spellcasting ability."> Halfling (mark of hospitality): Innkeeper's magic (13) </option>
-
-<option data-value="23" data-desc="Disguise self, Hex. Choose Int, Wis or Cha as your spellcasting ability."> Hexblood: Hex magic (23) </option>
-
-<option data-value="8" data-desc="Animal friendship (lvl 3), Speak with animals (lvl 3)."> Human (mark of handling): The bigger they are (8) </option>
-
-<option data-value="11" data-desc="Mending, Magic weapon. Int is your spellcasting ability."> Human (mark of making): Spellsmith (11) </option>
-
-<option data-value="15" data-desc="Misty step. Dex is your spellcasting ability."> Human (mark of passage): Magical passage (15) </option>
-
-<option data-value="18" data-desc="Shield. Wis is your spellcasting ability."> Human (mark of sentinel): Guardian's shield (18) </option>
-
-<option data-value="5" data-desc="One cantrip of your choice from the sorcerer spell list. Choose Int, Wis or Cha as your spellcasting ability."> Kobold: Draconic sorcery (5) </option>
-
-<option data-value="8" data-desc="One cantrip of your choice from the cleric, druid or wizard spell list, switchable on a long rest. Choose Int, Wis or Cha as your spellcasting ability."> Khoravar: Fey gift (8) </option>
-
-<option data-value="21" data-desc="Thaumaturgy, Hellish rebuke (lvl 3, cast at lvl 2), Darkness (lvl 5). Cha is your spellcasting ability."> Tiefling (Asmodeus): Infernal legacy (21) </option>
-
-<option data-value="18" data-desc="Thaumaturgy, Ray of sickness (lvl 3), Crown of madness (lvl 5). Cha is your spellcasting ability."> Tiefling (Baalzebul): Legacy of Maladomini (18) </option>
-
-<option data-value="16" data-desc="Thaumaturgy, Disguise self (lvl 3), Detect toughts (lvl 5). Cha is your spellcasting ability."> Tiefling (Dispater): Legacy of Dis (16) </option>
-
-<option data-value="17" data-desc="Friends, Charm person (lvl 3), Suggestion (lvl 5). Cha is your spellcasting ability."> Tiefling (Fierna): Legacy of Phlegethos (17) </option>
-
-<option data-value="20" data-desc="Minor illusion, Disguise self (lvl 3), Invisibility (lvl 5). Cha is your spellcasting ability."> Tiefling (Glasya): Legacy of Malbolge (20) </option>
-
-<option data-value="27" data-desc="Ray of frost, Armor of Agathys (lvl 3, cast at lvl 2), Darkness (lvl 5). Cha is your spellcasting ability."> Tiefling (Levistus): Legacy of Stygia (27) </option>
-
-<option data-value="16" data-desc="Mage hand, Tenser's floating disk (lvl 3), Arcane lock (lvl 5). Cha is your spellcasting ability."> Tiefling (Mammon): Legacy of Minauros (16) </option>
-
-<option data-value="14" data-desc="Mage hand, Burning hands (lvl 3), Flame blade (lvl 5). Cha is your spellcasting ability."> Tiefling (Mephistopheles): Legacy of Cania (14) </option>
-
-<option data-value="13" data-desc="Vicious mockery, Charm person (lvl 3), Enthrall (lvl 5). Cha is your spellcasting ability."> Tiefling (Devil's Tongue): Devil's tongue (13) </option>
-
-<option data-value="19" data-desc="Thaumaturgy, Burning hands (lvl 3), Darkness (lvl 5). Cha is your spellcasting ability."> Tiefling (Hellfire): Hellfire (19) </option>
-
-<option data-value="30" data-desc="Thaumaturgy, Searing smite (lvl 3), Branding smite (lvl 5). Cha is your spellcasting ability."> Tiefling (Zariel): Legacy of Avernus (30) </option>
-
-<option data-value="15" data-desc="Fog cloud, Gust of wind (lvl 3), Water walk (lvl 5). Choose Int, Wis or Cha as your spellcasting ability."> Triton: Control air and water (15) </option>
-
-<option data-value="26" data-desc="One cantrip of your choice from the wizard spell list, plus one additional spell known when you gain spellcasting (one time). Choose Int, Wis or Cha as your spellcasting ability."> Warforged (incantator): Spell databank (26) </option>
-
-<option data-value="17" data-desc="Poison spray, Animal friendship (snakes only, unlimited), Suggestion (lvl 3). Choose Int, Wis or Cha as your spellcasting ability."> Yuan-ti: Serpentine spellcasting (17) </option>
-
-</select>
-<div id="racial-spellcasting-desc"
-     style="font-size: 12px; color: #f8f8f8; margin-top: 5px;">
-</div>
-        </div>
-    </div>
-
-    <!-- Dragonmark Spell Lists -->
-
-        <div class="control-group">
-            <label>Dragonmark spell list:</label>
-            <select id="dragonmark-spells" onchange="updateValue(); updateDragonmarkDesc();">
-    <option data-value="0" data-desc="You do not possess a dragonmark or its associated spell list."> None (0) </option>
-    <option data-value="47" data-desc="alarm, armor of agathys, arcane lock, knock, glyph of warding, magic circle, leomunds secret chest, mordenkainen's faithful hound, antilife shell."> Dwarf (mark of warding): Mark of Warding (47) </option>
-    <option data-value="54" data-desc="Disguise self, silent image, darkness, pass without trace, clairvoyance, major image, greater invisibility, hallucinatory terrainm mislead."> Elf (mark of shadow): Mark of Shadow (54) </option>
-    <option data-value="52" data-desc="comprehend languages, illusory script, animal messenger, silence, sending, tongues, arcane eye, confusion, dream."> Gnome (mark of scribing): Mark of Scribing (52) </option>
-    <option data-value="48" data-desc="Detect evil and good, detect poison and disease, detect thoughts, find traps, clairvoyance, nondetection, arcane eye, divination, legend lore."> Half-elf (mark of detection): Mark of Detection spells (48) </option>
-
-<option data-value="50" data-desc="Feather fall, fog cloud, gust of wind, levitate, sleet storm, wind wall, conjure minor elementals, control water, conjure elemental."> Half-elf (mark of the storm): Mark of Storm spells (50) </option>
-
-<option data-value="44" data-desc="Faerie fire, longstrider, locate animals or plants, locate object, clairvoyance, speak with plants, divination, locate creature, commune with nature."> Half-orc/human (mark of finding): Mark of Finding spells (44) </option>
-
-<option data-value="55" data-desc="Cure wounds, healing word, lesser restoration, prayer of healing, aura of vitality, mass healing word, aura of purity, aura of life, greater restoration."> Halfling (mark of healing): Mark of Healing spells (55) </option>
-
-<option data-value="49" data-desc="Goodberry, sleep, aid, calm emotions, create food and water, Leomund's tiny hut, aura of purity, Mordenkainen's private sanctum, hallow."> Halfling (mark of hospitality): Mark of Hospitality spells (49) </option>
-
-<option data-value="46" data-desc="Animal friendship, speak with animals, beast sense, calm emotions, beacon of hope, conjure animals, aura of life, dominate beast, awaken."> Human (mark of handling): Mark of Handling spells (46) </option>
-
-<option data-value="40" data-desc="Identify, Tenser's floating disk, continual flame, magic weapon, conjure barrage, elemental weapon, fabricate, stone shape, creation."> Human (mark of making): Mark of Making spells (40) </option>
-
-<option data-value="52" data-desc="Expeditious retreat, jump, misty step, pass without trace, blink, phantom steed, dimension door, freedom of movement, teleportation circle."> Human (mark of passage): Mark of Passage spells (52) </option>
-
-<option data-value="56" data-desc="Compelled duel, shield of faith, warding bond, zone of truth, counterspell, protection from energy, death ward, guardian of faith, Bigby's hand."> Human (mark of sentinel): Mark of Sentinel spells (56) </option>
-</select>
-<div id="dragonmark-desc"
-     style="font-size: 12px; color: #f8f8f8; margin-top: 5px;">
-</div>
-        </div>
-    </div>
-
-
-
-
-
-    <script>
-        function toggleDropdown(id) {
-    const dropdown = document.getElementById(id);
-    dropdown.classList.toggle('show');
+<script>
+function showWorlds() {
+  hideAll();
+  document.getElementById("worlds").style.display = "block";
 }
 
-function updateResistanceDesc() {
-    const selected = document.querySelectorAll('.resistance-checkbox:checked');
-
-    const descs = Array.from(selected)
-        .map(el => el.getAttribute("data-desc"))
-        .filter(Boolean)
-        .join("\n");
-
-    document.getElementById("creature-resistance-desc").innerText = descs;
+function showChronicles() {
+  hideAll();
+  document.getElementById("chronicles").style.display = "block";
 }
 
-function updateDragonmarkDesc() {
-    const select = document.getElementById("dragonmark-spells");
-    const option = select.options[select.selectedIndex];
-    const desc = option ? option.getAttribute("data-desc") : "";
-
-    document.getElementById("dragonmark-desc").innerText = desc || "";
+function showHome() {
+  hideAll();
+  document.getElementById("home").style.display = "flex";
 }
 
-function updateSpeedDesc() {
-    const select = document.getElementById("creature-speed");
-    const option = select.options[select.selectedIndex];
-    const desc = option ? option.getAttribute("data-desc") : "";
-
-    document.getElementById("creature-speed-desc").innerText = desc || "";
+function openWorld(name) {
+  hideAll();
+  document.getElementById("worldDetail").style.display = "block";
+  document.getElementById("worldTitle").innerText = name.toUpperCase();
 }
 
-function updateArmorDesc() {
-    const select = document.getElementById("creature-natural-armor");
-    const option = select.options[select.selectedIndex];
-    const desc = option ? option.getAttribute("data-desc") : "";
-
-    document.getElementById("creature-armor-desc").innerText = desc || "";
+function backToWorlds() {
+  hideAll();
+  document.getElementById("worlds").style.display = "block";
 }
 
-function updateCreatureTypeDesc() {
-    const select = document.getElementById("creature-type");
-    const option = select.options[select.selectedIndex];
-    const desc = option ? option.getAttribute("data-desc") : "";
-
-    document.getElementById("creature-type-desc").innerText = desc || "";
+function hideAll() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("worlds").style.display = "none";
+  document.getElementById("worldDetail").style.display = "none";
+  document.getElementById("chronicles").style.display = "none";
 }
+</script>
 
-function updateSpellcastingDesc() {
-    const select = document.getElementById("racial-spellcasting");
-    const option = select.options[select.selectedIndex];
-    const desc = option ? option.getAttribute("data-desc") : "";
-
-    document.getElementById("racial-spellcasting-desc").innerText = desc || "";
-}
-
-function updateTraitDesc() {
-    // This function triggers update of all descriptions including traits
-    updateAllDescriptions();
-}
-
-function handleResistanceChange(clickedBox) {
-    const selected = document.querySelectorAll('.resistance-checkbox:checked');
-    const max = 2;
-
-    if (selected.length > max) {
-        clickedBox.checked = false;
-        return;
-    }
-
-    // Update button text
-    document.querySelector('[onclick="toggleDropdown(\'resistance-dropdown\')"]')
-        .textContent = `Resistances (${selected.length}/${max})`;
-
-    // Update summary
-    const names = Array.from(selected).map(el => el.dataset.name);
-    setList("summary-resistances", names);
-
-    updateValue();
-}
-
-function handleProfChange(clickedBox) {
-    const selected = document.querySelectorAll('.prof-checkbox:checked');
-    const max = 2;
-    document.getElementById('prof-button').textContent =
-    `Racial Proficiencies (${selected.length}/2)`;
-
-    // limit selection
-    if (selected.length > max) {
-        clickedBox.checked = false;
-        return;
-    }
-
-    // update summary
-    const profs = Array.from(selected).map(el => el.dataset.name);
-    setList("summary-profs", profs);
-
-    updateValue();
-}
-
- function handleLanguageChange(clickedBox) {
-    const selectedBoxes = document.querySelectorAll('.language-checkbox:checked');
-    const max = 3;
-
-    if (selectedBoxes.length > max) {
-        clickedBox.checked = false;
-        return;
-    }
-
-    document.getElementById('language-button')
-        .textContent = `Languages: Common + ${selectedBoxes.length}/${max}`;
-
-    // ALWAYS include Common
-    const languages = ["Common"];
-
-    selectedBoxes.forEach(el => {
-        languages.push(el.dataset.name);
-    });
-
-    setList("summary-languages", languages);
-
-    updateValue();
-}
-
-function updateSizeDesc() {
-    const select = document.getElementById("creature-size");
-    const option = select.options[select.selectedIndex];
-    const desc = option ? option.getAttribute("data-desc") : "";
-
-    document.getElementById("creature-size-desc").innerText = desc || "";
-}
-
-function updateSummary(categoryId, selector, getName) {
-    const selected = document.querySelectorAll(selector);
-    const list = document.getElementById(categoryId);
-    if (!list) return;
-
-    list.innerHTML = "";
-
-    selected.forEach(el => {
-        const li = document.createElement('li');
-        li.textContent = getName(el);
-        list.appendChild(li);
-    });
-}
-
-function updateAllDescriptions() {
-    const container = document.getElementById("description-content");
-    container.innerHTML = "";
-
-    function addDesc(text) {
-        if (!text) return;
-        const div = document.createElement("div");
-        div.textContent = text;
-        container.appendChild(div);
-    }
-
-    // SELECT DROPDOWNS
-    const selects = [
-        "creature-type",
-        "creature-speed",
-        "creature-natural-armor",
-        "creature-damage-condition-resistance",
-        "racial-spellcasting",
-        "dragonmark-spells"
-    ];
-
-    selects.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-
-        const desc = el.options[el.selectedIndex].getAttribute("data-desc");
-        addDesc(desc);
-    });
-
-    // CHECKBOXES (generic)
-
-// Racial proficiency (radio)
-const prof = document.querySelector('input[name="skill-tool-prof"]:checked');
-if (prof) addDesc(prof.getAttribute("data-desc"));
-
-    // RADIO: skill traits
-    const skill = document.querySelector('input[name="skill-trait"]:checked');
-    if (skill) addDesc(skill.getAttribute("data-desc"));
-
-// WEAPON PROFICIENCY (FIX)
-const weaponProf = document.querySelector('#weapon-dropdown input[name="weapon-prof"]:checked');
-if (weaponProf && weaponProf.dataset.desc) {
-    addDesc(weaponProf.dataset.desc);
-}
-    // Racial proficiency (radio)
-// ADD THIS inside updateAllDescriptions()
-
-document.querySelectorAll('.resistance-checkbox:checked').forEach(el => {
-    addDesc(el.getAttribute("data-desc"));
-});
-
-// RACIAL TRAITS (FIX)
-document.querySelectorAll('#racial-traits-list input[type="checkbox"]:checked').forEach(el => {
-    addDesc(el.getAttribute("data-desc"));
-});
-
-    // RADIO: natural weapon
-   // RADIO: natural weapon (FIXED)
-const weapon = document.querySelector('#natural-weapons-dropdown input[name="natural-weapon"]:checked');
-
-if (weapon && weapon.dataset.desc) {
-    addDesc(weapon.dataset.desc);
-}
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    updateFullSummary();
-});
-function copySummary() {
-    let text = "=== Custom Ancestry Summary ===\n\n";
-
-     const sections = [
-    ["Creature Type", "summary-creature-type"],
-    ["Size", "summary-size"],
-    ["Speed", "summary-speed"],
-    ["Darkvision", "summary-darkvision"],
-    ["Ability Scores", "summary-abilityscores"],
-    ["Movement Types", "summary-movement"],
-    ["Racial Proficiencies", "summary-profs"],
-    ["Tool & Weapon Proficiencies", "summary-toolweapons"],
-    ["Skill Traits", "summary-skilltraits"], // ✅ added
-    ["Natural Weapons", "summary-weapons"],  // ✅ added
-    ["Languages", "summary-languages"],
-    ["Resistances", "summary-resistances"],
-    ["Natural Armor", "summary-armor"],
-    ["Racial Traits", "summary-major"],      // ✅ fixed ID
-    ["Racial Spellcasting", "summary-spellcasting"],
-    ["Dragonmark Spells", "summary-dragonmark"],
-];
-
-    sections.forEach(([title, id]) => {
-        const list = document.getElementById(id);
-        if (!list) return;
-
-        const items = Array.from(list.querySelectorAll("li"))
-            .map(li => li.textContent);
-
-        if (items.length > 0) {
-            text += `${title}:\n`;
-            items.forEach(i => text += `- ${i}\n`);
-            text += "\n";
-        }
-    });
-
-    navigator.clipboard.writeText(text).then(() => {
-        alert("Summary copied to clipboard!");
-    });
-}
-        function updateValue() {
-            let totalSpent = 0;
-
-            // 1. Handle Selects
-             const selects = [
-    'creature-type',
-    'creature-speed',
-    'creature-darkvision',
-    'creature-abilityscores',
-    'creature-natural-armor',
-    'racial-spellcasting',
-    'dragonmark-spells'
-];
-
-            selects.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    const val = parseInt(el.options[el.selectedIndex].getAttribute('data-value') || 0);
-                    totalSpent += val;
-                }
-            });
-
-            // 2. Handle Checkboxes
-            // Checkboxes
-// Handle all checkboxes EXCEPT languages
-document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
-    if (!cb.classList.contains('language-checkbox')) {
-        totalSpent += parseInt(cb.value || 0);
-    }
-});
-
-const selectedLanguages = document.querySelectorAll('.language-checkbox:checked');
-
-// First language is free
-if (selectedLanguages.length > 1) {
-    // Only charge for extra languages beyond the first
-    for (let i = 1; i < selectedLanguages.length; i++) {
-        totalSpent += parseInt(selectedLanguages[i].value || 0);
-    }
-}
-
-
-// Radios (skill trait)
-const selectedSkill = document.querySelector('input[name="skill-trait"]:checked');
-if (selectedSkill) {
-    totalSpent += parseInt(selectedSkill.value || 0);
-}
-
-// Racial proficiency (radio)
- setList(
-    "summary-profs",
-    Array.from(document.querySelectorAll('#prof-dropdown .prof-checkbox:checked'))
-        .map(el => el.parentElement.textContent.trim())
-);
-// Natural weapon
-const selectedWeapon = document.querySelector('input[name="natural-weapon"]:checked');
-if (selectedWeapon) {
-    totalSpent += parseInt(selectedWeapon.value || 0);
-}
-            // 3. Final Math
-            const remaining = 120 - totalSpent;
-            const display = document.getElementById('creature-points-text');
-            const spentDisplay = document.getElementById('creature-points-spent');
-            display.innerText = remaining;
-            if (spentDisplay) spentDisplay.innerText = totalSpent;
-
-            // Color coding for over-spending
-            display.style.color = remaining < 0 ? "#ff4444" : "#689FD9";
-        }
-
-        // Close dropdowns when clicking outside
-        window.onclick = function(event) {
-            if (!event.target.matches('.my-button')) {
-                document.querySelectorAll('.dropdown-content').forEach(d => {
-                    d.classList.remove('show');
-                });
-            }
-        }
-        function setSingle(id, text) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.innerHTML = "";
-    const li = document.createElement("li");
-    li.textContent = text;
-    el.appendChild(li);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    updateAllDescriptions();
-});
-
-function setList(id, items) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.innerHTML = "";
-    items.forEach(t => {
-        const li = document.createElement("li");
-        li.textContent = t;
-        el.appendChild(li);
-    });
-}
-
-function updateFullSummary() {
-    const getText = id => {
-        const el = document.getElementById(id);
-        return el.options[el.selectedIndex].textContent;
-    };
-
-    setSingle("summary-creature-type", getText("creature-type"));
-    setSingle("summary-size", getText("creature-size"));
-    setSingle("summary-speed", getText("creature-speed"));
-    setSingle("summary-darkvision", getText("creature-darkvision"));
-    setSingle("summary-abilityscores", getText("creature-abilityscores"));
-    setSingle("summary-armor", getText("creature-natural-armor"));
-
-    setList(
-        "summary-movement",
-        Array.from(document.querySelectorAll("#movement-type-dropdown input:checked"))
-            .map(el => el.parentElement.textContent.trim())
-    );
-
-    const selectedToolWeapon = document.querySelector('#weapon-dropdown input[name="weapon-prof"]:checked');
-
-setList(
-    "summary-toolweapons",
-    selectedToolWeapon ? [selectedToolWeapon.parentElement.textContent.trim()] : []
-);
-
-    const selectedProf = document.querySelector('#prof-dropdown input[name="skill-tool-prof"]:checked');
-
-setList(
-    "summary-profs",
-    Array.from(document.querySelectorAll("#prof-dropdown input:checked"))
-        .map(el => el.parentElement.textContent.trim())
-);
-
-    const selectedSkill = document.querySelector('#skill-traits-dropdown input[name="skill-trait"]:checked');
-const selectedWeapon = document.querySelector('input[name="natural-weapon"]:checked');
-
-setList(
-    "summary-skilltraits",
-    selectedSkill ? [selectedSkill.parentElement.textContent.trim()] : []
-);
-
-setList(
-    "summary-weapons",
-    selectedWeapon ? [selectedWeapon.parentElement.textContent.trim()] : []
-);
-
-    setList(
-        "summary-major",
-        Array.from(document.querySelectorAll("#racial-traits-list input:checked"))
-            .map(el => el.parentElement.textContent.trim())
-    );
-    setSingle("summary-spellcasting", getText("racial-spellcasting"));
-setSingle("summary-dragonmark", getText("dragonmark-spells"));
-}
-
-
-const originalUpdateValue = updateValue;
-
-updateValue = function() {
-    originalUpdateValue();
-    updateFullSummary();
-    updateAllDescriptions();
-    updateTraitsCount();
-};
-
-function clearAll() {
-    // Reset all selects
-    document.querySelectorAll("select").forEach(select => {
-        select.selectedIndex = 0;
-    });
-
-    // ✅ Force specific defaults
-    document.getElementById("creature-speed").selectedIndex = 2; // 30 ft
-    document.getElementById("creature-abilityscores").selectedIndex = 2; // +1+1+1 / +2+1
-
-    // Reset all checkboxes
-    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-        cb.checked = false;
-    });
-
-    // Reset all radio groups
-    document.querySelectorAll('input[type="radio"]').forEach(rb => {
-        if (rb.hasAttribute("checked")) {
-            rb.checked = true;
-        }
-    });
-
-    // Reset language button text
-    document.getElementById('language-button').textContent = "Languages: Common";
-
-    // Clear summaries
-    document.querySelectorAll("#summary-panel ul").forEach(ul => ul.innerHTML = "");
-
-    // Clear descriptions
-    document.getElementById("description-content").innerHTML = "";
-
-    // Recalculate everything
-    updateValue();
-    updateFullSummary();
-    updateAllDescriptions();
-}
-document.addEventListener("DOMContentLoaded", updateFullSummary);
-
-// Keyboard accessibility - Escape key closes all dropdowns and popups
-document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape") {
-        document.querySelectorAll('.dropdown-content').forEach(d => {
-            d.classList.remove('show');
-        });
-        closeRacialTraitsPopup();
-    }
-});
-
-// Racial Traits Popup Functions
-function openRacialTraitsPopup() {
-    document.getElementById('racial-traits-popup').classList.add('show');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    document.getElementById('racial-traits-search').focus();
-    updateTraitsCount();
-}
-
-function closeRacialTraitsPopup(event) {
-    // If called from overlay click, only close if clicking the overlay itself
-    if (event && event.target !== document.getElementById('racial-traits-popup')) {
-        return;
-    }
-    document.getElementById('racial-traits-popup').classList.remove('show');
-    document.body.style.overflow = ''; // Restore scrolling
-}
-
-function filterRacialTraits() {
-    const searchTerm = document.getElementById('racial-traits-search').value.toLowerCase();
-    const labels = document.querySelectorAll('#racial-traits-list label');
-
-    labels.forEach(label => {
-        const text = label.textContent.toLowerCase();
-        if (text.includes(searchTerm)) {
-            label.style.display = 'block';
-        } else {
-            label.style.display = 'none';
-        }
-    });
-}
-
-function updateTraitsCount() {
-    const count = document.querySelectorAll('#racial-traits-list input[type="checkbox"]:checked').length;
-    document.getElementById('racial-traits-count').textContent = count;
-    document.getElementById('popup-traits-count').textContent = count;
-}
-
-// Override updateValue to also update traits count
-
-
-
-// Initialize tooltips for racial traits
-function initRacialTraitTooltips() {
-    const labels = document.querySelectorAll('#racial-traits-list label');
-    labels.forEach(label => {
-        const checkbox = label.querySelector('input[type="checkbox"]');
-        if (checkbox && checkbox.dataset.desc) {
-            label.setAttribute('data-tooltip', checkbox.dataset.desc);
-        }
-    });
-}
-
-// Run on DOM load
-document.addEventListener("DOMContentLoaded", initRacialTraitTooltips);
-
-    </script>
 </body>
 </html>
