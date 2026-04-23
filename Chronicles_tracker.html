@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D&D Combat Tracker</title>
+  <style>
+    body { font-family: Arial; background: #111; color: #eee; }
+    button, input, textarea, select { margin: 4px; padding: 6px; }
+    .hidden { display: none; }
+    .box { border: 1px solid #444; padding: 10px; margin: 10px 0; }
+    .counter { font-size: 14px; color: #aaa; }
+  </style>
+</head>
+<body>
+
+<h2>Combat Setup</h2>
+
+<div id="setup">
+  <div id="characterInputs"></div>
+  <button onclick="addCharacter()">Add Character</button>
+  <br><br>
+
+  <button onclick="saveTemplate()">Save Template</button>
+  <select id="templateSelect"></select>
+  <button onclick="loadTemplate()">Load Template</button>
+
+  <br><br>
+  <button onclick="startCombat()">Initiate Combat</button>
+</div>
+
+<div id="combat" class="hidden">
+  <h3 id="initiativeDisplay"></h3>
+  <h2 id="turnHeader"></h2>
+
+ <div class="box">
+  <b>Actions</b><br>
+  <button onclick="addAction('actions','attack')">Attack</button>
+  <button onclick="addAction('actions','spell')">Spell</button>
+  <button onclick="addAction('actions','move')">Move</button>
+  <button onclick="addAction('actions','misc')">Misc</button>
+  <button onclick="addAction('actions','none')">None</button>
+  <div id="actionCounter" class="counter"></div>
+</div>
+
+  <div class="box">
+    <b>Bonus Actions</b><br>
+    <button onclick="addAction('bonus','attack')">Attack</button>
+    <button onclick="addAction('bonus','spell')">Spell</button>
+    <button onclick="addAction('bonus','move')">Move</button>
+    <button onclick="addAction('bonus','misc')">Misc</button>
+    <button onclick="addAction('bonus','none')">None</button>
+    <div id="bonusCounter" class="counter"></div>
+  </div>
+
+  <div class="box">
+    <b>Reactions</b><br>
+    <button onclick="addAction('reaction','attack')">Attack</button>
+    <button onclick="addAction('reaction','spell')">Spell</button>
+    <button onclick="addAction('reaction','move')">Move</button>
+    <button onclick="addAction('reaction','misc')">Misc</button>
+    <button onclick="addAction('reaction','none')">None</button>
+    <div id="reactionCounter" class="counter"></div>
+  </div>
+
+  <div class="box">
+    Attacks Hit <input id="attacksHit" type="number">
+    / Total <input id="attacksTotal" type="number"><br><br>
+
+    Saves Forced <input id="savesForced" type="number">
+    / Succeeded <input id="savesSucceeded" type="number"><br><br>
+
+    Damage <input id="damage" type="number">
+    CC <input id="cc" type="number">
+  </div>
+
+  <button onclick="undoTurn()">Undo</button>
+  <button onclick="nextTurn()">Next Turn</button>
+  <button onclick="endCombat()">End Combat</button>
+</div>
+
+<div id="report" class="hidden">
+  <h2>Combat Report</h2>
+  <textarea id="reportOutput" rows="30" cols="110"></textarea>
+</div>
+
+<div id="sidePanel" class="hidden" style="
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background: #1a1a1a;
+  border-left: 2px solid #444;
+  padding: 10px;
+  overflow-y: auto;
+">
+  <h3>Current Character</h3>
+  <div id="liveSummary"></div>
+</div>
+
+<script>
+let characters = [];
+let currentTurn = 0;
+let round = 1;
+let history = [];
+let tempTurn;
+
+function addCharacter() {
+  const div = document.createElement("div");
+  div.innerHTML = `
+    Name: <input class="name">
+    Initiative: <input class="init" type="number">
+  `;
+  document.getElementById("characterInputs").appendChild(div);
+}
+
+function saveTemplate() {
+  let name = prompt("Template name?");
+  if (!name) return;
+
+  const names = document.querySelectorAll(".name");
+  const inits = document.querySelectorAll(".init");
+
+  let data = [];
+  for (let i = 0; i < names.length; i++) {
+    data.push({
+      name: names[i].value,
+      initiative: inits[i].value
+    });
+  }
+
+  localStorage.setItem("template_" + name, JSON.stringify(data));
+  loadTemplateList();
+}
+
+function loadTemplateList() {
+  const sel = document.getElementById("templateSelect");
+  sel.innerHTML = "";
+  for (let k in localStorage) {
+    if (k.startsWith("template_")) {
+      let opt = document.createElement("option");
+      opt.value = k;
+      opt.textContent = k.replace("template_", "");
+      sel.appendChild(opt);
+    }
+  }
+}
+
+function loadTemplate() {
+  const key = document.getElementById("templateSelect").value;
+  if (!key) return;
+
+  const data = JSON.parse(localStorage.getItem(key));
+  const container = document.getElementById("characterInputs");
+  container.innerHTML = "";
+
+  data.forEach(c => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      Name: <input class="name" value="${c.name}">
+      Initiative: <input class="init" type="number" value="${c.initiative}">
+    `;
+    container.appendChild(div);
+  });
+}
+
+window.onload = loadTemplateList;
+
+function startCombat() {
+  const names = document.querySelectorAll(".name");
+  const inits = document.querySelectorAll(".init");
+  document.getElementById("sidePanel").classList.remove("hidden");
+
+  characters = [];
+
+  for (let i = 0; i < names.length; i++) {
+    characters.push({
+      name: names[i].value,
+      initiative: +inits[i].value,
+      stats: {
+        actions:{attack:0,spell:0,move:0,misc:0},
+        bonus:{attack:0,spell:0,move:0,misc:0},
+        reaction:{attack:0,spell:0,move:0,misc:0},
+        totalActions:0,
+        totalBonus:0,
+        totalReactions:0,
+        attacksHit:0,
+        attacksTotal:0,
+        savesForced:0,
+        savesSucceeded:0,
+        damage:0,
+        cc:0,
+        turns:[]
+      }
+    });
+  }
+
+  characters.sort((a,b)=>b.initiative-a.initiative);
+
+  document.getElementById("initiativeDisplay").innerText =
+    characters.map(c=>`${c.name} (${c.initiative})`).join(" > ");
+
+  document.getElementById("setup").classList.add("hidden");
+  document.getElementById("combat").classList.remove("hidden");
+
+  updateTurnUI();
+}
+
+function formatCounter(obj) {
+  return Object.entries(obj)
+    .map(([k,v]) => `${k}:${v}`)
+    .join(" | ");
+}
+
+function updateCounters() {
+  document.getElementById("actionCounter").innerText =
+    formatCounter(tempTurn.actions);
+
+  document.getElementById("bonusCounter").innerText =
+    formatCounter(tempTurn.bonus);
+
+  document.getElementById("reactionCounter").innerText =
+    formatCounter(tempTurn.reaction);
+}
+
+function updateTurnUI() {
+  const c = characters[currentTurn];
+
+  document.getElementById("turnHeader").innerText =
+    `Round ${round} — ${c.name}`;
+
+  tempTurn = {
+  actions:{attack:0,spell:0,move:0,misc:0,none:0},
+  bonus:{attack:0,spell:0,move:0,misc:0,none:0},
+  reaction:{attack:0,spell:0,move:0,misc:0,none:0},
+  damage:0,
+  cc:0
+};
+
+  document.querySelectorAll("input[type=number]").forEach(i=>i.value="");
+  updateCounters();
+  updateLiveSummary();
+}
+
+function addAction(type, sub) {
+  if (sub === "none") {
+    tempTurn[type].none++;
+  } else {
+    tempTurn[type][sub]++;
+  }
+
+  updateCounters();
+  updateLiveSummary(); // 👈 ADD THIS
+}
+
+function saveSnapshot() {
+  history.push(JSON.stringify({characters,currentTurn,round}));
+}
+
+function undoTurn() {
+  if(!history.length) return;
+  let prev = JSON.parse(history.pop());
+  characters = prev.characters;
+  currentTurn = prev.currentTurn;
+  round = prev.round;
+  updateTurnUI();
+}
+
+function updateLiveSummary() {
+  const c = characters[currentTurn];
+  let rounds = Math.max(round-1,1);
+
+  let tempActionTotal = Object.values(tempTurn.actions).reduce((a,b)=>a+b,0);
+  let tempBonusTotal = Object.values(tempTurn.bonus).reduce((a,b)=>a+b,0);
+  let tempReactionTotal = Object.values(tempTurn.reaction).reduce((a,b)=>a+b,0);
+
+  let dpr = (c.stats.damage / rounds).toFixed(2);
+
+  document.getElementById("liveSummary").innerHTML = `
+    <b>${c.name}</b><br><br>
+
+    Actions: ${c.stats.totalActions + tempActionTotal}<br>
+    Bonus: ${c.stats.totalBonus + tempBonusTotal}<br>
+    Reactions: ${c.stats.totalReactions + tempReactionTotal}<br><br>
+
+    Attacks: ${c.stats.attacksHit}/${c.stats.attacksTotal}<br>
+    Saves: ${c.stats.savesForced}/${c.stats.savesSucceeded}<br><br>
+
+    Damage: ${c.stats.damage + tempTurn.damage}<br>
+    DPR: ${dpr}<br>
+    CC: ${c.stats.cc + tempTurn.cc}
+  `;
+}
+
+function nextTurn() {
+  saveSnapshot();
+  const c = characters[currentTurn];
+
+  function val(id){return +document.getElementById(id).value||0;}
+
+  c.stats.attacksHit += val("attacksHit");
+  c.stats.attacksTotal += val("attacksTotal");
+  c.stats.savesForced += val("savesForced");
+  c.stats.savesSucceeded += val("savesSucceeded");
+
+  tempTurn.damage = val("damage");
+  tempTurn.cc = val("cc");
+
+  c.stats.damage += tempTurn.damage;
+  c.stats.cc += tempTurn.cc;
+
+  c.stats.turns.push({...tempTurn});
+
+  for (let k in tempTurn.actions) {
+  c.stats.actions[k] = (c.stats.actions[k] || 0) + tempTurn.actions[k];
+  if (k !== "none") c.stats.totalActions += tempTurn.actions[k];
+}
+
+for (let k in tempTurn.bonus) {
+  c.stats.bonus[k] = (c.stats.bonus[k] || 0) + tempTurn.bonus[k];
+  if (k !== "none") c.stats.totalBonus += tempTurn.bonus[k];
+}
+
+for (let k in tempTurn.reaction) {
+  c.stats.reaction[k] = (c.stats.reaction[k] || 0) + tempTurn.reaction[k];
+  if (k !== "none") c.stats.totalReactions += tempTurn.reaction[k];
+}
+
+  currentTurn++;
+  if(currentTurn>=characters.length){currentTurn=0;round++;}
+
+  updateLiveSummary();
+
+  updateTurnUI();
+}
+
+function endCombat() {
+  let out = "";
+
+  characters.forEach(c=>{
+    let rounds = round-1 || 1;
+    let dpr = (c.stats.damage / rounds).toFixed(2);
+
+    out += `\n=== ${c.name} ===\n`;
+    out += `Actions: ${c.stats.totalActions}\n`;
+    out += `Bonus Actions: ${c.stats.totalBonus}\n`;
+    out += `Reactions: ${c.stats.totalReactions}\n`;
+    out += `Attacks: ${c.stats.attacksHit}/${c.stats.attacksTotal}\n`;
+    out += `Saves: ${c.stats.savesForced}/${c.stats.savesSucceeded}\n`;
+    out += `Total Damage: ${c.stats.damage}\n`;
+    out += `Damage per Round: ${dpr}\n`;
+    out += `Total CC: ${c.stats.cc}\n`;
+  });
+
+  document.getElementById("combat").classList.add("hidden");
+  document.getElementById("report").classList.remove("hidden");
+  document.getElementById("reportOutput").value = out;
+}
+</script>
+
+</body>
+</html>
