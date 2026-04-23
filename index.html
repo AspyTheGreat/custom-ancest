@@ -5,6 +5,8 @@
 <title>Nat 1 Archive</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.cdnfonts.com/css/forgore" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
@@ -98,12 +100,29 @@ h1 {
   color: #0b0b0f;
 }
 
-/* WORLD DETAIL */
-.tabs {
+/* ================= HEADER ================= */
+.world-header {
+  position: relative;
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#worldTitle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.back-top-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.top-tabs {
+  display: flex;
+  gap: 10px;
 }
 
 .tab {
@@ -115,19 +134,49 @@ h1 {
 
 /* BACK BUTTON */
 .back {
-  margin-top: 40px;
-  display: inline-block;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border: 1px solid #888;
   border-radius: 6px;
   cursor: pointer;
+}
+
+/* ================= INFINITUM ================= */
+.infinitum-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 700px;
+  margin: 60px auto;
+  gap: 20px;
+}
+
+.infinitum-tile {
+  min-height: 120px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  font-family: 'Forgore', sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+
+  background: rgba(106, 90, 205, 0.2);
+  border: 1px solid #6a5acd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.infinitum-tile:hover {
+  background: #6a5acd;
+  color: #0b0b0f;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= HOME ================= -->
 <div id="home" class="hero">
   <h1>NAT 1</h1>
   <div class="coming-soon">COMING SOON</div>
@@ -139,8 +188,10 @@ h1 {
   </div>
 </div>
 
-<!-- ================= WORLDS ================= -->
 <div id="worlds" class="page">
+
+  <div class="back back-top-left" onclick="showHome()">← Back</div>
+
   <h2>WORLDS</h2>
 
   <div class="grid">
@@ -151,36 +202,37 @@ h1 {
     <div class="world-card" onclick="openWorld('Midgard')">Midgard / Ravenfall</div>
   </div>
 
-  <div class="back" onclick="showHome()">← Back</div>
 </div>
 
-<!-- ================= WORLD DETAIL ================= -->
 <div id="worldDetail" class="detail">
-  <h2 id="worldTitle">WORLD</h2>
 
-  <div class="tabs">
-    <div class="tab">Lore</div>
-    <div class="tab">Characters</div>
-    <div class="tab">Combats</div>
-    <div class="tab">Timeline</div>
+  <div class="world-header">
+    <div class="back back-top-left" onclick="backToWorlds()">← Back</div>
+    <h2 id="worldTitle">WORLD</h2>
+
+    <div class="top-tabs">
+      <div class="tab">Lore</div>
+      <div class="tab">Timeline</div>
+    </div>
   </div>
 
-  <div class="back" onclick="backToWorlds()">← Back</div>
+  <div id="worldContent"></div>
+
 </div>
 
-<!-- ================= CHRONICLES ================= -->
 <div id="chronicles" class="page">
   <h2 style="font-size: 3rem; letter-spacing: 4px;">CHRONICLES</h2>
 
   <div class="grid">
     <div class="world-card">Previous Battles</div>
-    <div class="world-card">Track Chronicles</div>
+    <div class="world-card" onclick="window.location.href='Chronicles_tracker.html'">Track Chronicles</div>
   </div>
 
   <div class="back" onclick="showHome()">← Back</div>
 </div>
 
 <script>
+
 function showWorlds() {
   hideAll();
   document.getElementById("worlds").style.display = "block";
@@ -200,6 +252,84 @@ function openWorld(name) {
   hideAll();
   document.getElementById("worldDetail").style.display = "block";
   document.getElementById("worldTitle").innerText = name.toUpperCase();
+
+  const content = document.getElementById("worldContent");
+
+  if (name === "Infinitum") {
+    content.innerHTML = `
+      <div class="infinitum-grid">
+        <div class="infinitum-tile">The Wish of Death</div>
+        <div class="infinitum-tile">Infinitum</div>
+        <div class="infinitum-tile">The Plane Shift Conundrum</div>
+        <div class="infinitum-tile">Redo of Wizard</div>
+        <div class="infinitum-tile">Ascension of Vecna 1: The Gith in the Sun</div>
+        <div class="infinitum-tile">The Lost Pearl of Luscany</div>
+        <div class="infinitum-tile">Ascension of Vecna 2: The Rites of Apotheosis</div>
+        <div class="infinitum-tile">The Boros Legionnaire</div>
+        <div class="infinitum-tile">Dawn Cataclysm</div>
+        <div class="infinitum-tile">The Break of Dawn</div>
+        <div class="infinitum-tile">Vecna's Boys: Quenching the Wish</div>
+        <div class="infinitum-tile">At Hell's Gate: The Styxian Serpent</div>
+        <div class="infinitum-tile">Heart of the Styx</div>
+      </div>
+    `;
+  }
+
+  else if (name === "Tolivric") {
+    content.innerHTML = `
+      <div class="grid">
+        <div class="world-card">Jorrid</div>
+        <div class="world-card">On Rails</div>
+        <div class="world-card">Coast is Clear</div>
+        <div class="world-card">Foray of Fable</div>
+        <div class="world-card">Paths Less Traveled</div>
+        <div class="world-card">Lynhowen's Last Lineage</div>
+        <div class="world-card">Turning Seasons</div>
+        <div class="world-card">Sha'terra: The 11th Wave</div>
+        <div class="world-card">The Siege of Torr Myrdmal</div>
+        <div class="world-card">Project Zomboid</div>
+      </div>
+    `;
+  }
+
+  else if (name === "Epalux") {
+    content.innerHTML = `
+      <div class="grid">
+        <div class="world-card">Trauerspiel</div>
+        <div class="world-card">The Hiest</div>
+        <div class="world-card">Echoes From The Deep</div>
+        <div class="world-card">Trials of Truth</div>
+      </div>
+    `;
+  }
+
+  else if (name === "Convulux") {
+    content.innerHTML = `
+      <div class="grid">
+        <div class="world-card">Theron's Games</div>
+        <div class="world-card">The Lost Tomb Of Arkhanis</div>
+        <div class="world-card">Into The Wilds</div>
+        <div class="world-card">The Tomb of Arkhanis 2</div>
+      </div>
+    `;
+  }
+
+  else if (name === "Midgard") {
+    content.innerHTML = `
+      <div class="grid">
+        <div class="world-card">Ravenfall</div>
+        <div class="world-card">Ravenfall Returns</div>
+        <div class="world-card">Sands of Aranie</div>
+        <div class="world-card">Cerberus Must Fall</div>
+        <div class="world-card">The Initail Wishes</div>
+        <div class="world-card">Hell's gate</div>
+      </div>
+    `;
+  }
+
+  else {
+    content.innerHTML = "";
+  }
 }
 
 function backToWorlds() {
@@ -213,6 +343,7 @@ function hideAll() {
   document.getElementById("worldDetail").style.display = "none";
   document.getElementById("chronicles").style.display = "none";
 }
+
 </script>
 
 </body>
