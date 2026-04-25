@@ -8,8 +8,26 @@ exports.handler = async (event) => {
     const owner = process.env.GITHUB_OWNER;
     const repo = process.env.GITHUB_REPO;
 
-    const battleId = data.slug;
-    const battlePath = `battles/${battleId}.json`;
+   let campaignSlug = data.campaignSlug;
+let battleSlug = data.battleSlug;
+
+// --- CHECK IF FILE EXISTS ---
+const basePath = `battles/${campaignSlug}/${battleSlug}.json`;
+
+const checkRes = await fetch(
+  `https://api.github.com/repos/${owner}/${repo}/contents/${basePath}`,
+  {
+    headers: { Authorization: `token ${token}` }
+  }
+);
+
+// If file exists → add timestamp
+if (checkRes.status === 200) {
+  battleSlug = `${battleSlug}-${Date.now()}`;
+}
+
+const battlePath = `battles/${campaignSlug}/${battleSlug}.json`;
+const battleId = `${campaignSlug}/${battleSlug}`;
     const indexPath = `index.json`;
 
     // --- STEP 1: GET CURRENT INDEX ---
@@ -35,9 +53,11 @@ exports.handler = async (event) => {
 
     // --- STEP 2: ADD NEW ENTRY ---
     indexData.push({
-  id: battleId,
+  id: battleId, // e.g. "tolivric/final-siege"
   name: data.displayName,
   campaign: data.campaign,
+  campaignSlug: campaignSlug,
+  battleSlug: battleSlug,
   date: data.timestamp
 });
 
