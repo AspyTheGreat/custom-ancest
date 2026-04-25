@@ -1,0 +1,322 @@
+{
+  "campaign": "Unknown Campaign",
+  "battle": "moment of truth",
+  "rounds": 1,
+  "images": {
+    "start": null,
+    "end": null
+  },
+  "characters": [
+    {
+      "name": "BBEG ",
+      "levelClass": "8 monstrocity",
+      "stats": {
+        "actions": 2,
+        "bonus": 0,
+        "damage": 200,
+        "healing": 0,
+        "cc": 0,
+        "damageTaken": 0,
+        "nat20": 0,
+        "nat1": 0,
+        "reactions": 0
+      },
+      "summons": [],
+      "turns": [
+        {
+          "actions": {
+            "attack": 2,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonus": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "damage": 100,
+          "healing": 0,
+          "cc": 0,
+          "attacks": {
+            "hit": 2,
+            "total": 2
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "dodged": 0,
+            "taken": 0,
+            "savesmade": 0,
+            "total": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "A",
+      "levelClass": "sorc 5",
+      "stats": {
+        "actions": 1,
+        "bonus": 0,
+        "damage": 120,
+        "healing": 0,
+        "cc": 0,
+        "damageTaken": 0,
+        "nat20": 0,
+        "nat1": 0,
+        "reactions": 0
+      },
+      "summons": [],
+      "turns": [
+        {
+          "actions": {
+            "attack": 0,
+            "spell": 1,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonus": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 1,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "damage": 60,
+          "healing": 0,
+          "cc": 0,
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 3,
+            "succeeded": 2
+          },
+          "defense": {
+            "dodged": 0,
+            "taken": 0,
+            "savesmade": 0,
+            "total": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "B",
+      "levelClass": "fighter 5",
+      "stats": {
+        "actions": 2,
+        "bonus": 0,
+        "damage": 160,
+        "healing": 0,
+        "cc": 0,
+        "damageTaken": 0,
+        "nat20": 1,
+        "nat1": 0,
+        "reactions": 0
+      },
+      "summons": [],
+      "turns": [
+        {
+          "actions": {
+            "attack": 2,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonus": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "damage": 80,
+          "healing": 0,
+          "cc": 0,
+          "attacks": {
+            "hit": 4,
+            "total": 4
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "dodged": 0,
+            "taken": 0,
+            "savesmade": 0,
+            "total": 0
+          }
+        }
+      ]
+    }
+  ],
+  "roundsBreakdown": [
+    {
+      "round": 1,
+      "totalDamage": 240,
+      "totalHealing": 0,
+      "totalCC": 0,
+      "players": [
+        {
+          "name": "BBEG ",
+          "damage": 100,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 2,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonus": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          }
+        },
+        {
+          "name": "A",
+          "damage": 60,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 1,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonus": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 1,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          }
+        },
+        {
+          "name": "B",
+          "damage": 80,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 2,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonus": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          }
+        }
+      ]
+    }
+  ],
+  "partyTotals": {
+    "damage": 480,
+    "healing": 0,
+    "cc": 0
+  },
+  "archive": {
+    "id": "Unknown_Campaign_moment_of_truth",
+    "title": "moment of truth",
+    "campaign": "Unknown Campaign",
+    "date": "2026-04-25T21:29:19.289Z",
+    "summary": {
+      "rounds": 1,
+      "partyDamage": 480,
+      "partyHealing": 0
+    },
+    "thumbnail": null
+  },
+  "campaignSlug": "unknown-campaign",
+  "battleSlug": "moment-of-truth",
+  "slug": "unknown-campaign-moment-of-truth",
+  "displayName": "Unknown Campaign — moment of truth",
+  "timestamp": "2026-04-25T21:29:19.291Z"
+}
