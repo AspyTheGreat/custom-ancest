@@ -334,6 +334,1548 @@ Conditions <input id="conditionsInput" type="text" style="width:150px;">
   "></pre>
 
   <br>
+<button onclick="uploadBattle()">Upload to Website</button>
+  <button onclick="downloadReportJSON()">Download JSON</button>
+</div>
+
+<div id="sidePanel" class="hidden" style="
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background: #1a1a1a;
+  border-left: 2px solid #444;
+  padding: 10px;
+  overflow-y: auto;
+">
+  <h3>Current Character</h3>
+  <div id="liveSummary"></div>
+</div>
+
+<script>
+  let battleName = "";
+let campaignName = "";
+let battleStartImage = null;
+let battleEndImage = null;
+  let tempGlobal = {};
+let characters = [];
+let currentTurn = 0;
+let round = 1;
+let history = [];
+let tempTurn;
+let roundLog = {};
+
+function addCharacter() {
+  const div = document.createElement("div");
+  div.classList.add("charBlock");
+
+  div.innerHTML = `
+  Name: <input class="name" value="">
+  Initiative: <input class="init" type="number" value="0"><br>
+
+  Portrait: 
+  <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
+  <img class="portraitPreview" style="width:60px;height:60px;border-radius:6px;display:none;"><br>
+  <input type="hidden" class="portraitData">
+
+  Level/Class: <input type="text" class="levelClass" value=""><br>
+
+  <div class="box">
+    <b>Add Resource</b><br>
+    <input type="text" class="resNameInput" placeholder="Resource name">
+    <input type="number" class="resMaxInput" placeholder="Max" style="width:60px;">
+    <button onclick="addResourceInline(this)">Add</button>
+  </div>
+
+  <div class="resourceList"></div>
+  <hr>
+  `;
+
+  document.getElementById("characterInputs").appendChild(div);
+}
+
+function renderCharacterBar() {
+  const bar = document.getElementById("characterBar");
+  bar.innerHTML = "";
+
+  characters.forEach((c, i) => {
+    const btn = document.createElement("div");
+    btn.className = "charBtn";
+
+    if (i === selectedCharacter) btn.classList.add("active");
+    if (i === currentTurn) btn.classList.add("turn");
+
+    btn.innerHTML = `
+  ${c.portrait ? `<img src="${c.portrait}" style="width:40px;height:40px;border-radius:6px;"><br>` : ""}
+  ${c.name}
+`;
+
+    btn.onclick = () => {
+      switchCharacter(i);
+      renderCharacterBar();
+    };
+
+    bar.appendChild(btn);
+  });
+}
+
+function handlePortraitUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  const block = input.closest(".charBlock");
+
+  reader.onload = function(e) {
+    const base64 = e.target.result;
+
+    // store data
+    block.querySelector(".portraitData").value = base64;
+
+    // show preview
+    const img = block.querySelector(".portraitPreview");
+    img.src = base64;
+    img.style.display = "block";
+  };
+
+  reader.readAsDataURL(file);
+}
+
+function handleBattleImage(input, type) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    if (type === "start") {
+      battleStartImage = e.target.result;
+      document.getElementById("startPreview").src = battleStartImage;
+      document.getElementById("startPreview").style.display = "block";
+    } else {
+      battleEndImage = e.target.result;
+      document.getElementById("endPreview").src = battleEndImage;
+      document.getElementById("endPreview").style.display = "block";
+    }
+  };
+
+  reader.readAsDataURL(file);
+}
+
+function downloadReportJSON() {
+  const data = JSON.stringify(finalReport, null, 2);
+
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = (battleMeta?.name || "combat_report") + ".json";
+
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+}
+
+function exportTemplateUI() {
+  const status = document.getElementById("templateStatus");
+  const blocks = document.querySelectorAll(".charBlock");
+
+  if (!blocks.length) {
+    status.innerText = "No characters to export.";
+    return;
+  }
+
+  let filename = document.getElementById("exportFileName").value.trim();
+  if (!filename) filename = "dnd_template";
+  if (!filename.endsWith(".json")) filename += ".json";
+
+  let data = [];
+
+  blocks.forEach(block => {
+    const name = block.querySelector(".name")?.value || "";
+    const initiative = block.querySelector(".init")?.value || 0;
+    const levelClass = block.querySelector(".levelClass")?.value || "";
+
+    // ✅ FIX: properly read portrait
+    const portrait = block.querySelector(".portraitData")?.value || null;
+
+    let resources = [];
+
+    block.querySelectorAll(".resourceList div").forEach(r => {
+      resources.push({
+        name: r.querySelector(".resName")?.value || "",
+        max: +r.querySelector(".resMax")?.value || 0
+      });
+    });
+
+    data.push({
+      name,
+      initiative,
+      levelClass,
+      portrait,
+      resources
+    });
+  });
+
+  // ✅ clean single call (not inside loop)
+  downloadJSON(data, filename, status);
+}
+
+function downloadJSON(data, filename, status) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json"
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+
+  status.innerText = `Exported: ${filename}`;
+}
+
+function saveTemplateLocal() {
+  const name = document.getElementById("templateName").value.trim();
+  const status = document.getElementById("templateStatus");
+
+  if (!name) {
+    status.innerText = "Enter a template name.";
+    return;
+  }
+
+  const blocks = document.querySelectorAll(".charBlock");
+
+  let data = [];
+
+  blocks.forEach(block => {
+    const charName = block.querySelector(".name").value;
+    const initiative = block.querySelector(".init").value;
+
+    let resources = [];
+
+    block.querySelectorAll(".resourceList div").forEach(r => {
+      resources.push({
+        name: r.querySelector(".resName").value,
+        max: r.querySelector(".resMax").value
+      });
+    });
+
+    data.push({ name: charName, initiative, resources });
+  });
+
+  localStorage.setItem("template_" + name, JSON.stringify(data));
+  loadTemplateList();
+
+  status.innerText = `Saved "${name}"`;
+}
+
+function loadTemplateLocal() {
+  const key = document.getElementById("templateSelect").value;
+  const status = document.getElementById("templateStatus");
+
+  if (!key) return;
+
+  const data = JSON.parse(localStorage.getItem(key));
+  loadImportedTemplate(data);
+
+  status.innerText = `Loaded "${key.replace("template_","")}"`;
+}
+
+function importTemplateUI() {
+  const fileInput = document.getElementById("importFileUI");
+  const status = document.getElementById("templateStatus");
+
+  if (!fileInput.files.length) {
+    status.innerText = "No file selected.";
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      loadImportedTemplate(data);
+      status.innerText = `Imported "${file.name}" successfully.`;
+    } catch {
+      status.innerText = "Invalid template file.";
+    }
+  };
+
+  reader.readAsText(file);
+}
+
+function getGlobal() {
+  if (!tempGlobal[selectedCharacter]) {
+    tempGlobal[selectedCharacter] = {
+      reactions:{attack:0,spell:0,move:0,misc:0,none:0},
+      saves:0,
+      nat1:0,
+      nat20:0,
+      attacksdodged:0,
+      savesmade:0,
+      attacksTaken: 0,
+      savesTotal: 0,
+      damageTaken:0,
+      ccReceived:0
+    };
+  }
+  return tempGlobal[selectedCharacter];
+}
+
+
+function changeGlobal(type, delta) {
+  const g = getGlobal();
+
+  g[type] = Math.max(0, (g[type] || 0) + delta);
+
+  updateGlobalUI();
+}
+
+function logTarget() {
+  const g = getGlobal();
+  updateGlobalUI();
+}
+
+function changeGlobalReaction(type, delta) {
+  const g = getGlobal();
+
+  if (!g.reactions[type]) g.reactions[type] = 0;
+
+  g.reactions[type] = Math.max(0, g.reactions[type] + delta);
+
+  updateGlobalUI();
+}
+
+function updateGlobalUI() {
+  const g = getGlobal();
+
+  document.getElementById("nat1Counter").innerText = g.nat1;
+  document.getElementById("nat20Counter").innerText = g.nat20;
+
+ document.getElementById("globalReactionCounter").innerText =
+  formatCounter(g.reactions || {});
+}
+
+function addResourceInline(btn) {
+  const block = btn.closest(".charBlock");
+
+  const nameInput = block.querySelector(".resNameInput");
+  const maxInput = block.querySelector(".resMaxInput");
+
+  const name = nameInput.value.trim();
+  const max = +maxInput.value;
+
+  if (!name || !max) return;
+
+  const container = block.querySelector(".resourceList");
+
+  const div = document.createElement("div");
+  div.style.marginBottom = "4px";
+
+  div.innerHTML = `
+    ${name}: 
+    <input type="number" class="resCurrent" value="${max}" style="width:50px;">
+    / ${max}
+    <button onclick="this.parentElement.remove()">X</button>
+
+    <input type="hidden" class="resName" value="${name}">
+    <input type="hidden" class="resMax" value="${max}">
+  `;
+
+  container.appendChild(div);
+
+  // clear inputs after adding
+  nameInput.value = "";
+  maxInput.value = "";
+}
+
+function renderResources() {
+ const c = characters[selectedCharacter];
+  const container = document.getElementById("resourceUI");
+
+  container.innerHTML = "";
+
+  for (let key in c.resources) {
+    const r = c.resources[key];
+
+    const div = document.createElement("div");
+    div.style.marginBottom = "6px";
+
+    div.innerHTML = `
+      <b>${key}</b><br>
+      <button onclick="changeResource('${key}', -1)">-</button>
+      <input type="number" value="${r.current}" 
+        onchange="setResource('${key}', this.value)" 
+        style="width:50px;">
+      / ${r.max}
+      <button onclick="changeResource('${key}', 1)">+</button>
+    `;
+
+    container.appendChild(div);
+  }
+}
+
+function loadImportedTemplate(data) {
+  const container = document.getElementById("characterInputs");
+  container.innerHTML = "";
+
+  data.forEach(c => {
+    const div = document.createElement("div");
+    div.classList.add("charBlock");
+
+    div.innerHTML = `
+      Name: <input class="name" value="${c.name || ""}">
+      Initiative: <input class="init" type="number" value="${c.initiative || 0}"><br>
+
+      Portrait:
+      <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
+      <img class="portraitPreview" style="width:60px;height:60px;border-radius:6px;display:${c.portrait ? 'block' : 'none'};" src="${c.portrait || ""}"><br>
+      <input type="hidden" class="portraitData" value="${c.portrait || ""}">
+
+      Level/Class: <input type="text" class="levelClass" value="${c.levelClass || ""}"><br>
+
+      <div class="box">
+        <b>Add Resource</b><br>
+        <input type="text" class="resNameInput" placeholder="Resource name">
+        <input type="number" class="resMaxInput" placeholder="Max" style="width:60px;">
+        <button onclick="addResourceInline(this)">Add</button>
+      </div>
+
+      <div class="resourceList"></div>
+      <hr>
+    `;
+
+    const resourceContainer = div.querySelector(".resourceList");
+
+    if (c.resources) {
+      c.resources.forEach(r => {
+        const resDiv = document.createElement("div");
+        resDiv.innerHTML = `
+          ${r.name}: 
+          <input type="number" class="resCurrent" value="${r.max}" style="width:50px;">
+          / ${r.max}
+          <button onclick="this.parentElement.remove()">X</button>
+
+          <input type="hidden" class="resName" value="${r.name}">
+          <input type="hidden" class="resMax" value="${r.max}">
+        `;
+        resourceContainer.appendChild(resDiv);
+      });
+    }
+
+    container.appendChild(div);
+  });
+}
+
+function changeResource(name, delta) {
+  const r = characters[selectedCharacter].resources[name];
+  r.current = Math.max(0, Math.min(r.max, r.current + delta));
+  renderResources();
+  updateLiveSummary();
+}
+
+function setResource(name, value) {
+  const r = characters[selectedCharacter].resources[name];
+  r.current = Math.max(0, Math.min(r.max, +value || 0));
+  renderResources();
+  updateLiveSummary();
+}
+
+function startCombat() {
+  const names = document.querySelectorAll(".name");
+  const inits = document.querySelectorAll(".init");
+  const blocks = document.querySelectorAll(".charBlock");
+
+  document.getElementById("sidePanel").classList.remove("hidden");
+
+  characters = [];
+  tempGlobal = {};
+
+  for (let i = 0; i < names.length; i++) {
+    let resources = {};
+
+    blocks[i].querySelectorAll(".resourceList div").forEach(r => {
+      const resName = r.querySelector(".resName").value;
+      const max = +r.querySelector(".resMax").value;
+
+      resources[resName] = {
+        current: max,
+        max: max
+      };
+    });
+
+    const existingPortrait = blocks[i].querySelector("img")?.src || null;
+
+characters.push({
+  name: names[i].value,
+  initiative: +inits[i].value,
+  portrait: blocks[i].querySelector(".portraitData")?.value || null,
+  levelClass: blocks[i].querySelector(".levelClass").value,
+  resources: resources,
+  summons: [],
+  stats: {
+    spellSlotsUsed: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+    actions:{attack:0,spell:0,move:0,misc:0},
+    bonus:{attack:0,spell:0,move:0,misc:0},
+    totalActions:0,
+    totalBonus:0,
+    attacksHit:0,
+    attacksTotal:0,
+    savesForced:0,
+    savesSucceeded:0,
+    damage:0,
+    healing:0,
+    cc:0,
+    damageTaken:0,
+    conditions: "",
+    timesTargeted:0,
+    attacksdodged: 0,
+    savesmade: 0,
+    attacksTaken: 0,
+    savesTotal: 0,
+    nat1:0,
+    nat20:0,
+    offTurnReactions:{attack:0,spell:0,move:0,misc:0},
+    turns:[]
+  }
+});
+  }
+
+  characters.sort((a,b)=>b.initiative-a.initiative);
+
+selectedCharacter = 0;
+
+// hide setup, show meta input instead
+document.getElementById("setup").classList.add("hidden");
+document.getElementById("battleMeta").classList.remove("hidden");
+
+// store initiative preview for later
+document.getElementById("initiativeDisplay").innerText =
+  characters.map(c=>`${c.name} (${c.initiative})`).join(" > ");
+
+  document.getElementById("setup").classList.add("hidden");
+  document.getElementById("combat").classList.remove("hidden");
+
+  currentTurn = 0;
+  round = 1;
+
+  renderCharacterBar();
+  updateTurnUI();
+}
+
+function confirmBattleMeta() {
+  battleName = document.getElementById("battleName").value.trim() || "Unnamed Battle";
+  campaignName = document.getElementById("campaignName").value.trim() || "Unknown Campaign";
+
+  document.getElementById("battleMeta").classList.add("hidden");
+  document.getElementById("combat").classList.remove("hidden");
+
+  currentTurn = 0;
+  round = 1;
+
+  renderCharacterBar();
+  updateTurnUI();
+}
+
+function formatCounter(obj) {
+  if (!obj) return "";
+  return Object.entries(obj)
+    .map(([k,v]) => `${k}:${v}`)
+    .join(" | ");
+}
+
+function updateCounters() {
+  document.getElementById("actionCounter").innerText =
+    formatCounter(tempTurn.actions);
+
+  document.getElementById("bonusCounter").innerText =
+    formatCounter(tempTurn.bonus);
+
+}
+
+function addSummon() {
+  const c = characters[selectedCharacter];
+
+  c.summons.push({
+    name: "Summon",
+    count: 1,
+
+    totalDamage: 0,
+    totalHealing: 0,   
+    totalCC: 0,
+    totalTaken: 0,
+
+    turnDamage: 0,
+    turnHealing: 0,    
+    turnCC: 0,
+    turnTaken: 0,
+
+    roundSummoned: round
+  });
+
+  renderSummons();
+  updateLiveSummary();
+}
+function renderSummons() {
+  const c = characters[selectedCharacter];
+  const container = document.getElementById("summonUI");
+
+  container.innerHTML = "";
+
+  c.summons.forEach((s, i) => {
+    const div = document.createElement("div");
+    div.style.marginBottom = "6px";
+
+    div.innerHTML = `
+  <input value="${s.name}" 
+    onchange="updateSummonName(${i}, this.value)" 
+    style="width:90px;">
+
+  #:
+  <input type="number" value="${s.count}" min="1"
+    onchange="updateSummonStat(${i}, 'count', this.value)" 
+    style="width:50px;">
+
+  Turn Dmg:
+  <input type="number" value="${s.turnDamage}" 
+    onchange="updateSummonStat(${i}, 'turnDamage', this.value)" 
+    style="width:60px;">
+
+  Turn Heal:   <!-- ✅ NEW -->
+  <input type="number" value="${s.turnHealing}" 
+    onchange="updateSummonStat(${i}, 'turnHealing', this.value)" 
+    style="width:60px;">
+
+  Turn CC:
+  <input type="number" value="${s.turnCC}" 
+    onchange="updateSummonStat(${i}, 'turnCC', this.value)" 
+    style="width:60px;">
+
+  Turn Taken:
+  <input type="number" value="${s.turnTaken}" 
+    onchange="updateSummonStat(${i}, 'turnTaken', this.value)" 
+    style="width:60px;">
+
+  <button onclick="removeSummon(${i})">X</button>
+`;
+
+    container.appendChild(div);
+  });
+}
+
+function updateSummonName(index, val) {
+  characters[selectedCharacter].summons[index].name = val;
+}
+
+function updateSummonStat(index, key, val) {
+  const s = characters[selectedCharacter].summons[index];
+
+  if (key === "count") {
+    s.count = Math.max(1, +val || 1);
+  } else {
+    s[key] = +val || 0;
+  }
+
+  updateLiveSummary();
+}
+
+function removeSummon(index) {
+  characters[selectedCharacter].summons.splice(index, 1);
+  renderSummons();
+}
+
+function switchCharacter(index) {
+  selectedCharacter = +index;
+
+ if (!tempGlobal[index]) {
+  tempGlobal[index] = {
+      reactions:{attack:0,spell:0,move:0,misc:0,none:0},
+    attacksdodged:0,
+attacksTaken:0,
+savesmade:0,
+savesTotal:0,
+nat1:0,
+nat20:0,
+      damageTaken: 0,
+      ccReceived: 0
+    };
+  }
+
+  renderResources();
+  updateLiveSummary();
+  updateGlobalUI();
+  renderSummons();
+}
+
+function updateTurnUI() {
+  renderCharacterBar();
+  renderSummons();
+  
+  document.getElementById("battleHeader").innerText =
+  `${campaignName} — ${battleName}`;
+
+  const c = characters[currentTurn];
+
+  document.getElementById("turnHeader").innerText =
+    `Round ${round} — ${c.name}`;
+
+  tempTurn = {
+  actions:{attack:0,spell:0,move:0,misc:0,none:0},
+  bonus:{attack:0,spell:0,move:0,misc:0,none:0},
+  spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+  damage:0,
+  healing:0,
+  cc:0,
+  attacks:{hit:0,total:0},
+saves:{forced:0,succeeded:0},
+defense:{
+  dodged:0,taken:0,
+  savesmade:0,total:0
+},
+};
+
+  [
+  "attacksHit",
+  "attacksTotal",
+  "savesForced",
+  "savesSucceeded",
+  "damage",
+  "healing",
+  "cc",
+  "attacksdodgedInput",
+  "attacksTakenInput",
+  "savesmadeInput",
+  "savesTotalInput",
+  "damageTaken"
+].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.value = "";
+});
+  updateCounters();
+  renderResources();
+  updateLiveSummary();
+  updateSpellSlotUI();
+  updateCounterUI();
+}
+
+function changeAction(type, sub, delta) {
+  if (!tempTurn[type][sub]) tempTurn[type][sub] = 0;
+
+  tempTurn[type][sub] = Math.max(0, tempTurn[type][sub] + delta);
+
+  updateCounters();
+  updateLiveSummary();
+}
+
+function changeCounter(path, key, delta) {
+  let obj = tempTurn[path];
+
+  if (!obj[key]) obj[key] = 0;
+
+  obj[key] = Math.max(0, obj[key] + delta);
+
+  updateCounterUI();
+  updateLiveSummary();
+}
+
+function saveSnapshot() {
+  history.push(JSON.stringify({characters,currentTurn,round}));
+}
+
+function addSpellSlot() {
+  const select = document.getElementById("spellLevelSelect");
+  let level = +select.value;
+
+  if (!level) return;
+
+  tempTurn.spellSlots[level]++;
+  
+  updateSpellSlotUI();
+  updateLiveSummary();
+
+  // reset dropdown after selection
+  select.value = "";
+}
+
+function updateCounterUI() {
+  document.getElementById("attackCounter").innerText =
+    `Hit:${tempTurn.attacks.hit} / Total:${tempTurn.attacks.total}`;
+
+  document.getElementById("saveCounter").innerText =
+    `Forced:${tempTurn.saves.forced} / Success:${tempTurn.saves.succeeded}`;
+
+  document.getElementById("defenseCounter").innerText =
+    `Dodged:${tempTurn.defense.dodged}/${tempTurn.defense.taken} | Saves:${tempTurn.defense.savesmade}/${tempTurn.defense.total}`;
+}
+
+function updateSpellSlotUI() {
+  document.getElementById("spellSlotCounter").innerText =
+    Object.entries(tempTurn.spellSlots)
+      .filter(([lvl,val]) => val > 0)
+      .map(([lvl,val]) => `L${lvl}:${val}`)
+      .join(" | ") || "None";
+}
+
+function undoTurn() {
+  if(!history.length) return;
+  let prev = JSON.parse(history.pop());
+  characters = prev.characters;
+  currentTurn = prev.currentTurn;
+  round = prev.round;
+  updateTurnUI();
+}
+
+function updateLiveSummary() {
+const c = characters[selectedCharacter];
+const portraitHTML = c.portrait
+  ? `<img src="${c.portrait}" style="width:80px;height:80px;border-radius:8px;"><br><br>`
+  : "";
+
+const levelClassHTML = c.levelClass
+  ? `<i>${c.levelClass}</i><br><br>`
+  : "";
+
+let g = tempGlobal[selectedCharacter] || {
+  attacksdodged:0,
+savesmade:0,
+nat1:0,
+nat20:0,
+  reactions:{attack:0,spell:0,move:0,misc:0}
+  
+};
+
+let summonHTML = "<br><b>Summons</b><br>";
+
+if (c.summons.length === 0) {
+  summonHTML += "None<br>";
+} else {
+  c.summons.forEach(s => {
+    let lifespan = round - s.roundSummoned + 1;
+
+    summonHTML += `
+  ${s.name} (x${s.count})<br>
+  └ Total: ${s.totalDamage} dmg / ${s.totalHealing} heal / ${s.totalTaken} taken / ${s.totalCC} CC<br>
+  └ This Turn: ${s.turnDamage} / ${s.turnHealing} / ${s.turnTaken} / ${s.turnCC}<br>
+  └ Active: ${lifespan} rounds<br>
+`;
+  });
+}
+
+let reactionSum = Object.values(g.reactions || {}).reduce((a,b)=>a+b,0);
+  let rounds = Math.max(round-1,1);
+
+  let tempActionTotal = Object.values(tempTurn.actions).reduce((a,b)=>a+b,0);
+  let tempBonusTotal = Object.values(tempTurn.bonus).reduce((a,b)=>a+b,0);
+
+  let dpr = (c.stats.damage / rounds).toFixed(2);
+
+  let spellHTML = "<br><b>Spell Slots Used</b><br>";
+
+for (let lvl in c.stats.spellSlotsUsed) {
+  let val = c.stats.spellSlotsUsed[lvl] + (tempTurn.spellSlots?.[lvl] || 0);
+  if (val > 0) spellHTML += `L${lvl}: ${val}<br>`;
+}
+
+  let resourceHTML = "<br><b>Resources</b><br>";
+
+for (let key in c.resources) {
+  let r = c.resources[key];
+  resourceHTML += `${key}: ${r.current}/${r.max}<br>`;
+}
+
+  document.getElementById("liveSummary").innerHTML = `
+  ${portraitHTML}
+  <b>${c.name}</b><br>
+  ${levelClassHTML}
+
+    Actions: ${c.stats.totalActions + tempActionTotal}<br>
+    Bonus: ${c.stats.totalBonus + tempBonusTotal}<br>
+
+    Attacks: ${c.stats.attacksHit}/${c.stats.attacksTotal}<br>
+    Saves: ${c.stats.savesForced}/${c.stats.savesSucceeded}<br><br>
+
+    Damage: ${c.stats.damage + tempTurn.damage}<br>
+    Healing: ${c.stats.healing}<br>
+DPR: ${dpr}<br>
+CC: ${c.stats.cc + tempTurn.cc}<br><br>
+${summonHTML}
+<b>Incoming</b><br>
+Off-turn reactions: ${reactionSum}<br>
+Dodged: ${c.stats.attacksdodged}/${c.stats.attacksTaken}<br>
+Saves Made: ${c.stats.savesmade}/${c.stats.savesTotal}<br>
+Damage Taken: ${c.stats.damageTaken}<br>
+Conditions:<br>${c.stats.conditions || "None"}
+    ${resourceHTML}
+    
+    Spell Slots Used: ${spellHTML}<br>
+  `;
+}
+
+function nextTurn() {
+  if (!characters.length) return;
+
+  saveSnapshot();
+
+  const c = characters[currentTurn];
+
+  // --- SAFE INPUT READER ---
+  const val = (id) => {
+    const el = document.getElementById(id);
+    return el ? (+el.value || 0) : 0;
+  };
+
+  // --- COMMIT TURN DATA ---
+ c.stats.attacksHit += tempTurn.attacks.hit;
+c.stats.attacksTotal += tempTurn.attacks.total;
+
+c.stats.savesForced += tempTurn.saves.forced;
+c.stats.savesSucceeded += tempTurn.saves.succeeded;
+  const turnDamage = val("damage");
+  const turnHealing = val("healing");
+  const turnCC = val("cc");
+
+  let summonDamage = 0;
+  let summonHealing = 0;
+let summonTaken = 0;
+let summonCC = 0;
+
+c.summons.forEach(s => {
+  s.totalDamage += s.turnDamage;
+  s.totalHealing += s.turnHealing; // ✅ NEW
+  s.totalTaken += s.turnTaken;
+  s.totalCC += s.turnCC;
+
+  summonDamage += s.turnDamage;
+  summonHealing += s.turnHealing; // ✅ NEW
+  summonTaken += s.turnTaken;
+  summonCC += s.turnCC;
+
+  s.turnDamage = 0;
+  s.turnHealing = 0; // ✅ NEW
+  s.turnTaken = 0;
+  s.turnCC = 0;
+});
+
+c.stats.damage += turnDamage + summonDamage;
+c.stats.damageTaken += summonTaken;
+c.stats.cc += summonCC;
+
+c.stats.damage += turnDamage + summonDamage;
+c.stats.healing += turnHealing + summonHealing; // ✅ FIX
+c.stats.damageTaken += summonTaken;
+c.stats.cc += turnCC + summonCC;
+
+  // spell slots
+  for (let lvl in tempTurn.spellSlots) {
+    c.stats.spellSlotsUsed[lvl] += tempTurn.spellSlots[lvl];
+  }
+
+  // actions
+  for (let k in tempTurn.actions) {
+    c.stats.actions[k] += tempTurn.actions[k];
+    if (k !== "none") c.stats.totalActions += tempTurn.actions[k];
+  }
+
+  for (let k in tempTurn.bonus) {
+    c.stats.bonus[k] += tempTurn.bonus[k];
+    if (k !== "none") c.stats.totalBonus += tempTurn.bonus[k];
+  }
+
+const g = getGlobal();
+
+// --- DEFENSIVE STATS (CORRECT, SINGLE SOURCE OF TRUTH) ---
+
+c.stats.attacksdodged += tempTurn.defense.dodged + g.attacksdodged;
+c.stats.attacksTaken += tempTurn.defense.taken + g.attacksTaken;
+
+c.stats.savesmade += tempTurn.defense.savesmade + g.savesmade;
+c.stats.savesTotal += tempTurn.defense.total + g.savesTotal;
+
+  c.stats.nat1 += g.nat1;
+  c.stats.nat20 += g.nat20;
+
+ c.stats.damageTaken += val("damageTaken") + (g.damageTaken || 0);
+
+  const condEl = document.getElementById("conditionsInput");
+const cond = condEl ? condEl.value.trim() : "";
+  if (cond) {
+    c.stats.conditions += (c.stats.conditions ? "\n" : "") + cond;
+  }
+
+  // reactions
+  for (let k in g.reactions) {
+    c.stats.offTurnReactions[k] =
+      (c.stats.offTurnReactions[k] || 0) + g.reactions[k];
+  }
+
+  // store turn snapshot
+  c.stats.turns.push({
+    ...tempTurn,
+    damage: turnDamage,
+    healing: turnHealing,
+    cc: turnCC
+  });
+
+  // --- RESET GLOBAL STATE ---
+  tempGlobal[currentTurn] = {
+  reactions:{attack:0,spell:0,move:0,misc:0,none:0},
+  attacksdodged:0,
+  attacksTaken:0,
+  savesmade:0,
+  savesTotal:0,
+  nat1:0,
+  nat20:0,
+  damageTaken:0,
+  ccReceived:0
+};
+  
+
+  // --- CLEAR INPUTS ---
+  [
+    "attacksHit","attacksTotal","savesForced","savesSucceeded",
+    "damage","healing","cc",
+    "attacksdodgedInput","attacksTakenInput",
+    "savesmadeInput","savesTotalInput",
+    "damageTaken","conditionsInput"
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+
+  updateGlobalUI();
+if (!roundLog[round]) roundLog[round] = [];
+
+roundLog[round].push({
+  name: c.name,
+  damage: turnDamage,
+  healing: turnHealing,
+  cc: turnCC,
+  actions: {...tempTurn.actions},
+  bonus: {...tempTurn.bonus},
+  spellSlots: {...tempTurn.spellSlots}
+});
+  // --- ADVANCE TURN ---
+  currentTurn++;
+  if (currentTurn >= characters.length) {
+    currentTurn = 0;
+    round++;
+  }
+
+  // keep UI consistent
+  selectedCharacter = currentTurn;
+
+  // --- REFRESH UI ---
+  updateTurnUI();
+  renderSummons();
+}
+
+function updateResource(name, val) {
+  characters[currentTurn].resources[name].current = +val;
+  updateLiveSummary();
+}
+
+function endCombat() {
+
+  const totalRounds = round - 1;
+
+  let finalReport = {
+    campaign: campaignName,
+    battle: battleName,
+    rounds: totalRounds,
+    images: {
+      start: battleStartImage,
+      end: battleEndImage
+    },
+    characters: [],
+    roundsBreakdown: [],
+    partyTotals: {}
+  };
+
+  // =========================
+  // 🔹 CHARACTER DATA
+  // =========================
+  characters.forEach(c => {
+    let reactionTotal = Object.values(c.stats.offTurnReactions || {})
+      .reduce((a,b)=>a+b,0);
+
+    finalReport.characters.push({
+      name: c.name,
+      levelClass: c.levelClass,
+      stats: {
+        actions: c.stats.totalActions,
+        bonus: c.stats.totalBonus,
+        damage: c.stats.damage,
+        healing: c.stats.healing,
+        cc: c.stats.cc,
+        damageTaken: c.stats.damageTaken,
+        nat20: c.stats.nat20,
+        nat1: c.stats.nat1,
+        reactions: reactionTotal
+      },
+      summons: c.summons,
+      turns: c.stats.turns
+    });
+  });
+
+  // =========================
+  // 🔹 ROUND BREAKDOWN
+  // =========================
+  for (let r in roundLog) {
+    let roundData = roundLog[r];
+
+    finalReport.roundsBreakdown.push({
+      round: +r,
+      totalDamage: roundData.reduce((a,t)=>a+t.damage,0),
+      totalHealing: roundData.reduce((a,t)=>a+t.healing,0),
+      totalCC: roundData.reduce((a,t)=>a+t.cc,0),
+      players: roundData
+    });
+  }
+
+  // =========================
+  // 🔹 PARTY TOTALS
+  // =========================
+  let party = {
+    damage: 0,
+    healing: 0,
+    cc: 0
+  };
+
+  characters.forEach(c => {
+    party.damage += c.stats.damage;
+    party.healing += c.stats.healing;
+    party.cc += c.stats.cc;
+  });
+
+  finalReport.partyTotals = party;
+
+  // =========================
+  // 🧠 ARCHIVE SCHEMA (NEW)
+  // =========================
+  finalReport.archive = {
+    id: `${campaignName}_${battleName}`.replace(/\s+/g, "_"),
+    title: battleName,
+    campaign: campaignName,
+    date: new Date().toISOString(),
+
+    summary: {
+      rounds: totalRounds,
+      partyDamage: party.damage,
+      partyHealing: party.healing
+    },
+
+    // optional preview image
+    thumbnail: battleEndImage || battleStartImage || null
+  };
+
+  // =========================
+  // 🔹 DISPLAY
+  // =========================
+  document.getElementById("combat").classList.add("hidden");
+  document.getElementById("report").classList.remove("hidden");
+
+  document.getElementById("reportOutput").textContent =
+    JSON.stringify(finalReport, null, 2);
+
+function makeSlug(str) {
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+  // store globally for download
+  const campaignSlug = makeSlug(campaignName);
+const battleSlug = makeSlug(battleName);
+const combinedSlug = `${campaignSlug}-${battleSlug}`;
+
+finalReport.slug = combinedSlug;
+finalReport.displayName = `${campaignName} — ${battleName}`;
+finalReport.timestamp = new Date().toISOString();
+
+window.finalReport = finalReport;
+}
+
+async function uploadBattle() {
+  if (!window.finalReport) {
+    alert("No report to upload.");
+    return;
+  }
+
+  try {
+    const res = await fetch("/.netlify/functions/uploadBattle", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(window.finalReport)
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      alert("Battle uploaded successfully!");
+    } else {
+      alert("Upload failed.");
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Error uploading battle.");
+  }
+}
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+  <title>D&D Combat Tracker</title>
+  <style>
+    body { font-family: Arial; background: #111; color: #eee; }
+    button, input, textarea, select { margin: 4px; padding: 6px; }
+    .hidden { display: none; }
+    .box { border: 1px solid #444; padding: 10px; margin: 10px 0; }
+    .counter { font-size: 14px; color: #aaa; }
+    #exportFileName {
+  width: 200px;
+}
+
+.resourceList div {
+  margin-bottom: 4px;
+}
+
+
+#templateStatus {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+#characterBar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.charBtn {
+  padding: 6px 10px;
+  border: 1px solid #555;
+  cursor: pointer;
+  background: #222;
+}
+
+.charBtn.active {
+  background: rgb(30, 72, 126);
+  color: #000;
+}
+
+.charBtn.turn {
+  outline: 2px solid #ff0;
+}
+.box:last-of-type {
+  margin-bottom: 20px;
+  
+}
+.box button {
+  min-width: 28px;
+}
+
+.box {
+  line-height: 28px;
+}
+.charBtn img {
+  display: block;
+  margin: 0 auto 4px;
+}
+
+#liveSummary img {
+  display: block;
+  margin-bottom: 8px;
+}
+  </style>
+</head>
+<body>
+
+<h2>Combat Setup</h2>
+
+<div id="setup">
+  <div id="characterInputs"></div>
+  <button onclick="addCharacter()">Add Character</button>
+  <br><br>
+
+  <br><br>
+  <button onclick="startCombat()">Initiate Combat</button>
+<div class="box">
+  <h3>Template Manager</h3>
+
+  <!-- Save/Load (Local) -->
+
+  <hr>
+
+  <!-- Export -->
+  <div>
+    <input type="text" id="exportFileName" placeholder="file name">
+    <button onclick="exportTemplateUI()">Export File</button>
+  </div>
+
+  <br>
+
+  <!-- Import -->
+  <div>
+    <input type="file" id="importFileUI" accept=".json">
+    <button onclick="importTemplateUI()">Import File</button>
+  </div>
+
+  <div id="templateStatus" style="color:#aaa; margin-top:6px;"></div>
+</div>
+</div>
+
+<div id="battleMeta" class="hidden box">
+  <h3>Battle Info</h3>
+
+  
+  Campaign: <input type="text" id="campaignName" placeholder="Campaign name"><br>
+  Battle: <input type="text" id="battleName" placeholder="Battle name"><br><br>
+  Start Image:
+<input type="file" accept="image/*" onchange="handleBattleImage(this, 'start')"><br>
+<img id="startPreview" style="width:120px;display:none;"><br>
+
+  <button onclick="confirmBattleMeta()">Start Battle</button>
+</div>
+
+<div id="characterBar" class="box"></div>
+
+<div id="combat" class="hidden">
+  <h3 id="initiativeDisplay"></h3>
+<h2 id="turnHeader"></h2>
+<h4 id="battleHeader"></h4>
+
+ <div class="box">
+  <b>Actions</b><br>
+
+- <button onclick="changeAction('actions','attack',-1)">-</button>
+Attack
+<button onclick="changeAction('actions','attack',1)">+</button>
+
+- <button onclick="changeAction('actions','spell',-1)">-</button>
+Spell
+<button onclick="changeAction('actions','spell',1)">+</button>
+
+- <button onclick="changeAction('actions','move',-1)">-</button>
+Move
+<button onclick="changeAction('actions','move',1)">+</button>
+
+- <button onclick="changeAction('actions','misc',-1)">-</button>
+Misc
+<button onclick="changeAction('actions','misc',1)">+</button>
+
+- <button onclick="changeAction('actions','none',-1)">-</button>
+None
+<button onclick="changeAction('actions','none',1)">+</button>
+
+<div id="actionCounter" class="counter"></div>
+</div>
+
+  <div class="box">
+    <b>Bonus Actions</b><br>
+
+<button onclick="changeAction('bonus','attack',-1)">-</button>
+Attack
+<button onclick="changeAction('bonus','attack',1)">+</button>
+
+<button onclick="changeAction('bonus','spell',-1)">-</button>
+Spell
+<button onclick="changeAction('bonus','spell',1)">+</button>
+
+<button onclick="changeAction('bonus','move',-1)">-</button>
+Move
+<button onclick="changeAction('bonus','move',1)">+</button>
+
+<button onclick="changeAction('bonus','misc',-1)">-</button>
+Misc
+<button onclick="changeAction('bonus','misc',1)">+</button>
+
+<button onclick="changeAction('bonus','none',-1)">-</button>
+None
+<button onclick="changeAction('bonus','none',1)">+</button>
+
+<div id="bonusCounter" class="counter"></div>
+  </div>
+
+    
+    <div class="box">
+  <b>Resources</b>
+  <div id="resourceUI"></div>
+
+  <div class="box">
+  <b>Summons</b><br>
+
+  <button onclick="addSummon()">+ Add Summon</button>
+
+  <div id="summonUI"></div>
+</div>
+</div>
+
+<div class="box">
+  <b>Spell Slots Expended</b><br>
+
+<select id="spellLevelSelect">
+  <option value="">Select Level</option>
+  <option value="1">Level 1</option>
+  <option value="2">Level 2</option>
+  <option value="3">Level 3</option>
+  <option value="4">Level 4</option>
+  <option value="5">Level 5</option>
+  <option value="6">Level 6</option>
+  <option value="7">Level 7</option>
+  <option value="8">Level 8</option>
+  <option value="9">Level 9</option>
+</select>
+
+<button onclick="addSpellSlot()">Add Slot</button>
+
+<div id="spellSlotCounter" class="counter"></div>
+</div>
+
+  <div class="box">
+   <b>Attacks</b><br>
+
+<button onclick="changeCounter('attacks','hit',-1)">-</button>
+Hit
+<button onclick="changeCounter('attacks','hit',1)">+</button>
+
+<button onclick="changeCounter('attacks','total',-1)">-</button>
+Total
+<button onclick="changeCounter('attacks','total',1)">+</button>
+
+<div id="attackCounter" class="counter"></div>
+
+
+<b>Saves (Offensive)</b><br>
+
+<button onclick="changeCounter('saves','forced',-1)">-</button>
+Forced
+<button onclick="changeCounter('saves','forced',1)">+</button>
+
+<button onclick="changeCounter('saves','succeeded',-1)">-</button>
+Succeeded
+<button onclick="changeCounter('saves','succeeded',1)">+</button>
+
+<div id="saveCounter" class="counter"></div>
+
+<div id="attackCounter" class="counter"></div>
+    Damage <input id="damage" type="number">
+Healing <input id="healing" type="number">
+CC <input id="cc" type="number">
+
+
+  </div>
+  <div class="box">
+  <b>Off-Turn Events</b><br>
+
+<b>Defense</b><br>
+
+<button onclick="changeCounter('defense','dodged',-1)">-</button>
+Attacks Dodged
+<button onclick="changeCounter('defense','dodged',1)">+</button>
+
+<button onclick="changeCounter('defense','taken',-1)">-</button>
+Attacks Taken
+<button onclick="changeCounter('defense','taken',1)">+</button>
+
+<br>
+
+<button onclick="changeCounter('defense','savesmade',-1)">-</button>
+Saves Made
+<button onclick="changeCounter('defense','savesmade',1)">+</button>
+
+<button onclick="changeCounter('defense','total',-1)">-</button>
+Total
+<button onclick="changeCounter('defense','total',1)">+</button>
+
+<div id="defenseCounter" class="counter"></div>
+
+<b>Nat 1s</b>
+<button onclick="changeGlobal('nat1',-1)">-</button>
+<button onclick="changeGlobal('nat1',1)">+</button>
+<span id="nat1Counter">0</span>
+
+<br><br>
+
+<b>Nat 20s</b>
+<button onclick="changeGlobal('nat20',-1)">-</button>
+<button onclick="changeGlobal('nat20',1)">+</button>
+<span id="nat20Counter">0</span>
+
+<br> 
+<hr style="border-color:#333;">
+<b>Reactions</b><br>
+
+<button onclick="changeGlobalReaction('attack',-1)">-</button>
+Attack
+<button onclick="changeGlobalReaction('attack',1)">+</button>
+
+<button onclick="changeGlobalReaction('spell',-1)">-</button>
+Spell
+<button onclick="changeGlobalReaction('spell',1)">+</button>
+
+<button onclick="changeGlobalReaction('move',-1)">-</button>
+Move
+<button onclick="changeGlobalReaction('move',1)">+</button>
+
+<button onclick="changeGlobalReaction('misc',-1)">-</button>
+Misc
+<button onclick="changeGlobalReaction('misc',1)">+</button>
+
+<button onclick="changeGlobalReaction('none',-1)">-</button>
+None
+<button onclick="changeGlobalReaction('none',1)">+</button>
+
+<div id="globalReactionCounter" class="counter"></div>
+
+Damage Taken <input id="damageTaken" type="number">
+Conditions <input id="conditionsInput" type="text" style="width:150px;">
+</div>
+
+  <button onclick="undoTurn()">Undo</button>
+  <button onclick="nextTurn()">Next Turn</button>
+  <button onclick="endCombat()">End Combat</button>
+</div>
+  </div>
+
+  
+
+<div class="box">
+  <b>End of Battle Image</b><br>
+
+  <input type="file" accept="image/*" onchange="handleBattleImage(this, 'end')"><br>
+  <img id="endPreview" style="width:120px;display:none;"><br>
+</div>
+<div id="report" class="hidden">
+  <h2>Combat Report</h2>
+
+  <pre id="reportOutput" style="
+    background:#000;
+    color:#0f0;
+    padding:10px;
+    max-height:600px;
+    overflow:auto;
+  "></pre>
+
+  <br>
 
   <button onclick="downloadReportJSON()">Download JSON</button>
 </div>
