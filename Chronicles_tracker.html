@@ -557,14 +557,20 @@ function handleBattleImage(input, type) {
 }
 
 function downloadReportJSON() {
-  const data = JSON.stringify(finalReport, null, 2);
+  if (!window.finalReport) {
+    alert("No report available.");
+    return;
+  }
+
+  const data = JSON.stringify(window.finalReport, null, 2);
 
   const blob = new Blob([data], { type: "application/json" });
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = (battleMeta?.name || "combat_report") + ".json";
+  a.download = `${campaignName}_${battleName}`
+    .replace(/\s+/g, "_") + ".json";
 
   document.body.appendChild(a);
   a.click();
@@ -1713,10 +1719,10 @@ function makeSlug(str) {
   // store globally for download
   const campaignSlug = makeSlug(campaignName);
 const battleSlug = makeSlug(battleName);
+const combinedSlug = `${campaignSlug}-${battleSlug}`;
+
 finalReport.campaignSlug = campaignSlug;
 finalReport.battleSlug = battleSlug;
-finalReport.slug = `${campaignSlug}-${battleSlug}`;
-
 finalReport.slug = combinedSlug;
 finalReport.displayName = `${campaignName} — ${battleName}`;
 finalReport.timestamp = new Date().toISOString();
@@ -1752,11 +1758,8 @@ async function uploadBattle() {
     alert("Error uploading battle.");
   }
   window.onload = () => {
-  loadAutoSave();
-  window.onload = () => {
   loadTemplateList();
   loadAutoSave(); // keep your autosave too
-};
 };
 }
 </script>
