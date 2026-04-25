@@ -1,0 +1,211 @@
+{
+  "campaign": "",
+  "battle": "",
+  "rounds": 0,
+  "images": {
+    "start": null,
+    "end": null
+  },
+  "characters": [
+    {
+      "name": "Fishel Iven",
+      "levelClass": "",
+      "stats": {
+        "actions": 1,
+        "bonus": 0,
+        "attacks": {
+          "hit": 0,
+          "total": 0
+        },
+        "saves": {
+          "forced": 0,
+          "succeeded": 0
+        },
+        "damage": 64,
+        "healing": 0,
+        "cc": 0,
+        "defense": {
+          "dodged": 0,
+          "taken": 0,
+          "savesMade": 0,
+          "savesTotal": 0
+        },
+        "damageTaken": 0,
+        "nat20": 0,
+        "nat1": 0,
+        "reactions": 0
+      },
+      "summons": [],
+      "turns": [
+        {
+          "actions": {
+            "attack": 1,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonus": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "damage": 32,
+          "healing": 0,
+          "cc": 0,
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "dodged": 0,
+            "taken": 0,
+            "savesmade": 0,
+            "total": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "Xistao euassor",
+      "levelClass": "",
+      "stats": {
+        "actions": 0,
+        "bonus": 0,
+        "attacks": {
+          "hit": 0,
+          "total": 0
+        },
+        "saves": {
+          "forced": 0,
+          "succeeded": 0
+        },
+        "damage": 0,
+        "healing": 0,
+        "cc": 0,
+        "defense": {
+          "dodged": 0,
+          "taken": 0,
+          "savesMade": 0,
+          "savesTotal": 0
+        },
+        "damageTaken": 0,
+        "nat20": 0,
+        "nat1": 0,
+        "reactions": 0
+      },
+      "summons": [],
+      "turns": []
+    },
+    {
+      "name": "Rexia Lifon",
+      "levelClass": "",
+      "stats": {
+        "actions": 0,
+        "bonus": 0,
+        "attacks": {
+          "hit": 0,
+          "total": 0
+        },
+        "saves": {
+          "forced": 0,
+          "succeeded": 0
+        },
+        "damage": 0,
+        "healing": 0,
+        "cc": 0,
+        "defense": {
+          "dodged": 0,
+          "taken": 0,
+          "savesMade": 0,
+          "savesTotal": 0
+        },
+        "damageTaken": 0,
+        "nat20": 0,
+        "nat1": 0,
+        "reactions": 0
+      },
+      "summons": [],
+      "turns": []
+    }
+  ],
+  "roundsBreakdown": [
+    {
+      "round": 1,
+      "totalDamage": 32,
+      "totalHealing": 0,
+      "totalCC": 0,
+      "players": [
+        {
+          "name": "Fishel Iven",
+          "damage": 32,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 1,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonus": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          }
+        }
+      ]
+    }
+  ],
+  "partyTotals": {
+    "damage": 64,
+    "healing": 0,
+    "cc": 0,
+    "actions": 1,
+    "bonus": 0,
+    "attacksHit": 0,
+    "attacksTotal": 0,
+    "savesForced": 0,
+    "savesSucceeded": 0,
+    "attacksdodged": 0,
+    "attacksTaken": 0,
+    "savesmade": 0,
+    "savesTotal": 0,
+    "reactions": 0,
+    "nat20": 0,
+    "nat1": 0,
+    "damageTaken": 0,
+    "hitRate": 0,
+    "saveRate": 0
+  }
+}
