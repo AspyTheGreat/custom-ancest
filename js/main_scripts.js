@@ -35,7 +35,7 @@ async function loadCampaigns() {
 
   try {
     const res = await fetch(
-  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles/${campaignSlug}?ref=main`
+  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/battles/${campaignSlug}?ref=main`
 );
 
 if (!res.ok) {
@@ -80,7 +80,7 @@ async function loadBattles(campaignSlug) {
 
   try {
    const res = await fetch(
-  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles/${campaignSlug}?ref=main`
+  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/battles/${campaignSlug}?ref=main`
 );
 
 if (!res.ok) {
