@@ -200,10 +200,20 @@ h1 {
    PREVIOUS BATTLES PAGE
   ======================*/
 
+/* =========================
+   📦 LAYOUT
+========================= */
 #content {
-  margin-top: 20px;
+  width: 100%;
+  max-width: 1400px;   /* 🔥 more room */
+  margin: 20px auto 0;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
+/* =========================
+   🖱️ INTERACTION
+========================= */
 .clickable {
   cursor: pointer;
 }
@@ -214,7 +224,7 @@ h1 {
 
 .backBtn {
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   display: inline-block;
   color: #aaa;
 }
@@ -222,60 +232,56 @@ h1 {
 .backBtn:hover {
   color: #fff;
 }
-}
 
+/* =========================
+   📦 CONTAINERS
+========================= */
 .box {
   border: 1px solid #444;
-  padding: 12px;
-  margin: 12px 0;
-  border-radius: 10px;
+  padding: 14px;
+  margin: 16px 0;
+  border-radius: 12px;
   background: #1a1a1a;
 }
 
 .world-card {
   border: 1px solid #333;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 8px;
+  padding: 12px;
+  border-radius: 10px;
   background: #181818;
-}
 
-.world-card h4 {
-  margin: 0 0 4px 0;
-}
-/* 🔥 Prevent overflow issues */
-.box, .world-card {
-  max-width: 100%;
+  width: 100%;
   box-sizing: border-box;
 }
 
-/* 🔥 Fix text spilling out */
+/* Prevent weird text wrapping */
 .world-card {
   overflow-wrap: break-word;
-  word-break: break-word;
+  word-break: normal;
   white-space: normal;
 }
 
-/* 🔥 Ensure vertical stacking behaves */
-#characters, #rounds {
+.world-card h4 {
+  margin: 0 0 6px 0;
+}
+
+/* =========================
+   👥 CHARACTERS GRID
+========================= */
+#characters {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* 🔥 key fix */
+  gap: 16px;
 }
-#content {
-  width: 100%;
-  max-width: 1200px;   /* 🔥 increase this */
-  margin: 0 auto;
-  padding: 0 12px;
-  box-sizing: border-box;
-}
-/* Character cards */
+
+/* Character card */
 .char-card {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
+/* Header */
 .char-header {
   display: flex;
   justify-content: space-between;
@@ -287,18 +293,23 @@ h1 {
   font-size: 0.9em;
 }
 
+/* Stats grid */
 .char-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  grid-template-columns: repeat(2, 1fr); /* 🔥 was 3 → fixed */
+  gap: 8px;
 }
 
 .char-stats div {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
   background: #222;
-  padding: 4px 6px;
+  padding: 6px 8px;
   border-radius: 6px;
+
+  white-space: nowrap; /* 🔥 prevents "Da ma ge" */
 }
 
 .char-stats label {
@@ -306,23 +317,36 @@ h1 {
   font-size: 0.8em;
 }
 
-/* Round cards */
+/* =========================
+   🔁 ROUNDS
+========================= */
+#rounds {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .round-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .round-players {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .round-player {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
   background: #222;
-  padding: 4px 6px;
+  padding: 6px 8px;
   border-radius: 6px;
+
+  white-space: nowrap; /* 🔥 prevents wrapping mess */
+}
 }
