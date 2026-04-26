@@ -266,3 +266,60 @@ h1 {
   max-width: 900px;
   margin: 0 auto;
 }
+/* Character cards */
+.char-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.char-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.char-header span {
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+.char-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.char-stats div {
+  display: flex;
+  justify-content: space-between;
+  background: #222;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+.char-stats label {
+  color: #aaa;
+  font-size: 0.8em;
+}
+
+/* Round cards */
+.round-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.round-players {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.round-player {
+  display: flex;
+  justify-content: space-between;
+  background: #222;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
