@@ -124,7 +124,6 @@ if (!Array.isArray(data)) {
 function openBattle(url) {
   window.open(url, "_blank");
 }
-
 // =========================
 // 🧼 FORMAT NAMES
 // =========================
@@ -133,3 +132,4 @@ function formatName(slug) {
     .replace(/-/g, " ")
     .replace(/\b\w/g, l => l.toUpperCase());
 }
+document.addEventListener("DOMContentLoaded", loadCampaigns);
