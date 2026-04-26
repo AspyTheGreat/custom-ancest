@@ -249,14 +249,20 @@ h1 {
   border: 1px solid #333;
   padding: 12px;
   border-radius: 10px;
-  background: #181818;
 
   width: 100%;
   box-sizing: border-box;
+
+  background-color: #181818; /* fallback */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: #fff;
 }
 
 /* Prevent weird text wrapping */
-.world-card {
+.world-card-text {
   overflow-wrap: break-word;
   word-break: normal;
   white-space: normal;

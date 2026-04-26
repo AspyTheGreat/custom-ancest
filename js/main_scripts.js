@@ -146,29 +146,28 @@ async function loadBattles(campaignPath) {
 
       // ✅ Fetch each battle JSON to extract timestamp
       const battlesWithData = await Promise.all(
-        battleFiles.map(async (file) => {
-          try {
-            const res = await fetch(file.download_url);
-            const json = await res.json();
+  battleFiles.map(async (file) => {
+    try {
+      const res = await fetch(file.download_url);
+      const json = await res.json();
 
-            // 🔧 Adjust this if your structure differs
-            const rawTimestamp = json.timestamp || json.date || 0;
+      const parsedTime = new Date(json.timestamp).getTime();
 
-            const parsedTime = new Date(json.timestamp).getTime();
-
-           return {
-  file,
-  timestamp: isNaN(parsedTime) ? 0 : parsedTime
-};
-          } catch (err) {
-            logError(`Failed to load JSON for ${file.name}`, err);
-            return {
-              file,
-              timestamp: 0
-            };
-          }
-        })
-      );
+      return {
+        file,
+        timestamp: isNaN(parsedTime) ? 0 : parsedTime,
+        startImage: json.images?.start || null   // ✅ ADD THIS LINE
+      };
+    } catch (err) {
+      logError(`Failed to load JSON for ${file.name}`, err);
+      return {
+        file,
+        timestamp: 0,
+        startImage: null // ✅ also here
+      };
+    }
+  })
+);
 
       // ✅ Sort newest first
       battlesWithData.sort((a, b) => b.timestamp - a.timestamp);
@@ -193,18 +192,23 @@ async function loadBattles(campaignPath) {
         log("Rendering battle:", file.name, "| timestamp:", timestamp);
 
         const div = document.createElement("div");
-        div.className = "world-card-previous-battles clickable";
+div.className = "world-card-previous-battles clickable";
 
-        const battleName = file.name.replace(".json", "");
-        div.innerText = formatName(battleName);
+if (startImage) {
+  div.style.backgroundImage = `
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+    url(${startImage})
+  `;
+}
 
-        div.onclick = () => {
-          log("Opening battle:", file.download_url);
-          openBattle(file.download_url);
-        };
+const battleName = file.name.replace(".json", "");
+div.innerText = formatName(battleName);
 
-        container.appendChild(div);
-      });
+div.onclick = () => {
+  openBattle(file.download_url);
+};
+
+container.appendChild(div);
 
       // ⚠️ Empty state
       if (battlesWithData.length === 0) {
