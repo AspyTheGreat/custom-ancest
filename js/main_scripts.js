@@ -86,7 +86,7 @@ async function loadCampaigns() {
         log("Creating campaign card:", c.name, "| path:", c.path);
 
         const div = document.createElement("div");
-        div.className = "world-card clickable";
+        div.className = "world-card-previous-battles clickable";
 
         div.innerText = formatName(c.name);
 
@@ -193,7 +193,7 @@ async function loadBattles(campaignPath) {
         log("Rendering battle:", file.name, "| timestamp:", timestamp);
 
         const div = document.createElement("div");
-        div.className = "world-card clickable";
+        div.className = "world-card-previous-battles clickable";
 
         const battleName = file.name.replace(".json", "");
         div.innerText = formatName(battleName);
@@ -324,7 +324,7 @@ function renderCharacters(characters) {
 
   characters.forEach(char => {
     const card = document.createElement("div");
-card.className = "world-card char-card"; // 🔥 REQUIRED
+card.className = "world-card-previous-battles char-card"; // 🔥 REQUIRED
 
 card.innerHTML = `
   ${char.portrait ? `
@@ -359,7 +359,7 @@ function renderRounds(rounds) {
 
   rounds.forEach(r => {
     const div = document.createElement("div");
-    div.className = "world-card round-card";
+    div.className = "world-card-previous-battles round-card";
 
     div.innerHTML = `
       <div class="round-header">

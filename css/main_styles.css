@@ -195,7 +195,7 @@ h1 {
 .infinitum-tile:hover {
   background: #6a5acd;
   color: #0b0b0f;
-  
+}
   /* =========================
    PREVIOUS BATTLES PAGE
   ======================*/
@@ -245,7 +245,7 @@ h1 {
   background: #1a1a1a;
 }
 
-.world-card {
+.world-card-previous-battles {
   border: 1px solid #333;
   padding: 12px;
   border-radius: 10px;
@@ -264,7 +264,7 @@ h1 {
   max-width: 100%;
 }
 
-.world-card h4 {
+.world-card-previous-battles h4 {
   margin: 0 0 6px 0;
 }
 
@@ -408,5 +408,4 @@ h1 {
   border-radius: 6px;
 
   white-space: nowrap; /* 🔥 prevents wrapping mess */
-}
 }
