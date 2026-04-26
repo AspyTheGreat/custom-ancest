@@ -195,10 +195,8 @@ async function loadBattles(campaignPath) {
 div.className = "world-card-previous-battles clickable";
 
 if (startImage) {
-  div.style.backgroundImage = `
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
-    url(${startImage})
-  `;
+  div.style.backgroundImage =
+  "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)), url('" + startImage + "')";
 }
 
 const battleName = file.name.replace(".json", "");
