@@ -284,13 +284,6 @@ h1 {
   gap: 10px;
 }
 
-.char-portrait {
-  width: 44px;
-  height: 44px;
-  border-radius: 6px;
-  object-fit: cover;
-  border: 1px solid #444;
-}
 
 #characters, #rounds {
   width: 100%;
@@ -307,24 +300,24 @@ h1 {
   width: 260px;
   min-width: 260px;
 
-  display: flex;              /* 🔥 REQUIRED */
-  flex-direction: column;     /* 🔥 REQUIRED */
-  align-items: center;        /* 🔥 REQUIRED */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 
-  padding: 12px;
+  padding: 16px; /* slightly bigger */
+
+  border: 1px solid #333;
+  border-radius: 12px;
+  background: #1a1a1a;
 }
 
 .char-portrait {
-  width: 60px !important;
-  height: 60px !important;
-  max-width: 60px;
-  max-height: 60px;
-
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
   object-fit: cover;
-  border-radius: 8px;
   border: 1px solid #444;
-
   display: block;
   margin-bottom: 8px;
 }
@@ -375,14 +368,36 @@ h1 {
 
 /* Character portraits */
 
-.char-portrait {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 1px solid #444;
+
+.char-main-stats {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.char-main-stats div {
+  text-align: center;
+}
+
+.char-main-stats b {
   display: block;
-  margin-bottom: 8px;
+  font-size: 1.3rem;
+}
+
+.char-main-stats label {
+  font-size: 0.7rem;
+  color: #aaa;
+}
+.char-details {
+  margin-top: 10px;
+  width: 100%;
+
+  display: grid;
+  gap: 4px;
+
+  font-size: 0.85rem;
+  color: #ccc;
 }
 /* =========================
    🔁 ROUNDS
@@ -392,11 +407,22 @@ h1 {
   flex-direction: column;
   gap: 12px;
 }
-
+.round-card {
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 12px;
+  background: #181818;
+}
 .round-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
+}
+
+.round-totals span {
+  margin-left: 10px;
+  color: #aaa;
+  font-size: 0.9rem;
 }
 
 .round-players {
@@ -415,4 +441,20 @@ h1 {
   border-radius: 6px;
 
   white-space: nowrap; /* 🔥 prevents wrapping mess */
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.stat-box {
+  text-align: center;
+}
+
+.stat-box span {
+  display: block;
+  font-size: 1.8rem;
+  margin-top: 6px;
 }

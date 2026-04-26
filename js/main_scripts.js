@@ -272,112 +272,119 @@ function renderBattleUI(data) {
   const date = new Date(data.timestamp).toLocaleString();
 
   container.innerHTML = `
-  <div class="backBtn">← Back</div>
+    <div class="backBtn">← Back</div>
 
-  <h2>${data.displayName}</h2>
-  <p style="color:#aaa;">
-    ${data.campaign} • ${date} • ${data.rounds} round(s)
-  </p>
+    <h2>${data.displayName}</h2>
+    <p class="meta">
+      ${data.campaign} • ${date} • ${data.rounds} rounds
+    </p>
 
- ${data.images?.start ? `
-  <div class="battle-image">
-    <img loading="lazy"
-         src="${data.images.start}"
-         alt="Start">
-  </div>
-` : ""}
+    ${renderImage(data.images?.start)}
 
-  <div class="box">
-    <h3>Party Totals</h3>
-    <p>Damage: <b>${data.partyTotals.damage}</b></p>
-    <p>Healing: <b>${data.partyTotals.healing}</b></p>
-    <p>CC: <b>${data.partyTotals.cc}</b></p>
-  </div>
+    <div class="grid-3">
+      <div class="box stat-box">
+        <h3>Damage</h3>
+        <span>${data.partyTotals.damage}</span>
+      </div>
+      <div class="box stat-box">
+        <h3>Healing</h3>
+        <span>${data.partyTotals.healing}</span>
+      </div>
+      <div class="box stat-box">
+        <h3>CC</h3>
+        <span>${data.partyTotals.cc}</span>
+      </div>
+    </div>
 
-  <div class="box">
-    <h3>Characters</h3>
-    <div id="characters"></div>
-  </div>
+    <div class="box">
+      <h3>Characters</h3>
+      <div id="characters" class="char-grid"></div>
+    </div>
 
-  <div class="box">
-    <h3>Rounds</h3>
-    <div id="rounds"></div>
-  </div>
+    <div class="box">
+      <h3>Rounds</h3>
+      <div id="rounds"></div>
+    </div>
 
-  ${data.images?.end ? `
-  <div class="battle-image">
-    <img loading="lazy"
-         src="${data.images.end}"
-         alt="End">
-  </div>
-` : ""}
-`;
+    ${renderImage(data.images?.end)}
+  `;
 
   container.querySelector(".backBtn").onclick = loadCampaigns;
 
-  renderCharacters(data.characters);
-  renderRounds(data.roundsBreakdown);
+  renderCharacters(data.characters || []);
+  renderRounds(data.roundSummaries || []);
 }
 
 function renderCharacters(characters) {
-  const containerDiv = document.getElementById("characters");
-  containerDiv.innerHTML = "";
+  const el = document.getElementById("characters");
+  el.innerHTML = "";
 
   characters.forEach(char => {
+    const accuracy = char.stats.attacks.total
+      ? Math.round((char.stats.attacks.hit / char.stats.attacks.total) * 100)
+      : 0;
+
     const card = document.createElement("div");
-card.className = "world-card-previous-battles char-card"; // 🔥 REQUIRED
+    card.className = "char-card";
 
-card.innerHTML = `
-  ${char.portrait ? `
-    <img class="char-portrait"
-         src="${char.portrait}"
-         alt="${char.name}">
-  ` : ""}
+    card.innerHTML = `
+      ${char.portrait ? `<img class="char-portrait" src="${char.portrait}">` : ""}
 
-  <h4>${char.name.trim()}</h4>
-  <span>${char.levelClass}</span>
+      <h4>${char.name}</h4>
+      <span class="sub">${char.levelClass}</span>
 
-  <div class="char-stats">
-    <div><label>DMG</label><span>${char.stats.damage}</span></div>
-    <div><label>HEAL</label><span>${char.stats.healing}</span></div>
-    <div><label>ACT</label><span>${char.stats.actions}</span></div>
-    <div><label>BON</label><span>${char.stats.bonus}</span></div>
-    <div><label>CRIT</label><span>${char.stats.nat20}</span></div>
-    <div><label>FAIL</label><span>${char.stats.nat1}</span></div>
-  </div>
-`;
+      <div class="char-main-stats">
+        <div><b>${char.stats.damage}</b><label>DMG</label></div>
+        <div><b>${char.stats.healing}</b><label>HEAL</label></div>
+        <div><b>${char.stats.cc}</b><label>CC</label></div>
+      </div>
 
-containerDiv.appendChild(card); // 🔥 REQUIRED
+      <div class="char-details">
+        <div>Actions: ${char.stats.actionsTotal}</div>
+        <div>Bonus: ${char.stats.bonusTotal}</div>
+        <div>Reactions: ${sumObj(char.stats.reactions)}</div>
+        <div>Accuracy: ${accuracy}%</div>
+        <div>Damage Taken: ${char.stats.damageTaken}</div>
+        <div>Crits: ${char.stats.nat20} / Fails: ${char.stats.nat1}</div>
+      </div>
+    `;
 
-    containerDiv.appendChild(card);
+    el.appendChild(card);
   });
 }
 
-function renderRounds(rounds) {
-  const containerDiv = document.getElementById("rounds");
+function sumObj(obj = {}) {
+  return Object.values(obj).reduce((a, b) => a + b, 0);
+}
 
-  containerDiv.innerHTML = "";
+function renderRounds(rounds) {
+  const el = document.getElementById("rounds");
+  el.innerHTML = "";
 
   rounds.forEach(r => {
     const div = document.createElement("div");
-    div.className = "world-card-previous-battles round-card";
+    div.className = "round-card";
 
     div.innerHTML = `
       <div class="round-header">
         <h4>Round ${r.round}</h4>
-        <span>${r.totalDamage} dmg</span>
+        <div class="round-totals">
+          <span>${r.totals.damage} dmg</span>
+          <span>${r.totals.healing} heal</span>
+          <span>${r.totals.cc} cc</span>
+        </div>
       </div>
 
       <div class="round-players">
         ${r.players.map(p => `
-  <div class="round-player">
-    <span>${p.name}</span>
-    <span>${p.damage}</span>
-  </div>
-`).join("")}
+          <div class="round-player">
+            <span>${p.name}</span>
+            <span>${p.damage} dmg</span>
+          </div>
+        `).join("")}
       </div>
     `;
 
-    containerDiv.appendChild(div);
+    el.appendChild(div);
   });
 }
