@@ -243,3 +243,26 @@ h1 {
 .world-card h4 {
   margin: 0 0 4px 0;
 }
+/* 🔥 Prevent overflow issues */
+.box, .world-card {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 🔥 Fix text spilling out */
+.world-card {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* 🔥 Ensure vertical stacking behaves */
+#characters, #rounds {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#content {
+  max-width: 900px;
+  margin: 0 auto;
+}
