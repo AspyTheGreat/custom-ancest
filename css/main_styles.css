@@ -297,16 +297,32 @@ h1 {
 
 /* Character card */
 .char-card {
-  width: 260px;           /* 🔥 fixed width = no squish */
+  width: 260px;
   min-width: 260px;
+
+  display: flex;              /* 🔥 REQUIRED */
+  flex-direction: column;     /* 🔥 REQUIRED */
+  align-items: center;        /* 🔥 REQUIRED */
+  text-align: center;
+
+  padding: 12px;
+}
+
+.char-portrait {
+  width: 60px !important;
+  height: 60px !important;
+  max-width: 60px;
+  max-height: 60px;
+
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #444;
+
+  display: block;
+  margin-bottom: 8px;
 }
 
 /* Header */
-.char-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
 .char-header span {
   color: #aaa;
@@ -351,11 +367,6 @@ h1 {
 }
 
 /* Character portraits */
-.char-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
 
 .char-portrait {
   width: 60px;

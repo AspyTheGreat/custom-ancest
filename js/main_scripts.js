@@ -324,9 +324,9 @@ function renderCharacters(characters) {
 
   characters.forEach(char => {
     const card = document.createElement("div");
-    card.className = "world-card char-card";
+card.className = "world-card char-card"; // 🔥 REQUIRED
 
-    card.innerHTML = `
+card.innerHTML = `
   ${char.portrait ? `
     <img class="char-portrait"
          src="${char.portrait}"
@@ -334,7 +334,7 @@ function renderCharacters(characters) {
   ` : ""}
 
   <h4>${char.name.trim()}</h4>
-  <span class="char-sub">${char.levelClass}</span>
+  <span>${char.levelClass}</span>
 
   <div class="char-stats">
     <div><label>DMG</label><span>${char.stats.damage}</span></div>
@@ -345,6 +345,8 @@ function renderCharacters(characters) {
     <div><label>FAIL</label><span>${char.stats.nat1}</span></div>
   </div>
 `;
+
+containerDiv.appendChild(card); // 🔥 REQUIRED
 
     containerDiv.appendChild(card);
   });
