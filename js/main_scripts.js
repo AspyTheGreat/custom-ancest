@@ -146,29 +146,28 @@ async function loadBattles(campaignPath) {
 
       // ✅ Fetch each battle JSON to extract timestamp
       const battlesWithData = await Promise.all(
-        battleFiles.map(async (file) => {
-          try {
-            const res = await fetch(file.download_url);
-            const json = await res.json();
+  battleFiles.map(async (file) => {
+    try {
+      const res = await fetch(file.download_url);
+      const json = await res.json();
 
-            // 🔧 Adjust this if your structure differs
-            const rawTimestamp = json.timestamp || json.date || 0;
+      const parsedTime = new Date(json.timestamp).getTime();
 
-            const parsedTime = new Date(json.timestamp).getTime();
-
-           return {
-  file,
-  timestamp: isNaN(parsedTime) ? 0 : parsedTime
-};
-          } catch (err) {
-            logError(`Failed to load JSON for ${file.name}`, err);
-            return {
-              file,
-              timestamp: 0
-            };
-          }
-        })
-      );
+      return {
+        file,
+        timestamp: isNaN(parsedTime) ? 0 : parsedTime,
+        startImage: json.images?.start || null   // ✅ ADD THIS LINE
+      };
+    } catch (err) {
+      logError(`Failed to load JSON for ${file.name}`, err);
+      return {
+        file,
+        timestamp: 0,
+        startImage: null // ✅ also here
+      };
+    }
+  })
+);
 
       // ✅ Sort newest first
       battlesWithData.sort((a, b) => b.timestamp - a.timestamp);
