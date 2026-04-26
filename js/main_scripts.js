@@ -292,19 +292,26 @@ function renderBattleUI(data) {
 function renderCharacters(characters) {
   const containerDiv = document.getElementById("characters");
 
+  containerDiv.innerHTML = "";
+
   characters.forEach(char => {
     const card = document.createElement("div");
-    card.className = "world-card";
+    card.className = "world-card char-card";
 
     card.innerHTML = `
-      <h4>${char.name.trim()}</h4>
-      <p style="color:#aaa;">${char.levelClass}</p>
+      <div class="char-header">
+        <h4>${char.name.trim()}</h4>
+        <span>${char.levelClass}</span>
+      </div>
 
-      <p>Damage: <b>${char.stats.damage}</b></p>
-      <p>Healing: <b>${char.stats.healing}</b></p>
-      <p>Actions: ${char.stats.actions} | Bonus: ${char.stats.bonus}</p>
-
-      <p>Crits: ${char.stats.nat20} | Fumbles: ${char.stats.nat1}</p>
+      <div class="char-stats">
+        <div><label>Damage</label><span>${char.stats.damage}</span></div>
+        <div><label>Healing</label><span>${char.stats.healing}</span></div>
+        <div><label>Actions</label><span>${char.stats.actions}</span></div>
+        <div><label>Bonus</label><span>${char.stats.bonus}</span></div>
+        <div><label>Crits</label><span>${char.stats.nat20}</span></div>
+        <div><label>Fails</label><span>${char.stats.nat1}</span></div>
+      </div>
     `;
 
     containerDiv.appendChild(card);
@@ -314,18 +321,23 @@ function renderCharacters(characters) {
 function renderRounds(rounds) {
   const containerDiv = document.getElementById("rounds");
 
+  containerDiv.innerHTML = "";
+
   rounds.forEach(r => {
     const div = document.createElement("div");
-    div.className = "world-card";
+    div.className = "world-card round-card";
 
     div.innerHTML = `
-      <h4>Round ${r.round}</h4>
-      <p>Total Damage: <b>${r.totalDamage}</b></p>
+      <div class="round-header">
+        <h4>Round ${r.round}</h4>
+        <span>${r.totalDamage} dmg</span>
+      </div>
 
-      <div style="margin-top:8px;">
+      <div class="round-players">
         ${r.players.map(p => `
-          <div style="margin-bottom:6px;">
-            <b>${p.name.trim()}</b>: ${p.damage} dmg
+          <div class="round-player">
+            <span>${p.name.trim()}</span>
+            <span>${p.damage}</span>
           </div>
         `).join("")}
       </div>
