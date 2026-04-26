@@ -52,8 +52,6 @@ if (!Array.isArray(data)) {
   throw new Error("Unexpected API response");
 }
 
-const campaigns = data.filter(item => item.type === "dir");
-
     container.innerHTML = "<h3>Campaigns</h3>";
 
     campaigns.forEach(c => {
