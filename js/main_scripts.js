@@ -188,7 +188,7 @@ async function loadBattles(campaignPath) {
       };
 
       // ✅ Render battles
-      battlesWithData.forEach(({ file, timestamp }) => {
+      battlesWithData.forEach(({ file, timestamp, startImage }) => {
         log("Rendering battle:", file.name, "| timestamp:", timestamp);
 
         const div = document.createElement("div");
