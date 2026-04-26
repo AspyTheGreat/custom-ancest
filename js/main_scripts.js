@@ -226,7 +226,7 @@ async function loadBattles(campaignPath) {
 // 🔗 OPEN BATTLE
 // =========================
 function openBattle(url) {
-  window.open(url, "_blank");
+  loadBattleView(url);
 }
 // =========================
 // 🧼 FORMAT NAMES
@@ -235,5 +235,21 @@ function formatName(slug) {
   return slug
     .replace(/-/g, " ")
     .replace(/\b\w/g, l => l.toUpperCase());
+}
+async function loadBattleView(url) {
+  container.innerHTML = "Loading battle...";
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    console.log("Battle data:", data);
+
+    renderBattleUI(data);
+
+  } catch (err) {
+    console.error("Failed to load battle:", err);
+    container.innerHTML = "Failed to load battle.";
+  }
 }
 document.addEventListener("DOMContentLoaded", loadCampaigns);
