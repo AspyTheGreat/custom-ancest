@@ -123,7 +123,6 @@ async function loadBattles(campaignPath) {
       log("Fetching:", url);
 
       const res = await fetch(url);
-
       log("Response status:", res.status);
 
       if (!res.ok) {
@@ -131,34 +130,67 @@ async function loadBattles(campaignPath) {
       }
 
       const data = await res.json();
-
       log("Raw data:", data);
 
       if (!Array.isArray(data)) {
         throw new Error("Unexpected API response (not an array)");
       }
 
-      const battles = data
-        .filter(file =>
-          file.type === "file" &&
-          file.name.toLowerCase().endsWith(".json")
-        );
+      // ✅ Filter valid JSON files
+      const battleFiles = data.filter(file =>
+        file.type === "file" &&
+        file.name.toLowerCase().endsWith(".json")
+      );
 
-      log("Filtered battles:", battles);
+      log("Battle files found:", battleFiles);
+
+      // ✅ Fetch each battle JSON to extract timestamp
+      const battlesWithData = await Promise.all(
+        battleFiles.map(async (file) => {
+          try {
+            const res = await fetch(file.download_url);
+            const json = await res.json();
+
+            // 🔧 Adjust this if your structure differs
+            const rawTimestamp = json.timestamp || json.date || 0;
+
+            const parsedTime = new Date(rawTimestamp).getTime();
+
+            return {
+              file,
+              timestamp: isNaN(parsedTime) ? 0 : parsedTime
+            };
+          } catch (err) {
+            logError(`Failed to load JSON for ${file.name}`, err);
+            return {
+              file,
+              timestamp: 0
+            };
+          }
+        })
+      );
+
+      // ✅ Sort newest first
+      battlesWithData.sort((a, b) => b.timestamp - a.timestamp);
+
+      log("Sorted battles:", battlesWithData);
+
+      // ✅ Render header + back button
+      const campaignName = campaignPath.split("/").pop();
 
       container.innerHTML = `
         <div class="backBtn">← Back</div>
-        <h3>${formatName(campaignPath.split("/").pop())}</h3>
+        <h3>${formatName(campaignName)}</h3>
       `;
 
-      // attach back button properly
       container.querySelector(".backBtn").onclick = () => {
         log("Back button clicked");
         loadCampaigns();
       };
 
-      battles.forEach(file => {
-        log("Creating battle card:", file.name, "| url:", file.download_url);
+      // ✅ Render battles
+      battlesWithData.forEach(({ file, timestamp }) => {
+        log("Rendering battle:", file.name, "| timestamp:", timestamp);
 
         const div = document.createElement("div");
         div.className = "world-card clickable";
@@ -174,11 +206,15 @@ async function loadBattles(campaignPath) {
         container.appendChild(div);
       });
 
-      log("Total battles rendered:", battles.length);
-
-      if (battles.length === 0) {
-        log("⚠️ No battles found for this campaign");
+      // ⚠️ Empty state
+      if (battlesWithData.length === 0) {
+        log("⚠️ No battles found");
+        const empty = document.createElement("div");
+        empty.innerText = "No battles found.";
+        container.appendChild(empty);
       }
+
+      log("Total battles rendered:", battlesWithData.length);
 
     } catch (err) {
       logError("loadBattles", err);
