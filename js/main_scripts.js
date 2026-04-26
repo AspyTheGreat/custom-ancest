@@ -34,12 +34,20 @@ async function loadCampaigns() {
 
   try {
     const res = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles`
-    );
+  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles`
+);
 
-    const data = await res.json();
+if (!res.ok) {
+  throw new Error(`GitHub API error: ${res.status}`);
+}
 
-    const campaigns = data.filter(item => item.type === "dir");
+const data = await res.json();
+
+if (!Array.isArray(data)) {
+  throw new Error("Unexpected API response");
+}
+
+const campaigns = data.filter(item => item.type === "dir");
 
     container.innerHTML = "<h3>Campaigns</h3>";
 
@@ -67,10 +75,18 @@ async function loadBattles(campaignSlug) {
 
   try {
     const res = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles/${campaignSlug}`
-    );
+  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles/${campaignSlug}`
+);
 
-    const data = await res.json();
+if (!res.ok) {
+  throw new Error(`GitHub API error: ${res.status}`);
+}
+
+const data = await res.json();
+
+if (!Array.isArray(data)) {
+  throw new Error("Unexpected API response");
+}
 
     container.innerHTML = `
       <div class="backBtn" onclick="loadCampaigns()">← Back</div>
