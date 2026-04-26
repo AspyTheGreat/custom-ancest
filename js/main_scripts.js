@@ -299,20 +299,20 @@ function renderCharacters(characters) {
     card.className = "world-card char-card";
 
     card.innerHTML = `
-      <div class="char-header">
-        <h4>${char.name.trim()}</h4>
-        <span>${char.levelClass}</span>
-      </div>
+  <div class="char-header">
+    <h4>${char.name.trim()}</h4>
+    <span>${char.levelClass}</span>
+  </div>
 
-      <div class="char-stats">
-        <div><label>Damage</label><span>${char.stats.damage}</span></div>
-        <div><label>Healing</label><span>${char.stats.healing}</span></div>
-        <div><label>Actions</label><span>${char.stats.actions}</span></div>
-        <div><label>Bonus</label><span>${char.stats.bonus}</span></div>
-        <div><label>Crits</label><span>${char.stats.nat20}</span></div>
-        <div><label>Fails</label><span>${char.stats.nat1}</span></div>
-      </div>
-    `;
+  <div class="char-stats">
+    <div><label>DMG</label><span>${char.stats.damage}</span></div>
+    <div><label>HEAL</label><span>${char.stats.healing}</span></div>
+    <div><label>ACT</label><span>${char.stats.actions}</span></div>
+    <div><label>BON</label><span>${char.stats.bonus}</span></div>
+    <div><label>CRIT</label><span>${char.stats.nat20}</span></div>
+    <div><label>FAIL</label><span>${char.stats.nat1}</span></div>
+  </div>
+`;
 
     containerDiv.appendChild(card);
   });
@@ -335,11 +335,11 @@ function renderRounds(rounds) {
 
       <div class="round-players">
         ${r.players.map(p => `
-          <div class="round-player">
-            <span>${p.name.trim()}</span>
-            <span>${p.damage}</span>
-          </div>
-        `).join("")}
+  <div class="round-player">
+    <span>${p.name}</span>
+    <span>${p.damage}</span>
+  </div>
+`).join("")}
       </div>
     `;
 
