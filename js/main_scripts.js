@@ -21,6 +21,26 @@ function hideAll() {
 // =========================
 // ⚙️ CONFIG (EDIT THIS)
 // =========================
+const DEBUG = true;
+
+function log(...args) {
+  if (DEBUG) console.log("[DEBUG]", ...args);
+}
+
+function logGroup(title, fn) {
+  if (!DEBUG) return fn();
+  console.group(`[DEBUG] ${title}`);
+  try {
+    fn();
+  } finally {
+    console.groupEnd();
+  }
+}
+
+function logError(context, err) {
+  console.error(`[ERROR] ${context}:`, err);
+}
+
 const GITHUB_OWNER = "AspyTheGreat";
 const GITHUB_REPO = "custom-ancest";
 
@@ -30,92 +50,142 @@ if (!container) throw new Error("#content not found");
 // =========================
 // 📁 LOAD CAMPAIGNS
 // =========================
-async function loadCampaigns(campaignSlug) {
+async function loadCampaigns() {
   container.innerHTML = "Loading campaigns...";
 
-  try {
-    const res = await fetch(
-  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles/${campaignSlug}?ref=main`
-);
+  logGroup("loadCampaigns()", async () => {
+    try {
+      const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles?ref=main`;
+      log("Fetching:", url);
 
-if (!res.ok) {
-  throw new Error(`GitHub API error: ${res.status}`);
-}
+      const res = await fetch(url);
 
-const data = await res.json();
+      log("Response status:", res.status);
 
-    const campaigns = data
-  .filter(item => item.type === "dir")
-  .sort((a, b) => a.name.localeCompare(b.name));
-    
-if (!Array.isArray(data)) {
-  throw new Error("Unexpected API response");
-}
+      if (!res.ok) {
+        throw new Error(`GitHub API error: ${res.status}`);
+      }
 
-    container.innerHTML = "<h3>Campaigns</h3>";
+      const data = await res.json();
 
-    campaigns.forEach(c => {
-      const div = document.createElement("div");
-      div.className = "world-card clickable";
+      log("Raw data:", data);
 
-      div.innerText = formatName(c.name);
-      div.onclick = () => loadBattles(c.name);
+      if (!Array.isArray(data)) {
+        throw new Error("Unexpected API response (not an array)");
+      }
 
-      container.appendChild(div);
-    });
+      const campaigns = data
+        .filter(item => item.type === "dir")
+        .sort((a, b) => a.name.localeCompare(b.name));
 
-  } catch (err) {
-    console.error(err);
-    container.innerHTML = "Failed to load campaigns.";
-  }
+      log("Filtered campaigns:", campaigns);
+
+      container.innerHTML = "<h3>Campaigns</h3>";
+
+      campaigns.forEach(c => {
+        log("Creating campaign card:", c.name, "| path:", c.path);
+
+        const div = document.createElement("div");
+        div.className = "world-card clickable";
+
+        div.innerText = formatName(c.name);
+
+        div.onclick = () => {
+          log("Clicked campaign:", c.name, "| path:", c.path);
+          loadBattles(c.path);
+        };
+
+        container.appendChild(div);
+      });
+
+      log("Total campaigns rendered:", campaigns.length);
+
+    } catch (err) {
+      logError("loadCampaigns", err);
+      container.innerHTML = "Failed to load campaigns.";
+    }
+  });
 }
 
 // =========================
 // 📜 LOAD BATTLES
 // =========================
-async function loadBattles(campaignSlug) {
+function openBattle(url) {
+  log("Opening battle in new tab:", url);
+  window.open(url, "_blank");
+}
+async function loadBattles(campaignPath) {
   container.innerHTML = "Loading battles...";
 
-  try {
-   const res = await fetch(
-  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles/${campaignSlug}?ref=main`
-);
+  logGroup(`loadBattles(${campaignPath})`, async () => {
+    try {
+      const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${campaignPath}?ref=main`;
+      log("Fetching:", url);
 
-if (!res.ok) {
-  throw new Error(`GitHub API error: ${res.status}`);
+      const res = await fetch(url);
+
+      log("Response status:", res.status);
+
+      if (!res.ok) {
+        throw new Error(`GitHub API error: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      log("Raw data:", data);
+
+      if (!Array.isArray(data)) {
+        throw new Error("Unexpected API response (not an array)");
+      }
+
+      const battles = data
+        .filter(file =>
+          file.type === "file" &&
+          file.name.toLowerCase().endsWith(".json")
+        );
+
+      log("Filtered battles:", battles);
+
+      container.innerHTML = `
+        <div class="backBtn">← Back</div>
+        <h3>${formatName(campaignPath.split("/").pop())}</h3>
+      `;
+
+      // attach back button properly
+      container.querySelector(".backBtn").onclick = () => {
+        log("Back button clicked");
+        loadCampaigns();
+      };
+
+      battles.forEach(file => {
+        log("Creating battle card:", file.name, "| url:", file.download_url);
+
+        const div = document.createElement("div");
+        div.className = "world-card clickable";
+
+        const battleName = file.name.replace(".json", "");
+        div.innerText = formatName(battleName);
+
+        div.onclick = () => {
+          log("Opening battle:", file.download_url);
+          openBattle(file.download_url);
+        };
+
+        container.appendChild(div);
+      });
+
+      log("Total battles rendered:", battles.length);
+
+      if (battles.length === 0) {
+        log("⚠️ No battles found for this campaign");
+      }
+
+    } catch (err) {
+      logError("loadBattles", err);
+      container.innerHTML = "Failed to load battles.";
+    }
+  });
 }
-
-const data = await res.json();
-
-if (!Array.isArray(data)) {
-  throw new Error("Unexpected API response");
-}
-
-    container.innerHTML = `
-      <div class="backBtn" onclick="loadCampaigns()">← Back</div>
-      <h3>${formatName(campaignSlug)}</h3>
-    `;
-
-    data.forEach(file => {
-      if (!file.name.endsWith(".json")) return;
-
-      const div = document.createElement("div");
-      div.className = "world-card clickable";
-
-      const battleName = file.name.replace(".json", "");
-
-      div.innerText = formatName(battleName);
-      div.onclick = () => openBattle(file.download_url);
-
-      container.appendChild(div);
-    });
-
-  } catch (err) {
-    console.error(err);
-    container.innerHTML = "Failed to load battles.";
-  }
-}
-
 // =========================
 // 🔗 OPEN BATTLE
 // =========================
