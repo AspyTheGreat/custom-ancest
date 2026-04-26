@@ -231,6 +231,19 @@ function openBattle(url) {
 // =========================
 // 🧼 FORMAT NAMES
 // =========================
+function renderImage(base64) {
+  if (!base64) return "";
+
+  // detect type (jpeg vs png)
+  const isPNG = base64.startsWith("iVBOR");
+  const type = isPNG ? "image/png" : "image/jpeg";
+
+  return `
+    <div class="battle-image">
+      <img loading="lazy" src="data:${type};base64,${base64}" />
+    </div>
+  `;
+}
 function formatName(slug) {
   return slug
     .replace(/-/g, " ")
@@ -258,30 +271,46 @@ function renderBattleUI(data) {
   const date = new Date(data.timestamp).toLocaleString();
 
   container.innerHTML = `
-    <div class="backBtn">← Back</div>
+  <div class="backBtn">← Back</div>
 
-    <h2>${data.displayName || data.battle}</h2>
-    <p style="color:#aaa;">
-      ${data.campaign} • ${date} • ${data.rounds} round(s)
-    </p>
+  <h2>${data.displayName}</h2>
+  <p style="color:#aaa;">
+    ${data.campaign} • ${date} • ${data.rounds} round(s)
+  </p>
 
-    <div class="box">
-      <h3>Party Totals</h3>
-      <p>Damage: <b>${data.partyTotals.damage}</b></p>
-      <p>Healing: <b>${data.partyTotals.healing}</b></p>
-      <p>CC: <b>${data.partyTotals.cc}</b></p>
-    </div>
+ ${data.images?.start ? `
+  <div class="battle-image">
+    <img loading="lazy"
+         src="${data.images.start}"
+         alt="Start">
+  </div>
+` : ""}
 
-    <div class="box">
-      <h3>Characters</h3>
-      <div id="characters"></div>
-    </div>
+  <div class="box">
+    <h3>Party Totals</h3>
+    <p>Damage: <b>${data.partyTotals.damage}</b></p>
+    <p>Healing: <b>${data.partyTotals.healing}</b></p>
+    <p>CC: <b>${data.partyTotals.cc}</b></p>
+  </div>
 
-    <div class="box">
-      <h3>Rounds</h3>
-      <div id="rounds"></div>
-    </div>
-  `;
+  <div class="box">
+    <h3>Characters</h3>
+    <div id="characters"></div>
+  </div>
+
+  <div class="box">
+    <h3>Rounds</h3>
+    <div id="rounds"></div>
+  </div>
+
+  ${data.images?.end ? `
+  <div class="battle-image">
+    <img loading="lazy"
+         src="${data.images.end}"
+         alt="End">
+  </div>
+` : ""}
+`;
 
   container.querySelector(".backBtn").onclick = loadCampaigns;
 
@@ -291,7 +320,6 @@ function renderBattleUI(data) {
 
 function renderCharacters(characters) {
   const containerDiv = document.getElementById("characters");
-
   containerDiv.innerHTML = "";
 
   characters.forEach(char => {
@@ -299,20 +327,30 @@ function renderCharacters(characters) {
     card.className = "world-card char-card";
 
     card.innerHTML = `
-  <div class="char-header">
-    <h4>${char.name.trim()}</h4>
-    <span>${char.levelClass}</span>
-  </div>
+      <div class="char-header">
+        <div class="char-left">
+          ${char.portrait ? `
+  <img class="char-portrait"
+       src="${char.portrait}"
+       alt="${char.name}">
+` : ""}
 
-  <div class="char-stats">
-    <div><label>DMG</label><span>${char.stats.damage}</span></div>
-    <div><label>HEAL</label><span>${char.stats.healing}</span></div>
-    <div><label>ACT</label><span>${char.stats.actions}</span></div>
-    <div><label>BON</label><span>${char.stats.bonus}</span></div>
-    <div><label>CRIT</label><span>${char.stats.nat20}</span></div>
-    <div><label>FAIL</label><span>${char.stats.nat1}</span></div>
-  </div>
-`;
+          <div>
+            <h4>${char.name.trim()}</h4>
+            <span>${char.levelClass}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="char-stats">
+        <div><label>DMG</label><span>${char.stats.damage}</span></div>
+        <div><label>HEAL</label><span>${char.stats.healing}</span></div>
+        <div><label>ACT</label><span>${char.stats.actions}</span></div>
+        <div><label>BON</label><span>${char.stats.bonus}</span></div>
+        <div><label>CRIT</label><span>${char.stats.nat20}</span></div>
+        <div><label>FAIL</label><span>${char.stats.nat1}</span></div>
+      </div>
+    `;
 
     containerDiv.appendChild(card);
   });

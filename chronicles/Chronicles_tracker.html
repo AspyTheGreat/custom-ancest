@@ -1631,22 +1631,27 @@ function endCombat() {
       .reduce((a,b)=>a+b,0);
 
     finalReport.characters.push({
-      name: c.name,
-      levelClass: c.levelClass,
-      stats: {
-        actions: c.stats.totalActions,
-        bonus: c.stats.totalBonus,
-        damage: c.stats.damage,
-        healing: c.stats.healing,
-        cc: c.stats.cc,
-        damageTaken: c.stats.damageTaken,
-        nat20: c.stats.nat20,
-        nat1: c.stats.nat1,
-        reactions: reactionTotal
-      },
-      summons: c.summons,
-      turns: c.stats.turns
-    });
+  name: c.name,
+  levelClass: c.levelClass,
+
+  // ✅ ADD THIS LINE
+  portrait: c.portrait || null,
+
+  stats: {
+    actions: c.stats.totalActions,
+    bonus: c.stats.totalBonus,
+    damage: c.stats.damage,
+    healing: c.stats.healing,
+    cc: c.stats.cc,
+    damageTaken: c.stats.damageTaken,
+    nat20: c.stats.nat20,
+    nat1: c.stats.nat1,
+    reactions: reactionTotal
+  },
+
+  summons: c.summons,
+  turns: c.stats.turns
+});
   });
 
   // =========================

@@ -271,6 +271,20 @@ h1 {
 /* =========================
    👥 CHARACTERS GRID
 ========================= */
+.char-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.char-portrait {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid #444;
+}
+
 #characters, #rounds {
   width: 100%;
 }
@@ -323,7 +337,35 @@ h1 {
   color: #aaa;
   font-size: 0.8em;
 }
+/* Battle images */
+.battle-image {
+  width: 100%;
+  margin: 16px 0;
+  display: flex;
+  justify-content: center;
+}
 
+.battle-image img {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+
+/* Character portraits */
+.char-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.char-portrait {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid #444;
+}
 /* =========================
    🔁 ROUNDS
 ========================= */
