@@ -75,6 +75,7 @@ const campaigns = data.filter(item => item.type === "dir");
 // =========================
 // 📜 LOAD BATTLES
 // =========================
+console.log(data);
 async function loadBattles(campaignSlug) {
   container.innerHTML = "Loading battles...";
 
