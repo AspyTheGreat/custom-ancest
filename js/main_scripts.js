@@ -27,11 +27,11 @@ function log(...args) {
   if (DEBUG) console.log("[DEBUG]", ...args);
 }
 
-function logGroup(title, fn) {
-  if (!DEBUG) return fn();
+async function logGroup(title, fn) {
+  if (!DEBUG) return await fn();
   console.group(`[DEBUG] ${title}`);
   try {
-    fn();
+    await fn(); // ✅ THIS was missing
   } finally {
     console.groupEnd();
   }
@@ -117,7 +117,7 @@ function openBattle(url) {
 async function loadBattles(campaignPath) {
   container.innerHTML = "Loading battles...";
 
-  logGroup(`loadBattles(${campaignPath})`, async () => {
+  await logGroup(`loadBattles(${campaignPath})`, async () => {
     try {
       const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${campaignPath}?ref=main`;
       log("Fetching:", url);
@@ -189,32 +189,32 @@ async function loadBattles(campaignPath) {
 
       // ✅ Render battles
       battlesWithData.forEach(({ file, timestamp, startImage }) => {
-        log("Rendering battle:", file.name, "| timestamp:", timestamp);
+  const div = document.createElement("div");
+  div.className = "world-card-previous-battles clickable";
 
-        const div = document.createElement("div");
-div.className = "world-card-previous-battles clickable";
+  if (startImage) {
+    div.style.backgroundImage =
+      "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)), url('" + startImage + "')";
+  } else {
+    div.style.backgroundColor = "#181818";
+  }
 
-if (startImage) {
-  div.style.backgroundImage =
-  "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)), url('" + startImage + "')";
+  const battleName = file.name.replace(".json", "");
+  div.innerText = formatName(battleName);
+
+  div.onclick = () => {
+    openBattle(file.download_url);
+  };
+
+  container.appendChild(div);
+}); // ✅ CLOSES forEach properly
+
+// ✅ Empty state OUTSIDE loop
+if (battlesWithData.length === 0) {
+  const empty = document.createElement("div");
+  empty.innerText = "No battles found.";
+  container.appendChild(empty);
 }
-
-const battleName = file.name.replace(".json", "");
-div.innerText = formatName(battleName);
-
-div.onclick = () => {
-  openBattle(file.download_url);
-};
-
-container.appendChild(div);
-
-      // ⚠️ Empty state
-      if (battlesWithData.length === 0) {
-        log("⚠️ No battles found");
-        const empty = document.createElement("div");
-        empty.innerText = "No battles found.";
-        container.appendChild(empty);
-      }
 
       log("Total battles rendered:", battlesWithData.length);
 
