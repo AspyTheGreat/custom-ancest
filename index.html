@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.cdnfonts.com/css/forgore" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/favicon.ico">
 
 <style>
 body {
@@ -41,6 +42,37 @@ h1 {
   font-size: 1rem;
   opacity: 0.7;
   letter-spacing: 2px;
+}
+
+.hero,
+.page,
+.detail {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero::before,
+.page::before,
+.detail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/nat1backdrop.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+  
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero > *,
+.page > *,
+.detail > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* TILES */
