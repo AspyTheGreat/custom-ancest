@@ -35,7 +35,7 @@ async function loadCampaigns() {
 
   try {
     const res = await fetch(
-  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles`
+  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles/${campaignSlug}?ref=main`
 );
 
 if (!res.ok) {
@@ -75,13 +75,12 @@ const campaigns = data.filter(item => item.type === "dir");
 // =========================
 // 📜 LOAD BATTLES
 // =========================
-console.log(data);
 async function loadBattles(campaignSlug) {
   container.innerHTML = "Loading battles...";
 
   try {
-    const res = await fetch(
-  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles/${campaignSlug}`
+   const res = await fetch(
+  `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles/${campaignSlug}?ref=main`
 );
 
 if (!res.ok) {
