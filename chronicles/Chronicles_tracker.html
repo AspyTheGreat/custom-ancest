@@ -169,27 +169,27 @@ none
   <div class="box">
     <b>Bonus Actions</b><br>
 
-<button onclick="changeAction('bonus','attack',-1)">-</button>
+<button onclick="changeAction('bonusActions','attack',-1)">-</button>
 Attack
-<button onclick="changeAction('bonus','attack',1)">+</button>
+<button onclick="changeAction('bonusActions','attack',1)">+</button>
 
-<button onclick="changeAction('bonus','spell',-1)">-</button>
+<button onclick="changeAction('bonusActions','spell',-1)">-</button>
 Spell
-<button onclick="changeAction('bonus','spell',1)">+</button>
+<button onclick="changeAction('bonusActions','spell',1)">+</button>
 
-<button onclick="changeAction('bonus','move',-1)">-</button>
+<button onclick="changeAction('bonusActions','move',-1)">-</button>
 Move
-<button onclick="changeAction('bonus','move',1)">+</button>
+<button onclick="changeAction('bonusActions','move',1)">+</button>
 
-<button onclick="changeAction('bonus','misc',-1)">-</button>
+<button onclick="changeAction('bonusActions','misc',-1)">-</button>
 Misc
-<button onclick="changeAction('bonus','misc',1)">+</button>
+<button onclick="changeAction('bonusActions','misc',1)">+</button>
 
-<button onclick="changeAction('bonus','none',-1)">-</button>
+<button onclick="changeAction('bonusActions','none',-1)">-</button>
 none
-<button onclick="changeAction('bonus','none',1)">+</button>
+<button onclick="changeAction('bonusActions','none',1)">+</button>
 
-<div id="bonusCounter" class="counter"></div>
+<div id="bonusActionsCounter" class="counter"></div>
   </div>
 
     
@@ -1150,9 +1150,9 @@ characters.push({
   stats: {
     spellSlotsUsed: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
     actions:{attack:0,spell:0,move:0,misc:0},
-    bonus:{attack:0,spell:0,move:0,misc:0},
+    bonusActions:{attack:0,spell:0,move:0,misc:0},
     totalActions:0,
-    totalBonus:0,
+    totalbonusActions:0,
     attacksHit:0,
     attacksTotal:0,
     savesForced:0,
@@ -1218,8 +1218,8 @@ function updateCounters() {
   document.getElementById("actionCounter").innerText =
     formatCounter(tempTurn.actions);
 
-  document.getElementById("bonusCounter").innerText =
-    formatCounter(tempTurn.bonus);
+  document.getElementById("bonusActionsCounter").innerText =
+    formatCounter(tempTurn.bonusActions);
 
 }
 
@@ -1350,7 +1350,7 @@ function updateTurnUI() {
 
   tempTurn = {
   actions:{attack:0,spell:0,move:0,misc:0,none:0},
-  bonus:{attack:0,spell:0,move:0,misc:0,none:0},
+  bonusActions:{attack:0,spell:0,move:0,misc:0,none:0},
   spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
   damage:0,
   healing:0,
@@ -1494,7 +1494,7 @@ let reactionSum = Object.values(g.reactions || {}).reduce((a,b)=>a+b,0);
   let rounds = Math.max(round-1,1);
 
   let tempActionTotal = Object.values(tempTurn.actions).reduce((a,b)=>a+b,0);
-  let tempBonusTotal = Object.values(tempTurn.bonus).reduce((a,b)=>a+b,0);
+  let tempbonusActionsTotal = Object.values(tempTurn.bonusActions).reduce((a,b)=>a+b,0);
 
   let dpr = (c.stats.damage / rounds).toFixed(2);
 
@@ -1526,7 +1526,7 @@ if (!c.stats.conditions || c.stats.conditions.length === 0) {
   ${levelClassHTML}
 
     Actions: ${c.stats.totalActions + tempActionTotal}<br>
-    Bonus: ${c.stats.totalBonus + tempBonusTotal}<br>
+    bonusActions: ${c.stats.totalbonusActions + tempbonusActionsTotal}<br>
 
     Attacks: ${c.stats.attacksHit}/${c.stats.attacksTotal}<br>
     Saves: ${c.stats.savesForced}/${c.stats.savesSucceeded}<br><br>
@@ -1563,7 +1563,7 @@ function nextTurn() {
     cc: 0,
     damageTaken: 0,
     actions: {attack:0,spell:0,move:0,misc:0,none:0},
-    bonus: {attack:0,spell:0,move:0,misc:0,none:0},
+    bonusActions: {attack:0,spell:0,move:0,misc:0,none:0},
     attacks: {hit:0,total:0},
     saves: {forced:0,succeeded:0},
     defense: {attacksDodged:0,attacksTaken:0,savesMade:0,savesTotal:0},
@@ -1624,9 +1624,9 @@ c.stats.cc += turnCC + summonCC;
     if (k !== "none") c.stats.totalActions += tempTurn.actions[k];
   }
 
-  for (let k in tempTurn.bonus) {
-    c.stats.bonus[k] += tempTurn.bonus[k];
-    if (k !== "none") c.stats.totalBonus += tempTurn.bonus[k];
+  for (let k in tempTurn.bonusActions) {
+    c.stats.bonusActions[k] += tempTurn.bonusActions[k];
+    if (k !== "none") c.stats.totalbonusActions += tempTurn.bonusActions[k];
   }
 
 const g = getGlobal();
@@ -1708,7 +1708,7 @@ roundLog[round].push({
   healing: turnHealing,
   cc: turnCC,
   actions: {...tempTurn.actions},
-  bonus: {...tempTurn.bonus},
+  bonusActions: {...tempTurn.bonusActions},
   spellSlots: {...tempTurn.spellSlots},
   attacks: {...tempTurn.attacks},
   saves: {...tempTurn.saves},
@@ -1725,8 +1725,8 @@ c._roundTemp.damageTaken += val("damageTaken");
 for (let k in tempTurn.actions) {
   if (k !== "none") c._roundTemp.actions[k] += tempTurn.actions[k];
 }
-for (let k in tempTurn.bonus) {
-  if (k !== "none") c._roundTemp.bonus[k] += tempTurn.bonus[k];
+for (let k in tempTurn.bonusActions) {
+  if (k !== "none") c._roundTemp.bonusActions[k] += tempTurn.bonusActions[k];
 }
 
 // attacks / saves
@@ -1761,7 +1761,7 @@ for (let k in g.reactions) {
       cc: 0,
       damageTaken: 0,
       actions: {attack:0,spell:0,move:0,misc:0,none:0},
-      bonus: {attack:0,spell:0,move:0,misc:0,none:0},
+      bonusActions: {attack:0,spell:0,move:0,misc:0,none:0},
       attacks: {hit:0,total:0},
       saves: {forced:0,succeeded:0},
       defense: {attacksDodged:0,attacksTaken:0,savesMade:0,savesTotal:0},
@@ -1834,11 +1834,11 @@ function endCombat() {
  stats: {
   // totals
   actionsTotal: c.stats.totalActions,
-  bonusTotal: c.stats.totalBonus,
+  bonusActionsTotal: c.stats.totalbonusActions,
 
   // breakdowns
   actions: { ...c.stats.actions },
-  bonus: { ...c.stats.bonus },
+  bonusActions: { ...c.stats.bonusActionsAction },
   reactions: { ...c.stats.reactions },
 
   // combat performance
