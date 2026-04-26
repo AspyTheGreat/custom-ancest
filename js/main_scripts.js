@@ -154,12 +154,12 @@ async function loadBattles(campaignPath) {
             // 🔧 Adjust this if your structure differs
             const rawTimestamp = json.timestamp || json.date || 0;
 
-            const parsedTime = new Date(rawTimestamp).getTime();
+            const parsedTime = new Date(json.timestamp).getTime();
 
-            return {
-              file,
-              timestamp: isNaN(parsedTime) ? 0 : parsedTime
-            };
+           return {
+  file,
+  timestamp: isNaN(parsedTime) ? 0 : parsedTime
+};
           } catch (err) {
             logError(`Failed to load JSON for ${file.name}`, err);
             return {
