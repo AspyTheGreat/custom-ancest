@@ -192,18 +192,23 @@ async function loadBattles(campaignPath) {
         log("Rendering battle:", file.name, "| timestamp:", timestamp);
 
         const div = document.createElement("div");
-        div.className = "world-card-previous-battles clickable";
+div.className = "world-card-previous-battles clickable";
 
-        const battleName = file.name.replace(".json", "");
-        div.innerText = formatName(battleName);
+if (startImage) {
+  div.style.backgroundImage = `
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+    url(${startImage})
+  `;
+}
 
-        div.onclick = () => {
-          log("Opening battle:", file.download_url);
-          openBattle(file.download_url);
-        };
+const battleName = file.name.replace(".json", "");
+div.innerText = formatName(battleName);
 
-        container.appendChild(div);
-      });
+div.onclick = () => {
+  openBattle(file.download_url);
+};
+
+container.appendChild(div);
 
       // ⚠️ Empty state
       if (battlesWithData.length === 0) {
