@@ -25,6 +25,7 @@ const GITHUB_OWNER = "AspyTheGreat";
 const GITHUB_REPO = "custom-ancest";
 
 const container = document.getElementById("content");
+if (!container) throw new Error("#content not found");
 
 // =========================
 // 📁 LOAD CAMPAIGNS
@@ -43,6 +44,10 @@ if (!res.ok) {
 
 const data = await res.json();
 
+    const campaigns = data
+  .filter(item => item.type === "dir")
+  .sort((a, b) => a.name.localeCompare(b.name));
+    
 if (!Array.isArray(data)) {
   throw new Error("Unexpected API response");
 }
