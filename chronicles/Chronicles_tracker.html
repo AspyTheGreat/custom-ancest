@@ -728,11 +728,14 @@ async function uploadJSONFile() {
   reader.onload = async function(e) {
     try {
       const data = JSON.parse(e.target.result);
+      
+data.characters.forEach(c => {
+  if (!c.stats) c.stats = {};
 
-      data.characters.forEach(c => {
   if (!c.stats.conditions) c.stats.conditions = [];
+
   if (!c.stats.reactions) {
-    c.stats.reactions = {attack:0,spell:0,move:0,misc:0,none:0};
+    c.stats.reactions = { attack: 0, spell: 0, move: 0, misc: 0, none: 0 };
   }
 });
 
