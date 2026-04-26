@@ -164,35 +164,3 @@ h1 {
   cursor: pointer;
 }
 
-/* ================= INFINITUM ================= */
-.infinitum-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  max-width: 700px;
-  margin: 60px auto;
-  gap: 20px;
-}
-
-.infinitum-tile {
-  min-height: 120px;
-  padding: 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  font-family: 'Forgore', sans-serif;
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
-
-  background: rgba(106, 90, 205, 0.2);
-  border: 1px solid #6a5acd;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.infinitum-tile:hover {
-  background: #6a5acd;
-  color: #0b0b0f;
-}

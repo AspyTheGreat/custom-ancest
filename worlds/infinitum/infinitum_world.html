@@ -2,12 +2,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nat 1 Archive - Worlds</title>
+    <title>Infinitum Universe Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.cdnfonts.com/css/forgore" rel="stylesheet">
-    <link rel="icon" type="image/png" href="assets/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="../../css/main_styles.css">
+    <link rel="stylesheet" href="infi_styles.css">
+
 
 </head>
 
@@ -25,26 +27,130 @@
         </div>
 
         <div id="worldContent">
-            <div class="infinitum-grid">
-                <div class="infinitum-tile">The Wish of Death</div>
-                <div class="infinitum-tile">Infinitum</div>
-                <div class="infinitum-tile">The Plane Shift Conundrum</div>
-                <div class="infinitum-tile">Redo of Wizard</div>
-                <div class="infinitum-tile">Ascension of Vecna 1: The Gith in the Sun</div>
-                <div class="infinitum-tile">The Lost Pearl of Luscany</div>
-                <div class="infinitum-tile">Ascension of Vecna 2: The Rites of Apotheosis</div>
-                <div class="infinitum-tile">The Boros Legionnaire</div>
-                <div class="infinitum-tile">Dawn Cataclysm</div>
-                <div class="infinitum-tile">The Break of Dawn</div>
-                <div class="infinitum-tile">Vecna's Boys: Quenching the Wish</div>
-                <div class="infinitum-tile">At Hell's Gate: The Styxian Serpent</div>
-                <div class="infinitum-tile">Heart of the Styx</div>
-            </div>
+            <section class="world-cosmology">
+                <p class="cosmology-intro">
+                    Hover over a plane to reveal the campaigns tied to it.
+                </p>
+
+                <div class="cosmology-stage" id="infinitumCosmology">
+                    <img class="cosmology-map" src="../../assets/infi_cosmology.png" alt="Infinitum cosmology map">
+
+                    <div class="plane-hotspot hotspot-medeis" data-zoom-x="55%" data-zoom-y="10%" tabindex="0">
+                        <span class="plane-label">Medeis</span>
+
+                        <div class="plane-popup">
+                            <h3>Medeis</h3>
+                            <p>The central material plane of Infinitum.</p>
+                            <p>Time period : Medieval</p>
+
+                            <div class="campaign-links">
+                                <a href="#">The Wish of Death</a>
+                                <a href="#">Infinitum</a>
+                                <a href="#">The Plane Shift Conundrum</a>
+                                <a href="#">Redo of Wizard</a>
+                                <a href="#">Ascension of Vecna 1: The Gith in the Sun</a>
+                                <a href="#">The Boros Legionnaire</a>
+                                <a href="#">The Dawn Cataclysm</a>
+                                <a href="#">The Break of Dawn</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plane-hotspot hotspot-djadu" data-zoom-x="51%" data-zoom-y="23%" tabindex="0">
+                        <span class="plane-label">Djadu</span>
+
+                        <div class="plane-popup">
+                            <h3>Djadu</h3>
+                            <p>Sister plane of Medeis</p>
+                            <p>Time period : Medieval</p>
+
+                            <div class="campaign-links">
+                                <a href="#">Infinitum</a>
+                                <a href="#">The Plane Shift Conundrum</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plane-hotspot hotspot-varzalat" data-zoom-x="35.5%" data-zoom-y="20.5%" tabindex="0">
+                        <span class="plane-label">Varzalat</span>
+
+                        <div class="plane-popup">
+                            <h3>Varzalat</h3>
+                            <p>Relatively isolated from the other material planes.</p>
+                            <p>Time period : Victorian</p>
+
+                            <div class="campaign-links">
+                                <a href="#">The Lost Pearl of Luscany</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plane-hotspot hotspot-abyss" data-zoom-x="72%" data-zoom-y="68%" tabindex="0">
+                        <span class="plane-label">The Abyss</span>
+
+                        <div class="plane-popup">
+                            <h3>The Abyss</h3>
+                            <p>Vecna's home brought out from the depths of the elemental chaos</p>
+
+                            <div class="campaign-links">
+                                <a href="#">Ascension of Vecna 1: The Gith in the Sun</a>
+                                <a href="#">Ascension of Vecna 2: The Rites of Apotheosis</a>
+                                <a href="#">Vecna's Boys: Quenching the Wish</a>
+                                <a href="#">At Hell's Gate: The Styxian Serpent</a>
+                                <a href="#">Heart of the Styx</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plane-hotspot hotspot-elementalchaos" data-zoom-x="6%" data-zoom-y="5%" tabindex="0">
+                        <span class="plane-label">The Elemental Chaos</span>
+
+                        <div class="plane-popup">
+                            <h3>The Elemental Chaos</h3>
+                            <p>Endless swirling maelstrom of raw elemental energy that held the abyss prisoner</p>
+
+                            <div class="campaign-links">
+                                <a href="#">Ascension of Vecna 2: The Rites of Apotheosis</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plane-hotspot hotspot-baator" data-zoom-x="16.5%" data-zoom-y="76%" tabindex="0">
+                        <span class="plane-label">The Hells</span>
+
+                        <div class="plane-popup">
+                            <h3>The Nine Hells of Baator</h3>
+                            <p>The once orderly and peaceful realm of Asmodeus</p>
+
+                            <div class="campaign-links">
+                                <a href="#">Ascension of Vecna 2: The Rites of Apotheosis</a>
+                                <a href="#">Vecna's Boys: Quenching the Wish</a>
+                                <a href="#">At Hell's Gate: The Styxian Serpent</a>
+                                <a href="#">Heart of the Styx</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plane-hotspot hotspot-sigil" data-zoom-x="45.2%" data-zoom-y="47.8%" tabindex="0">
+                        <span class="plane-label">Sigil</span>
+
+                        <div class="plane-popup">
+                            <h3>Sigil</h3>
+                            <p>The living world of the Lady of Pain in Riftspace</p>
+
+                            <div class="campaign-links">
+                                <a href="#">The Dawn Cataclysm</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
     </div>
 
 
 
-    <script src="../../js/main_scripts.js"></script>
+    <script src="infi_scripts.js"></script>
 </body>

@@ -1,0 +1,292 @@
+/* ================= INFINITUM ================= */
+.infinitum-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 700px;
+  margin: 60px auto;
+  gap: 20px;
+}
+
+.infinitum-tile {
+  min-height: 120px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  font-family: 'Forgore', sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+
+  background: rgba(106, 90, 205, 0.2);
+  border: 1px solid #6a5acd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.infinitum-tile:hover {
+  background: #6a5acd;
+  color: #0b0b0f;
+}
+
+/* ================= COSMOLOGY MAP ================= */
+
+.world-cosmology {
+  max-width: 1200px;
+  margin: 50px auto 0;
+}
+
+.cosmology-intro {
+  opacity: 0.75;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+}
+
+.cosmology-stage {
+  position: relative;
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+  --zoom-x: 50%;
+  --zoom-y: 50%;
+}
+
+.cosmology-map {
+  display: block;
+  width: 100%;
+  border: 1px solid rgba(106, 90, 205, 0.7);
+  border-radius: 18px;
+  box-shadow: 0 0 40px rgba(106, 90, 205, 0.25);
+  transition: transform 0.45s ease, filter 0.45s ease;
+  transform-origin: var(--zoom-x) var(--zoom-y);
+}
+
+.cosmology-stage.is-zooming .cosmology-map {
+  transform: scale(1.08);
+  filter: brightness(0.72) saturate(1.2);
+}
+
+/* Hotspot base */
+
+.plane-hotspot {
+  position: absolute;
+  border: 1px solid rgba(214, 198, 255, 0.08);
+  background: rgba(106, 90, 205, 0.02);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.plane-hotspot::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+
+  background: rgba(99, 49, 163, 0.85);
+  box-shadow: 
+    0 0 10px rgba(214, 198, 255, 0.8),
+    0 0 24px rgba(106, 90, 205, 0.7);
+
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.plane-hotspot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+
+  border: 1px solid rgba(214, 198, 255, 0.45);
+  transform: translate(-50%, -50%);
+  animation: hotspotPulse 2.4s ease-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes hotspotPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.65;
+  }
+
+  70% {
+    transform: translate(-50%, -50%) scale(1.7);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.7);
+    opacity: 0;
+  }
+}
+
+.plane-hotspot:hover::before,
+.plane-hotspot:focus::before,
+.plane-hotspot.active::before {
+  width: 16px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 0 14px rgba(255, 255, 255, 0.9),
+    0 0 36px rgba(166, 140, 255, 0.9);
+}
+
+.plane-hotspot:hover,
+.plane-hotspot:focus,
+.plane-hotspot.active {
+  background: rgba(106, 90, 205, 0.22);
+  border-color: rgba(214, 198, 255, 0.85);
+  box-shadow: 0 0 24px rgba(166, 140, 255, 0.65);
+  outline: none;
+}
+
+.plane-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #f0f0ff;
+  font-family: 'Forgore', sans-serif;
+  font-size: clamp(0.8rem, 1.5vw, 1.4rem);
+  letter-spacing: 1px;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: 0.25s ease;
+  text-shadow: 0 0 8px #000;
+}
+
+.plane-hotspot:hover .plane-label,
+.plane-hotspot:focus .plane-label,
+.plane-hotspot.active .plane-label {
+  opacity: 1;
+}
+
+/* Popup */
+
+.plane-popup {
+  position: relative;
+  left: 50%;
+  bottom: calc(100% + 14px);
+  transform: translateX(-50%) translateY(10px);
+  width: 270px;
+  padding: 16px;
+  text-align: left;
+
+  background: rgba(10, 8, 22, 0.94);
+  border: 1px solid rgba(106, 90, 205, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(106, 90, 205, 0.35);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: 0.25s ease;
+  z-index: 10;
+}
+
+.plane-hotspot:hover .plane-popup,
+.plane-hotspot:focus .plane-popup,
+.plane-hotspot.active .plane-popup {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.plane-popup h3 {
+  margin: 0 0 8px;
+  color: #d6c6ff;
+  letter-spacing: 1px;
+}
+
+.plane-popup p {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.campaign-links {
+  display: grid;
+  gap: 8px;
+}
+
+.campaign-links a {
+  color: #f0f0ff;
+  text-decoration: none;
+  padding: 8px 10px;
+  border: 1px solid rgba(106, 90, 205, 0.55);
+  border-radius: 6px;
+  background: rgba(106, 90, 205, 0.12);
+  transition: 0.2s;
+}
+
+.campaign-links a:hover {
+  background: #6a5acd;
+  color: #0b0b0f;
+}
+
+/* Position each plane hotspot here */
+
+.hotspot-medeis {
+  left: 51.5%;
+  top: 13%;
+  width: 10%;
+  height: 10%;
+}
+
+.hotspot-djadu {
+  left: 45.3%;
+  top: 19.3%;
+  width: 10%;
+  height: 10%;
+}
+
+.hotspot-varzalat {
+  left: 35.5%;
+  top: 20.5%;
+  width: 10%;
+  height: 10%;
+}
+
+.hotspot-abyss {
+  left: 72%;
+  top: 80%;
+  width: 20%;
+  height: 20%;
+}
+
+.hotspot-elementalchaos {
+  left: 6%;
+  top: 5%;
+  width: 16%;
+  height: 14%;
+}
+
+.hotspot-baator {
+  left: 16.5%;
+  top: 76%;
+  width: 20%;
+  height: 20%;
+}
+
+.hotspot-sigil {
+  left: 45.2%;
+  top: 47.8%;
+  width: 16%;
+  height: 14%;
+}
+
