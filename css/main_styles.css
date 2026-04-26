@@ -258,9 +258,9 @@ h1 {
 
 /* 🔥 Ensure vertical stacking behaves */
 #characters, #rounds {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
 }
 #content {
   width: 100%;
