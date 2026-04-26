@@ -110,10 +110,7 @@ async function loadCampaigns() {
 // =========================
 // 📜 LOAD BATTLES
 // =========================
-function openBattle(url) {
-  log("Opening battle in new tab:", url);
-  window.open(url, "_blank");
-}
+
 async function loadBattles(campaignPath) {
   container.innerHTML = "Loading battles...";
 
@@ -202,12 +199,14 @@ async function loadBattles(campaignPath) {
   const battleName = file.name.replace(".json", "");
   div.innerText = formatName(battleName);
 
+  const battleUrl = file.download_url; // ✅ fix
+
   div.onclick = () => {
-    openBattle(file.download_url);
+    openBattle(battleUrl);
   };
 
   container.appendChild(div);
-}); // ✅ CLOSES forEach properly
+});
 
 // ✅ Empty state OUTSIDE loop
 if (battlesWithData.length === 0) {
