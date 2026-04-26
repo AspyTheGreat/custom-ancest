@@ -1,0 +1,158 @@
+{
+  "campaign": "Shadows of Elarion",
+  "battle": "Ambush at Blackroot Pass",
+  "rounds": 3,
+
+  "images": {
+    "start": null,
+    "end": null
+  },
+
+  "characters": [
+    {
+      "name": "Aelric",
+      "levelClass": "Level 5 Ranger",
+      "portrait": null,
+
+      "stats": {
+        "actionsTotal": 6,
+        "bonusTotal": 3,
+
+        "actions": { "attack": 5, "spell": 1, "move": 0, "misc": 0 },
+        "bonus": { "attack": 0, "spell": 1, "move": 2, "misc": 0 },
+
+        "reactions": { "attack": 1, "spell": 0, "move": 0, "misc": 0, "none": 2 },
+
+        "attacks": { "hit": 4, "total": 6 },
+        "saves": { "forced": 2, "succeeded": 1 },
+
+        "defense": {
+          "attacksDodged": 2,
+          "attacksTaken": 4,
+          "savesMade": 1,
+          "savesTotal": 2
+        },
+
+        "spellSlotsUsed": { "1": 2, "2": 1, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0 },
+
+        "resources": {
+          "Arrows": { "current": 12, "max": 20 }
+        },
+
+        "damage": 48,
+        "healing": 6,
+        "cc": 2,
+        "damageTaken": 22,
+
+        "conditions": [
+          { "round": 1, "turn": 0, "character": "Aelric", "text": "Poisoned" },
+          { "round": 2, "turn": 0, "character": "Aelric", "text": "Hidden" }
+        ],
+
+        "nat20": 1,
+        "nat1": 0
+      },
+
+      "summons": [],
+
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 18,
+          "healing": 0,
+          "cc": 1,
+          "damageTaken": 10,
+          "actions": { "attack": 2, "spell": 0, "move": 0, "misc": 0, "none": 0 },
+          "bonus": { "attack": 0, "spell": 0, "move": 1, "misc": 0, "none": 0 },
+          "attacks": { "hit": 2, "total": 2 },
+          "saves": { "forced": 1, "succeeded": 0 },
+          "defense": { "attacksDodged": 1, "attacksTaken": 2, "savesMade": 0, "savesTotal": 1 },
+          "reactions": { "attack": 1, "spell": 0, "move": 0, "misc": 0, "none": 0 }
+        },
+        {
+          "round": 2,
+          "damage": 20,
+          "healing": 6,
+          "cc": 1,
+          "damageTaken": 6,
+          "actions": { "attack": 2, "spell": 0, "move": 0, "misc": 0, "none": 0 },
+          "bonus": { "attack": 0, "spell": 1, "move": 0, "misc": 0, "none": 0 },
+          "attacks": { "hit": 1, "total": 2 },
+          "saves": { "forced": 1, "succeeded": 1 },
+          "defense": { "attacksDodged": 1, "attacksTaken": 1, "savesMade": 1, "savesTotal": 1 },
+          "reactions": { "attack": 0, "spell": 0, "move": 0, "misc": 0, "none": 1 }
+        },
+        {
+          "round": 3,
+          "damage": 10,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 6,
+          "actions": { "attack": 1, "spell": 1, "move": 0, "misc": 0, "none": 0 },
+          "bonus": { "attack": 0, "spell": 0, "move": 1, "misc": 0, "none": 0 },
+          "attacks": { "hit": 1, "total": 2 },
+          "saves": { "forced": 0, "succeeded": 0 },
+          "defense": { "attacksDodged": 0, "attacksTaken": 1, "savesMade": 0, "savesTotal": 0 },
+          "reactions": { "attack": 0, "spell": 0, "move": 0, "misc": 0, "none": 1 }
+        }
+      ],
+
+      "roundCount": 3
+    }
+  ],
+
+  "roundSummaries": [
+    {
+      "round": 1,
+      "totals": { "damage": 18, "healing": 0, "cc": 1, "averageDamage": 18 },
+      "players": [
+        {
+          "name": "Aelric",
+          "damage": 18,
+          "healing": 0,
+          "cc": 1,
+          "actions": { "attack": 2 },
+          "bonus": { "move": 1 },
+          "spellSlots": { "1": 1 },
+          "attacks": { "hit": 2, "total": 2 },
+          "saves": { "forced": 1, "succeeded": 0 },
+          "defense": { "attacksDodged": 1, "attacksTaken": 2 },
+          "reactions": { "attack": 1 }
+        }
+      ]
+    }
+  ],
+
+  "roundsDetailed": [
+    {
+      "name": "Aelric",
+      "rounds": []
+    }
+  ],
+
+  "partyTotals": {
+    "damage": 48,
+    "healing": 6,
+    "cc": 2
+  },
+
+  "archive": {
+    "id": "shadows_of_elarion_ambush_at_blackroot_pass",
+    "title": "Ambush at Blackroot Pass",
+    "campaign": "Shadows of Elarion",
+    "date": "2026-04-27T12:00:00.000Z",
+    "summary": {
+      "rounds": 3,
+      "partyDamage": 48,
+      "partyHealing": 6
+    },
+    "thumbnail": null
+  },
+
+  "campaignSlug": "shadows-of-elarion",
+  "battleSlug": "ambush-at-blackroot-pass",
+  "slug": "shadows-of-elarion-ambush-at-blackroot-pass",
+  "displayName": "Shadows of Elarion — Ambush at Blackroot Pass",
+  "timestamp": "2026-04-27T12:00:00.000Z"
+}
+
