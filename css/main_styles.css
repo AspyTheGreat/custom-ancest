@@ -263,8 +263,11 @@ h1 {
   gap: 8px;
 }
 #content {
-  max-width: 900px;
+  width: 100%;
+  max-width: 1200px;   /* 🔥 increase this */
   margin: 0 auto;
+  padding: 0 12px;
+  box-sizing: border-box;
 }
 /* Character cards */
 .char-card {
