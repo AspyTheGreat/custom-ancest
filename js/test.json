@@ -5,7 +5,7 @@
   "battleSlug": "full-system-stress-test",
   "displayName": "Full System Stress Test",
   "timestamp": "2026-04-27T12:00:00Z",
-  "rounds": 5,
+  "roundcount": 5,
 
   "images": {
     "start": null,
@@ -143,12 +143,47 @@
   ],
 
   "roundSummaries": [
-    { "round": 1, "totals": { "damage": 35, "healing": 0, "cc": 3, "averageDamage": 17.5 } },
-    { "round": 2, "totals": { "damage": 35, "healing": 10, "cc": 3, "averageDamage": 17.5 } },
-    { "round": 3, "totals": { "damage": 43, "healing": 0, "cc": 3, "averageDamage": 21.5 } },
-    { "round": 4, "totals": { "damage": 27, "healing": 10, "cc": 3, "averageDamage": 13.5 } },
-    { "round": 5, "totals": { "damage": 40, "healing": 5, "cc": 2, "averageDamage": 20 } }
-  ],
+  {
+    "round": 1,
+    "totals": { "damage": 35, "healing": 0, "cc": 3, "averageDamage": 17.5 },
+    "players": [
+      { "name": "Aelric", "damage": 20 },
+      { "name": "Lyra", "damage": 15 }
+    ]
+  },
+  {
+    "round": 2,
+    "totals": { "damage": 35, "healing": 10, "cc": 3, "averageDamage": 17.5 },
+    "players": [
+      { "name": "Aelric", "damage": 15 },
+      { "name": "Lyra", "damage": 20 }
+    ]
+  },
+  {
+    "round": 3,
+    "totals": { "damage": 43, "healing": 0, "cc": 3, "averageDamage": 21.5 },
+    "players": [
+      { "name": "Aelric", "damage": 18 },
+      { "name": "Lyra", "damage": 25 }
+    ]
+  },
+  {
+    "round": 4,
+    "totals": { "damage": 27, "healing": 10, "cc": 3, "averageDamage": 13.5 },
+    "players": [
+      { "name": "Aelric", "damage": 12 },
+      { "name": "Lyra", "damage": 15 }
+    ]
+  },
+  {
+    "round": 5,
+    "totals": { "damage": 40, "healing": 5, "cc": 2, "averageDamage": 20 },
+    "players": [
+      { "name": "Aelric", "damage": 20 },
+      { "name": "Lyra", "damage": 20 }
+    ]
+  }
+],
 
   "roundsDetailed": [
     {
