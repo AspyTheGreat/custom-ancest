@@ -253,3 +253,84 @@ async function loadBattleView(url) {
   }
 }
 document.addEventListener("DOMContentLoaded", loadCampaigns);
+
+function renderBattleUI(data) {
+  const date = new Date(data.timestamp).toLocaleString();
+
+  container.innerHTML = `
+    <div class="backBtn">← Back</div>
+
+    <h2>${data.displayName || data.battle}</h2>
+    <p style="color:#aaa;">
+      ${data.campaign} • ${date} • ${data.rounds} round(s)
+    </p>
+
+    <div class="box">
+      <h3>Party Totals</h3>
+      <p>Damage: <b>${data.partyTotals.damage}</b></p>
+      <p>Healing: <b>${data.partyTotals.healing}</b></p>
+      <p>CC: <b>${data.partyTotals.cc}</b></p>
+    </div>
+
+    <div class="box">
+      <h3>Characters</h3>
+      <div id="characters"></div>
+    </div>
+
+    <div class="box">
+      <h3>Rounds</h3>
+      <div id="rounds"></div>
+    </div>
+  `;
+
+  container.querySelector(".backBtn").onclick = loadCampaigns;
+
+  renderCharacters(data.characters);
+  renderRounds(data.roundsBreakdown);
+}
+
+function renderCharacters(characters) {
+  const containerDiv = document.getElementById("characters");
+
+  characters.forEach(char => {
+    const card = document.createElement("div");
+    card.className = "world-card";
+
+    card.innerHTML = `
+      <h4>${char.name.trim()}</h4>
+      <p style="color:#aaa;">${char.levelClass}</p>
+
+      <p>Damage: <b>${char.stats.damage}</b></p>
+      <p>Healing: <b>${char.stats.healing}</b></p>
+      <p>Actions: ${char.stats.actions} | Bonus: ${char.stats.bonus}</p>
+
+      <p>Crits: ${char.stats.nat20} | Fumbles: ${char.stats.nat1}</p>
+    `;
+
+    containerDiv.appendChild(card);
+  });
+}
+
+function renderRounds(rounds) {
+  const containerDiv = document.getElementById("rounds");
+
+  rounds.forEach(r => {
+    const div = document.createElement("div");
+    div.className = "world-card";
+
+    div.innerHTML = `
+      <h4>Round ${r.round}</h4>
+      <p>Total Damage: <b>${r.totalDamage}</b></p>
+
+      <div style="margin-top:8px;">
+        ${r.players.map(p => `
+          <div style="margin-bottom:6px;">
+            <b>${p.name.trim()}</b>: ${p.damage} dmg
+          </div>
+        `).join("")}
+      </div>
+    `;
+
+    containerDiv.appendChild(div);
+  });
+}
