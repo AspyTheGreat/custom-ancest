@@ -30,7 +30,7 @@ if (!container) throw new Error("#content not found");
 // =========================
 // 📁 LOAD CAMPAIGNS
 // =========================
-async function loadCampaigns() {
+async function loadCampaigns(campaignSlug) {
   container.innerHTML = "Loading campaigns...";
 
   try {
