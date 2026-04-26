@@ -169,27 +169,27 @@ none
   <div class="box">
     <b>Bonus Actions</b><br>
 
-<button onclick="changeAction('bonusActions','attack',-1)">-</button>
+<button onclick="changeAction('bonus','attack',-1)">-</button>
 Attack
-<button onclick="changeAction('bonusActions','attack',1)">+</button>
+<button onclick="changeAction('bonus','attack',1)">+</button>
 
-<button onclick="changeAction('bonusActions','spell',-1)">-</button>
+<button onclick="changeAction('bonus','spell',-1)">-</button>
 Spell
-<button onclick="changeAction('bonusActions','spell',1)">+</button>
+<button onclick="changeAction('bonus','spell',1)">+</button>
 
-<button onclick="changeAction('bonusActions','move',-1)">-</button>
+<button onclick="changeAction('bonus','move',-1)">-</button>
 Move
-<button onclick="changeAction('bonusActions','move',1)">+</button>
+<button onclick="changeAction('bonus','move',1)">+</button>
 
-<button onclick="changeAction('bonusActions','misc',-1)">-</button>
+<button onclick="changeAction('bonus','misc',-1)">-</button>
 Misc
-<button onclick="changeAction('bonusActions','misc',1)">+</button>
+<button onclick="changeAction('bonus','misc',1)">+</button>
 
-<button onclick="changeAction('bonusActions','none',-1)">-</button>
+<button onclick="changeAction('bonus','none',-1)">-</button>
 none
-<button onclick="changeAction('bonusActions','none',1)">+</button>
+<button onclick="changeAction('bonus','none',1)">+</button>
 
-<div id="bonusActionsCounter" class="counter"></div>
+<div id="bonusCounter" class="counter"></div>
   </div>
 
     
@@ -728,11 +728,14 @@ async function uploadJSONFile() {
   reader.onload = async function(e) {
     try {
       const data = JSON.parse(e.target.result);
+      
+data.characters.forEach(c => {
+  if (!c.stats) c.stats = {};
 
-      data.characters.forEach(c => {
   if (!c.stats.conditions) c.stats.conditions = [];
+
   if (!c.stats.reactions) {
-    c.stats.reactions = {attack:0,spell:0,move:0,misc:0,none:0};
+    c.stats.reactions = { attack: 0, spell: 0, move: 0, misc: 0, none: 0 };
   }
 });
 
@@ -1152,7 +1155,7 @@ characters.push({
     actions:{attack:0,spell:0,move:0,misc:0},
     bonusActions:{attack:0,spell:0,move:0,misc:0},
     totalActions:0,
-    totalbonusActions:0,
+    totalBonus:0,
     attacksHit:0,
     attacksTotal:0,
     savesForced:0,
@@ -1838,7 +1841,7 @@ function endCombat() {
 
   // breakdowns
   actions: { ...c.stats.actions },
-  bonusActions: { ...c.stats.bonusActionsAction },
+  bonusActions: { ...c.stats.bonusActions },
   reactions: { ...c.stats.reactions },
 
   // combat performance
