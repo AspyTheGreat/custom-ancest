@@ -327,30 +327,24 @@ function renderCharacters(characters) {
     card.className = "world-card char-card";
 
     card.innerHTML = `
-      <div class="char-header">
-        <div class="char-left">
-          ${char.portrait ? `
-  <img class="char-portrait"
-       src="${char.portrait}"
-       alt="${char.name}">
-` : ""}
+  ${char.portrait ? `
+    <img class="char-portrait"
+         src="${char.portrait}"
+         alt="${char.name}">
+  ` : ""}
 
-          <div>
-            <h4>${char.name.trim()}</h4>
-            <span>${char.levelClass}</span>
-          </div>
-        </div>
-      </div>
+  <h4>${char.name.trim()}</h4>
+  <span class="char-sub">${char.levelClass}</span>
 
-      <div class="char-stats">
-        <div><label>DMG</label><span>${char.stats.damage}</span></div>
-        <div><label>HEAL</label><span>${char.stats.healing}</span></div>
-        <div><label>ACT</label><span>${char.stats.actions}</span></div>
-        <div><label>BON</label><span>${char.stats.bonus}</span></div>
-        <div><label>CRIT</label><span>${char.stats.nat20}</span></div>
-        <div><label>FAIL</label><span>${char.stats.nat1}</span></div>
-      </div>
-    `;
+  <div class="char-stats">
+    <div><label>DMG</label><span>${char.stats.damage}</span></div>
+    <div><label>HEAL</label><span>${char.stats.healing}</span></div>
+    <div><label>ACT</label><span>${char.stats.actions}</span></div>
+    <div><label>BON</label><span>${char.stats.bonus}</span></div>
+    <div><label>CRIT</label><span>${char.stats.nat20}</span></div>
+    <div><label>FAIL</label><span>${char.stats.nat1}</span></div>
+  </div>
+`;
 
     containerDiv.appendChild(card);
   });

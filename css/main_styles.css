@@ -289,17 +289,16 @@ h1 {
   width: 100%;
 }
 #characters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: flex;
+  flex-wrap: wrap;        /* allows wrapping if needed */
   gap: 16px;
-  width: 100%;
+  justify-content: center;
 }
 
 /* Character card */
 .char-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  width: 260px;           /* 🔥 fixed width = no squish */
+  min-width: 260px;
 }
 
 /* Header */
@@ -317,20 +316,17 @@ h1 {
 /* Stats grid */
 .char-stats {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 🔥 was 3 → fixed */
-  gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .char-stats div {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-
   background: #222;
   padding: 6px 8px;
   border-radius: 6px;
-
-  white-space: nowrap; /* 🔥 prevents "Da ma ge" */
 }
 
 .char-stats label {
@@ -346,10 +342,12 @@ h1 {
 }
 
 .battle-image img {
-  max-width: 100%;
-  max-height: 400px;
+  width: 100%;
+  max-width: 900px;   /* 🔥 controls size */
+  height: auto;
   border-radius: 10px;
   border: 1px solid #333;
+  object-fit: contain;
 }
 
 /* Character portraits */
@@ -360,11 +358,13 @@ h1 {
 }
 
 .char-portrait {
-  width: 40px;
-  height: 40px;
-  border-radius: 6px;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
   object-fit: cover;
   border: 1px solid #444;
+  display: block;
+  margin-bottom: 8px;
 }
 /* =========================
    🔁 ROUNDS
