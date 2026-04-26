@@ -195,4 +195,31 @@ h1 {
 .infinitum-tile:hover {
   background: #6a5acd;
   color: #0b0b0f;
+  
+  /* =========================
+   PREVIOUS BATTLES PAGE
+========================= */
+
+#content {
+  margin-top: 20px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background-color: #2a2a2a;
+}
+
+.backBtn {
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: inline-block;
+  color: #aaa;
+}
+
+.backBtn:hover {
+  color: #fff;
+}
 }
