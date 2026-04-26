@@ -108,6 +108,16 @@
 
   <div id="templateStatus" style="color:#aaa; margin-top:6px;"></div>
 </div>
+
+<div class="box">
+  <b>Upload Existing Battle JSON</b><br><br>
+
+  <input type="file" id="manualUploadFile" accept=".json">
+  <button onclick="uploadJSONFile()">Upload JSON</button>
+
+  <div id="uploadStatus" style="color:#aaa; margin-top:6px;"></div>
+</div>
+
 </div>
 
 <div id="battleMeta" class="hidden box">
@@ -701,6 +711,67 @@ function loadTemplateList() {
       select.appendChild(option);
     }
   }
+}
+
+async function uploadJSONFile() {
+  const input = document.getElementById("manualUploadFile");
+  const status = document.getElementById("uploadStatus");
+
+  if (!input.files.length) {
+    status.innerText = "No file selected.";
+    return;
+  }
+
+  const file = input.files[0];
+  const reader = new FileReader();
+
+  reader.onload = async function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+
+      data.characters.forEach(c => {
+  if (!c.stats.conditions) c.stats.conditions = [];
+  if (!c.stats.reactions) {
+    c.stats.reactions = {attack:0,spell:0,move:0,misc:0,none:0};
+  }
+});
+
+      // --- BASIC VALIDATION ---
+      if (
+  !data.characters ||
+  !Array.isArray(data.characters) ||
+  typeof data.battle !== "string" ||
+  typeof data.campaign !== "string"
+) {
+  throw new Error("Invalid combat JSON format.");
+}
+
+
+      status.innerText = "Uploading...";
+
+      const res = await fetch("/.netlify/functions/uploadBattle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        status.innerText = "Upload successful!";
+      } else {
+        status.innerText = "Upload failed.";
+      }
+
+    } catch (err) {
+      console.error(err);
+      status.innerText = "Invalid or corrupted JSON.";
+    }
+  };
+
+  reader.readAsText(file);
 }
 
 function autoSave() {
