@@ -341,7 +341,7 @@ function renderCharacters(characters) {
 
       <div class="char-details">
         <div>Actions: ${char.stats.actionsTotal}</div>
-        <div>Bonus: ${char.stats.bonusTotal}</div>
+        <div>bonusActions: ${char.stats.bonusActionsTotal}</div>
         <div>Reactions: ${sumObj(char.stats.reactions)}</div>
         <div>Accuracy: ${accuracy}%</div>
         <div>Damage Taken: ${char.stats.damageTaken}</div>
