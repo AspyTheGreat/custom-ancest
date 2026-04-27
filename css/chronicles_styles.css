@@ -458,29 +458,14 @@ h1 {
   color: #aaa;
   margin-left: 6px;
 }
-.chart-grid {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
 
-.chart-grid canvas:not([id^="line-"]) {
-  width: 180px !important;
-  height: 180px !important;
-  background: #111;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #333;
-}
+
+
 .party-totals {
   margin-top: 20px;
 }
 
-.chart-grid {
-  margin-top: 20px;
-}
+
 .hp-block {
   margin: 6px 0 10px;
 }
@@ -504,19 +489,52 @@ h1 {
   background: linear-gradient(90deg, #4caf50, #8bc34a);
   transition: width 0.3s ease;
 }
-/* ✅ Line charts (full width) */
-.chart-grid canvas[id^="line-"] {
-  width: 100% !important;
-  max-width: 800px;
-  height: 300px !important;
-}
-/* Container spacing */
-.chart-grid + .chart-grid {
-  margin-top: 30px;
+/* =========================
+   PIE CHART GRID
+========================= */
+.chart-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
-/* Make line charts stack vertically */
-.chart-grid.line-charts {
-  flex-direction: column;
-  align-items: center;
+/* Pie charts only */
+.chart-grid canvas:not([id^="line-"]) {
+  width: 180px !important;
+  height: 180px !important;
+
+  background: #111;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #333;
 }
+
+/* =========================
+   LINE CHART SECTION
+========================= */
+.line-charts {
+  display: block !important;
+  width: 100%;
+}
+
+/* Each line chart */
+.line-charts canvas {
+  display: block;
+
+  width: 100% !important;
+  height: 420px !important;
+
+  margin: 30px 0;
+
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 12px;
+
+  box-sizing: border-box;
+}
+
+
+/* Make line charts stack vertically */
