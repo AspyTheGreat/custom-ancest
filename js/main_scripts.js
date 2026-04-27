@@ -380,6 +380,8 @@ function renderCharacters(characters) {
 
   // ✅ HP CALCULATIONS HERE
   const hpPercent = char.maxHP
+  ? Math.round((char.finalHP / char.maxHP) * 100)
+  : 0;
   // ✅ ADD COLOR LOGIC RIGHT AFTER
   let hpColor = "#8b0000"; // default (dark red, for safety)
 
