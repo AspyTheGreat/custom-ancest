@@ -281,6 +281,9 @@ function getHP(char) {
 
 function renderBattleUI(data) {
   const date = new Date(data.timestamp).toLocaleString();
+  data.characters.forEach(c => {
+  console.log(c.name, c.stats?.hp);
+});
  const totalMaxHP = (data.characters || [])
   .reduce((sum, c) => {
     const hp = c.stats?.hp;
