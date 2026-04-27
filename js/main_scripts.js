@@ -464,11 +464,12 @@ function renderRounds(rounds) {
   });
 }
 function renderPartyBreakdown(characters) {
-  console.log("CHAR:", char);
+  
   const el = document.getElementById("party-breakdown");
   el.innerHTML = "";
 
   characters.forEach(char => {
+     console.log("CHAR:", char);
     const stats = char.stats || {};
     const defense = stats.defense || {};
 
