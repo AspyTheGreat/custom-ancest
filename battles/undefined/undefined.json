@@ -1,0 +1,333 @@
+{
+  "campaign": "Test Campaign",
+  "battle": "Validation Battle",
+  "rounds": 5,
+  "images": {
+    "start": "",
+    "end": ""
+  },
+  "characters": [
+    {
+      "name": "Doran",
+      "levelClass": "Level 5 Fighter",
+      "portrait": "",
+      "stats": {
+        "actionsTotal": 10,
+        "bonusActionsTotal": 3,
+        "actions": {
+          "attack": 7,
+          "spell": 0,
+          "move": 2,
+          "misc": 1
+        },
+        "bonusActions": {
+          "attack": 1,
+          "spell": 0,
+          "move": 2,
+          "misc": 0
+        },
+        "reactions": {
+          "attack": 2,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 3
+        },
+        "attacks": {
+          "hit": 8,
+          "total": 12
+        },
+        "saves": {
+          "forced": 4,
+          "succeeded": 2
+        },
+        "defense": {
+          "attacksDodged": 3,
+          "attacksTaken": 7,
+          "savesMade": 2,
+          "savesTotal": 4
+        },
+        "spellSlotsUsed": {
+          "level1": 0,
+          "level2": 0,
+          "level3": 0
+        },
+        "resources": {
+          "Second Wind": {
+            "current": 0,
+            "max": 1
+          }
+        },
+        "damage": 70,
+        "healing": 10,
+        "cc": 2,
+        "damageTaken": 35,
+        "conditions": [
+          {
+            "round": 2,
+            "turn": 0,
+            "character": "Doran",
+            "text": "Prone"
+          },
+          {
+            "round": 4,
+            "turn": 0,
+            "character": "Doran",
+            "text": "Grappled"
+          }
+        ],
+        "nat20": 1,
+        "nat1": 1
+      },
+      "summons": [],
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 15,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 5
+        },
+        {
+          "round": 2,
+          "damage": 10,
+          "healing": 5,
+          "cc": 1,
+          "damageTaken": 10
+        },
+        {
+          "round": 3,
+          "damage": 20,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 5
+        },
+        {
+          "round": 4,
+          "damage": 10,
+          "healing": 5,
+          "cc": 1,
+          "damageTaken": 10
+        },
+        {
+          "round": 5,
+          "damage": 15,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 5
+        }
+      ],
+      "roundCount": 5
+    },
+    {
+      "name": "Selene",
+      "levelClass": "Level 5 Cleric",
+      "portrait": "",
+      "stats": {
+        "actionsTotal": 10,
+        "bonusActionsTotal": 4,
+        "actions": {
+          "attack": 3,
+          "spell": 5,
+          "move": 2,
+          "misc": 0
+        },
+        "bonusActions": {
+          "attack": 0,
+          "spell": 2,
+          "move": 2,
+          "misc": 0
+        },
+        "reactions": {
+          "attack": 0,
+          "spell": 2,
+          "move": 0,
+          "misc": 0,
+          "none": 3
+        },
+        "attacks": {
+          "hit": 4,
+          "total": 6
+        },
+        "saves": {
+          "forced": 5,
+          "succeeded": 3
+        },
+        "defense": {
+          "attacksDodged": 2,
+          "attacksTaken": 6,
+          "savesMade": 3,
+          "savesTotal": 5
+        },
+        "spellSlotsUsed": {
+          "level1": 3,
+          "level2": 2,
+          "level3": 1
+        },
+        "resources": {
+          "Channel Divinity": {
+            "current": 0,
+            "max": 1
+          }
+        },
+        "damage": 60,
+        "healing": 40,
+        "cc": 3,
+        "damageTaken": 25,
+        "conditions": [
+          {
+            "round": 3,
+            "turn": 1,
+            "character": "Selene",
+            "text": "Blinded"
+          }
+        ],
+        "nat20": 2,
+        "nat1": 0
+      },
+      "summons": [],
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 10,
+          "healing": 10,
+          "cc": 1,
+          "damageTaken": 5
+        },
+        {
+          "round": 2,
+          "damage": 15,
+          "healing": 10,
+          "cc": 1,
+          "damageTaken": 5
+        },
+        {
+          "round": 3,
+          "damage": 10,
+          "healing": 5,
+          "cc": 0,
+          "damageTaken": 5
+        },
+        {
+          "round": 4,
+          "damage": 15,
+          "healing": 10,
+          "cc": 1,
+          "damageTaken": 5
+        },
+        {
+          "round": 5,
+          "damage": 10,
+          "healing": 5,
+          "cc": 0,
+          "damageTaken": 5
+        }
+      ],
+      "roundCount": 5
+    }
+  ],
+  "roundSummaries": [
+    {
+      "round": 1,
+      "totals": {
+        "damage": 25,
+        "healing": 10,
+        "cc": 1,
+        "averageDamage": 12
+      }
+    },
+    {
+      "round": 2,
+      "totals": {
+        "damage": 25,
+        "healing": 15,
+        "cc": 2,
+        "averageDamage": 12
+      }
+    },
+    {
+      "round": 3,
+      "totals": {
+        "damage": 30,
+        "healing": 5,
+        "cc": 0,
+        "averageDamage": 15
+      }
+    },
+    {
+      "round": 4,
+      "totals": {
+        "damage": 25,
+        "healing": 15,
+        "cc": 2,
+        "averageDamage": 12
+      }
+    },
+    {
+      "round": 5,
+      "totals": {
+        "damage": 25,
+        "healing": 5,
+        "cc": 0,
+        "averageDamage": 12
+      }
+    }
+  ],
+  "roundsDetailed": [
+    {
+      "name": "Doran",
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 15
+        },
+        {
+          "round": 2,
+          "damage": 10
+        },
+        {
+          "round": 3,
+          "damage": 20
+        },
+        {
+          "round": 4,
+          "damage": 10
+        },
+        {
+          "round": 5,
+          "damage": 15
+        }
+      ]
+    },
+    {
+      "name": "Selene",
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 10
+        },
+        {
+          "round": 2,
+          "damage": 15
+        },
+        {
+          "round": 3,
+          "damage": 10
+        },
+        {
+          "round": 4,
+          "damage": 15
+        },
+        {
+          "round": 5,
+          "damage": 10
+        }
+      ]
+    }
+  ],
+  "partyTotals": {
+    "damage": 130,
+    "healing": 50,
+    "cc": 5
+  }
+}
