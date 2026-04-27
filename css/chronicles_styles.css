@@ -466,7 +466,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-.chart-grid canvas {
+.chart-grid canvas:not([id^="line-"]) {
   width: 180px !important;
   height: 180px !important;
   background: #111;
