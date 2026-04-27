@@ -283,14 +283,14 @@ function renderBattleUI(data) {
   const date = new Date(data.timestamp).toLocaleString();
  const totalMaxHP = (data.characters || [])
   .reduce((sum, c) => {
-    const hp = getHP(c);
-    return sum + hp.max;
+    const hp = c.stats?.hp;
+    return sum + (hp?.max ?? 0);
   }, 0);
 
 const totalFinalHP = (data.characters || [])
   .reduce((sum, c) => {
-    const hp = getHP(c);
-    return sum + hp.current;
+    const hp = c.stats?.hp;
+    return sum + (hp?.current ?? 0);
   }, 0);
 
 const partyHPPercent = totalMaxHP
