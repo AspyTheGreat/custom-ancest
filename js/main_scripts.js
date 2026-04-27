@@ -380,9 +380,6 @@ function renderCharacters(characters) {
 
   // ✅ HP CALCULATIONS HERE
   const hpPercent = char.maxHP
-    ? Math.round((char.finalHP / char.maxHP) * 100)
-    : 0;
-
   // ✅ ADD COLOR LOGIC RIGHT AFTER
   let hpColor = "#8b0000"; // default (dark red, for safety)
 
@@ -528,7 +525,7 @@ if (hpPercent === 0) {
   </div>
 
   <div class="hp-bar">
-    <div class="hp-fill" style="width: ${hpPercent}%"></div>
+    <div class="hp-fill" style="width: ${hpPercent}%; background: ${hpColor}"></div>
   </div>
 </div>
         <div class="party-grid">
