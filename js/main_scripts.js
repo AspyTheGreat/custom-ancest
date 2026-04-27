@@ -357,58 +357,75 @@ function renderCharacters(characters) {
   el.innerHTML = "";
 
   characters.forEach(char => {
-  const accuracy = char.stats.attacks.total
-    ? Math.round((char.stats.attacks.hit / char.stats.attacks.total) * 100)
-    : 0;
+  const stats = char.stats || {};
+  const defense = stats.defense || {};
 
-  // ✅ ALL CALCULATIONS HERE
+  const timesTargeted =
+    (defense.attacksTaken || 0) +
+    (defense.savesMade || 0);
+
   const rounds = char.roundCount || 1;
-  const dpr = Math.round((char.stats.damage || 0) / rounds);
+  const dpr = Math.round((stats.damage || 0) / rounds);
 
-  const attacksMade = char.stats.attacks?.total || 0;
+  const attacksMade = stats.attacks?.total || 0;
 
-  const savesForced = char.stats.saves?.forced || 0;
-  const savesSucceeded = char.stats.saves?.succeeded || 0;
+  const savesForced = stats.saves?.forced || 0;
+  const savesSucceeded = stats.saves?.succeeded || 0;
+
+  const savesFailed = savesForced - savesSucceeded;
 
   const saveRate = savesForced
-    ? Math.round((savesSucceeded / savesForced) * 100)
+    ? Math.round((savesFailed / savesForced) * 100)
     : 0;
 
-  const card = document.createElement("div");
-  card.className = "char-card";
+  // ✅ HP CALCULATIONS HERE
+  const hpPercent = char.maxHP
+    ? Math.round((char.finalHP / char.maxHP) * 100)
+    : 0;
 
-  // ✅ ONLY HTML INSIDE TEMPLATE
-  card.innerHTML = `
-    <h4>${char.name}</h4>
-    <span class="sub">${char.levelClass}</span>
+  // ✅ ADD COLOR LOGIC RIGHT AFTER
+  let hpColor = "#8b0000"; // default (dark red, for safety)
 
-    <div class="char-main-stats">
-      <div><b>${char.stats.damage}</b><label>DMG</label></div>
-      <div><b>${char.stats.healing}</b><label>HEAL</label></div>
-      <div><b>${char.stats.cc}</b><label>CC</label></div>
-    </div>
+// ✅ Ordered from lowest → highest OR use else-if chain
+if (hpPercent === 0) {
+  hpColor = "#5a0000"; // dark red
+} else if (hpPercent <= 25) {
+  hpColor = "#ff0000"; // bright red
+} else if (hpPercent <= 50) {
+  hpColor = "#ff9800"; // orange
+} else if (hpPercent <= 75) {
+  hpColor = "#ffeb3b"; // yellow
+} else if (hpPercent < 100) {
+  hpColor = "#4caf50"; // green
+} else {
+  hpColor = "#2196f3"; // blue (100%)
+}
 
-    <div class="char-details">
-      <div>Actions: ${char.stats.actionsTotal}</div>
-      <div>Bonus Actions: ${char.stats.bonusActionsTotal}</div>
-      <div>Reactions: ${sumObj(char.stats.reactions)}</div>
+  const row = document.createElement("div");
+  row.className = "party-row";
 
-      <div>Attacks Made: ${attacksMade}</div>
-      <div>Accuracy: ${accuracy}%</div>
+  // ✅ USE IT HERE
+  row.innerHTML = `
+    <div class="party-left">
+      <h4>${char.name} <span>${char.levelClass}</span></h4>
 
-      <div>DPR: ${dpr}</div>
+      <div class="hp-block">
+        <div class="hp-label">
+          <b>HP:</b> ${char.finalHP} / ${char.maxHP} (${hpPercent}%)
+        </div>
 
-      <div>Save Success: ${saveRate}%</div>
-      <div>Saves: ${savesSucceeded} / ${savesForced}</div>
+        <div class="hp-bar">
+          <div class="hp-fill" style="width: ${hpPercent}%; background: ${hpColor}"></div>
+        </div>
+      </div>
 
-      <div>Damage Taken: ${char.stats.damageTaken}</div>
-
-      <div>Natural 20s: ${char.stats.nat20}</div>
-      <div>Natural 1s: ${char.stats.nat1}</div>
+      <div class="party-grid">
+        ...
+      </div>
     </div>
   `;
 
-  el.appendChild(card);
+  el.appendChild(row);
 });
 }
 
@@ -476,16 +493,24 @@ const savesFailed = savesForced - savesSucceeded;
 const saveRate = savesForced
   ? Math.round((savesFailed / savesForced) * 100)
   : 0;
-  
+  const hpPercent = char.maxHP
+  ? Math.round((char.finalHP / char.maxHP) * 100)
+  : 0;
     row.innerHTML = `
       <div class="party-left">
 
         <h4>${char.name} <span>${char.levelClass}</span></h4>
-const hpPercent = stats.maxHP
-  ? Math.round((char.finalHP / char.maxHP) * 100)
-  : 0;
 
-<div><b>HP:</b> ${char.finalHP} / ${char.maxHP} (${hpPercent}%)</div>
+
+<div class="hp-block">
+  <div class="hp-label">
+    <b>HP:</b> ${char.finalHP} / ${char.maxHP} (${hpPercent}%)
+  </div>
+
+  <div class="hp-bar">
+    <div class="hp-fill" style="width: ${hpPercent}%"></div>
+  </div>
+</div>
         <div class="party-grid">
 
           <div><b>Damage:</b> ${stats.damage}</div>
