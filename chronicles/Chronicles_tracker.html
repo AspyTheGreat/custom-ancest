@@ -1157,15 +1157,6 @@ function setResource(name, value) {
 }
 
 function startCombat() {
-  let resources = {};
-
-if (Array.isArray(c.resources)) {
-  c.resources.forEach(r => {
-    resources[r.name] = { current: r.max, max: r.max };
-  });
-} else {
-  resources = c.resources || {};
-}
 campaignName = document.getElementById("campaignName")?.value.trim() || campaignName || "Unknown Campaign";
 document.getElementById("battleHeader").innerText =
   `${campaignName} — (Preparing Battle...)`;
