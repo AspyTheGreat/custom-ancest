@@ -337,25 +337,28 @@ console.log("RoundCount:", data.roundCount);
   <div id="party-breakdown"></div>
 
   <!-- Totals -->
-  <div class="grid-3 party-totals">
-    <div class="stat-box">
-  <h3>Party HP</h3>
-  <span>${totalFinalHP} / ${totalMaxHP}</span>
-  <small>${partyHPPercent}% remaining</small>
-</div>
-      <h3>Damage</h3>
-      <span>${data.partyTotals.damage}</span>
-    </div>
-    <div class="stat-box">
-      <h3>Healing</h3>
-      <span>${data.partyTotals.healing}</span>
-    </div>
-    <div class="stat-box">
-      <h3>CC</h3>
-      
-      <span>${data.partyTotals.cc}</span>
-    </div>
+ <div class="grid-3 party-totals">
+  <div class="stat-box">
+    <h3>Party HP</h3>
+    <span>${totalFinalHP} / ${totalMaxHP}</span>
+    <small>${partyHPPercent}% remaining</small>
   </div>
+
+  <div class="stat-box">
+    <h3>Damage</h3>
+    <span>${data.partyTotals.damage}</span>
+  </div>
+
+  <div class="stat-box">
+    <h3>Healing</h3>
+    <span>${data.partyTotals.healing}</span>
+  </div>
+
+  <div class="stat-box">
+    <h3>CC</h3>
+    <span>${data.partyTotals.cc}</span>
+  </div>
+</div>
 
    <!-- PIE CHARTS -->
   <div id="partyCharts" class="chart-grid">
@@ -736,11 +739,4 @@ function renderPartyCharts(characters) {
   createPie("chart-healing", "Healing", names, healing);
   createPie("chart-cc", "CC", names, cc);
   createPie("chart-targeted", "Targeted", names, targeted);
-
-  <div class="chart-grid">
-  <canvas id="line-damage"></canvas>
-  <canvas id="line-healing"></canvas>
-  <canvas id="line-cc"></canvas>
-  <canvas id="line-targeted"></canvas>
-</div>
 }
