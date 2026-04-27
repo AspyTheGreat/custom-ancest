@@ -287,13 +287,13 @@ CC <input id="cc" type="number">
 
 <b>Defense</b><br>
 
-<button onclick="changeCounter('defense','dodged',-1)">-</button>
+<button onclick="changeCounter('defense','attacksDodged',-1)">-</button>
 Attacks Dodged
-<button onclick="changeCounter('defense','dodged',1)">+</button>
+<button onclick="changeCounter('defense','attacksDodged',1)">+</button>
 
-<button onclick="changeCounter('defense','taken',-1)">-</button>
+<button onclick="changeCounter('defense','attacksTaken',-1)">-</button>
 Attacks Taken
-<button onclick="changeCounter('defense','taken',1)">+</button>
+<button onclick="changeCounter('defense','attacksTaken',1)">+</button>
 
 <br>
 
@@ -301,9 +301,9 @@ Attacks Taken
 Saves Made
 <button onclick="changeCounter('defense','savesMade',1)">+</button>
 
-<button onclick="changeCounter('defense','total',-1)">-</button>
+<button onclick="changeCounter('defense','savesSucceeded',-1)">-</button>
 Total
-<button onclick="changeCounter('defense','total',1)">+</button>
+<button onclick="changeCounter('defense','savesSucceeded',1)">+</button>
 
 <div id="defenseCounter" class="counter"></div>
 
@@ -1506,7 +1506,7 @@ function updateCounterUI() {
     `Forced:${tempTurn.saves.forced} / Success:${tempTurn.saves.succeeded}`;
 
   document.getElementById("defenseCounter").innerText =
-    `Dodged:${tempTurn.defense.attacksDodged}/${tempTurn.defense.attacksTaken} | Saves:${tempTurn.defense.savesMade}/${tempTurn.defense.savesTotal}`;
+    `attacksDodged:${tempTurn.defense.attacksDodged}/${tempTurn.defense.attacksTaken} | Saves:${tempTurn.defense.savesMade}/${tempTurn.defense.savesTotal}`;
 }
 
 function updateSpellSlotUI() {
@@ -1613,9 +1613,9 @@ CC: ${c.stats.cc + tempTurn.cc}<br><br>
 ${summonHTML}
 <b>Incoming</b><br>
 Off-turn reactions: ${reactionSum}<br>
-Dodged: ${c.stats.attacksDodged}/${c.stats.attacksTaken}<br>
-Saves Made: ${c.stats.savesMade}/${c.stats.savesTotal}<br>
-Damage Taken: ${c.stats.damageTaken}<br>
+attacksDodged: ${c.stats.attacksDodged}/${c.stats.attacksTaken}<br>
+savesMade: ${c.stats.savesMade}/${c.stats.savesTotal}<br>
+damageTaken: ${c.stats.damageTaken}<br>
 ${conditionHTML}
     ${resourceHTML}
     
@@ -1637,12 +1637,24 @@ function nextTurn() {
     healing: 0,
     cc: 0,
     damageTaken: 0,
+
+    spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0}, // ✅ ADD
+    summons: 0, // ✅ ADD (count of active summons)
+
     actions: {attack:0,spell:0,move:0,misc:0,none:0},
     bonusActions: {attack:0,spell:0,move:0,misc:0,none:0},
+
     attacks: {hit:0,total:0},
     saves: {forced:0,succeeded:0},
+
     defense: {attacksDodged:0,attacksTaken:0,savesMade:0,savesTotal:0},
-    reactions: {attack:0,spell:0,move:0,misc:0,none:0}
+
+    reactions: {attack:0,spell:0,move:0,misc:0,none:0},
+
+    nat1: 0,   // ✅ ADD
+    nat20: 0,  // ✅ ADD
+
+    conditions: [] // already added earlier if you followed steps 
   };
 }
   // --- SAFE INPUT READER ---
@@ -1664,6 +1676,21 @@ c.stats.savesSucceeded += tempTurn.saves.succeeded;
   let summonHealing = 0;
 let summonTaken = 0;
 let summonCC = 0;
+
+if (!c._roundTemp.summons) {
+  c._roundTemp.summons = [];
+}
+
+c.summons.forEach(s => {
+  c._roundTemp.summons.push({
+    name: s.name,
+    count: s.count,
+    damage: s.turnDamage,
+    healing: s.turnHealing,
+    taken: s.turnTaken,
+    cc: s.turnCC
+  });
+});
 
 c.summons.forEach(s => {
   s.totalDamage += s.turnDamage;
@@ -1689,9 +1716,14 @@ c.stats.cc += turnCC + summonCC;
 
 
   // spell slots
-  for (let lvl in tempTurn.spellSlots) {
-    c.stats.spellSlotsUsed[lvl] += tempTurn.spellSlots[lvl];
+ for (let lvl in tempTurn.spellSlots) {
+  if (!c._roundTemp.spellSlots[lvl]) {
+    c._roundTemp.spellSlots[lvl] = 0;
   }
+
+  c._roundTemp.spellSlots[lvl] += tempTurn.spellSlots[lvl];
+  c.stats.spellSlotsUsed[lvl] += tempTurn.spellSlots[lvl];
+}
 
   // actions
   for (let k in tempTurn.actions) {
@@ -1715,7 +1747,9 @@ c.stats.savesMade += tempTurn.defense.savesMade + g.savesMade;
 c.stats.savesTotal += tempTurn.defense.savesTotal + g.savesTotal;
 
   c.stats.nat1 += g.nat1;
+   c._roundTemp.nat1 += g.nat1;
   c.stats.nat20 += g.nat20;
+c._roundTemp.nat20 += g.nat20;
 
  c.stats.damageTaken += val("damageTaken") + (g.damageTaken || 0);
 
@@ -1727,12 +1761,26 @@ if (cond) {
     c.stats.conditions = [];
   }
 
-  c.stats.conditions.push({
-    round: round,
-    turn: currentTurn,
-    character: c.name,
-    text: cond
-  });
+  cond
+    .split(",")
+    .map(s => s.trim())
+    .filter(Boolean)
+    .forEach(text => {
+      const obj = {
+        round: round,
+        turn: currentTurn,
+        character: c.name,
+        text: text
+      };
+
+      // ✅ global history
+      c.stats.conditions.push(obj);
+
+      // ✅ THIS ROUND ONLY
+      if (c._roundTemp) {
+        c._roundTemp.conditions.push(obj);
+      }
+    });
 }
 
   // reactions
@@ -1779,16 +1827,53 @@ if (!roundLog[round]) roundLog[round] = [];
 
 roundLog[round].push({
   name: c.name,
+
   damage: turnDamage,
   healing: turnHealing,
   cc: turnCC,
-  actions: {...tempTurn.actions},
-  bonusActions: {...tempTurn.bonusActions},
-  spellSlots: {...tempTurn.spellSlots},
-  attacks: {...tempTurn.attacks},
-  saves: {...tempTurn.saves},
-  defense: {...tempTurn.defense},
-  reactions: {...g.reactions}
+
+  actions: { ...tempTurn.actions },
+  bonusActions: { ...tempTurn.bonusActions },
+
+  spellSlots: { ...tempTurn.spellSlots },
+
+  attacks: { ...tempTurn.attacks },
+  saves: { ...tempTurn.saves },
+
+  // ✅ include off-turn contributions
+  defense: {
+    attacksDodged:
+      tempTurn.defense.attacksDodged + (g.attacksDodged || 0),
+
+    attacksTaken:
+      tempTurn.defense.attacksTaken + (g.attacksTaken || 0),
+
+    savesMade:
+      tempTurn.defense.savesMade + (g.savesMade || 0),
+
+    savesTotal:
+      tempTurn.defense.savesTotal + (g.savesTotal || 0)
+  },
+
+  reactions: { ...g.reactions },
+
+  // ✅ nat rolls (were missing)
+  nat1: g.nat1,
+  nat20: g.nat20,
+
+  // ✅ conditions (multi-entry parsing)
+  conditions: cond
+  ? cond.split(",").map(s => s.trim()).filter(Boolean).map(text => ({
+      round,
+      turn: currentTurn,
+      character: c.name,
+      text
+    }))
+  : [],
+
+  // ✅ useful raw context you were already tracking elsewhere
+  summons: c.summons.length,
+  damageTaken: val("damageTaken") + (g.damageTaken || 0)
 });
 
 c._roundTemp.damage += turnDamage + summonDamage;
@@ -1821,6 +1906,9 @@ c._roundTemp.defense.savesTotal += tempTurn.defense.savesTotal;
 for (let k in g.reactions) {
   c._roundTemp.reactions[k] += g.reactions[k];
 }
+// ✅ INCLUDE OFF-TURN TARGETING
+c._roundTemp.defense.attacksTaken += g.attacksTaken || 0;
+c._roundTemp.defense.savesMade += g.savesMade || 0;
   // --- ADVANCE TURN ---
   currentTurn++;
   if (currentTurn >= characters.length) {
@@ -1840,7 +1928,8 @@ for (let k in g.reactions) {
       attacks: {hit:0,total:0},
       saves: {forced:0,succeeded:0},
       defense: {attacksDodged:0,attacksTaken:0,savesMade:0,savesTotal:0},
-      reactions: {attack:0,spell:0,move:0,misc:0,none:0}
+      spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+      reactions: {attack:0,spell:0,move:0,misc:0,none:0}   
     };
 
     c.rounds.push({
@@ -1967,6 +2056,7 @@ if (liveNameInput) {
   }
 })),
  rounds: c.rounds,
+ turns: c.stats.turns,
 roundCount: c.rounds.length
 });
   });
@@ -1998,7 +2088,33 @@ finalReport.roundSummaries.push({
         : 0
     },
 
-    players: roundData
+     players: roundData.map(p => ({
+      name: p.name,
+
+      damage: p.damage,
+      healing: p.healing,
+      cc: p.cc,
+
+      actions: p.actions,
+      bonusActions: p.bonusActions,
+
+      attacks: p.attacks,
+      saves: p.saves,
+
+      defense: p.defense,
+      reactions: p.reactions,
+
+      spellSlots: p.spellSlots,
+
+      nat1: p.nat1,
+      nat20: p.nat20,
+
+      damageTaken: p.damageTaken,
+
+      conditions: p.conditions || [],
+
+      summons: p.summons || 0
+    }))
   });
   // ✅ DEFINE TOTALS FIRST
  
