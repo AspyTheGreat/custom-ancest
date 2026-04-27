@@ -24,11 +24,14 @@
     {
       "name": "Aric",
       "levelClass": "Level 5 Fighter",
-      "maxHP": 50,
-      "finalHP": 32,
       "roundCount": 3,
 
       "stats": {
+        "hp": {
+          "current": 32,
+          "max": 50
+        },
+
         "damage": 80,
         "healing": 0,
         "cc": 1,
@@ -63,11 +66,14 @@
     {
       "name": "Lyra",
       "levelClass": "Level 5 Cleric",
-      "maxHP": 40,
-      "finalHP": 28,
       "roundCount": 3,
 
       "stats": {
+        "hp": {
+          "current": 28,
+          "max": 40
+        },
+
         "damage": 25,
         "healing": 30,
         "cc": 3,
@@ -102,11 +108,14 @@
     {
       "name": "Drax",
       "levelClass": "Level 5 Rogue",
-      "maxHP": 38,
-      "finalHP": 20,
       "roundCount": 3,
 
       "stats": {
+        "hp": {
+          "current": 20,
+          "max": 38
+        },
+
         "damage": 40,
         "healing": 0,
         "cc": 1,
