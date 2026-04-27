@@ -342,61 +342,59 @@ function renderCharacters(characters) {
   el.innerHTML = "";
 
   characters.forEach(char => {
-    const accuracy = char.stats.attacks.total
-      ? Math.round((char.stats.attacks.hit / char.stats.attacks.total) * 100)
-      : 0;
+  const accuracy = char.stats.attacks.total
+    ? Math.round((char.stats.attacks.hit / char.stats.attacks.total) * 100)
+    : 0;
 
-    const card = document.createElement("div");
-    card.className = "char-card";
+  // ✅ ALL CALCULATIONS HERE
+  const rounds = char.roundCount || 1;
+  const dpr = Math.round((char.stats.damage || 0) / rounds);
 
-    card.innerHTML = `
-      ${char.portrait ? `<img class="char-portrait" src="${char.portrait}">` : ""}
+  const attacksMade = char.stats.attacks?.total || 0;
 
-      <h4>${char.name}</h4>
-      <span class="sub">${char.levelClass}</span>
+  const savesForced = char.stats.saves?.forced || 0;
+  const savesSucceeded = char.stats.saves?.succeeded || 0;
 
-      <div class="char-main-stats">
-        <div><b>${char.stats.damage}</b><label>DMG</label></div>
-        <div><b>${char.stats.healing}</b><label>HEAL</label></div>
-        <div><b>${char.stats.cc}</b><label>CC</label></div>
-      </div>
+  const saveRate = savesForced
+    ? Math.round((savesSucceeded / savesForced) * 100)
+    : 0;
 
-      const rounds = char.roundCount || 1;
+  const card = document.createElement("div");
+  card.className = "char-card";
 
-const dpr = Math.round((char.stats.damage || 0) / rounds);
+  // ✅ ONLY HTML INSIDE TEMPLATE
+  card.innerHTML = `
+    <h4>${char.name}</h4>
+    <span class="sub">${char.levelClass}</span>
 
-const attacksMade = char.stats.attacks?.total || 0;
+    <div class="char-main-stats">
+      <div><b>${char.stats.damage}</b><label>DMG</label></div>
+      <div><b>${char.stats.healing}</b><label>HEAL</label></div>
+      <div><b>${char.stats.cc}</b><label>CC</label></div>
+    </div>
 
-const savesForced = char.stats.saves?.forced || 0;
-const savesSucceeded = char.stats.saves?.succeeded || 0;
+    <div class="char-details">
+      <div>Actions: ${char.stats.actionsTotal}</div>
+      <div>Bonus Actions: ${char.stats.bonusActionsTotal}</div>
+      <div>Reactions: ${sumObj(char.stats.reactions)}</div>
 
-const saveRate = savesForced
-  ? Math.round((savesSucceeded / savesForced) * 100)
-  : 0;
+      <div>Attacks Made: ${attacksMade}</div>
+      <div>Accuracy: ${accuracy}%</div>
 
-  <div class="char-details">
-  <div>Actions: ${char.stats.actionsTotal}</div>
-  <div>Bonus Actions: ${char.stats.bonusActionsTotal}</div>
-  <div>Reactions: ${sumObj(char.stats.reactions)}</div>
+      <div>DPR: ${dpr}</div>
 
-  <div>Attacks Made: ${attacksMade}</div>
-  <div>Accuracy: ${accuracy}%</div>
+      <div>Save Success: ${saveRate}%</div>
+      <div>Saves: ${savesSucceeded} / ${savesForced}</div>
 
-  
+      <div>Damage Taken: ${char.stats.damageTaken}</div>
 
-  <div>Save Success: ${saveRate}%</div>
-  <div>Saves: ${savesSucceeded} / ${savesForced}</div>
+      <div>Natural 20s: ${char.stats.nat20}</div>
+      <div>Natural 1s: ${char.stats.nat1}</div>
+    </div>
+  `;
 
-  <div>Damage Taken: ${char.stats.damageTaken}</div>
-
-  <div>Natural 20s: ${char.stats.nat20}</div>
-  <div>Natural 1s: ${char.stats.nat1}</div>
-
-  <div>DPR: ${dpr}</div>
-</div>
-
-    el.appendChild(card);
-  });
+  el.appendChild(card);
+});
 }
 
 function renderRounds(rounds) {
