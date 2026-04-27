@@ -139,7 +139,17 @@
 <div id="combat" class="hidden">
   <h3 id="initiativeDisplay"></h3>
 <h2 id="turnHeader"></h2>
-<h4 id="battleHeader"></h4>
+
+<h4>
+  Battle:
+  <input 
+    type="text" 
+    id="battleNameLive"
+    placeholder="Battle name"
+    oninput="updateBattleName(this.value)"
+    style="width:220px;"
+  >
+</h4>
 
  <div class="box">
   
@@ -430,6 +440,10 @@ function addCharacter() {
   `;
 
   document.getElementById("characterInputs").appendChild(div);
+}
+
+function updateBattleName(val) {
+  battleName = val.trim() || "Unnamed Battle";
 }
 
 function renderCharacterBar() {
@@ -1394,7 +1408,11 @@ function updateTurnUI() {
   
   document.getElementById("battleHeader").innerText =
   `${campaignName} — ${battleName}`;
-
+  
+const input = document.getElementById("battleNameLive");
+if (input && input !== document.activeElement) {
+  input.value = battleName;
+}
   const c = characters[currentTurn];
 
   document.getElementById("turnHeader").innerText =
