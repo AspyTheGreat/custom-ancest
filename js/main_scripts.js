@@ -511,8 +511,7 @@ if (hpPercent === 0) {
 } else {
   hpColor = "#2196f3";
 }
-  ? Math.round((char.finalHP / char.maxHP) * 100)
-  : 0;
+
     row.innerHTML = `
       <div class="party-left">
 
