@@ -263,6 +263,7 @@ async function loadBattleView(url) {
 
   } catch (err) {
     console.error("Failed to load battle:", err);
+    
     container.innerHTML = "Failed to load battle.";
   }
 }
@@ -279,6 +280,7 @@ const totalFinalHP = (data.characters || [])
 const partyHPPercent = totalMaxHP
   ? Math.round((totalFinalHP / totalMaxHP) * 100)
   : 0;
+  console.log("FULL CHARACTERS ARRAY:", data.characters);
 console.log("Battle data keys:", Object.keys(data));
 console.log("RoundCount:", data.roundCount);
   container.innerHTML = `
@@ -469,6 +471,7 @@ function renderPartyBreakdown(characters) {
   el.innerHTML = "";
 
   characters.forEach(char => {
+    console.log("CHAR KEYS:", Object.keys(char));
      console.log("CHAR:", char);
     const stats = char.stats || {};
     const defense = stats.defense || {};
