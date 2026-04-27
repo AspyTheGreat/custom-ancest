@@ -504,3 +504,19 @@ h1 {
   background: linear-gradient(90deg, #4caf50, #8bc34a);
   transition: width 0.3s ease;
 }
+/* ✅ Line charts (full width) */
+.chart-grid canvas[id^="line-"] {
+  width: 100% !important;
+  max-width: 800px;
+  height: 300px !important;
+}
+/* Container spacing */
+.chart-grid + .chart-grid {
+  margin-top: 30px;
+}
+
+/* Make line charts stack vertically */
+.chart-grid.line-charts {
+  flex-direction: column;
+  align-items: center;
+}

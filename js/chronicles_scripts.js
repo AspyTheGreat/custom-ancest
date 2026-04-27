@@ -344,14 +344,21 @@ console.log("RoundCount:", data.roundCount);
     </div>
   </div>
 
-  <!-- Charts (NOW BELOW EVERYTHING) -->
+   <!-- PIE CHARTS -->
   <div id="partyCharts" class="chart-grid">
     <canvas id="chart-damage"></canvas>
     <canvas id="chart-healing"></canvas>
     <canvas id="chart-cc"></canvas>
     <canvas id="chart-targeted"></canvas>
   </div>
-</div>
+
+  <!-- ✅ LINE CHARTS -->
+  <div class="chart-grid line-charts">
+    <canvas id="line-damage"></canvas>
+    <canvas id="line-healing"></canvas>
+    <canvas id="line-cc"></canvas>
+    <canvas id="line-targeted"></canvas>
+  </div>
 
     ${renderImage(data.images?.end)}
   `;
@@ -361,6 +368,7 @@ console.log("RoundCount:", data.roundCount);
   renderRounds(data.roundSummaries || []);
 renderPartyBreakdown(data.characters || []);
 renderPartyCharts(data.characters || []);
+renderPerRoundCharts(data.roundSummaries || [], data.characters || []);
 }
 
 function sumObj(obj = {}) {
@@ -445,6 +453,78 @@ if (hpPercent === 0) {
 
   el.appendChild(row);
 });
+}
+
+function renderPerRoundCharts(rounds, characters) {
+  if (!rounds.length) return;
+
+  const labels = rounds.map(r => `R${r.round}`);
+  const names = characters.map(c => c.name);
+
+  function buildDataset(statKey) {
+    return names.map(name => {
+      return {
+        label: name,
+        data: rounds.map(r => {
+          const player = (r.players || []).find(p => p.name === name);
+          if (!player) return 0;
+
+          if (statKey === "targeted") {
+            const d = player.defense || {};
+            return (d.attacksTaken || 0) + (d.savesMade || 0);
+          }
+
+          return player[statKey] || 0;
+        })
+      };
+    });
+  }
+
+  createLine("line-damage", "Damage per Round", labels, buildDataset("damage"));
+  createLine("line-healing", "Healing per Round", labels, buildDataset("healing"));
+  createLine("line-cc", "CC per Round", labels, buildDataset("cc"));
+  createLine("line-targeted", "Targeted per Round", labels, buildDataset("targeted"));
+}
+
+function createLine(canvasId, title, labels, datasets) {
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: datasets.map(d => ({
+        label: d.label,
+        data: d.data,
+        fill: false,
+        tension: 0.2
+      }))
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: title,
+          color: "#fff"
+        },
+        legend: {
+          labels: {
+            color: "#aaa"
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: "#aaa" }
+        },
+        y: {
+          ticks: { color: "#aaa" }
+        }
+      }
+    }
+  });
 }
 
 function renderRounds(rounds) {
@@ -643,4 +723,11 @@ function renderPartyCharts(characters) {
   createPie("chart-healing", "Healing", names, healing);
   createPie("chart-cc", "CC", names, cc);
   createPie("chart-targeted", "Targeted", names, targeted);
+
+  <div class="chart-grid">
+  <canvas id="line-damage"></canvas>
+  <canvas id="line-healing"></canvas>
+  <canvas id="line-cc"></canvas>
+  <canvas id="line-targeted"></canvas>
+</div>
 }
