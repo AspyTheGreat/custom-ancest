@@ -379,11 +379,11 @@ function renderCharacters(characters) {
     : 0;
 
   // ✅ HP CALCULATIONS HERE
-  const hpPercent = char.maxHP
+ const hpPercent = char.maxHP
   ? Math.round((char.finalHP / char.maxHP) * 100)
   : 0;
-  // ✅ ADD COLOR LOGIC RIGHT AFTER
-  let hpColor = "#8b0000"; // default (dark red, for safety)
+
+let hpColor = "#8b0000";
 
 // ✅ Ordered from lowest → highest OR use else-if chain
 if (hpPercent === 0) {
@@ -493,11 +493,9 @@ const saveRate = savesForced
   ? Math.round((savesFailed / savesForced) * 100)
   : 0;
   const hpPercent = char.maxHP
-  
   ? Math.round((char.finalHP / char.maxHP) * 100)
   : 0;
 
-// ✅ ADD THIS HERE
 let hpColor = "#8b0000";
 
 if (hpPercent === 0) {
