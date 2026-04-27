@@ -318,6 +318,10 @@ console.log("RoundCount:", data.roundCount);
   renderRounds(data.roundSummaries || []);
 }
 
+function sumObj(obj = {}) {
+  return Object.values(obj).reduce((a, b) => a + b, 0);
+}
+
 function renderCharacters(characters) {
   const el = document.getElementById("characters");
   el.innerHTML = "";
