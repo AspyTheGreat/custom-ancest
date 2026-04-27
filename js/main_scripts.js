@@ -464,6 +464,7 @@ function renderRounds(rounds) {
   });
 }
 function renderPartyBreakdown(characters) {
+  console.log("CHAR:", char);
   const el = document.getElementById("party-breakdown");
   el.innerHTML = "";
 
