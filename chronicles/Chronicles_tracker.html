@@ -135,17 +135,6 @@
 
 <div id="characterBar" class="box"></div>
 
-<div class="box">
-  <b>HP</b><br>
-
-  <input 
-    type="number" 
-    id="hpInput" 
-    style="width:80px;" 
-    oninput="setHP(this.value)"
-  >
-  / <span id="hpMax"></span>
-</div>
 
 <div id="combat" class="hidden">
   <h3 id="initiativeDisplay"></h3>
@@ -272,15 +261,7 @@ CC <input id="cc" type="number">
 
 
   </div>
-  <div class="box">
-  <b>HP</b><br>
-
-  Max HP:
-  <input id="maxHPInput" type="number" oninput="updateHP()">
-
-  Current HP:
-<input id="finalHPInput" type="number" oninput="updateHP()">
-</div>
+ 
   <div class="box">
   <b>Off-Turn Events</b><br>
 
@@ -417,7 +398,7 @@ function addCharacter() {
   div.innerHTML = `
   Name: <input class="name" value="">
   Initiative: <input class="init" type="number" value="0"><br>
-  Max HP: <input class="maxHP" type="number" value="0"><br>
+
 
   Portrait: 
   <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
@@ -631,7 +612,6 @@ function exportTemplateUI() {
     const name = block.querySelector(".name")?.value || "";
     const initiative = block.querySelector(".init")?.value || 0;
     const levelClass = block.querySelector(".levelClass")?.value || "";
-    const maxHP = +block.querySelector(".maxHP")?.value || 0;
     
 
     // ✅ FIX: properly read portrait
@@ -651,8 +631,6 @@ function exportTemplateUI() {
   initiative,
   levelClass,
   portrait,
-  maxHP, // ✅ NEW
-  currentHP: maxHP,
   resources
 });
   });
@@ -700,7 +678,6 @@ function saveTemplateLocal() {
   blocks.forEach(block => {
     const charName = block.querySelector(".name")?.value || "";
     const levelClass = block.querySelector(".levelClass")?.value || "";
-    const maxHP = +block.querySelector(".maxHP")?.value || 0;
     const portrait = block.querySelector(".portraitData")?.value || null;
 
     let resources = [];
@@ -717,8 +694,6 @@ function saveTemplateLocal() {
   initiative: +block.querySelector(".init")?.value || 0,
   levelClass,
   portrait,
-  maxHP, // ✅ NEW
-  currentHP: maxHP,
   resources
 });
   });
@@ -976,48 +951,8 @@ function changeGlobal(type, delta) {
   updateGlobalUI();
 }
 
-function changeHP(delta) {
-  const c = characters[selectedCharacter];
 
-  const currentHP = c.currentHP ?? c.maxHP ?? 0;
 
-c.currentHP = Math.max(0, Math.min(c.maxHP, currentHP + delta));
-
-  updateHPUI();
-  updateLiveSummary();
-  autoSave();
-}
-
-function setHP(value) {
-  const c = characters[selectedCharacter];
-
-  const currentHP = c.currentHP ?? c.maxHP ?? 0;
-
-c.currentHP = Math.max(0, Math.min(c.maxHP, +value || currentHP));
-
-  updateHPUI();
-  updateLiveSummary();
-  autoSave();
-}
-
-function updateHP() {
-  const c = characters[selectedCharacter];
-
-  c.stats.maxHP = +document.getElementById("maxHPInput").value || 0;
-  c.stats.finalHP = +document.getElementById("finalHPInput").value || 0;
-}
-
-function updateHPUI() {
-  const c = characters[selectedCharacter];
-
-  const input = document.getElementById("hpInput");
-  const max = document.getElementById("hpMax");
-
-  const currentHP = c.currentHP ?? c.maxHP ?? 0;
-
-if (input) input.value = currentHP;
-  if (max) max.innerText = c.maxHP;
-}
 
 function changeGlobalReaction(type, delta) {
   const g = getGlobal();
@@ -1118,14 +1053,12 @@ if (campaignInput) {
 }
 
 characterData.forEach(c => {
-  const currentHP = c.currentHP ?? c.maxHP ?? 0;
     const div = document.createElement("div");
     div.classList.add("charBlock");
 
     div.innerHTML = `
       Name: <input class="name" value="${c.name || ""}">
       Initiative: <input class="init" type="number" value="${c.initiative || 0}"><br>
-      Max HP: <input class="maxHP" type="number" value="${c.maxHP || 0}"><br>
 
       Portrait:
       <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
@@ -1204,7 +1137,6 @@ document.getElementById("battleHeader").innerText =
   tempGlobal = {};
 
   for (let i = 0; i < names.length; i++) {
-     const maxHP = +blocks[i].querySelector(".maxHP")?.value || 0;
     let resources = {};
 
     blocks[i].querySelectorAll(".resourceList div").forEach(r => {
@@ -1227,8 +1159,6 @@ characters.push({
   resources: resources,
   summons: [],
   stats: {
-    maxHP: 0,
-    finalHP: 0,
     spellSlotsUsed: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
     actions:{attack:0,spell:0,move:0,misc:0},
     bonusActions:{attack:0,spell:0,move:0,misc:0},
@@ -1415,19 +1345,12 @@ nat20:0,
   updateLiveSummary();
   updateGlobalUI();
   renderSummons();
-  updateHPUI();
 }
 
 function updateTurnUI() {
   renderCharacterBar();
   renderSummons();
   
-  document.getElementById("maxHPInput").value =
-  characters[selectedCharacter].stats.maxHP || "";
-
-document.getElementById("finalHPInput").value =
-  characters[selectedCharacter].stats.finalHP || "";
-
   document.getElementById("battleHeader").innerText =
   `${campaignName} — ${battleName}`;
 
@@ -1551,8 +1474,6 @@ const portraitHTML = c.portrait
 const levelClassHTML = c.levelClass
   ? `<i>${c.levelClass}</i><br><br>`
   : "";
-const currentHP = c.currentHP ?? c.maxHP ?? 0;
-const hpHTML = `<b>HP:</b> ${currentHP} / ${c.maxHP}<br><br>`;
 let g = tempGlobal[selectedCharacter] || {
   attacksDodged:0,
 savesMade:0,
@@ -1613,7 +1534,6 @@ if (!c.stats.conditions || c.stats.conditions.length === 0) {
   ${portraitHTML}
 <b>${c.name}</b><br>
 ${levelClassHTML}
-${hpHTML}
 
     Actions: ${c.stats.totalActions + tempActionTotal}<br>
     bonusActions: ${c.stats.bonusActionsTotal + tempbonusActionsTotal}<br>
@@ -1675,11 +1595,6 @@ c.stats.savesSucceeded += tempTurn.saves.succeeded;
   const turnDamage = val("damage");
   const turnHealing = val("healing");
   const turnCC = val("cc");
-const maxHP = +document.getElementById("maxHPInput")?.value || 0;
-const finalHP = +document.getElementById("finalHPInput")?.value || 0;
-
-c.stats.maxHP = maxHP;
-c.stats.finalHP = finalHP;
   let summonDamage = 0;
   let summonHealing = 0;
 let summonTaken = 0;
@@ -1706,8 +1621,7 @@ c.summons.forEach(s => {
 c.stats.healing += turnHealing + summonHealing; // ✅ FIX
 c.stats.damage += turnDamage + summonDamage;
 c.stats.cc += turnCC + summonCC;
-c.stats.maxHP = maxHP;
-c.stats.finalHP = finalHP;
+
 
   // spell slots
   for (let lvl in tempTurn.spellSlots) {
@@ -1923,14 +1837,11 @@ function endCombat() {
     finalReport.characters.push({
   name: c.name,
   levelClass: c.levelClass,
- maxHP: c.maxHP,
-  finalHP: c.currentHP,
   // ✅ ADD THIS LINE
   portrait: c.portrait || null,
 
  stats: {
-  maxHP: c.stats.maxHP,
-    finalHP: c.stats.finalHP,
+ 
   // totals
   actionsTotal: c.stats.totalActions,
   bonusActionsTotal: c.stats.bonusActionsTotal,
