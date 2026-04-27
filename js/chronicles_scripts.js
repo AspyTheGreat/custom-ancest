@@ -231,11 +231,25 @@ function formatName(slug) {
     .replace(/\b\w/g, l => l.toUpperCase());
 }
 async function loadBattleView(url) {
+    console.log("Fetching battle from:", url);
   container.innerHTML = "Loading battle...";
 
   try {
     const res = await fetch(url);
-    const data = await res.json();
+
+const text = await res.text();
+
+console.log("RAW RESPONSE:", text.slice(0, 200)); // 👈 key debug
+
+let data;
+
+try {
+  data = JSON.parse(text);
+} catch (e) {
+  console.error("Not valid JSON. Response was:", text);
+  container.innerHTML = "Failed to load battle (invalid JSON).";
+  return;
+}
 
     console.log("Battle data:", data);
 
