@@ -361,15 +361,39 @@ function renderCharacters(characters) {
         <div><b>${char.stats.cc}</b><label>CC</label></div>
       </div>
 
-      <div class="char-details">
-        <div>Actions: ${char.stats.actionsTotal}</div>
-        <div>bonusActions: ${char.stats.bonusActionsTotal}</div>
-        <div>Reactions: ${sumObj(char.stats.reactions)}</div>
-        <div>Accuracy: ${accuracy}%</div>
-        <div>Damage Taken: ${char.stats.damageTaken}</div>
-        <div>Crits: ${char.stats.nat20} / Fails: ${char.stats.nat1}</div>
-      </div>
-    `;
+      const rounds = char.roundCount || 1;
+
+const dpr = Math.round((char.stats.damage || 0) / rounds);
+
+const attacksMade = char.stats.attacks?.total || 0;
+
+const savesForced = char.stats.saves?.forced || 0;
+const savesSucceeded = char.stats.saves?.succeeded || 0;
+
+const saveRate = savesForced
+  ? Math.round((savesSucceeded / savesForced) * 100)
+  : 0;
+
+  <div class="char-details">
+  <div>Actions: ${char.stats.actionsTotal}</div>
+  <div>Bonus Actions: ${char.stats.bonusActionsTotal}</div>
+  <div>Reactions: ${sumObj(char.stats.reactions)}</div>
+
+  <div>Attacks Made: ${attacksMade}</div>
+  <div>Accuracy: ${accuracy}%</div>
+
+  
+
+  <div>Save Success: ${saveRate}%</div>
+  <div>Saves: ${savesSucceeded} / ${savesForced}</div>
+
+  <div>Damage Taken: ${char.stats.damageTaken}</div>
+
+  <div>Natural 20s: ${char.stats.nat20}</div>
+  <div>Natural 1s: ${char.stats.nat1}</div>
+
+  <div>DPR: ${dpr}</div>
+</div>
 
     el.appendChild(card);
   });
