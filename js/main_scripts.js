@@ -277,12 +277,6 @@ function getHP(char) {
       max: char.stats.hp.max ?? 0
     };
   }
-
-  // OLD fallback (so old data still works)
-  return {
-    current: char.finalHP ?? 0,
-    max: char.maxHP ?? 0
-  };
 }
 
 function renderBattleUI(data) {
