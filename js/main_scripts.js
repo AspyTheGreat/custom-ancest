@@ -279,7 +279,7 @@ console.log("RoundCount:", data.roundCount);
     
     <p class="meta">
     
-      ${data.campaign} • ${date} • ${data.roundCount} rounds
+      ${data.roundCount ?? data.roundcount ?? "?"} rounds
     </p>
     
     ${renderImage(data.images?.start)}
