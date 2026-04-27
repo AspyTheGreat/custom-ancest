@@ -270,12 +270,12 @@ document.addEventListener("DOMContentLoaded", loadCampaigns);
 
 function renderBattleUI(data) {
   const date = new Date(data.timestamp).toLocaleString();
-
+console.log("RoundCount:", data.roundCount);
   container.innerHTML = `
     <div class="backBtn">← Back</div>
 
     <h2>${data.displayName}</h2>
-    console.log("RoundCount:", data.roundCount);
+    
     <p class="meta">
     
       ${data.campaign} • ${date} • ${data.roundCount} rounds
