@@ -947,14 +947,14 @@ function importTemplateUI() {
 function renderHP() {
   const c = characters[selectedCharacter];
 
-  document.getElementById("hpInput").value = c.hp.current;
-  document.getElementById("hpMax").innerText = c.hp.max;
+  document.getElementById("hpInput").value = c.stats.hp.current;
+  document.getElementById("hpMax").innerText = c.stats.hp.max;
 }
 
 function changeHP(delta) {
   const c = characters[selectedCharacter];
 
-  c.hp.current = Math.max(0, Math.min(c.hp.max, c.hp.current + delta));
+  c.stats.hp.current = Math.max(0, Math.min(c.stats.hp.max, c.stats.hp.current + delta));
 
   renderHP();
   updateLiveSummary();
@@ -963,7 +963,7 @@ function changeHP(delta) {
 function setHP(value) {
   const c = characters[selectedCharacter];
 
-  c.hp.current = Math.max(0, Math.min(c.hp.max, +value || 0));
+  c.stats.hp.current = Math.max(0, Math.min(c.stats.hp.max, +value || 0));
 
   renderHP();
   updateLiveSummary();
@@ -1180,6 +1180,8 @@ document.getElementById("battleHeader").innerText =
 
   for (let i = 0; i < names.length; i++) {
     let resources = {};
+const maxHP = +blocks[i].querySelector(".maxHP")?.value || 0;
+const currentHP = +blocks[i].querySelector(".currentHP")?.value || maxHP;
 
     blocks[i].querySelectorAll(".resourceList div").forEach(r => {
       const resName = r.querySelector(".resName").value;
@@ -1189,8 +1191,7 @@ document.getElementById("battleHeader").innerText =
         current: max,
         max: max
       };
-      const maxHP = +blocks[i].querySelector(".maxHP")?.value || 0;
-const currentHP = +blocks[i].querySelector(".currentHP")?.value || maxHP;
+      
     });
 
 
@@ -1525,7 +1526,7 @@ const levelClassHTML = c.levelClass
   ? `<i>${c.levelClass}</i><br><br>`
   : "";
   const hpHTML = `
-<b>HP:</b> ${c.hp.current} / ${c.hp.max}<br><br>
+<b>HP:</b> ${c.stats.hp.current} / ${c.stats.hp.max}<br><br>
 `;
 let g = tempGlobal[selectedCharacter] || {
   attacksDodged:0,
@@ -1896,8 +1897,8 @@ function endCombat() {
 
  stats: {
  hp: {
-    current: c.hp.current,
-    max: c.hp.max
+    current: c.stats.hp.current,
+    max: c.stats.hp.max
   },
   // totals
   actionsTotal: c.stats.totalActions,

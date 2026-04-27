@@ -269,13 +269,35 @@ async function loadBattleView(url) {
 }
 document.addEventListener("DOMContentLoaded", loadCampaigns);
 
+function getHP(char) {
+  // NEW system (preferred)
+  if (char.stats?.hp) {
+    return {
+      current: char.stats.hp.current ?? 0,
+      max: char.stats.hp.max ?? 0
+    };
+  }
+
+  // OLD fallback (so old data still works)
+  return {
+    current: char.finalHP ?? 0,
+    max: char.maxHP ?? 0
+  };
+}
+
 function renderBattleUI(data) {
   const date = new Date(data.timestamp).toLocaleString();
-  const totalMaxHP = (data.characters || [])
-  .reduce((sum, c) => sum + (c.maxHP || 0), 0);
+ const totalMaxHP = (data.characters || [])
+  .reduce((sum, c) => {
+    const hp = getHP(c);
+    return sum + hp.max;
+  }, 0);
 
 const totalFinalHP = (data.characters || [])
-  .reduce((sum, c) => sum + (c.finalHP || 0), 0);
+  .reduce((sum, c) => {
+    const hp = getHP(c);
+    return sum + hp.current;
+  }, 0);
 
 const partyHPPercent = totalMaxHP
   ? Math.round((totalFinalHP / totalMaxHP) * 100)
@@ -381,8 +403,10 @@ function renderCharacters(characters) {
     : 0;
 
   // ✅ HP CALCULATIONS HERE
- const hpPercent = char.maxHP
-  ? Math.round((char.finalHP / char.maxHP) * 100)
+ const { current, max } = getHP(char);
+
+const hpPercent = max
+  ? Math.round((current / max) * 100)
   : 0;
 
 let hpColor = "#8b0000";
@@ -412,7 +436,7 @@ if (hpPercent === 0) {
 
       <div class="hp-block">
         <div class="hp-label">
-          <b>HP:</b> ${char.finalHP} / ${char.maxHP} (${hpPercent}%)
+          <b>HP:</b> ${current} / ${max} (${hpPercent}%)
         </div>
 
         <div class="hp-bar">
@@ -497,8 +521,10 @@ const savesFailed = savesForced - savesSucceeded;
 const saveRate = savesForced
   ? Math.round((savesFailed / savesForced) * 100)
   : 0;
-  const hpPercent = char.maxHP
-  ? Math.round((char.finalHP / char.maxHP) * 100)
+  const { current, max } = getHP(char);
+
+const hpPercent = max
+  ? Math.round((current / max) * 100)
   : 0;
 
 let hpColor = "#8b0000";
@@ -525,7 +551,7 @@ if (hpPercent === 0) {
 
 <div class="hp-block">
   <div class="hp-label">
-    <b>HP:</b> ${char.finalHP} / ${char.maxHP} (${hpPercent}%)
+    <b>HP:</b> ${current} / ${max} (${hpPercent}%)
   </div>
 
   <div class="hp-bar">
