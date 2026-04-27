@@ -273,16 +273,16 @@ function renderBattleUI(data) {
 console.log("Battle data keys:", Object.keys(data));
 console.log("RoundCount:", data.roundCount);
   container.innerHTML = `
-    <div class="backBtn">← Back</div>
+  <div class="backBtn">← Back</div>
 
-    <h2>${data.displayName}</h2>
-    
-    <p class="meta">
-    
-      ${data.roundCount ?? data.roundcount ?? "?"} rounds
-    </p>
-    
-    ${renderImage(data.images?.start)}
+  <h2>${data.campaign}</h2>
+  <h3>${data.battle}</h3>
+
+  <p class="meta">
+    ${date} • ${data.roundCount ?? data.roundcount ?? "?"} rounds
+  </p>
+
+  ${renderImage(data.images?.start)}
 
     <div class="grid-3">
       <div class="box stat-box">
@@ -362,6 +362,7 @@ function renderCharacters(characters) {
 
 function renderRounds(rounds) {
   console.log("Rounds data:", rounds);
+
   const el = document.getElementById("rounds");
   el.innerHTML = "";
 
@@ -372,18 +373,20 @@ function renderRounds(rounds) {
     div.innerHTML = `
       <div class="round-header">
         <h4>Round ${r.round}</h4>
+
         <div class="round-totals">
           <span>${r.totals?.damage ?? 0} dmg</span>
           <span>${r.totals?.healing ?? 0} heal</span>
           <span>${r.totals?.cc ?? 0} cc</span>
+          <span>${r.totals?.averageDamage ?? 0} avg</span>
         </div>
       </div>
 
       <div class="round-players">
         ${(r.players || []).map(p => `
           <div class="round-player">
-            <span>${p.name}</span>
-            <span>${p.damage} dmg</span>
+            <span class="name">${p.name}</span>
+            <span class="dmg">${p.damage ?? 0} dmg</span>
           </div>
         `).join("")}
       </div>
