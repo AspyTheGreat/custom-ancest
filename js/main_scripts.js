@@ -270,6 +270,7 @@ document.addEventListener("DOMContentLoaded", loadCampaigns);
 
 function renderBattleUI(data) {
   const date = new Date(data.timestamp).toLocaleString();
+console.log("Battle data keys:", Object.keys(data));
 console.log("RoundCount:", data.roundCount);
   container.innerHTML = `
     <div class="backBtn">← Back</div>
