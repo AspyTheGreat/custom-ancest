@@ -456,8 +456,10 @@ const attacksMade = stats.attacks?.total || 0;
 const savesForced = stats.saves?.forced || 0;
 const savesSucceeded = stats.saves?.succeeded || 0;
 
+const savesFailed = savesForced - savesSucceeded;
+
 const saveRate = savesForced
-  ? Math.round((savesSucceeded / savesForced) * 100)
+  ? Math.round((savesFailed / savesForced) * 100)
   : 0;
   
     row.innerHTML = `
@@ -486,8 +488,8 @@ const saveRate = savesForced
 
 <div><b>DPR:</b> ${dpr}</div>
 
-<div><b>Save Success:</b> ${saveRate}%</div>
-<div><b>Saves:</b> ${savesSucceeded} / ${savesForced}</div>
+<div><b>Save Fail Rate:</b> ${saveRate}%</div>
+<div><b>Saves Forced:</b> ${savesForced}</div>
 
 <div><b>Natural 20s:</b> ${stats.nat20}</div>
 <div><b>Natural 1s:</b> ${stats.nat1}</div>
