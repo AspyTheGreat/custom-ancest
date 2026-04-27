@@ -1,0 +1,339 @@
+ /* =========================
+   PREVIOUS BATTLES PAGE
+  ======================*/
+
+/* =========================
+   📦 LAYOUT
+========================= */
+#content {
+  width: 100%;
+  max-width: 1400px;   /* 🔥 more room */
+  margin: 20px auto 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* =========================
+   🖱️ INTERACTION
+========================= */
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background-color: #2a2a2a;
+}
+
+.backBtn {
+  cursor: pointer;
+  margin-bottom: 12px;
+  display: inline-block;
+  color: #aaa;
+}
+
+.backBtn:hover {
+  color: #fff;
+}
+
+/* =========================
+   📦 CONTAINERS
+========================= */
+.box {
+  border: 1px solid #444;
+  padding: 14px;
+  margin: 16px 0;
+  width: 100%;
+  border-radius: 12px;
+  background: #1a1a1a;
+}
+
+.world-card-previous-battles {
+  margin-bottom: 20px;
+  border: 1px solid #333;
+  padding: 12px;
+  border-radius: 10px;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  background-color: #181818; /* fallback */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: #fff;
+}
+
+/* Prevent weird text wrapping */
+.world-card-text {
+  overflow-wrap: break-word;
+  word-break: normal;
+  white-space: normal;
+   width: 100%;
+  max-width: 100%;
+}
+
+.world-card-previous-battles h4 {
+  margin: 0 0 6px 0;
+}
+
+/* =========================
+   👥 CHARACTERS GRID
+========================= */
+.char-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+#characters, #rounds {
+  width: 100%;
+}
+#characters {
+  display: flex;
+  flex-wrap: wrap;        /* allows wrapping if needed */
+  gap: 16px;
+  justify-content: center;
+}
+
+/* Character card */
+.char-card {
+  width: 260px;
+  min-width: 260px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  padding: 16px; /* slightly bigger */
+
+  border: 1px solid #333;
+  border-radius: 12px;
+  background: #1a1a1a;
+}
+
+.char-portrait {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid #444;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Header */
+
+.char-header span {
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+/* Stats grid */
+.char-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.char-stats div {
+  display: flex;
+  justify-content: space-between;
+  background: #222;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.char-stats label {
+  color: #aaa;
+  font-size: 0.8em;
+}
+/* Battle images */
+.battle-image {
+  width: 100%;
+  margin: 16px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.battle-image img {
+  width: 100%;
+  max-width: 900px;   /* 🔥 controls size */
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid #333;
+  object-fit: contain;
+}
+
+/* Character portraits */
+
+
+.char-main-stats {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.char-main-stats div {
+  text-align: center;
+}
+
+.char-main-stats b {
+  display: block;
+  font-size: 1.3rem;
+}
+
+.char-main-stats label {
+  font-size: 0.7rem;
+  color: #aaa;
+}
+.char-details {
+  margin-top: 10px;
+  width: 100%;
+
+  display: grid;
+  gap: 4px;
+
+  font-size: 0.85rem;
+  color: #ccc;
+}
+/* =========================
+   🔁 ROUNDS
+========================= */
+#rounds {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.round-card {
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 12px;
+  background: #181818;
+}
+.round-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.round-totals span {
+  margin-left: 10px;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.round-players {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.round-player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #222;
+  padding: 6px 8px;
+  border-radius: 6px;
+
+  white-space: nowrap; /* 🔥 prevents wrapping mess */
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.stat-box {
+  text-align: center;
+}
+
+.stat-box span {
+  display: block;
+  font-size: 1.8rem;
+  margin-top: 6px;
+}
+.party-row {
+  display: flex;
+  border: 1px solid #333;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.party-left {
+  width: 50%;
+  padding: 12px;
+  background: #1a1a1a;
+}
+
+.party-right {
+  width: 50%;
+  background: #111;
+}
+
+.party-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.party-left h4 span {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-left: 6px;
+}
+.chart-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.chart-grid canvas {
+  width: 180px !important;
+  height: 180px !important;
+  background: #111;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+.party-totals {
+  margin-top: 20px;
+}
+
+.chart-grid {
+  margin-top: 20px;
+}
+.hp-block {
+  margin: 6px 0 10px;
+}
+
+.hp-label {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: #ccc;
+}
+
+.hp-bar {
+  width: 100%;
+  height: 8px;
+  background: #2a2a2a;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  transition: width 0.3s ease;
+}
