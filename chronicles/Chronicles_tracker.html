@@ -1242,7 +1242,6 @@ document.getElementById("initiativeDisplay").innerText =
   round = 1;
 
   renderCharacterBar();
-  updateTurnUI();
 }
 
 function confirmBattleMeta() {
@@ -1266,13 +1265,18 @@ function formatCounter(obj) {
 }
 
 function updateCounters() {
-  document.getElementById("actionCounter").innerText =
-    formatCounter(tempTurn.actions);
+  const actionEl = document.getElementById("actionCounter");
+  const bonusEl = document.getElementById("bonusActionsCounter");
 
-  document.getElementById("bonusActionsCounter").innerText =
-    formatCounter(tempTurn.bonusActions);
+  if (actionEl) {
+    actionEl.innerText = formatCounter(tempTurn.actions);
+  }
 
+  if (bonusEl) {
+    bonusEl.innerText = formatCounter(tempTurn.bonusActions);
+  }
 }
+
 
 function addSummon() {
   const c = characters[selectedCharacter];
