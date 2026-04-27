@@ -135,6 +135,18 @@
 
 <div id="characterBar" class="box"></div>
 
+<div class="box">
+  <b>HP</b><br>
+
+  <input 
+    type="number" 
+    id="hpInput" 
+    style="width:80px;" 
+    oninput="setHP(this.value)"
+  >
+  / <span id="hpMax"></span>
+</div>
+
 <div id="combat" class="hidden">
   <h3 id="initiativeDisplay"></h3>
 <h2 id="turnHeader"></h2>
@@ -395,6 +407,7 @@ function addCharacter() {
   div.innerHTML = `
   Name: <input class="name" value="">
   Initiative: <input class="init" type="number" value="0"><br>
+  Max HP: <input class="maxHP" type="number" value="0"><br>
 
   Portrait: 
   <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
@@ -608,6 +621,8 @@ function exportTemplateUI() {
     const name = block.querySelector(".name")?.value || "";
     const initiative = block.querySelector(".init")?.value || 0;
     const levelClass = block.querySelector(".levelClass")?.value || "";
+    const maxHP = +block.querySelector(".maxHP")?.value || 0;
+    
 
     // ✅ FIX: properly read portrait
     const portrait = block.querySelector(".portraitData")?.value || null;
@@ -622,12 +637,14 @@ function exportTemplateUI() {
     });
 
     data.characters.push({
-      name,
-      initiative,
-      levelClass,
-      portrait,
-      resources
-    });
+  name,
+  initiative,
+  levelClass,
+  portrait,
+  maxHP, // ✅ NEW
+  currentHP: maxHP,
+  resources
+});
   });
 
   // ✅ clean single call (not inside loop)
@@ -673,6 +690,7 @@ function saveTemplateLocal() {
   blocks.forEach(block => {
     const charName = block.querySelector(".name")?.value || "";
     const levelClass = block.querySelector(".levelClass")?.value || "";
+    const maxHP = +block.querySelector(".maxHP")?.value || 0;
     const portrait = block.querySelector(".portraitData")?.value || null;
 
     let resources = [];
@@ -689,6 +707,8 @@ function saveTemplateLocal() {
   initiative: +block.querySelector(".init")?.value || 0,
   levelClass,
   portrait,
+  maxHP, // ✅ NEW
+  currentHP: maxHP,
   resources
 });
   });
@@ -946,6 +966,41 @@ function changeGlobal(type, delta) {
   updateGlobalUI();
 }
 
+function changeHP(delta) {
+  const c = characters[selectedCharacter];
+
+  const currentHP = c.currentHP ?? c.maxHP ?? 0;
+
+c.currentHP = Math.max(0, Math.min(c.maxHP, currentHP + delta));
+
+  updateHPUI();
+  updateLiveSummary();
+  autoSave();
+}
+
+function setHP(value) {
+  const c = characters[selectedCharacter];
+
+  const currentHP = c.currentHP ?? c.maxHP ?? 0;
+
+c.currentHP = Math.max(0, Math.min(c.maxHP, +value || currentHP));
+
+  updateHPUI();
+  updateLiveSummary();
+  autoSave();
+}
+
+function updateHPUI() {
+  const c = characters[selectedCharacter];
+
+  const input = document.getElementById("hpInput");
+  const max = document.getElementById("hpMax");
+
+  const currentHP = c.currentHP ?? c.maxHP ?? 0;
+
+if (input) input.value = currentHP;
+  if (max) max.innerText = c.maxHP;
+}
 
 function changeGlobalReaction(type, delta) {
   const g = getGlobal();
@@ -966,6 +1021,7 @@ function updateGlobalUI() {
  document.getElementById("globalReactionCounter").innerText =
   formatCounter(g.reactions || {});
 }
+
 
 function addResourceInline(btn) {
   const block = btn.closest(".charBlock");
@@ -1045,12 +1101,14 @@ if (campaignInput) {
 }
 
 characterData.forEach(c => {
+  const currentHP = c.currentHP ?? c.maxHP ?? 0;
     const div = document.createElement("div");
     div.classList.add("charBlock");
 
     div.innerHTML = `
       Name: <input class="name" value="${c.name || ""}">
       Initiative: <input class="init" type="number" value="${c.initiative || 0}"><br>
+      Max HP: <input class="maxHP" type="number" value="${c.maxHP || 0}"><br>
 
       Portrait:
       <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
@@ -1129,6 +1187,7 @@ document.getElementById("battleHeader").innerText =
   tempGlobal = {};
 
   for (let i = 0; i < names.length; i++) {
+     const maxHP = +blocks[i].querySelector(".maxHP")?.value || 0;
     let resources = {};
 
     blocks[i].querySelectorAll(".resourceList div").forEach(r => {
@@ -1148,6 +1207,8 @@ characters.push({
   initiative: +inits[i].value,
   portrait: blocks[i].querySelector(".portraitData")?.value || null,
   levelClass: blocks[i].querySelector(".levelClass").value,
+  maxHP: maxHP,          // ✅ NEW
+  currentHP: c.currentHP ?? maxHP,
   resources: resources,
   summons: [],
   stats: {
@@ -1337,6 +1398,7 @@ nat20:0,
   updateLiveSummary();
   updateGlobalUI();
   renderSummons();
+  updateHPUI();
 }
 
 function updateTurnUI() {
@@ -1466,7 +1528,8 @@ const portraitHTML = c.portrait
 const levelClassHTML = c.levelClass
   ? `<i>${c.levelClass}</i><br><br>`
   : "";
-
+const currentHP = c.currentHP ?? c.maxHP ?? 0;
+const hpHTML = `<b>HP:</b> ${currentHP} / ${c.maxHP}<br><br>`;
 let g = tempGlobal[selectedCharacter] || {
   attacksDodged:0,
 savesMade:0,
@@ -1525,11 +1588,12 @@ if (!c.stats.conditions || c.stats.conditions.length === 0) {
 }
   document.getElementById("liveSummary").innerHTML = `
   ${portraitHTML}
-  <b>${c.name}</b><br>
-  ${levelClassHTML}
+<b>${c.name}</b><br>
+${levelClassHTML}
+${hpHTML}
 
     Actions: ${c.stats.totalActions + tempActionTotal}<br>
-    bonusActions: ${c.stats.totalbonusActions + tempbonusActionsTotal}<br>
+    bonusActions: ${c.stats.bonusActionsTotal + tempbonusActionsTotal}<br>
 
     Attacks: ${c.stats.attacksHit}/${c.stats.attacksTotal}<br>
     Saves: ${c.stats.savesForced}/${c.stats.savesSucceeded}<br><br>
@@ -1629,7 +1693,7 @@ c.stats.cc += turnCC + summonCC;
 
   for (let k in tempTurn.bonusActions) {
     c.stats.bonusActions[k] += tempTurn.bonusActions[k];
-    if (k !== "none") c.stats.totalbonusActions += tempTurn.bonusActions[k];
+    if (k !== "none") c.stats.bonusActionsTotal += tempTurn.bonusActions[k];
   }
 
 const g = getGlobal();
@@ -1830,14 +1894,15 @@ function endCombat() {
     finalReport.characters.push({
   name: c.name,
   levelClass: c.levelClass,
-
+ maxHP: c.maxHP,
+  finalHP: c.currentHP,
   // ✅ ADD THIS LINE
   portrait: c.portrait || null,
 
  stats: {
   // totals
   actionsTotal: c.stats.totalActions,
-  bonusActionsTotal: c.stats.totalbonusActions,
+  bonusActionsTotal: c.stats.bonusActionsTotal,
 
   // breakdowns
   actions: { ...c.stats.actions },

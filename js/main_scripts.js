@@ -270,6 +270,15 @@ document.addEventListener("DOMContentLoaded", loadCampaigns);
 
 function renderBattleUI(data) {
   const date = new Date(data.timestamp).toLocaleString();
+  const totalMaxHP = (data.characters || [])
+  .reduce((sum, c) => sum + (c.maxHP || 0), 0);
+
+const totalFinalHP = (data.characters || [])
+  .reduce((sum, c) => sum + (c.finalHP || 0), 0);
+
+const partyHPPercent = totalMaxHP
+  ? Math.round((totalFinalHP / totalMaxHP) * 100)
+  : 0;
 console.log("Battle data keys:", Object.keys(data));
 console.log("RoundCount:", data.roundCount);
   container.innerHTML = `
@@ -301,6 +310,11 @@ console.log("RoundCount:", data.roundCount);
   <!-- Totals -->
   <div class="grid-3 party-totals">
     <div class="stat-box">
+    <div class="stat-box">
+  <h3>Party HP</h3>
+  <span>${totalFinalHP} / ${totalMaxHP}</span>
+  <small>${partyHPPercent}% remaining</small>
+</div>
       <h3>Damage</h3>
       <span>${data.partyTotals.damage}</span>
     </div>
@@ -310,6 +324,7 @@ console.log("RoundCount:", data.roundCount);
     </div>
     <div class="stat-box">
       <h3>CC</h3>
+      
       <span>${data.partyTotals.cc}</span>
     </div>
   </div>
@@ -466,7 +481,11 @@ const saveRate = savesForced
       <div class="party-left">
 
         <h4>${char.name} <span>${char.levelClass}</span></h4>
+const hpPercent = stats.maxHP
+  ? Math.round((char.finalHP / char.maxHP) * 100)
+  : 0;
 
+<div><b>HP:</b> ${char.finalHP} / ${char.maxHP} (${hpPercent}%)</div>
         <div class="party-grid">
 
           <div><b>Damage:</b> ${stats.damage}</div>
