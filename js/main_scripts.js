@@ -356,11 +356,8 @@ function renderCharacters(characters) {
   });
 }
 
-function sumObj(obj = {}) {
-  return Object.values(obj).reduce((a, b) => a + b, 0);
-}
-
 function renderRounds(rounds) {
+  console.log("Rounds data:", rounds);
   const el = document.getElementById("rounds");
   el.innerHTML = "";
 
@@ -372,14 +369,14 @@ function renderRounds(rounds) {
       <div class="round-header">
         <h4>Round ${r.round}</h4>
         <div class="round-totals">
-          <span>${r.totals.damage} dmg</span>
-          <span>${r.totals.healing} heal</span>
-          <span>${r.totals.cc} cc</span>
+          <span>${r.totals?.damage ?? 0} dmg</span>
+          <span>${r.totals?.healing ?? 0} heal</span>
+          <span>${r.totals?.cc ?? 0} cc</span>
         </div>
       </div>
 
       <div class="round-players">
-        ${r.players.map(p => `
+        ${(r.players || []).map(p => `
           <div class="round-player">
             <span>${p.name}</span>
             <span>${p.damage} dmg</span>
