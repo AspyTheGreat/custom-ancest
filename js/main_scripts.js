@@ -299,11 +299,16 @@ console.log("RoundCount:", data.roundCount);
       </div>
     </div>
 
-    <div class="box">
-      <h3>Characters</h3>
-      <div id="characters" class="char-grid"></div>
-    </div>
+   <div class="box">
+  <h3>Rounds</h3>
+  <div id="rounds"></div>
+</div>
 
+<div class="box">
+  <h3>Party Breakdown</h3>
+  <canvas id="partyChart" height="200"></canvas>
+  <div id="party-breakdown"></div>
+</div>
     <div class="box">
       <h3>Rounds</h3>
       <div id="rounds"></div>
@@ -314,8 +319,9 @@ console.log("RoundCount:", data.roundCount);
 
   container.querySelector(".backBtn").onclick = loadCampaigns;
 
-  renderCharacters(data.characters || []);
   renderRounds(data.roundSummaries || []);
+renderPartyBreakdown(data.characters || []);
+renderPartyChart(data.characters || []);
 }
 
 function sumObj(obj = {}) {
@@ -393,5 +399,105 @@ function renderRounds(rounds) {
     `;
 
     el.appendChild(div);
+  });
+}
+function renderPartyBreakdown(characters) {
+  const el = document.getElementById("party-breakdown");
+  el.innerHTML = "";
+
+  characters.forEach(char => {
+    const stats = char.stats || {};
+    const defense = stats.defense || {};
+
+    const timesTargeted =
+      (defense.attacksTaken || 0) +
+      (defense.savesMade || 0);
+
+    const row = document.createElement("div");
+    row.className = "party-row";
+
+    row.innerHTML = `
+      <div class="party-left">
+
+        <h4>${char.name} <span>${char.levelClass}</span></h4>
+
+        <div class="party-grid">
+
+          <div><b>Damage:</b> ${stats.damage}</div>
+          <div><b>Healing:</b> ${stats.healing}</div>
+          <div><b>CC:</b> ${stats.cc}</div>
+          <div><b>Damage Taken:</b> ${stats.damageTaken}</div>
+
+          <div><b>Actions:</b> ${stats.actionsTotal}</div>
+          <div><b>Bonus Actions:</b> ${stats.bonusActionsTotal}</div>
+          <div><b>Reactions:</b> ${sumObj(stats.reactions)}</div>
+
+          <div><b>Accuracy:</b> ${
+            stats.attacks?.total
+              ? Math.round((stats.attacks.hit / stats.attacks.total) * 100)
+              : 0
+          }%</div>
+
+          <div><b>Crits:</b> ${stats.nat20}</div>
+          <div><b>Fails:</b> ${stats.nat1}</div>
+
+          <div><b>Attacks Taken:</b> ${defense.attacksTaken}</div>
+          <div><b>Saves Made:</b> ${defense.savesMade}</div>
+          <div><b>Times Targeted:</b> ${timesTargeted}</div>
+
+        </div>
+
+      </div>
+
+      <div class="party-right">
+        <!-- Reserved for advanced analytics -->
+      </div>
+    `;
+
+    el.appendChild(row);
+  });
+}
+function renderPartyChart(characters) {
+  const totals = {
+    damage: 0,
+    healing: 0,
+    cc: 0,
+    targeted: 0
+  };
+
+  characters.forEach(c => {
+    const s = c.stats || {};
+    const d = s.defense || {};
+
+    totals.damage += s.damage || 0;
+    totals.healing += s.healing || 0;
+    totals.cc += s.cc || 0;
+    totals.targeted += (d.attacksTaken || 0) + (d.savesMade || 0);
+  });
+
+  const ctx = document.getElementById("partyChart");
+
+  new Chart(ctx, {
+    type: "pie",
+    data: {
+      labels: ["Damage", "Healing", "CC", "Targeted"],
+      datasets: [{
+        data: [
+          totals.damage,
+          totals.healing,
+          totals.cc,
+          totals.targeted
+        ]
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          labels: {
+            color: "#fff"
+          }
+        }
+      }
+    }
   });
 }

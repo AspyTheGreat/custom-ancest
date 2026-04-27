@@ -458,3 +458,34 @@ h1 {
   font-size: 1.8rem;
   margin-top: 6px;
 }
+.party-row {
+  display: flex;
+  border: 1px solid #333;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.party-left {
+  width: 50%;
+  padding: 12px;
+  background: #1a1a1a;
+}
+
+.party-right {
+  width: 50%;
+  background: #111;
+}
+
+.party-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.party-left h4 span {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-left: 6px;
+}
