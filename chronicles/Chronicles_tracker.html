@@ -153,15 +153,7 @@
 <h4 id="battleHeader"></h4>
 
  <div class="box">
-  <div class="box">
-  <b>HP</b><br>
-
-  Max HP:
-  <input id="maxHPInput" type="number"><br>
-
-  Current HP:
-  <input id="finalHPInput" type="number">
-</div>
+  
   <b>Actions</b><br>
 
 - <button onclick="changeAction('actions','attack',-1)">-</button>
@@ -280,6 +272,15 @@ CC <input id="cc" type="number">
 
 
   </div>
+  <div class="box">
+  <b>HP</b><br>
+
+  Max HP:
+  <input id="maxHPInput" type="number" oninput="updateHP()">
+
+  Current HP:
+<input id="finalHPInput" type="number" oninput="updateHP()">
+</div>
   <div class="box">
   <b>Off-Turn Events</b><br>
 
@@ -999,6 +1000,13 @@ c.currentHP = Math.max(0, Math.min(c.maxHP, +value || currentHP));
   autoSave();
 }
 
+function updateHP() {
+  const c = characters[selectedCharacter];
+
+  c.stats.maxHP = +document.getElementById("maxHPInput").value || 0;
+  c.stats.finalHP = +document.getElementById("finalHPInput").value || 0;
+}
+
 function updateHPUI() {
   const c = characters[selectedCharacter];
 
@@ -1414,6 +1422,12 @@ function updateTurnUI() {
   renderCharacterBar();
   renderSummons();
   
+  document.getElementById("maxHPInput").value =
+  characters[selectedCharacter].stats.maxHP || "";
+
+document.getElementById("finalHPInput").value =
+  characters[selectedCharacter].stats.finalHP || "";
+
   document.getElementById("battleHeader").innerText =
   `${campaignName} — ${battleName}`;
 
