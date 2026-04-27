@@ -490,23 +490,42 @@ function renderPerRoundCharts(rounds, characters) {
   const names = characters.map(c => c.name);
 
   function buildDataset(statKey) {
-    return names.map(name => {
-      return {
-        label: name,
-        data: rounds.map(r => {
-          const player = (r.players || []).find(p => p.name === name);
-          if (!player) return 0;
+  return names.map(name => {
 
-          if (statKey === "targeted") {
-            const d = player.defense || {};
-            return (d.attacksTaken || 0) + (d.savesMade || 0);
-          }
+    let runningTotal = 0;
 
-          return player[statKey] || 0;
-        })
-      };
-    });
-  }
+    return {
+      label: name,
+
+      data: rounds.map(r => {
+        const player = (r.players || []).find(
+          p => p.name === name
+        );
+
+        if (!player) {
+          return runningTotal;
+        }
+
+        let value = 0;
+
+        if (statKey === "targeted") {
+          const d = player.defense || {};
+
+          value =
+            (d.attacksTaken || 0) +
+            (d.savesMade || 0);
+
+        } else {
+          value = player[statKey] || 0;
+        }
+
+        runningTotal += value;
+
+        return runningTotal;
+      })
+    };
+  });
+}
 
   createLine("line-damage", "Damage per Round", labels, buildDataset("damage"));
   createLine("line-healing", "Healing per Round", labels, buildDataset("healing"));
