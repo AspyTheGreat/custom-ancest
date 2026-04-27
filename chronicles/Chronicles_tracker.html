@@ -1169,8 +1169,10 @@ function setResource(name, value) {
 
 function startCombat() {
 campaignName = document.getElementById("campaignName")?.value.trim() || campaignName || "Unknown Campaign";
-document.getElementById("battleHeader").innerText =
-  `${campaignName} — (Preparing Battle...)`;
+const input = document.getElementById("battleNameLive");
+if (input) {
+  input.value = battleName || "Unnamed Battle";
+}
   battleName =
   document.getElementById("battleName")?.value.trim() ||
   "Unnamed Battle";
