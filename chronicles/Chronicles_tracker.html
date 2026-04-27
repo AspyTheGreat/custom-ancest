@@ -135,14 +135,12 @@
 
 <div id="characterBar" class="box"></div>
 
-
 <div id="combat" class="hidden">
   <h3 id="initiativeDisplay"></h3>
 <h2 id="turnHeader"></h2>
 <h4 id="battleHeader"></h4>
 
  <div class="box">
-  
   <b>Actions</b><br>
 
 - <button onclick="changeAction('actions','attack',-1)">-</button>
@@ -191,7 +189,7 @@ Misc
 none
 <button onclick="changeAction('bonus','none',1)">+</button>
 
-<div id="bonusActionsCounter" class="counter"></div>
+<div id="bonusCounter" class="counter"></div>
   </div>
 
     
@@ -254,22 +252,13 @@ Succeeded
 <button onclick="changeCounter('saves','succeeded',1)">+</button>
 
 <div id="saveCounter" class="counter"></div>
-<div class="box">
-  <b>Hit Points</b><br>
 
-  <button onclick="changeHP(-1)">-</button>
-  <input id="hpInput" type="number" style="width:60px;">
-  <button onclick="changeHP(1)">+</button>
-
-  / <span id="hpMax"></span>
-</div>
     Damage <input id="damage" type="number">
 Healing <input id="healing" type="number">
 CC <input id="cc" type="number">
 
 
   </div>
- 
   <div class="box">
   <b>Off-Turn Events</b><br>
 
@@ -396,17 +385,7 @@ let selectedCharacter = 0;
 let currentTurn = 0;
 let round = 1;
 let history = [];
-let tempTurn = {
-  actions:{attack:0,spell:0,move:0,misc:0,none:0},
-  bonusActions:{attack:0,spell:0,move:0,misc:0,none:0},
-  spellSlots:{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
-  damage:0,
-  healing:0,
-  cc:0,
-  attacks:{hit:0,total:0},
-  saves:{forced:0,succeeded:0},
-  defense:{attacksDodged:0,attacksTaken:0,savesMade:0,savesTotal:0}
-};
+let tempTurn;
 let roundLog = {};
 
 function addCharacter() {
@@ -416,9 +395,6 @@ function addCharacter() {
   div.innerHTML = `
   Name: <input class="name" value="">
   Initiative: <input class="init" type="number" value="0"><br>
-
- Max HP: <input type="number" class="maxHP" value="0" style="width:70px;">
-  Current HP: <input type="number" class="currentHP" value="0" style="width:70px;"><br>
 
   Portrait: 
   <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
@@ -632,8 +608,6 @@ function exportTemplateUI() {
     const name = block.querySelector(".name")?.value || "";
     const initiative = block.querySelector(".init")?.value || 0;
     const levelClass = block.querySelector(".levelClass")?.value || "";
-    const maxHP = +block.querySelector(".maxHP")?.value || 0;
-const currentHP = +block.querySelector(".currentHP")?.value || maxHP;
 
     // ✅ FIX: properly read portrait
     const portrait = block.querySelector(".portraitData")?.value || null;
@@ -648,14 +622,12 @@ const currentHP = +block.querySelector(".currentHP")?.value || maxHP;
     });
 
     data.characters.push({
-  name,
-  initiative,
-  levelClass,
-  portrait,
-  maxHP,
-  currentHP,
-  resources
-});
+      name,
+      initiative,
+      levelClass,
+      portrait,
+      resources
+    });
   });
 
   // ✅ clean single call (not inside loop)
@@ -702,8 +674,6 @@ function saveTemplateLocal() {
     const charName = block.querySelector(".name")?.value || "";
     const levelClass = block.querySelector(".levelClass")?.value || "";
     const portrait = block.querySelector(".portraitData")?.value || null;
-    const maxHP = +block.querySelector(".maxHP")?.value || 0;
-const currentHP = +block.querySelector(".currentHP")?.value || maxHP;
 
     let resources = [];
 
@@ -719,8 +689,6 @@ const currentHP = +block.querySelector(".currentHP")?.value || maxHP;
   initiative: +block.querySelector(".init")?.value || 0,
   levelClass,
   portrait,
-  maxHP,
-  currentHP,
   resources
 });
   });
@@ -953,30 +921,7 @@ function importTemplateUI() {
 
   reader.readAsText(file);
 }
-function renderHP() {
-  const c = characters[selectedCharacter];
 
-  document.getElementById("hpInput").value = c.stats.hp.current;
-  document.getElementById("hpMax").innerText = c.stats.hp.max;
-}
-
-function changeHP(delta) {
-  const c = characters[selectedCharacter];
-
-  c.stats.hp.current = Math.max(0, Math.min(c.stats.hp.max, c.stats.hp.current + delta));
-
-  renderHP();
-  updateLiveSummary();
-}
-
-function setHP(value) {
-  const c = characters[selectedCharacter];
-
-  c.stats.hp.current = Math.max(0, Math.min(c.stats.hp.max, +value || 0));
-
-  renderHP();
-  updateLiveSummary();
-}
 function getGlobal() {
  if (!tempGlobal[selectedCharacter]) {
   tempGlobal[selectedCharacter] = {
@@ -1002,8 +947,6 @@ function changeGlobal(type, delta) {
 }
 
 
-
-
 function changeGlobalReaction(type, delta) {
   const g = getGlobal();
 
@@ -1023,7 +966,6 @@ function updateGlobalUI() {
  document.getElementById("globalReactionCounter").innerText =
   formatCounter(g.reactions || {});
 }
-
 
 function addResourceInline(btn) {
   const block = btn.closest(".charBlock");
@@ -1109,8 +1051,7 @@ characterData.forEach(c => {
     div.innerHTML = `
       Name: <input class="name" value="${c.name || ""}">
       Initiative: <input class="init" type="number" value="${c.initiative || 0}"><br>
-Max HP: <input type="number" class="maxHP" value="${c.maxHP || 0}" style="width:70px;">
-Current HP: <input type="number" class="currentHP" value="${c.currentHP || c.maxHP || 0}" style="width:70px;"><br>
+
       Portrait:
       <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
       <img class="portraitPreview" style="width:60px;height:60px;border-radius:6px;display:${c.portrait ? 'block' : 'none'};" src="${c.portrait || ""}"><br>
@@ -1166,6 +1107,15 @@ function setResource(name, value) {
 }
 
 function startCombat() {
+  let resources = {};
+
+if (Array.isArray(c.resources)) {
+  c.resources.forEach(r => {
+    resources[r.name] = { current: r.max, max: r.max };
+  });
+} else {
+  resources = c.resources || {};
+}
 campaignName = document.getElementById("campaignName")?.value.trim() || campaignName || "Unknown Campaign";
 document.getElementById("battleHeader").innerText =
   `${campaignName} — (Preparing Battle...)`;
@@ -1180,8 +1130,6 @@ document.getElementById("battleHeader").innerText =
 
   for (let i = 0; i < names.length; i++) {
     let resources = {};
-const maxHP = +blocks[i].querySelector(".maxHP")?.value || 0;
-const currentHP = +blocks[i].querySelector(".currentHP")?.value || maxHP;
 
     blocks[i].querySelectorAll(".resourceList div").forEach(r => {
       const resName = r.querySelector(".resName").value;
@@ -1191,7 +1139,6 @@ const currentHP = +blocks[i].querySelector(".currentHP")?.value || maxHP;
         current: max,
         max: max
       };
-      
     });
 
 
@@ -1200,14 +1147,10 @@ characters.push({
   name: names[i].value,
   initiative: +inits[i].value,
   portrait: blocks[i].querySelector(".portraitData")?.value || null,
-  levelClass: blocks[i].querySelector(".levelClass").value, 
+  levelClass: blocks[i].querySelector(".levelClass").value,
   resources: resources,
   summons: [],
   stats: {
-     hp: {
-      current: currentHP,
-      max: maxHP
-    },
     spellSlotsUsed: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
     actions:{attack:0,spell:0,move:0,misc:0},
     bonusActions:{attack:0,spell:0,move:0,misc:0},
@@ -1251,6 +1194,7 @@ document.getElementById("initiativeDisplay").innerText =
   round = 1;
 
   renderCharacterBar();
+  updateTurnUI();
 }
 
 function confirmBattleMeta() {
@@ -1274,18 +1218,13 @@ function formatCounter(obj) {
 }
 
 function updateCounters() {
-  const actionEl = document.getElementById("actionCounter");
-  const bonusEl = document.getElementById("bonusActionsCounter");
+  document.getElementById("actionCounter").innerText =
+    formatCounter(tempTurn.actions);
 
-  if (actionEl) {
-    actionEl.innerText = formatCounter(tempTurn.actions);
-  }
+  document.getElementById("bonusActionsCounter").innerText =
+    formatCounter(tempTurn.bonusActions);
 
-  if (bonusEl) {
-    bonusEl.innerText = formatCounter(tempTurn.bonusActions);
-  }
 }
-
 
 function addSummon() {
   const c = characters[selectedCharacter];
@@ -1395,10 +1334,9 @@ nat20:0,
   }
 
   renderResources();
+  updateLiveSummary();
   updateGlobalUI();
   renderSummons();
-  renderHP();
-  if (tempTurn) updateLiveSummary();
 }
 
 function updateTurnUI() {
@@ -1450,7 +1388,6 @@ defense:{
   updateLiveSummary();
   updateSpellSlotUI();
   updateCounterUI();
-  renderHP();
 }
 
 function changeAction(type, sub, delta) {
@@ -1529,9 +1466,7 @@ const portraitHTML = c.portrait
 const levelClassHTML = c.levelClass
   ? `<i>${c.levelClass}</i><br><br>`
   : "";
-  const hpHTML = `
-<b>HP:</b> ${c.stats.hp.current} / ${c.stats.hp.max}<br><br>
-`;
+
 let g = tempGlobal[selectedCharacter] || {
   attacksDodged:0,
 savesMade:0,
@@ -1590,12 +1525,11 @@ if (!c.stats.conditions || c.stats.conditions.length === 0) {
 }
   document.getElementById("liveSummary").innerHTML = `
   ${portraitHTML}
-<b>${c.name}</b><br>
-${levelClassHTML}
-${hpHTML}
+  <b>${c.name}</b><br>
+  ${levelClassHTML}
 
     Actions: ${c.stats.totalActions + tempActionTotal}<br>
-    bonusActions: ${c.stats.bonusActionsTotal + tempbonusActionsTotal}<br>
+    bonusActions: ${c.stats.totalbonusActions + tempbonusActionsTotal}<br>
 
     Attacks: ${c.stats.attacksHit}/${c.stats.attacksTotal}<br>
     Saves: ${c.stats.savesForced}/${c.stats.savesSucceeded}<br><br>
@@ -1654,6 +1588,7 @@ c.stats.savesSucceeded += tempTurn.saves.succeeded;
   const turnDamage = val("damage");
   const turnHealing = val("healing");
   const turnCC = val("cc");
+
   let summonDamage = 0;
   let summonHealing = 0;
 let summonTaken = 0;
@@ -1681,7 +1616,6 @@ c.stats.healing += turnHealing + summonHealing; // ✅ FIX
 c.stats.damage += turnDamage + summonDamage;
 c.stats.cc += turnCC + summonCC;
 
-
   // spell slots
   for (let lvl in tempTurn.spellSlots) {
     c.stats.spellSlotsUsed[lvl] += tempTurn.spellSlots[lvl];
@@ -1695,7 +1629,7 @@ c.stats.cc += turnCC + summonCC;
 
   for (let k in tempTurn.bonusActions) {
     c.stats.bonusActions[k] += tempTurn.bonusActions[k];
-    if (k !== "none") c.stats.bonusActionsTotal += tempTurn.bonusActions[k];
+    if (k !== "none") c.stats.totalbonusActions += tempTurn.bonusActions[k];
   }
 
 const g = getGlobal();
@@ -1896,17 +1830,14 @@ function endCombat() {
     finalReport.characters.push({
   name: c.name,
   levelClass: c.levelClass,
+
   // ✅ ADD THIS LINE
   portrait: c.portrait || null,
 
  stats: {
- hp: {
-    current: c.stats.hp.current,
-    max: c.stats.hp.max
-  },
   // totals
   actionsTotal: c.stats.totalActions,
-  bonusActionsTotal: c.stats.bonusActionsTotal,
+  bonusActionsTotal: c.stats.totalbonusActions,
 
   // breakdowns
   actions: { ...c.stats.actions },
