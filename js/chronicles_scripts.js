@@ -508,6 +508,7 @@ function createLine(canvasId, title, labels, datasets) {
 
   new Chart(ctx, {
     type: "line",
+    devicePixelRatio: 2,
     data: {
       labels: labels,
       datasets: datasets.map(d => ({
@@ -518,28 +519,51 @@ function createLine(canvasId, title, labels, datasets) {
       }))
     },
     options: {
-      responsive: true,
-      plugins: {
-        title: {
-          display: true,
-          text: title,
-          color: "#fff"
+  responsive: true,
+  maintainAspectRatio: false,
+
+  plugins: {
+    title: {
+      display: true,
+      text: title,
+      color: "#fff",
+      font: {
+        size: 24,
+        weight: "bold"
+      }
+    },
+
+    legend: {
+      labels: {
+        color: "#ddd",
+        font: {
+          size: 18
         },
-        legend: {
-          labels: {
-            color: "#aaa"
-          }
+        padding: 18
+      }
+    }
+  },
+
+  scales: {
+    x: {
+      ticks: {
+        color: "#ccc",
+        font: {
+          size: 16
         }
-      },
-      scales: {
-        x: {
-          ticks: { color: "#aaa" }
-        },
-        y: {
-          ticks: { color: "#aaa" }
+      }
+    },
+
+    y: {
+      ticks: {
+        color: "#ccc",
+        font: {
+          size: 16
         }
       }
     }
+  }
+}
   });
 }
 
@@ -621,13 +645,13 @@ const hpPercent = max
 let hpColor = "#8b0000";
 
 if (hpPercent === 0) {
-  hpColor = "#5a0000";
+  hpColor = "#3a0202";
 } else if (hpPercent <= 25) {
   hpColor = "#ff0000";
 } else if (hpPercent <= 50) {
   hpColor = "#ff9800";
 } else if (hpPercent <= 75) {
-  hpColor = "#ffeb3b";
+  hpColor = "#bce059";
 } else if (hpPercent < 100) {
   hpColor = "#4caf50";
 } else {
