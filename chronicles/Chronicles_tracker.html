@@ -153,6 +153,15 @@
 <h4 id="battleHeader"></h4>
 
  <div class="box">
+  <div class="box">
+  <b>HP</b><br>
+
+  Max HP:
+  <input id="maxHPInput" type="number"><br>
+
+  Current HP:
+  <input id="finalHPInput" type="number">
+</div>
   <b>Actions</b><br>
 
 - <button onclick="changeAction('actions','attack',-1)">-</button>
@@ -1207,11 +1216,11 @@ characters.push({
   initiative: +inits[i].value,
   portrait: blocks[i].querySelector(".portraitData")?.value || null,
   levelClass: blocks[i].querySelector(".levelClass").value,
-  maxHP: maxHP,          // ✅ NEW
-  currentHP: c.currentHP ?? maxHP,
   resources: resources,
   summons: [],
   stats: {
+    maxHP: 0,
+    finalHP: 0,
     spellSlotsUsed: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
     actions:{attack:0,spell:0,move:0,misc:0},
     bonusActions:{attack:0,spell:0,move:0,misc:0},
@@ -1652,7 +1661,11 @@ c.stats.savesSucceeded += tempTurn.saves.succeeded;
   const turnDamage = val("damage");
   const turnHealing = val("healing");
   const turnCC = val("cc");
+const maxHP = +document.getElementById("maxHPInput")?.value || 0;
+const finalHP = +document.getElementById("finalHPInput")?.value || 0;
 
+c.stats.maxHP = maxHP;
+c.stats.finalHP = finalHP;
   let summonDamage = 0;
   let summonHealing = 0;
 let summonTaken = 0;
@@ -1679,6 +1692,8 @@ c.summons.forEach(s => {
 c.stats.healing += turnHealing + summonHealing; // ✅ FIX
 c.stats.damage += turnDamage + summonDamage;
 c.stats.cc += turnCC + summonCC;
+c.stats.maxHP = maxHP;
+c.stats.finalHP = finalHP;
 
   // spell slots
   for (let lvl in tempTurn.spellSlots) {
@@ -1900,6 +1915,8 @@ function endCombat() {
   portrait: c.portrait || null,
 
  stats: {
+  maxHP: c.stats.maxHP,
+    finalHP: c.stats.finalHP,
   // totals
   actionsTotal: c.stats.totalActions,
   bonusActionsTotal: c.stats.bonusActionsTotal,
