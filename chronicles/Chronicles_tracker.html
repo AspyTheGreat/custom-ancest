@@ -1262,6 +1262,21 @@ document.getElementById("initiativeDisplay").innerText =
   updateTurnUI();
 }
 
+function confirmBattleMeta() {
+  const input = document.getElementById("battleName").value.trim();
+
+  if (input) {
+    battleName = input;
+  }
+
+  // hide meta panel (optional)
+  document.getElementById("battleMeta").classList.add("hidden");
+
+  // update UI with new name
+  document.getElementById("battleHeader").innerText =
+    `${campaignName} — ${battleName}`;
+}
+
 function formatCounter(obj) {
   if (!obj) return "";
   return Object.entries(obj)
