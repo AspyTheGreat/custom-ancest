@@ -270,13 +270,27 @@ async function loadBattleView(url) {
 document.addEventListener("DOMContentLoaded", loadCampaigns);
 
 function getHP(char) {
-  // NEW system (preferred)
+  // ✅ New system
   if (char.stats?.hp) {
     return {
       current: char.stats.hp.current ?? 0,
       max: char.stats.hp.max ?? 0
     };
   }
+
+  // ✅ Old system fallback
+  if (char.finalHP !== undefined || char.maxHP !== undefined) {
+    return {
+      current: char.finalHP ?? 0,
+      max: char.maxHP ?? 0
+    };
+  }
+
+  // ✅ Absolute fallback (prevents crash)
+  return {
+    current: 0,
+    max: 0
+  };
 }
 
 function renderBattleUI(data) {
@@ -400,7 +414,9 @@ function renderCharacters(characters) {
     : 0;
 
   // ✅ HP CALCULATIONS HERE
- const { current, max } = getHP(char);
+ const hp = getHP(char);
+const current = hp.current;
+const max = hp.max;
 
 const hpPercent = max
   ? Math.round((current / max) * 100)
@@ -518,7 +534,9 @@ const savesFailed = savesForced - savesSucceeded;
 const saveRate = savesForced
   ? Math.round((savesFailed / savesForced) * 100)
   : 0;
-  const { current, max } = getHP(char);
+  const hp = getHP(char);
+const current = hp.current;
+const max = hp.max;
 
 const hpPercent = max
   ? Math.round((current / max) * 100)
