@@ -276,7 +276,7 @@ function renderBattleUI(data) {
 
     <h2>${data.displayName}</h2>
     <p class="meta">
-      ${data.campaign} • ${date} • ${data.rounds} rounds
+      ${data.campaign} • ${date} • ${data.roundCount} rounds
     </p>
 
     ${renderImage(data.images?.start)}
