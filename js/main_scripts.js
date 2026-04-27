@@ -447,6 +447,19 @@ function renderPartyBreakdown(characters) {
     const row = document.createElement("div");
     row.className = "party-row";
 
+    const rounds = char.roundCount || 1;
+
+const dpr = Math.round((stats.damage || 0) / rounds);
+
+const attacksMade = stats.attacks?.total || 0;
+
+const savesForced = stats.saves?.forced || 0;
+const savesSucceeded = stats.saves?.succeeded || 0;
+
+const saveRate = savesForced
+  ? Math.round((savesSucceeded / savesForced) * 100)
+  : 0;
+  
     row.innerHTML = `
       <div class="party-left">
 
@@ -469,8 +482,15 @@ function renderPartyBreakdown(characters) {
               : 0
           }%</div>
 
-          <div><b>Crits:</b> ${stats.nat20}</div>
-          <div><b>Fails:</b> ${stats.nat1}</div>
+          <div><b>Attacks Made:</b> ${attacksMade}</div>
+
+<div><b>DPR:</b> ${dpr}</div>
+
+<div><b>Save Success:</b> ${saveRate}%</div>
+<div><b>Saves:</b> ${savesSucceeded} / ${savesForced}</div>
+
+<div><b>Natural 20s:</b> ${stats.nat20}</div>
+<div><b>Natural 1s:</b> ${stats.nat1}</div>
 
           <div><b>Attacks Taken:</b> ${defense.attacksTaken}</div>
           <div><b>Saves Made:</b> ${defense.savesMade}</div>
