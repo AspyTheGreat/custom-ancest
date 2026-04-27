@@ -278,8 +278,9 @@ function renderBattleUI(data) {
     <p class="meta">
       ${data.campaign} • ${date} • ${data.roundCount} rounds
     </p>
+    console.log("RoundCount:", data.roundCount);
     ${renderImage(data.images?.start)}
-console.log("RoundCount:", data.roundCount);
+
     <div class="grid-3">
       <div class="box stat-box">
         <h3>Damage</h3>
