@@ -368,13 +368,25 @@ console.log("RoundCount:", data.roundCount);
     <canvas id="chart-targeted"></canvas>
   </div>
 
-  <!-- ✅ LINE CHARTS -->
-  <div class="chart-grid line-charts">
+  <div class="line-charts">
+
+  <div class="line-chart-wrapper">
     <canvas id="line-damage"></canvas>
+  </div>
+
+  <div class="line-chart-wrapper">
     <canvas id="line-healing"></canvas>
+  </div>
+
+  <div class="line-chart-wrapper">
     <canvas id="line-cc"></canvas>
+  </div>
+
+  <div class="line-chart-wrapper">
     <canvas id="line-targeted"></canvas>
   </div>
+
+</div>
 
     ${renderImage(data.images?.end)}
   `;
