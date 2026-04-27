@@ -1876,7 +1876,10 @@ function updateResource(name, val) {
 
 function endCombat() {
 
-  
+  const liveNameInput = document.getElementById("battleNameLive");
+if (liveNameInput) {
+  battleName = liveNameInput.value.trim() || battleName || "Unnamed Battle";
+}
   const totalRounds = round - 1;
 
   let finalReport = {
