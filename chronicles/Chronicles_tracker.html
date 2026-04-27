@@ -135,6 +135,7 @@
 
 <div id="characterBar" class="box"></div>
 
+<h2 id="battleHeader"></h2>
 
 <div id="combat" class="hidden">
   <h3 id="initiativeDisplay"></h3>
@@ -1408,7 +1409,7 @@ function updateTurnUI() {
   
   document.getElementById("battleHeader").innerText =
   `${campaignName} — ${battleName}`;
-  
+
 const input = document.getElementById("battleNameLive");
 if (input && input !== document.activeElement) {
   input.value = battleName;
