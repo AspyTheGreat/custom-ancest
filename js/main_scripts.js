@@ -494,6 +494,26 @@ const saveRate = savesForced
   ? Math.round((savesFailed / savesForced) * 100)
   : 0;
   const hpPercent = char.maxHP
+  const hpPercent = char.maxHP
+  ? Math.round((char.finalHP / char.maxHP) * 100)
+  : 0;
+
+// ✅ ADD THIS HERE
+let hpColor = "#8b0000";
+
+if (hpPercent === 0) {
+  hpColor = "#5a0000";
+} else if (hpPercent <= 25) {
+  hpColor = "#ff0000";
+} else if (hpPercent <= 50) {
+  hpColor = "#ff9800";
+} else if (hpPercent <= 75) {
+  hpColor = "#ffeb3b";
+} else if (hpPercent < 100) {
+  hpColor = "#4caf50";
+} else {
+  hpColor = "#2196f3";
+}
   ? Math.round((char.finalHP / char.maxHP) * 100)
   : 0;
     row.innerHTML = `
