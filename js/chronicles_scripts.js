@@ -1,23 +1,3 @@
-
-
-function showChronicles() {
-  hideAll();
-  document.getElementById("chronicles").style.display = "block";
-}
-
-function showHome() {
-  hideAll();
-  document.getElementById("home").style.display = "flex";
-}
-
-
-
-
-function hideAll() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("chronicles").style.display = "none";
-}
-
 // =========================
 // ⚙️ CONFIG (EDIT THIS)
 // =========================
@@ -251,11 +231,25 @@ function formatName(slug) {
     .replace(/\b\w/g, l => l.toUpperCase());
 }
 async function loadBattleView(url) {
+    console.log("Fetching battle from:", url);
   container.innerHTML = "Loading battle...";
 
   try {
     const res = await fetch(url);
-    const data = await res.json();
+
+const text = await res.text();
+
+console.log("RAW RESPONSE:", text.slice(0, 200)); // 👈 key debug
+
+let data;
+
+try {
+  data = JSON.parse(text);
+} catch (e) {
+  console.error("Not valid JSON. Response was:", text);
+  container.innerHTML = "Failed to load battle (invalid JSON).";
+  return;
+}
 
     console.log("Battle data:", data);
 
@@ -343,34 +337,55 @@ console.log("RoundCount:", data.roundCount);
   <div id="party-breakdown"></div>
 
   <!-- Totals -->
-  <div class="grid-3 party-totals">
-    <div class="stat-box">
-    <div class="stat-box">
-  <h3>Party HP</h3>
-  <span>${totalFinalHP} / ${totalMaxHP}</span>
-  <small>${partyHPPercent}% remaining</small>
-</div>
-      <h3>Damage</h3>
-      <span>${data.partyTotals.damage}</span>
-    </div>
-    <div class="stat-box">
-      <h3>Healing</h3>
-      <span>${data.partyTotals.healing}</span>
-    </div>
-    <div class="stat-box">
-      <h3>CC</h3>
-      
-      <span>${data.partyTotals.cc}</span>
-    </div>
+ <div class="grid-3 party-totals">
+  <div class="stat-box">
+    <h3>Party HP</h3>
+    <span>${totalFinalHP} / ${totalMaxHP}</span>
+    <small>${partyHPPercent}% remaining</small>
   </div>
 
-  <!-- Charts (NOW BELOW EVERYTHING) -->
+  <div class="stat-box">
+    <h3>Damage</h3>
+    <span>${data.partyTotals.damage}</span>
+  </div>
+
+  <div class="stat-box">
+    <h3>Healing</h3>
+    <span>${data.partyTotals.healing}</span>
+  </div>
+
+  <div class="stat-box">
+    <h3>CC</h3>
+    <span>${data.partyTotals.cc}</span>
+  </div>
+</div>
+
+   <!-- PIE CHARTS -->
   <div id="partyCharts" class="chart-grid">
     <canvas id="chart-damage"></canvas>
     <canvas id="chart-healing"></canvas>
     <canvas id="chart-cc"></canvas>
     <canvas id="chart-targeted"></canvas>
   </div>
+
+  <div class="line-charts">
+
+  <div class="line-chart-wrapper">
+    <canvas id="line-damage"></canvas>
+  </div>
+
+  <div class="line-chart-wrapper">
+    <canvas id="line-healing"></canvas>
+  </div>
+
+  <div class="line-chart-wrapper">
+    <canvas id="line-cc"></canvas>
+  </div>
+
+  <div class="line-chart-wrapper">
+    <canvas id="line-targeted"></canvas>
+  </div>
+
 </div>
 
     ${renderImage(data.images?.end)}
@@ -381,6 +396,7 @@ console.log("RoundCount:", data.roundCount);
   renderRounds(data.roundSummaries || []);
 renderPartyBreakdown(data.characters || []);
 renderPartyCharts(data.characters || []);
+renderPerRoundCharts(data.roundSummaries || [], data.characters || []);
 }
 
 function sumObj(obj = {}) {
@@ -467,6 +483,121 @@ if (hpPercent === 0) {
 });
 }
 
+function renderPerRoundCharts(rounds, characters) {
+  if (!rounds.length) return;
+
+  const labels = rounds.map(r => `R${r.round}`);
+  const names = characters.map(c => c.name);
+
+  function buildDataset(statKey) {
+  return names.map(name => {
+
+    let runningTotal = 0;
+
+    return {
+      label: name,
+
+      data: rounds.map(r => {
+        const player = (r.players || []).find(
+          p => p.name === name
+        );
+
+        if (!player) {
+          return runningTotal;
+        }
+
+        let value = 0;
+
+        if (statKey === "targeted") {
+          const d = player.defense || {};
+
+          value =
+            (d.attacksTaken || 0) +
+            (d.savesMade || 0);
+
+        } else {
+          value = player[statKey] || 0;
+        }
+
+        runningTotal += value;
+
+        return runningTotal;
+      })
+    };
+  });
+}
+
+  createLine("line-damage", "Damage per Round", labels, buildDataset("damage"));
+  createLine("line-healing", "Healing per Round", labels, buildDataset("healing"));
+  createLine("line-cc", "CC per Round", labels, buildDataset("cc"));
+  createLine("line-targeted", "Targeted per Round", labels, buildDataset("targeted"));
+}
+
+function createLine(canvasId, title, labels, datasets) {
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+
+  new Chart(ctx, {
+    type: "line",
+    devicePixelRatio: 2,
+    data: {
+      labels: labels,
+      datasets: datasets.map(d => ({
+        label: d.label,
+        data: d.data,
+        fill: false,
+        tension: 0.2
+      }))
+    },
+    options: {
+  responsive: true,
+  maintainAspectRatio: false,
+
+  plugins: {
+    title: {
+      display: true,
+      text: title,
+      color: "#fff",
+      font: {
+        size: 24,
+        weight: "bold"
+      }
+    },
+
+    legend: {
+      labels: {
+        color: "#ddd",
+        font: {
+          size: 18
+        },
+        padding: 18
+      }
+    }
+  },
+
+  scales: {
+    x: {
+      ticks: {
+        color: "#ccc",
+        font: {
+          size: 16
+        }
+      }
+    },
+
+    y: {
+      ticks: {
+        color: "#ccc",
+        font: {
+          size: 16
+        }
+      }
+    }
+  }
+}
+  });
+}
+
 function renderRounds(rounds) {
   console.log("Rounds data:", rounds);
 
@@ -545,13 +676,13 @@ const hpPercent = max
 let hpColor = "#8b0000";
 
 if (hpPercent === 0) {
-  hpColor = "#5a0000";
+  hpColor = "#3a0202";
 } else if (hpPercent <= 25) {
   hpColor = "#ff0000";
 } else if (hpPercent <= 50) {
   hpColor = "#ff9800";
 } else if (hpPercent <= 75) {
-  hpColor = "#ffeb3b";
+  hpColor = "#bce059";
 } else if (hpPercent < 100) {
   hpColor = "#4caf50";
 } else {

@@ -1,4 +1,4 @@
-body {
+ body {
   margin: 0;
   font-family: Arial, sans-serif;
   color: #f0f0ff;
@@ -164,39 +164,8 @@ h1 {
   cursor: pointer;
 }
 
-/* ================= INFINITUM ================= */
-.infinitum-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  max-width: 700px;
-  margin: 60px auto;
-  gap: 20px;
-}
-
-.infinitum-tile {
-  min-height: 120px;
-  padding: 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  font-family: 'Forgore', sans-serif;
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
-
-  background: rgba(106, 90, 205, 0.2);
-  border: 1px solid #6a5acd;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.infinitum-tile:hover {
-  background: #6a5acd;
-  color: #0b0b0f;
-}
-  /* =========================
+ 
+ /* =========================
    PREVIOUS BATTLES PAGE
   ======================*/
 
@@ -444,7 +413,7 @@ h1 {
 }
 .grid-3 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin: 20px 0;
 }
@@ -489,29 +458,14 @@ h1 {
   color: #aaa;
   margin-left: 6px;
 }
-.chart-grid {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
 
-.chart-grid canvas {
-  width: 180px !important;
-  height: 180px !important;
-  background: #111;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #333;
-}
+
+
 .party-totals {
   margin-top: 20px;
 }
 
-.chart-grid {
-  margin-top: 20px;
-}
+
 .hp-block {
   margin: 6px 0 10px;
 }
@@ -535,3 +489,59 @@ h1 {
   background: linear-gradient(90deg, #4caf50, #8bc34a);
   transition: width 0.3s ease;
 }
+/* =========================
+   PIE CHART GRID
+========================= */
+.chart-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+/* Pie charts only */
+.chart-grid canvas:not([id^="line-"]) {
+  width: 180px !important;
+  height: 180px !important;
+
+  background: #111;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+
+/* =========================
+   LINE CHART SECTION
+========================= */
+
+.line-charts {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+}
+
+/* chart wrapper */
+.line-chart-wrapper {
+  width: 100%;
+  height: 420px;
+
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 16px;
+
+  box-sizing: border-box;
+}
+
+/* IMPORTANT: do NOT force canvas width/height */
+.line-chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+
+  display: block;
+}
+
+
+/* Make line charts stack vertically */
