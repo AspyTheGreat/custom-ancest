@@ -284,40 +284,44 @@ console.log("RoundCount:", data.roundCount);
 
   ${renderImage(data.images?.start)}
 
-    <div class="grid-3">
-      <div class="box stat-box">
-        <h3>Damage</h3>
-        <span>${data.partyTotals.damage}</span>
-      </div>
-      <div class="box stat-box">
-        <h3>Healing</h3>
-        <span>${data.partyTotals.healing}</span>
-      </div>
-      <div class="box stat-box">
-        <h3>CC</h3>
-        <span>${data.partyTotals.cc}</span>
-      </div>
-    </div>
+    
 
    <div class="box">
   <h3>Rounds</h3>
   <div id="rounds"></div>
 </div>
 
-<div class="box">
+
+  <div class="box">
   <h3>Party Breakdown</h3>
-  <div id="partyCharts" class="chart-grid">
-  <canvas id="chart-damage"></canvas>
-  <canvas id="chart-healing"></canvas>
-  <canvas id="chart-cc"></canvas>
-  <canvas id="chart-targeted"></canvas>
-</div>
+
+  <!-- Character rows -->
   <div id="party-breakdown"></div>
-</div>
-    <div class="box">
-      <h3>Rounds</h3>
-      <div id="rounds"></div>
+
+  <!-- Totals -->
+  <div class="grid-3 party-totals">
+    <div class="stat-box">
+      <h3>Damage</h3>
+      <span>${data.partyTotals.damage}</span>
     </div>
+    <div class="stat-box">
+      <h3>Healing</h3>
+      <span>${data.partyTotals.healing}</span>
+    </div>
+    <div class="stat-box">
+      <h3>CC</h3>
+      <span>${data.partyTotals.cc}</span>
+    </div>
+  </div>
+
+  <!-- Charts (NOW BELOW EVERYTHING) -->
+  <div id="partyCharts" class="chart-grid">
+    <canvas id="chart-damage"></canvas>
+    <canvas id="chart-healing"></canvas>
+    <canvas id="chart-cc"></canvas>
+    <canvas id="chart-targeted"></canvas>
+  </div>
+</div>
 
     ${renderImage(data.images?.end)}
   `;
