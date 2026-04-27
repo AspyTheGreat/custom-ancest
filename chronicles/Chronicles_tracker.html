@@ -1247,6 +1247,9 @@ selectedCharacter = 0;
 
 // hide setup, show meta input instead
 document.getElementById("setup").classList.add("hidden");
+document.getElementById("battleMeta").classList.remove("hidden");
+
+// 👇 ADD THESE LINES
 document.getElementById("combat").classList.remove("hidden");
 document.getElementById("sidePanel").classList.remove("hidden");
 
@@ -1257,7 +1260,7 @@ document.getElementById("initiativeDisplay").innerText =
 
   currentTurn = 0;
   round = 1;
-
+battleName = "Unnamed Battle";
   renderCharacterBar();
   updateTurnUI();
 }
@@ -1273,8 +1276,6 @@ function confirmBattleMeta() {
   document.getElementById("battleMeta").classList.add("hidden");
 
   // update UI with new name
-  document.getElementById("battleHeader").innerText =
-    `${campaignName} — ${battleName}`;
 }
 
 function formatCounter(obj) {
