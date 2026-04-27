@@ -306,7 +306,12 @@ console.log("RoundCount:", data.roundCount);
 
 <div class="box">
   <h3>Party Breakdown</h3>
-  <canvas id="partyChart" height="200"></canvas>
+  <div id="partyCharts" class="chart-grid">
+  <canvas id="chart-damage"></canvas>
+  <canvas id="chart-healing"></canvas>
+  <canvas id="chart-cc"></canvas>
+  <canvas id="chart-targeted"></canvas>
+</div>
   <div id="party-breakdown"></div>
 </div>
     <div class="box">
@@ -321,7 +326,7 @@ console.log("RoundCount:", data.roundCount);
 
   renderRounds(data.roundSummaries || []);
 renderPartyBreakdown(data.characters || []);
-renderPartyChart(data.characters || []);
+renderPartyCharts(data.characters || []);
 }
 
 function sumObj(obj = {}) {
@@ -457,47 +462,51 @@ function renderPartyBreakdown(characters) {
     el.appendChild(row);
   });
 }
-function renderPartyChart(characters) {
-  const totals = {
-    damage: 0,
-    healing: 0,
-    cc: 0,
-    targeted: 0
-  };
+function createPie(canvasId, label, labels, data) {
+  const ctx = document.getElementById(canvasId);
 
-  characters.forEach(c => {
-    const s = c.stats || {};
-    const d = s.defense || {};
-
-    totals.damage += s.damage || 0;
-    totals.healing += s.healing || 0;
-    totals.cc += s.cc || 0;
-    totals.targeted += (d.attacksTaken || 0) + (d.savesMade || 0);
-  });
-
-  const ctx = document.getElementById("partyChart");
+  if (!ctx) return;
 
   new Chart(ctx, {
     type: "pie",
     data: {
-      labels: ["Damage", "Healing", "CC", "Targeted"],
+      labels: labels,
       datasets: [{
-        data: [
-          totals.damage,
-          totals.healing,
-          totals.cc,
-          totals.targeted
-        ]
+        data: data
       }]
     },
     options: {
       plugins: {
+        title: {
+          display: true,
+          text: label,
+          color: "#fff",
+          font: { size: 14 }
+        },
         legend: {
           labels: {
-            color: "#fff"
+            color: "#aaa",
+            boxWidth: 10
           }
         }
       }
     }
   });
+}
+function renderPartyCharts(characters) {
+  const names = characters.map(c => c.name);
+
+  const damage = characters.map(c => c.stats?.damage || 0);
+  const healing = characters.map(c => c.stats?.healing || 0);
+  const cc = characters.map(c => c.stats?.cc || 0);
+
+  const targeted = characters.map(c => {
+    const d = c.stats?.defense || {};
+    return (d.attacksTaken || 0) + (d.savesMade || 0);
+  });
+
+  createPie("chart-damage", "Damage", names, damage);
+  createPie("chart-healing", "Healing", names, healing);
+  createPie("chart-cc", "CC", names, cc);
+  createPie("chart-targeted", "Targeted", names, targeted);
 }

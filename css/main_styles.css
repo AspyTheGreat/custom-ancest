@@ -489,3 +489,19 @@ h1 {
   color: #aaa;
   margin-left: 6px;
 }
+.chart-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.chart-grid canvas {
+  width: 180px !important;
+  height: 180px !important;
+  background: #111;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
