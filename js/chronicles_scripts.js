@@ -339,7 +339,6 @@ console.log("RoundCount:", data.roundCount);
   <!-- Totals -->
   <div class="grid-3 party-totals">
     <div class="stat-box">
-    <div class="stat-box">
   <h3>Party HP</h3>
   <span>${totalFinalHP} / ${totalMaxHP}</span>
   <small>${partyHPPercent}% remaining</small>
