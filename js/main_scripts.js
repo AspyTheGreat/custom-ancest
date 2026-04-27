@@ -275,10 +275,12 @@ function renderBattleUI(data) {
     <div class="backBtn">← Back</div>
 
     <h2>${data.displayName}</h2>
+    console.log("RoundCount:", data.roundCount);
     <p class="meta">
+    
       ${data.campaign} • ${date} • ${data.roundCount} rounds
     </p>
-    console.log("RoundCount:", data.roundCount);
+    
     ${renderImage(data.images?.start)}
 
     <div class="grid-3">
