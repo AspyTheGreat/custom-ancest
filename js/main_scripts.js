@@ -494,7 +494,7 @@ const saveRate = savesForced
   ? Math.round((savesFailed / savesForced) * 100)
   : 0;
   const hpPercent = char.maxHP
-  const hpPercent = char.maxHP
+  
   ? Math.round((char.finalHP / char.maxHP) * 100)
   : 0;
 
