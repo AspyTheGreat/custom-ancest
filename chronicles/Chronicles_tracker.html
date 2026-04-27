@@ -120,7 +120,6 @@
 
 </div>
 
-<div id="battleMeta" class="hidden box">
   <h3>Battle Info</h3>
 
   
@@ -139,7 +138,10 @@
 <div id="combat" class="hidden">
   <h3 id="initiativeDisplay"></h3>
 <h2 id="turnHeader"></h2>
-<h4 id="battleHeader"></h4>
+<h4>
+  <input id="battleNameLive" placeholder="Battle name"
+    style="background:#111;color:#fff;border:1px solid #444;padding:4px;">
+</h4>
 
  <div class="box">
   
@@ -1169,6 +1171,9 @@ function startCombat() {
 campaignName = document.getElementById("campaignName")?.value.trim() || campaignName || "Unknown Campaign";
 document.getElementById("battleHeader").innerText =
   `${campaignName} — (Preparing Battle...)`;
+  battleName =
+  document.getElementById("battleName")?.value.trim() ||
+  "Unnamed Battle";
   const names = document.querySelectorAll(".name");
   const inits = document.querySelectorAll(".init");
   const blocks = document.querySelectorAll(".charBlock");
@@ -1240,25 +1245,13 @@ selectedCharacter = 0;
 
 // hide setup, show meta input instead
 document.getElementById("setup").classList.add("hidden");
-document.getElementById("battleMeta").classList.remove("hidden");
+document.getElementById("combat").classList.remove("hidden");
+document.getElementById("sidePanel").classList.remove("hidden");
 
 // store initiative preview for later
 document.getElementById("initiativeDisplay").innerText =
   characters.map(c=>`${c.name} (${c.initiative})`).join(" > ");
 
-
-  currentTurn = 0;
-  round = 1;
-
-  renderCharacterBar();
-  updateTurnUI();
-}
-
-function confirmBattleMeta() {
-  battleName = document.getElementById("battleName").value.trim() || "Unnamed Battle";
-
-  document.getElementById("battleMeta").classList.add("hidden");
-  document.getElementById("combat").classList.remove("hidden");
 
   currentTurn = 0;
   round = 1;
@@ -1400,9 +1393,11 @@ nat20:0,
 function updateTurnUI() {
   renderCharacterBar();
   renderSummons();
-  
-  document.getElementById("battleHeader").innerText =
-  `${campaignName} — ${battleName}`;
+
+  const input = document.getElementById("battleNameLive");
+if (input && input !== document.activeElement) {
+  input.value = battleName;
+}
 
   const c = characters[currentTurn];
 
@@ -2094,6 +2089,12 @@ window.onload = () => {
   loadTemplateList();
   loadAutoSave(); // keep your autosave too
 };
+document.addEventListener("input", (e) => {
+  if (e.target.id === "battleNameLive") {
+    battleName = e.target.value.trim() || "Unnamed Battle";
+    updateTurnUI(); // refresh header
+  }
+});
 </script>
 
 </body>
