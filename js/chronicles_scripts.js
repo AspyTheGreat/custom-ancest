@@ -500,13 +500,13 @@ if (!portrait) {
       resolve(fallback);
     };
 
-<<<<<<< HEAD
+
     img.src = character.image.startsWith("data:")
   ? character.image
   : `data:image/jpeg;base64,${character.image}`;
-=======
+
     img.src = normalizeImageSrc(portrait);
->>>>>>> 2fde792f36e629d8ad34af731cc54671df2e30df
+
   });
 }
 
