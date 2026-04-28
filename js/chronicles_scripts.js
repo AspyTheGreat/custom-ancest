@@ -893,9 +893,28 @@ if (hpPercent === 0) {
 }
 
     row.innerHTML = `
-      <div class="party-left">
+     <div class="party-left">
 
-        <h4>${char.name} <span>${char.levelClass}</span></h4>
+  <div class="party-header">
+
+    ${
+      char.image
+        ? `
+          <img
+            class="character-portrait"
+            src="${normalizeImageSrc(char.image)}"
+            alt="${char.name}"
+          >
+        `
+        : ""
+    }
+
+    <div>
+      <h4>${char.name}</h4>
+      <span>${char.levelClass}</span>
+    </div>
+
+  </div>
 
 
 <div class="hp-block">
