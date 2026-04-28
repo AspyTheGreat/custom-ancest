@@ -424,7 +424,9 @@ async function getCharacterColorFromPortrait(character, fallbackIndex = 0) {
   }
 
   // fallback if no portrait
-  if (!character.image) {
+  const portrait = character.image || character.portrait;
+
+if (!portrait) {
     const fallback = getCharacterColor(fallbackIndex);
 
     characterColorCache[character.name] = fallback;
@@ -498,7 +500,7 @@ async function getCharacterColorFromPortrait(character, fallbackIndex = 0) {
       resolve(fallback);
     };
 
-    img.src = normalizeImageSrc(character.image);
+    img.src = normalizeImageSrc(portrait);
   });
 }
 
@@ -898,11 +900,11 @@ if (hpPercent === 0) {
   <div class="party-header">
 
     ${
-      char.image
+      (char.image || char.portrait)
         ? `
           <img
             class="character-portrait"
-            src="${normalizeImageSrc(char.image)}"
+            src="${normalizeImageSrc(char.image || char.portrait)}"
             alt="${char.name}"
           >
         `
