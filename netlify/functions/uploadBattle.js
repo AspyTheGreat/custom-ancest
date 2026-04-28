@@ -6,34 +6,28 @@ exports.handler = async (event) => {
     const owner = process.env.GITHUB_OWNER;
     const repo = process.env.GITHUB_REPO;
 
-   let campaignSlug = data.campaignSlug;
-let battleSlug = data.battleSlug;
+    let campaignSlug = data.campaignSlug;
+    let battleSlug = data.battleSlug;
 
-// --- CHECK IF FILE EXISTS ---
-const basePath = `battles/${campaignSlug}/${battleSlug}.json`;
+    // =========================
+    // PATHS
+    // =========================
 
-const checkRes = await fetch(
-  `https://api.github.com/repos/${owner}/${repo}/contents/${basePath}`,
-  {
-    headers: { Authorization: `token ${token}` }
-  }
-);
+    const battlePath =
+      `battles/${campaignSlug}/${battleSlug}.json`;
 
-// If file exists → add timestamp
-if (checkRes.status === 200) {
-  battleSlug = `${battleSlug}-${Date.now()}`;
-}
+    const campaignIndexPath =
+      `battles/${campaignSlug}/index.json`;
 
-const battlePath = `battles/${campaignSlug}/${battleSlug}.json`;
-const battleId = `${campaignSlug}/${battleSlug}`;
-    const indexPath = `index.json`;
+    const battlesIndexPath =
+      `battles/index.json`;
 
-    // --- STEP 1: GET CURRENT INDEX ---
-    let indexData = [];
-    let sha = null;
+    // =========================
+    // CHECK IF BATTLE EXISTS
+    // =========================
 
-    const indexRes = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/contents/${indexPath}`,
+    const checkRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${battlePath}`,
       {
         headers: {
           Authorization: `token ${token}`
@@ -41,63 +35,194 @@ const battleId = `${campaignSlug}/${battleSlug}`;
       }
     );
 
-    if (indexRes.status === 200) {
-      const json = await indexRes.json();
-      sha = json.sha;
+    // duplicate filename → append timestamp
+    if (checkRes.status === 200) {
 
-      const content = Buffer.from(json.content, "base64").toString();
-      indexData = JSON.parse(content);
+      battleSlug =
+        `${battleSlug}-${Date.now()}`;
     }
 
-    // --- STEP 2: ADD NEW ENTRY ---
-    indexData.push({
-  id: battleId, // e.g. "tolivric/final-siege"
-  name: data.displayName,
-  campaign: data.campaign,
-  campaignSlug: campaignSlug,
-  battleSlug: battleSlug,
-  date: data.timestamp
-});
+    const finalBattlePath =
+      `battles/${campaignSlug}/${battleSlug}.json`;
 
-    // --- STEP 3: UPLOAD BATTLE FILE ---
-    await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/contents/${battlePath}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `token ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: `Add ${battleId}`,
-          content: Buffer.from(JSON.stringify(data, null, 2)).toString("base64")
-        })
+    // =========================
+    // HELPERS
+    // =========================
+
+    async function getJsonFile(path) {
+
+      const res = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+        {
+          headers: {
+            Authorization: `token ${token}`
+          }
+        }
+      );
+
+      if (res.status !== 200) {
+        return {
+          exists: false,
+          data: [],
+          sha: null
+        };
       }
+
+      const json = await res.json();
+
+      return {
+        exists: true,
+        sha: json.sha,
+        data: JSON.parse(
+          Buffer.from(
+            json.content,
+            "base64"
+          ).toString()
+        )
+      };
+    }
+
+    async function putJsonFile(
+      path,
+      content,
+      message,
+      sha = null
+    ) {
+
+      const body = {
+        message,
+        content: Buffer.from(
+          JSON.stringify(content, null, 2)
+        ).toString("base64")
+      };
+
+      if (sha) {
+        body.sha = sha;
+      }
+
+      await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+        {
+          method: "PUT",
+
+          headers: {
+            Authorization: `token ${token}`,
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify(body)
+        }
+      );
+    }
+
+    // =========================
+    // UPLOAD BATTLE FILE
+    // =========================
+
+    await putJsonFile(
+      finalBattlePath,
+      data,
+      `Add ${campaignSlug}/${battleSlug}`
     );
 
-    // --- STEP 4: UPDATE INDEX ---
-    await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/contents/${indexPath}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `token ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: "Update index",
-          content: Buffer.from(JSON.stringify(indexData, null, 2)).toString("base64"),
-          sha: sha
-        })
-      }
+    // =========================
+    // UPDATE CAMPAIGN INDEX
+    // =========================
+
+    const campaignIndex =
+      await getJsonFile(campaignIndexPath);
+
+    // remove duplicates
+    const filteredCampaignEntries =
+      campaignIndex.data.filter(
+        b => b.slug !== battleSlug
+      );
+
+    filteredCampaignEntries.push({
+
+      name: data.displayName ||
+            battleSlug,
+
+      slug: battleSlug,
+
+      file:
+        `battles/${campaignSlug}/${battleSlug}.json`,
+
+      timestamp:
+        data.timestamp || Date.now(),
+
+      startImage:
+        data.images?.start || null
+    });
+
+    // newest first
+    filteredCampaignEntries.sort(
+      (a, b) =>
+        new Date(b.timestamp) -
+        new Date(a.timestamp)
     );
+
+    await putJsonFile(
+      campaignIndexPath,
+      filteredCampaignEntries,
+      `Update ${campaignSlug} index`,
+      campaignIndex.sha
+    );
+
+    // =========================
+    // UPDATE BATTLES INDEX
+    // =========================
+
+    const battlesIndex =
+      await getJsonFile(battlesIndexPath);
+
+    const campaignExists =
+      battlesIndex.data.some(
+        c => c.slug === campaignSlug
+      );
+
+    if (!campaignExists) {
+
+      battlesIndex.data.push({
+
+        name:
+          data.campaign ||
+          campaignSlug,
+
+        slug:
+          campaignSlug,
+
+        path:
+          `battles/${campaignSlug}`
+      });
+    }
+
+    battlesIndex.data.sort(
+      (a, b) =>
+        a.name.localeCompare(b.name)
+    );
+
+    await putJsonFile(
+      battlesIndexPath,
+      battlesIndex.data,
+      "Update battles index",
+      battlesIndex.sha
+    );
+
+    // =========================
+    // DONE
+    // =========================
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true })
+
+      body: JSON.stringify({
+        success: true
+      })
     };
 
   } catch (err) {
+
     return {
       statusCode: 500,
       body: err.toString()

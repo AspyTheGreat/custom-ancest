@@ -1,6 +1,7 @@
 // =========================
 // ⚙️ CONFIG (EDIT THIS)
 // =========================
+const campaignBattleCache = {};
 const DEBUG = true;
 
 function log(...args) {
@@ -21,8 +22,6 @@ function logError(context, err) {
   console.error(`[ERROR] ${context}:`, err);
 }
 
-const GITHUB_OWNER = "AspyTheGreat";
-const GITHUB_REPO = "custom-ancest";
 
 const container = document.getElementById("content");
 if (!container) throw new Error("#content not found");
@@ -34,55 +33,74 @@ async function loadCampaigns() {
   container.innerHTML = "Loading campaigns...";
 
   logGroup("loadCampaigns()", async () => {
+
     try {
-      const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/battles?ref=main`;
-      log("Fetching:", url);
 
-      const res = await fetch(url);
-
-      log("Response status:", res.status);
+      const res = await fetch("../battles/index.json");
 
       if (!res.ok) {
-        throw new Error(`GitHub API error: ${res.status}`);
+        throw new Error(`Failed to load index.json: ${res.status}`);
       }
 
-      const data = await res.json();
+      const battles = await res.json();
 
-      log("Raw data:", data);
+      // =========================
+      // GROUP BY CAMPAIGN
+      // =========================
 
-      if (!Array.isArray(data)) {
-        throw new Error("Unexpected API response (not an array)");
-      }
+      const campaignMap = {};
 
-      const campaigns = data
-        .filter(item => item.type === "dir")
-        .sort((a, b) => a.name.localeCompare(b.name));
+      battles.forEach(battle => {
 
-      log("Filtered campaigns:", campaigns);
+        if (!campaignMap[battle.campaignSlug]) {
+          campaignMap[battle.campaignSlug] = {
+            name: battle.campaign,
+            slug: battle.campaignSlug,
+            battles: []
+          };
+        }
+
+        campaignMap[battle.campaignSlug].battles.push(battle);
+      });
+
+      const campaigns = Object.values(campaignMap);
+
+      campaigns.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
 
       container.innerHTML = "<h3>Campaigns</h3>";
 
-      campaigns.forEach(c => {
-        log("Creating campaign card:", c.name, "| path:", c.path);
+      // =========================
+      // RENDER CAMPAIGNS
+      // =========================
+
+      campaigns.forEach(campaign => {
 
         const div = document.createElement("div");
-        div.className = "world-card-previous-battles clickable";
 
-        div.innerText = formatName(c.name);
+        div.className =
+          "world-card-previous-battles clickable";
+
+        div.innerText = campaign.name;
 
         div.onclick = () => {
-          log("Clicked campaign:", c.name, "| path:", c.path);
-          loadBattles(c.path);
+          loadBattles(campaign.slug);
         };
 
         container.appendChild(div);
+
+        // preload cache
+        campaignBattleCache[campaign.slug] =
+          campaign.battles;
       });
 
-      log("Total campaigns rendered:", campaigns.length);
-
     } catch (err) {
+
       logError("loadCampaigns", err);
-      container.innerHTML = "Failed to load campaigns.";
+
+      container.innerHTML =
+        "Failed to load campaigns.";
     }
   });
 }
@@ -91,120 +109,142 @@ async function loadCampaigns() {
 // 📜 LOAD BATTLES
 // =========================
 
-async function loadBattles(campaignPath) {
+async function loadBattles(campaignSlug) {
+
   container.innerHTML = "Loading battles...";
 
-  await logGroup(`loadBattles(${campaignPath})`, async () => {
+  await logGroup(`loadBattles(${campaignSlug})`, async () => {
+
     try {
-      const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${campaignPath}?ref=main`;
-      log("Fetching:", url);
 
-      const res = await fetch(url);
-      log("Response status:", res.status);
+      let battles = campaignBattleCache[campaignSlug];
 
-      if (!res.ok) {
-        throw new Error(`GitHub API error: ${res.status}`);
+      // fallback if cache missing
+      if (!battles) {
+
+        const res = await fetch("../battles/index.json");
+
+        if (!res.ok) {
+          throw new Error("Failed to load index");
+        }
+
+        const allBattles = await res.json();
+
+        battles = allBattles.filter(
+          b => b.campaignSlug === campaignSlug
+        );
+
+        campaignBattleCache[campaignSlug] =
+          battles;
       }
 
-      const data = await res.json();
-      log("Raw data:", data);
-
-      if (!Array.isArray(data)) {
-        throw new Error("Unexpected API response (not an array)");
-      }
-
-      // ✅ Filter valid JSON files
-      const battleFiles = data.filter(file =>
-        file.type === "file" &&
-        file.name.toLowerCase().endsWith(".json")
+      // newest first
+      battles.sort(
+        (a, b) =>
+          new Date(b.date).getTime() -
+          new Date(a.date).getTime()
       );
-
-      log("Battle files found:", battleFiles);
-
-      // ✅ Fetch each battle JSON to extract timestamp
-      const battlesWithData = await Promise.all(
-  battleFiles.map(async (file) => {
-    try {
-      const res = await fetch(file.download_url);
-      const json = await res.json();
-
-      const parsedTime = new Date(json.timestamp).getTime();
-
-      return {
-        file,
-        timestamp: isNaN(parsedTime) ? 0 : parsedTime,
-        startImage: json.images?.start || null   // ✅ ADD THIS LINE
-      };
-    } catch (err) {
-      logError(`Failed to load JSON for ${file.name}`, err);
-      return {
-        file,
-        timestamp: 0,
-        startImage: null // ✅ also here
-      };
-    }
-  })
-);
-
-      // ✅ Sort newest first
-      battlesWithData.sort((a, b) => b.timestamp - a.timestamp);
-
-      log("Sorted battles:", battlesWithData);
-
-      // ✅ Render header + back button
-      const campaignName = campaignPath.split("/").pop();
 
       container.innerHTML = `
         <div class="backBtn">← Back</div>
-        <h3>${formatName(campaignName)}</h3>
+        <h3>${formatName(campaignSlug)}</h3>
       `;
 
-      container.querySelector(".backBtn").onclick = () => {
-        log("Back button clicked");
-        loadCampaigns();
-      };
+      container.querySelector(".backBtn").onclick =
+        () => loadCampaigns();
 
-      // ✅ Render battles
-      battlesWithData.forEach(({ file, timestamp, startImage }) => {
-  const div = document.createElement("div");
-  div.className = "world-card-previous-battles clickable";
+      // =========================
+      // RENDER BATTLES
+      // =========================
 
-  if (startImage) {
-    div.style.backgroundImage =
-      "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)), url('" + startImage + "')";
-  } else {
-    div.style.backgroundColor = "#181818";
-  }
+      for (const battle of battles) {
 
-  const battleName = file.name.replace(".json", "");
-  div.innerText = formatName(battleName);
+        const div = document.createElement("div");
 
-  const battleUrl = file.download_url; // ✅ fix
+        div.className =
+          "battle-card clickable";
 
-  div.onclick = () => {
-    openBattle(battleUrl);
-  };
+        const battleUrl =
+          `../battles/${battle.campaignSlug}/${battle.battleSlug}.json`;
 
-  container.appendChild(div);
-});
+        const battleImage =
+          battle.startImage ||
+          battle.images?.start ||
+          await resolveBattleImage(battle);
 
-// ✅ Empty state OUTSIDE loop
-if (battlesWithData.length === 0) {
-  const empty = document.createElement("div");
-  empty.innerText = "No battles found.";
-  container.appendChild(empty);
-}
+        const cleanImage =
+          normalizeImageSrc(battleImage);
 
-      log("Total battles rendered:", battlesWithData.length);
+        div.innerHTML = battleImage
+          ? `
+            <img
+              class="battle-card-bg"
+              src="${cleanImage}"
+              alt=""
+            >
+
+            <div class="battle-card-overlay"></div>
+
+            <div class="battle-card-title">
+              ${battle.name}
+            </div>
+          `
+          : `
+            <div class="battle-card-title">
+              ${battle.name}
+            </div>
+          `;
+
+        div.onclick = () => {
+          openBattle(battleUrl);
+        };
+
+        container.appendChild(div);
+      }
+
+      if (!battles.length) {
+
+        const empty =
+          document.createElement("div");
+
+        empty.innerText =
+          "No battles found.";
+
+        container.appendChild(empty);
+      }
 
     } catch (err) {
+
       logError("loadBattles", err);
-      container.innerHTML = "Failed to load battles.";
+
+      container.innerHTML =
+        "Failed to load battles.";
     }
   });
 }
 // =========================
-// 🔗 OPEN BATTLE
+// � RESOLVE BATTLE IMAGE
+// =========================
+async function resolveBattleImage(battle) {
+  if (battle.startImage) return battle.startImage;
+  if (battle.images?.start) return battle.images.start;
+
+  try {
+    const url = `../battles/${battle.campaignSlug}/${battle.battleSlug}.json`;
+    const res = await fetch(url);
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+
+    return data.startImage || data.images?.start || null;
+  } catch {
+    return null;
+  }
+}
+
+// =========================
+// �🔗 OPEN BATTLE
 // =========================
 function openBattle(url) {
   loadBattleView(url);
@@ -406,9 +446,16 @@ console.log("RoundCount:", data.roundCount);
     ${renderImage(data.images?.end)}
   `;
 
-  container.querySelector(".backBtn").onclick = loadCampaigns;
+  container.querySelector(".backBtn").onclick = () => {
+  const campaign = data.campaignSlug || data.campaign?.toLowerCase().replace(/\s+/g, "-");
 
-  renderRounds(data.roundSummaries || []);
+  loadBattles(campaign);
+};
+
+  renderRounds(
+  data.roundSummaries || [],
+  data.characters || []
+);
 renderPartyBreakdown(data.characters || []);
 renderPartyCharts(data.characters || []);
 renderPerRoundCharts(data.roundSummaries || [], data.characters || []);
@@ -736,104 +783,510 @@ function createLine(canvasId, title, labels, datasets) {
   });
 }
 
-function renderRounds(rounds) {
-  console.log("Rounds data:", rounds);
-
+function renderRounds(rounds, characters = [])  {
   const el = document.getElementById("rounds");
   el.innerHTML = "";
+const characterMap = {};
 
+characters.forEach(c => {
+  characterMap[c.name] = c;
+});
   rounds.forEach(r => {
+
+    // =========================
+    // PARTY TOTALS
+    // =========================
+    let partyDamage = 0;
+    let partyHealing = 0;
+    let partyCC = 0;
+    let partyTargeted = 0;
+    let partyNat20 = 0;
+    let partyNat1 = 0;
+    let partyAttacksMade = 0;
+    let partyAttacksHit = 0;
+    let partySavesForced = 0;
+    let partySavesSucceeded = 0;
+    let partySummons = 0;
+
+    (r.players || []).forEach(p => {
+      const defense = p.defense || {};
+
+      partyDamage += p.damage || 0;
+      partyHealing += p.healing || 0;
+      partyCC += p.cc || 0;
+
+      partyTargeted +=
+        (defense.attacksTaken || 0) +
+        (defense.savesMade || 0);
+
+      partyNat20 += p.nat20 || 0;
+      partyNat1 += p.nat1 || 0;
+
+      partyAttacksMade += p.attacks?.total || 0;
+      partyAttacksHit += p.attacks?.hit || 0;
+
+      partySavesForced += p.saves?.forced || 0;
+      partySavesSucceeded += p.saves?.succeeded || 0;
+
+            partySummons +=
+        (p.summons || []).reduce(
+          (sum, s) => sum + (s.count || 1),
+          0
+        );
+    });
+
+    const partyAccuracy = partyAttacksMade
+      ? Math.round((partyAttacksHit / partyAttacksMade) * 100)
+      : 0;
+
+    const partyPotency = partySavesForced
+      ? Math.round(
+          (
+            (partySavesForced - partySavesSucceeded) /
+            partySavesForced
+          ) * 100
+        )
+      : 0;
+
+    // =========================
+    // ROUND CARD
+    // =========================
     const div = document.createElement("div");
     div.className = "round-card";
 
     div.innerHTML = `
       <div class="round-header">
-        <h4>Round ${r.round}</h4>
-
-        <div class="round-totals">
-          <span>${r.totals?.damage ?? 0} dmg</span>
-          <span>${r.totals?.healing ?? 0} heal</span>
-          <span>${r.totals?.cc ?? 0} cc</span>
-          <span>${r.totals?.averageDamage ?? 0} avg</span>
+        <div class="round-title">
+          Round ${r.round}
         </div>
+
+       
       </div>
 
-     <div class="round-players">
-  ${(r.players || []).map(p => {
+      <!-- ========================= -->
+      <!-- PLAYER BREAKDOWN -->
+      <!-- ========================= -->
 
-    const attacksMade =
-      p.attacks?.total ??
-      p.attacksMade ??
-      0;
+      <div class="round-player-columns">
 
-    const attacksHit =
-      p.attacks?.hit ??
-      p.attacksHit ??
-      0;
+        ${(r.players || []).map(p => {
 
-    const accuracy = attacksMade
-      ? Math.round((attacksHit / attacksMade) * 100)
-      : 0;
+          const attacksMade =
+            p.attacks?.total ??
+            p.attacksMade ??
+            0;
 
-    const savesForced =
-      p.saves?.forced ??
-      p.savesForced ??
-      0;
+          const attacksHit =
+            p.attacks?.hit ??
+            p.attacksHit ??
+            0;
 
-    const savesSucceeded =
-      p.saves?.succeeded ??
-      p.savesSucceeded ??
-      0;
+          const accuracy = attacksMade
+            ? Math.round(
+                (attacksHit / attacksMade) * 100
+              )
+            : 0;
 
-    const potency = savesForced
-      ? Math.round(((savesForced - savesSucceeded) / savesForced) * 100)
-      : 0;
+          const savesForced =
+            p.saves?.forced ??
+            p.savesForced ??
+            0;
 
-    const defense = p.defense || {};
+          const savesSucceeded =
+            p.saves?.succeeded ??
+            p.savesSucceeded ??
+            0;
 
-    const timesTargeted =
-      (defense.attacksTaken || 0) +
-      (defense.savesMade || 0);
+          const potency = savesForced
+            ? Math.round(
+                (
+                  (savesForced - savesSucceeded) /
+                  savesForced
+                ) * 100
+              )
+            : 0;
 
-    return `
-      <div class="round-player expanded">
+          const defense = p.defense || {};
 
-        <div class="round-player-name">
-          ${p.name}
-        </div>
+          const timesTargeted =
+            (defense.attacksTaken || 0) +
+            (defense.savesMade || 0);
 
-        <div class="round-player-stats">
+          const slotEntries = Object.entries(
+            p.spellSlotsUsed || {}
+          ).filter(([_, value]) => value > 0);
 
-          <span>${p.damage ?? 0} dmg</span>
+          const spellSlotDisplay = slotEntries.length
+            ? slotEntries
+                .map(([level, amount]) =>
+                  `${level}:${amount}`
+                )
+                .join(" | ")
+            : "None";
 
-          <span>${p.healing ?? 0} heal</span>
+          // =========================
+          // SUMMONS
+          // =========================
 
-          <span>${p.cc ?? 0} cc</span>
+                    // =========================
+          // ACTIVE SUMMONS
+          // =========================
 
-          <span>${timesTargeted} targeted</span>
+          const summons = p.summons || [];
 
-          <span>
-            Accuracy:
-            ${attacksHit}/${attacksMade}
-            (${accuracy}%)
-          </span>
+          const summonDisplay = summons.length
+            ? summons.map(s => {
 
-          <span>
-            Potency:
-            ${savesForced - savesSucceeded}/${savesForced}
-            (${potency}%)
-          </span>
+                // support string fallback
+                if (typeof s === "string") {
+                  return s;
+                }
 
-        </div>
+                // exported tracker format
+                const totals = s.totals || {};
 
-      </div>
-    `;
-  }).join("")}
+                return `
+                  <div class="active-summon-entry">
+                    <div>
+                      <b>${s.name || "Unknown"}</b>
+                      ${s.count ? `(x${s.count})` : ""}
+                    </div>
+
+                    <div class="active-summon-substats">
+                      ${totals.damage || 0} dmg /
+                      ${totals.healing || 0} heal /
+                      ${totals.cc || 0} cc /
+                      ${totals.damageTaken || 0} taken
+                    </div>
+
+                    <div class="active-summon-substats">
+                      Active:
+                      ${s.roundsActive || 0} rounds
+                    </div>
+                  </div>
+                `;
+              }).join("")
+            : "None";
+
+          return `
+            <div class="round-player-column">
+
+              <div class="round-player-name">
+
+  ${
+  (
+    characterMap[p.name]?.image ||
+    characterMap[p.name]?.portrait
+  )
+      ? `
+        <img
+          class="round-player-portrait"
+          src="${normalizeImageSrc(
+  characterMap[p.name]?.image ||
+  characterMap[p.name]?.portrait
+)}"
+          alt="${p.name}"
+        >
+      `
+      : ""
+  }
+
+  <span>
+    ${p.name}
+  </span>
+
 </div>
+
+              <!-- ========================= -->
+              <!-- CORE STATS -->
+              <!-- ========================= -->
+
+              <div class="round-player-stat">
+                Damage: ${p.damage ?? 0}
+              </div>
+
+              <div class="round-player-stat">
+                Healing: ${p.healing ?? 0}
+              </div>
+
+              <div class="round-player-stat">
+                CC: ${p.cc ?? 0}
+              </div>
+
+              <div class="round-player-stat">
+                Targeted: ${timesTargeted}
+              </div>
+
+              <!-- ========================= -->
+              <!-- ROLLS -->
+              <!-- ========================= -->
+
+              <div class="round-player-stat">
+                Accuracy:
+                ${attacksHit}/${attacksMade}
+                (${accuracy}%)
+              </div>
+
+              <div class="round-player-stat">
+                Potency:
+                ${savesForced - savesSucceeded}/${savesForced}
+                (${potency}%)
+              </div>
+
+              <div class="round-player-stat">
+                Nat 20s: ${p.nat20 || 0}
+              </div>
+
+              <div class="round-player-stat">
+                Nat 1s: ${p.nat1 || 0}
+              </div>
+
+              <!-- ========================= -->
+              <!-- SPELLS -->
+              <!-- ========================= -->
+
+              <div class="round-player-stat">
+                Slots: ${spellSlotDisplay}
+              </div>
+
+              <!-- ========================= -->
+              <!-- SUMMONS -->
+              <!-- ========================= -->
+
+              <div class="round-player-summons">
+
+  <div class="round-player-summons-title">
+    Active Summons
+  </div>
+
+  <div class="round-player-summons-list">
+    ${summonDisplay}
+  </div>
+
+</div>
+
+            </div>
+          `;
+        }).join("")}
+
+      </div>
+
+      <!-- ========================= -->
+      <!-- PARTY BREAKDOWN -->
+      <!-- ========================= -->
+
+            <!-- ========================= -->
+      <!-- PARTY BREAKDOWN -->
+      <!-- ========================= -->
+
+      <div class="round-party-box">
+
+        <div class="round-party-header">
+
+          <div>
+            <div class="round-party-title">
+              Party Breakdown
+            </div>
+
+            
+          </div>
+
+         
+
+        </div>
+
+        <div class="round-party-grid">
+
+          <div class="round-party-stat-card">
+            <span class="round-party-label">Damage</span>
+            <span class="round-party-value">${partyDamage}</span>
+          </div>
+
+          <div class="round-party-stat-card">
+            <span class="round-party-label">Healing</span>
+            <span class="round-party-value">${partyHealing}</span>
+          </div>
+
+          <div class="round-party-stat-card">
+            <span class="round-party-label">CC</span>
+            <span class="round-party-value">${partyCC}</span>
+          </div>
+
+          <div class="round-party-stat-card">
+            <span class="round-party-label">Targeted</span>
+            <span class="round-party-value">${partyTargeted}</span>
+          </div>
+
+          <div class="round-party-stat-card">
+            <span class="round-party-label">Nat 20s</span>
+            <span class="round-party-value">${partyNat20}</span>
+          </div>
+
+          <div class="round-party-stat-card">
+            <span class="round-party-label">Nat 1s</span>
+            <span class="round-party-value">${partyNat1}</span>
+          </div>
+
+          <div class="round-party-stat-card">
+            <span class="round-party-label">Accuracy</span>
+            <span class="round-party-value">
+              ${partyAttacksHit}/${partyAttacksMade}
+            </span>
+
+            <small>
+              ${partyAccuracy}%
+            </small>
+          </div>
+
+          <div class="round-party-stat-card">
+            <span class="round-party-label">Potency</span>
+            <span class="round-party-value">
+              ${partySavesForced - partySavesSucceeded}/${partySavesForced}
+            </span>
+
+            <small>
+              ${partyPotency}%
+            </small>
+          </div>
+
+        </div>
+
+        <!-- ========================= -->
+        <!-- PARTY SUMMONS -->
+        <!-- ========================= -->
+
+        <div class="round-party-summons-box">
+
+          <div class="round-party-summons-header">
+
+            <div class="round-party-summons-title">
+              Active Summons
+            </div>
+
+            <div class="round-party-summons-count">
+              ${partySummons}
+            </div>
+
+          </div>
+
+          <div class="round-party-summons-list">
+
+            ${
+              (() => {
+
+                const allSummons = [];
+
+                (r.players || []).forEach(player => {
+
+                  (player.summons || []).forEach(s => {
+
+                    if (typeof s === "string") {
+
+                      allSummons.push(`
+                        <div class="active-summon-entry">
+
+                          <div>
+                            <b>${s}</b>
+                          </div>
+
+                        </div>
+                      `);
+
+                      return;
+                    }
+
+                    const totals = s.totals || {};
+
+                    allSummons.push(`
+                      <div class="active-summon-entry">
+
+                        <div>
+                          <b>${s.name || "Unknown"}</b>
+                          ${s.count ? `(x${s.count})` : ""}
+                        </div>
+
+                        <div class="active-summon-substats">
+                          ${totals.damage || 0} dmg /
+                          ${totals.healing || 0} heal /
+                          ${totals.cc || 0} cc /
+                          ${totals.damageTaken || 0} taken
+                        </div>
+
+                        <div class="active-summon-substats">
+                          Owner: ${player.name}
+                        </div>
+
+                        <div class="active-summon-substats">
+                          Active:
+                          ${s.roundsActive || 0} rounds
+                        </div>
+
+                      </div>
+                    `);
+
+                  });
+
+                });
+
+                return allSummons.length
+                  ? allSummons.join("")
+                  : `
+                    <div class="round-party-no-summons">
+                      No active summons
+                    </div>
+                  `;
+
+              })()
+            }
+
+          </div>
+
+        </div>
+
+      </div>
     `;
 
     el.appendChild(div);
   });
+}
+function renderActionUsage(actionSet = {}) {
+
+  return `
+    <div class="action-usage">
+
+      <div>
+        <span title="Attack">
+          ⚔️ ${actionSet.attack || 0}
+        </span>
+
+        &nbsp;&nbsp;&nbsp;
+
+        <span title="Spell">
+          ⚡ ${actionSet.spell || 0}
+        </span>
+      </div>
+
+      <div>
+        <span title="Movement">
+          💨 ${actionSet.move || 0}
+        </span>
+
+        &nbsp;&nbsp;&nbsp;
+
+        <span title="Misc">
+          ❔ ${actionSet.misc || 0}
+        </span>
+      </div>
+
+      <div style="text-align:center;">
+        <span title="Unused" class="unused-action">
+          ❌ ${actionSet.none || 0}
+        </span>
+      </div>
+
+    </div>
+  `;
+
 }
 async function renderPartyBreakdown(characters) {
   
@@ -928,38 +1381,165 @@ if (hpPercent === 0) {
     <div class="hp-fill" style="width: ${hpPercent}%; background: ${hpColor}"></div>
   </div>
 </div>
-        <div class="party-grid">
+       <div class="party-sections">
 
-          <div><b>Damage:</b> ${stats.damage}</div>
-          <div><b>Healing:</b> ${stats.healing}</div>
-          <div><b>CC:</b> ${stats.cc}</div>
-          <div><b>Damage Taken:</b> ${stats.damageTaken}</div>
+  <!-- ========================= -->
+  <!-- WINDOW 1 : ACTIONS -->
+  <!-- ========================= -->
+  <div class="party-subwindow">
 
-          <div><b>Actions:</b> ${stats.actionsTotal}</div>
-          <div><b>Bonus Actions:</b> ${stats.bonusActionsTotal}</div>
-          <div><b>Reactions:</b> ${sumObj(stats.reactions)}</div>
+    <div class="subwindow-header">
+      <h5>Actions</h5>
 
-          <div><b>Accuracy:</b> ${
-            stats.attacks?.total
-              ? Math.round((stats.attacks.hit / stats.attacks.total) * 100)
-              : 0
-          }%</div>
+      <span class="efficiency">
+        ${
+          (() => {
 
-          <div><b>Attacks Made:</b> ${attacksMade}</div>
+            const useful =
+              (stats.actions?.attack || 0) +
+              (stats.actions?.spell || 0) +
+              (stats.actions?.move || 0) +
+              (stats.actions?.misc || 0) +
 
-<div><b>DPR:</b> ${dpr}</div>
+              (stats.bonusActions?.attack || 0) +
+              (stats.bonusActions?.spell || 0) +
+              (stats.bonusActions?.move || 0) +
+              (stats.bonusActions?.misc || 0) +
 
-<div><b>Potency:</b> ${saveRate}%</div>
-<div><b>Saves Forced:</b> ${savesForced}</div>
+              (stats.reactions?.attack || 0) +
+              (stats.reactions?.spell || 0) +
+              (stats.reactions?.move || 0) +
+              (stats.reactions?.misc || 0);
 
-<div><b>Natural 20s:</b> ${stats.nat20}</div>
-<div><b>Natural 1s:</b> ${stats.nat1}</div>
+            const wasted =
+              (stats.actions?.none || 0) +
+              (stats.bonusActions?.none || 0) +
+              (stats.reactions?.none || 0);
 
-          <div><b>Attacks Taken:</b> ${defense.attacksTaken}</div>
-          <div><b>Saves Made:</b> ${defense.savesMade}</div>
-          <div><b>Times Targeted:</b> ${timesTargeted}</div>
+            const total = useful + wasted;
 
-        </div>
+            const efficiency = total
+              ? Math.round((useful / total) * 100)
+              : 0;
+
+            return `${efficiency}% efficiency`;
+
+          })()
+        }
+      </span>
+    </div>
+
+    <div class="party-grid">
+
+      <div>
+  <b>Actions</b><br>
+  ${renderActionUsage(stats.actions)}
+</div>
+
+<div>
+  <b>BonusActions</b><br>
+  ${renderActionUsage(stats.bonusActions)}
+</div>
+
+<div>
+  <b>Reactions</b><br>
+  ${renderActionUsage(stats.reactions)}
+</div>
+
+    </div>
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- WINDOW 2 : STATS -->
+  <!-- ========================= -->
+  <div class="party-subwindow">
+
+    <div class="subwindow-header">
+      <h5>Stats</h5>
+    </div>
+
+    <div class="party-grid">
+
+      <div><b>Damage:</b> ${stats.damage}</div>
+
+      <div><b>DPR:</b> ${dpr}</div>
+
+      <div><b>Healing:</b> ${stats.healing}</div>
+
+      <div><b>CC:</b> ${stats.cc}</div>
+
+      <div><b>Times Targeted:</b> ${timesTargeted}</div>
+
+      <div><b>Damage Taken:</b> ${stats.damageTaken}</div>
+
+      <div>
+        <b>Spell Slots Expended:</b>
+        ${
+          Object.values(stats.spellSlotsUsed || {})
+            .reduce((a,b)=>a+b,0)
+        }
+      </div>
+
+      <div><b>Attacks Made:</b> ${attacksMade}</div>
+
+      <div><b>Saves Forced:</b> ${savesForced}</div>
+
+    </div>
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- WINDOW 3 : ROLLS -->
+  <!-- ========================= -->
+  <div class="party-subwindow">
+
+    <div class="subwindow-header">
+      <h5>Rolls</h5>
+    </div>
+
+    <div class="party-grid">
+
+      <div>
+        <b>Attacks Dodged:</b>
+        ${defense.attacksDodged || 0}
+      </div>
+
+      <div>
+        <b>Saves Made:</b>
+        ${defense.savesMade || 0}
+      </div>
+
+      <div>
+        <b>Potency:</b>
+        ${saveRate}%
+      </div>
+
+      <div>
+        <b>Accuracy:</b>
+        ${
+          stats.attacks?.total
+            ? Math.round(
+                (stats.attacks.hit / stats.attacks.total) * 100
+              )
+            : 0
+        }%
+      </div>
+
+      <div>
+        <b>Nat 20s:</b>
+        ${stats.nat20}
+      </div>
+
+      <div>
+        <b>Nat 1s:</b>
+        ${stats.nat1}
+      </div>
+
+    </div>
+  </div>
+
+</div>
 
       </div>
 
@@ -1142,10 +1722,43 @@ pointBackgroundColor: color,
       maintainAspectRatio: false,
 
       plugins: {
-        legend: {
-          display: false
-        }
-      },
+
+  legend: {
+    display: false
+  },
+
+  tooltip: {
+
+    callbacks: {
+
+      label: function(context) {
+
+        const label = context.label;
+        const value = Math.round(context.raw * 10) / 10;
+
+        const descriptions = {
+
+          "Luck":
+            `Luck: ${value}/10 — percentage of successful rolls, extra weightage for criticals`,
+
+          "Damage":
+            `Damage: ${value}/10 — percentage of the party's total damage`,
+
+          "Healing":
+            `Healing: ${value}/10 — percentage of the party's total healing`,
+
+          "Tank":
+            `Tank: ${value}/10 — percentage of the party's attacks taken and saves made`,
+
+          "CC":
+            `CC: ${value}/10 — percentage of the party's crowd control`
+        };
+
+        return descriptions[label] || `${label}: ${value}`;
+      }
+    }
+  }
+},
 
       scales: {
         r: {

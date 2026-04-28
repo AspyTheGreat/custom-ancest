@@ -41,21 +41,8 @@ h1 {
   isolation: isolate;
 }
 
-.hero::before,
-.page::before,
-.detail::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("../assets/nat1backdrop.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 70%;
-  
-  opacity: 0.1;
-  pointer-events: none;
-  z-index: 0;
-}
+
+
 
 .hero > *,
 .page > *,

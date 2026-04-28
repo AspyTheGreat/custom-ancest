@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>D&D Combat Tracker</title>
+  <link rel="stylesheet" href="../css/main_styles.css">
   <style>
     body { font-family: Arial; background: #111; color: #eee; }
     button, input, textarea, select { margin: 4px; padding: 6px; }
@@ -62,7 +63,7 @@
 }
   </style>
 </head>
-<body>
+<body class="battle-report-page">
 
 <h2>Combat Setup</h2>
 
@@ -287,13 +288,13 @@ CC <input id="cc" type="number">
 
 <b>Defense</b><br>
 
-<button onclick="changeCounter('defense','dodged',-1)">-</button>
+<button onclick="changeCounter('defense','attacksDodged',-1)">-</button>
 Attacks Dodged
-<button onclick="changeCounter('defense','dodged',1)">+</button>
+<button onclick="changeCounter('defense','attacksDodged',1)">+</button>
 
-<button onclick="changeCounter('defense','taken',-1)">-</button>
+<button onclick="changeCounter('defense','attacksTaken',-1)">-</button>
 Attacks Taken
-<button onclick="changeCounter('defense','taken',1)">+</button>
+<button onclick="changeCounter('defense','attacksTaken',1)">+</button>
 
 <br>
 
@@ -301,9 +302,9 @@ Attacks Taken
 Saves Made
 <button onclick="changeCounter('defense','savesMade',1)">+</button>
 
-<button onclick="changeCounter('defense','total',-1)">-</button>
+<button onclick="changeCounter('defense','savesTotal',-1)">-</button>
 Total
-<button onclick="changeCounter('defense','total',1)">+</button>
+<button onclick="changeCounter('defense','savesTotal',1)">+</button>
 
 <div id="defenseCounter" class="counter"></div>
 
@@ -1290,12 +1291,13 @@ function updateCounters() {
 }
 
 function addSummon() {
+  
   const c = characters[selectedCharacter];
 
   c.summons.push({
     name: "Summon",
     count: 1,
-
+rounds: [],
     totalDamage: 0,
     totalHealing: 0,   
     totalCC: 0,
@@ -1642,7 +1644,10 @@ function nextTurn() {
     attacks: {hit:0,total:0},
     saves: {forced:0,succeeded:0},
     defense: {attacksDodged:0,attacksTaken:0,savesMade:0,savesTotal:0},
-    reactions: {attack:0,spell:0,move:0,misc:0,none:0}
+    reactions: {attack:0,spell:0,move:0,misc:0,none:0},
+    spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+    nat1: 0,
+nat20: 0
   };
 }
   // --- SAFE INPUT READER ---
@@ -1666,6 +1671,13 @@ let summonTaken = 0;
 let summonCC = 0;
 
 c.summons.forEach(s => {
+  s.rounds.push({
+  round,
+  damage: s.turnDamage,
+  healing: s.turnHealing,
+  damageTaken: s.turnTaken,
+  cc: s.turnCC
+});
   s.totalDamage += s.turnDamage;
   s.totalHealing += s.turnHealing; // ✅ NEW
   
@@ -1742,12 +1754,35 @@ if (cond) {
   }
 
   // store turn snapshot
-  c.stats.turns.push({
-    ...tempTurn,
-    damage: turnDamage,
-    healing: turnHealing,
-    cc: turnCC
-  });
+ c.stats.turns.push({
+  ...tempTurn,
+
+  damage: turnDamage,
+  healing: turnHealing,
+  cc: turnCC,
+
+  damageTaken:
+    val("damageTaken") + (g.damageTaken || 0),
+
+  nat1: g.nat1,
+  nat20: g.nat20,
+
+  reactions: {...g.reactions},
+
+  defense: {
+    attacksDodged:
+      tempTurn.defense.attacksDodged + g.attacksDodged,
+
+    attacksTaken:
+      tempTurn.defense.attacksTaken + g.attacksTaken,
+
+    savesMade:
+      tempTurn.defense.savesMade + g.savesMade,
+
+    savesTotal:
+      tempTurn.defense.savesTotal + g.savesTotal
+  }
+});
 
   // --- RESET GLOBAL STATE ---
   tempGlobal[currentTurn] = {
@@ -1803,7 +1838,9 @@ for (let k in tempTurn.actions) {
 for (let k in tempTurn.bonusActions) {
   if (k !== "none") c._roundTemp.bonusActions[k] += tempTurn.bonusActions[k];
 }
-
+for (let lvl in tempTurn.spellSlots) {
+  c._roundTemp.spellSlots[lvl] += tempTurn.spellSlots[lvl];
+}
 // attacks / saves
 c._roundTemp.attacks.hit += tempTurn.attacks.hit;
 c._roundTemp.attacks.total += tempTurn.attacks.total;
@@ -1816,6 +1853,8 @@ c._roundTemp.defense.attacksDodged += tempTurn.defense.attacksDodged;
 c._roundTemp.defense.attacksTaken += tempTurn.defense.attacksTaken;
 c._roundTemp.defense.savesMade += tempTurn.defense.savesMade;
 c._roundTemp.defense.savesTotal += tempTurn.defense.savesTotal;
+c._roundTemp.nat1 += g.nat1;
+c._roundTemp.nat20 += g.nat20;
 
 // reactions
 for (let k in g.reactions) {
@@ -1840,7 +1879,10 @@ for (let k in g.reactions) {
       attacks: {hit:0,total:0},
       saves: {forced:0,succeeded:0},
       defense: {attacksDodged:0,attacksTaken:0,savesMade:0,savesTotal:0},
-      reactions: {attack:0,spell:0,move:0,misc:0,none:0}
+      reactions: {attack:0,spell:0,move:0,misc:0,none:0},
+      spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+      nat1: 0,
+nat20: 0
     };
 
     c.rounds.push({
