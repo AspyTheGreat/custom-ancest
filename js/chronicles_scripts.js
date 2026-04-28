@@ -212,18 +212,33 @@ function openBattle(url) {
 // =========================
 // 🧼 FORMAT NAMES
 // =========================
-function renderImage(base64) {
-  if (!base64) return "";
+function normalizeImageSrc(image) {
+  if (!image) return "";
 
-  // detect type (jpeg vs png)
-  const isPNG = base64.startsWith("iVBOR");
+  // already a valid data URL
+  if (image.startsWith("data:image")) {
+    return image;
+  }
+
+  // raw base64 fallback
+  const isPNG = image.startsWith("iVBOR");
   const type = isPNG ? "image/png" : "image/jpeg";
+
+  return `data:${type};base64,${image}`;
+}
+
+function renderImage(image) {
+  if (!image) return "";
 
   return `
     <div class="battle-image">
-      <img loading="lazy" src="data:${type};base64,${base64}" />
+      <img
+        loading="lazy"
+        src="${normalizeImageSrc(image)}"
+      />
     </div>
   `;
+
 }
 function formatName(slug) {
   return slug
@@ -409,7 +424,9 @@ async function getCharacterColorFromPortrait(character, fallbackIndex = 0) {
   }
 
   // fallback if no portrait
-  if (!character.image) {
+  const portrait = character.image || character.portrait;
+
+if (!portrait) {
     const fallback = getCharacterColor(fallbackIndex);
 
     characterColorCache[character.name] = fallback;
@@ -483,9 +500,13 @@ async function getCharacterColorFromPortrait(character, fallbackIndex = 0) {
       resolve(fallback);
     };
 
+<<<<<<< HEAD
     img.src = character.image.startsWith("data:")
   ? character.image
   : `data:image/jpeg;base64,${character.image}`;
+=======
+    img.src = normalizeImageSrc(portrait);
+>>>>>>> 2fde792f36e629d8ad34af731cc54671df2e30df
   });
 }
 
@@ -743,83 +764,78 @@ function renderRounds(rounds) {
         </div>
       </div>
 
-      <div class="round-players">
-        ${(r.players || []).map(p => `
-          ${(r.players || []).map(p => {
+     <div class="round-players">
+  ${(r.players || []).map(p => {
 
-  const attacksMade =
-    p.attacks?.total ??
-    p.attacksMade ??
-    0;
+    const attacksMade =
+      p.attacks?.total ??
+      p.attacksMade ??
+      0;
 
-  const attacksHit =
-    p.attacks?.hit ??
-    p.attacksHit ??
-    0;
+    const attacksHit =
+      p.attacks?.hit ??
+      p.attacksHit ??
+      0;
 
-  const accuracy = attacksMade
-    ? Math.round((attacksHit / attacksMade) * 100)
-    : 0;
+    const accuracy = attacksMade
+      ? Math.round((attacksHit / attacksMade) * 100)
+      : 0;
 
-  // Offensive saves
-  const savesForced =
-    p.saves?.forced ??
-    p.savesForced ??
-    0;
+    const savesForced =
+      p.saves?.forced ??
+      p.savesForced ??
+      0;
 
-  const savesSucceeded =
-    p.saves?.succeeded ??
-    p.savesSucceeded ??
-    0;
+    const savesSucceeded =
+      p.saves?.succeeded ??
+      p.savesSucceeded ??
+      0;
 
-  // Potency = targets failing saves
-  const potency = savesForced
-    ? Math.round(((savesForced - savesSucceeded) / savesForced) * 100)
-    : 0;
+    const potency = savesForced
+      ? Math.round(((savesForced - savesSucceeded) / savesForced) * 100)
+      : 0;
 
-  // Defensive targeting
-  const defense = p.defense || {};
+    const defense = p.defense || {};
 
-  const timesTargeted =
-    (defense.attacksTaken || 0) +
-    (defense.savesMade || 0);
+    const timesTargeted =
+      (defense.attacksTaken || 0) +
+      (defense.savesMade || 0);
 
-  return `
-    <div class="round-player expanded">
+    return `
+      <div class="round-player expanded">
 
-      <div class="round-player-name">
-        ${p.name}
-      </div>
+        <div class="round-player-name">
+          ${p.name}
+        </div>
 
-      <div class="round-player-stats">
+        <div class="round-player-stats">
 
-        <span>${p.damage ?? 0} dmg</span>
+          <span>${p.damage ?? 0} dmg</span>
 
-        <span>${p.healing ?? 0} heal</span>
+          <span>${p.healing ?? 0} heal</span>
 
-        <span>${p.cc ?? 0} cc</span>
+          <span>${p.cc ?? 0} cc</span>
 
-        <span>${timesTargeted} targeted</span>
+          <span>${timesTargeted} targeted</span>
 
-       <span>
-  Accuracy:
-  ${attacksHit}/${attacksMade}
-  (${accuracy}%)
-</span>
+          <span>
+            Accuracy:
+            ${attacksHit}/${attacksMade}
+            (${accuracy}%)
+          </span>
 
-<span>
-  Potency:
-  ${savesForced - savesSucceeded}/${savesForced}
-  (${potency}%)
-</span>
+          <span>
+            Potency:
+            ${savesForced - savesSucceeded}/${savesForced}
+            (${potency}%)
+          </span>
+
+        </div>
 
       </div>
-
-    </div>
-  `;
-}).join("")}
-        `).join("")}
-      </div>
+    `;
+  }).join("")}
+</div>
     `;
 
     el.appendChild(div);
@@ -885,9 +901,28 @@ if (hpPercent === 0) {
 }
 
     row.innerHTML = `
-      <div class="party-left">
+     <div class="party-left">
 
-        <h4>${char.name} <span>${char.levelClass}</span></h4>
+  <div class="party-header">
+
+    ${
+      (char.image || char.portrait)
+        ? `
+          <img
+            class="character-portrait"
+            src="${normalizeImageSrc(char.image || char.portrait)}"
+            alt="${char.name}"
+          >
+        `
+        : ""
+    }
+
+    <div>
+      <h4>${char.name}</h4>
+      <span>${char.levelClass}</span>
+    </div>
+
+  </div>
 
 
 <div class="hp-block">

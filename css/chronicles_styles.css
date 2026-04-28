@@ -428,7 +428,10 @@ h1 {
   margin-top: 6px;
 }
 .party-row {
-  display: flex;
+   display: flex;
+  gap: 24px;
+
+  align-items: stretch;
   border: 1px solid #333;
   border-radius: 10px;
   margin-bottom: 16px;
@@ -439,18 +442,37 @@ h1 {
   width: 50%;
   padding: 12px;
   background: #1a1a1a;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-start;
 }
 
 .party-right {
-  width: 50%;
+  width: 340px;
+  min-height: 340px;
   background: #111;
 }
 
 .party-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
-  margin-top: 10px;
+
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+
+  gap: 14px 18px;
+
+  margin-top: 14px;
+
+  font-size: 1rem;
+}
+
+.party-grid div {
+  padding: 8px 10px;
+
+  background: rgba(255,255,255,0.03);
+
+  border-radius: 10px;
 }
 
 .party-left h4 span {
@@ -586,4 +608,46 @@ h1 {
 .party-right canvas {
   width: 100% !important;
   height: 100% !important;
+}
+.party-header {
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  margin-bottom: 18px;
+}
+
+.party-header h4 {
+  margin: 0;
+
+  font-size: 2rem;
+  line-height: 1.1;
+
+  color: #fff;
+}
+
+.party-header span {
+  display: block;
+
+  margin-top: 6px;
+
+  font-size: 1.1rem;
+
+  color: #aaa;
+}
+
+.character-portrait {
+  width: 120px;
+  height: 120px;
+
+  border-radius: 18px;
+
+  object-fit: cover;
+
+  border: 3px solid #444;
+
+  background: #111;
+
+  flex-shrink: 0;
 }

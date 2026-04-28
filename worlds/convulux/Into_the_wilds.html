@@ -35,24 +35,22 @@
 
 /* ================= IMAGE ================= */
 .campaign-image {
-  width: 120%;
+  width: 100%;
   max-width: 1200px;
   height: 600px;
   margin: 20px auto;
   border: 1px solid #6a5acd;
   border-radius: 10px;
   background: rgba(106, 90, 205, 0.1);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
+  position: relative;
 }
 
 .campaign-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* or contain (see below) */
+  display: block;
 }
 
 /* ================= MAIN SPLIT ================= */
@@ -64,6 +62,8 @@
   margin: 30px auto;
   gap: 20px;
 }
+
+.content-panel {}
 
 /* LEFT SIDE */
 .side-panel {
@@ -96,6 +96,54 @@
   min-height: 900px;
 }
 
+.character-img {
+  width: 100%;
+  max-height: 800px;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+}
+/*     SHEETS MOVEMENT     */
+.sheet-carousel {
+  position: relative;
+  width: 100%;
+  height: 800px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.sheet {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.sheet.active {
+  opacity: 1;
+}
+
+.sheet img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.sheet-controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sheet-controls button {
+  padding: 8px 14px;
+  border: 1px solid #6a5acd;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
 </style>
 </head>
 
@@ -109,7 +157,7 @@
 
 <!-- ================= IMAGE ================= -->
 <div class="campaign-image">
-  <img src="../../assets/sample.jpg" alt="Campaign Image">
+  <img src="../../assets/Intothewilds.jpg" alt="Campaign Image">
 </div>
 
 <!-- ================= BODY ================= -->
@@ -117,19 +165,119 @@
 
   <!-- LEFT (30%) -->
   <div class="side-panel">
-    <div class="side-tile">Campaign Synopsis</div>
-    <div class="side-tile">Characters</div>
-    <div class="side-tile">NPC's Encountered</div>
-    <div class="side-tile">Discoveries</div>
-    <div class="side-tile">Player Notes</div>
-  </div>
+  <div class="side-tile" onclick="loadSection('synopsis')">Campaign Synopsis</div>
+  <div class="side-tile" onclick="loadSection('characterSheet')">Character Sheet</div>
+  <div class="side-tile" onclick="loadSection('npcs')">NPC's Encountered</div>
+  <div class="side-tile" onclick="loadSection('discoveries')">Discoveries</div>
+  <div class="side-tile" onclick="loadSection('notes')">Player Notes</div>
+</div>
 
   <!-- RIGHT (70%) -->
-  <div class="content-panel">
+  <div class="content-panel" id="content-panel">
     <p>Content will go here.</p>
   </div>
 
 </div>
+
+<script>
+const campaignData = {
+  synopsis: `
+    <h2>Campaign Synopsis</h2>
+    <p>This is a cursed expedition into the wilds where reality begins to break down.</p>
+  `,
+  characterSheet: `
+  <h2>Character Sheets</h2>
+
+  <div class="sheet-carousel">
+
+    <div class="sheet active">
+      <img src="../../assets/Rahman.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Grux.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Hollowgrave.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Midlir.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Renny.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Shi.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Yisheng.jpg">
+    </div>
+
+  </div>
+
+  <div class="sheet-controls">
+    <button onclick="changeSheet(-1)">←</button>
+    <button onclick="changeSheet(1)">→</button>
+  </div>
+`,
+  npcs: `
+    <h2>NPCs Encountered</h2>
+    <p>A dying ranger, a broken oracle, and something that pretends to be human.</p>
+  `,
+  discoveries: `
+    <h2>Discoveries</h2>
+    <p>Ancient ruins, corrupted flora, and signs of a buried arcane engine.</p>
+  `,
+  notes: `
+    <h2>Player Notes</h2>
+    <p>Everything is getting stranger the deeper they go.</p>
+  `
+};
+</script>
+
+<script>
+function loadSection(section) {
+  const panel = document.getElementById("content-panel");
+
+  if (campaignData[section]) {
+    panel.innerHTML = campaignData[section];
+  } else {
+    panel.innerHTML = "<p>Section not found.</p>";
+  }
+}
+
+let currentSheetIndex = 0;
+
+function updateSheets() {
+  const sheets = document.querySelectorAll(".sheet");
+
+  sheets.forEach((s, i) => {
+    s.classList.toggle("active", i === currentSheetIndex);
+  });
+}
+
+function changeSheet(direction) {
+  const sheets = document.querySelectorAll(".sheet");
+
+  currentSheetIndex += direction;
+
+  if (currentSheetIndex < 0) {
+    currentSheetIndex = sheets.length - 1;
+  }
+
+  if (currentSheetIndex >= sheets.length) {
+    currentSheetIndex = 0;
+  }
+
+  updateSheets();
+}
+
+</script>
 
 </body>
 </html>
