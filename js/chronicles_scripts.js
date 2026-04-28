@@ -483,7 +483,10 @@ async function getCharacterColorFromPortrait(character, fallbackIndex = 0) {
       resolve(fallback);
     };
 
-    img.src = character.image;
+    const isPNG = character.image.startsWith("iVBOR");
+const type = isPNG ? "image/png" : "image/jpeg";
+
+img.src = `data:${type};base64,${character.image}`;
   });
 }
 
