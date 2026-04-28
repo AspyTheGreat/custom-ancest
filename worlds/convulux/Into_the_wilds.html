@@ -103,7 +103,47 @@
   display: block;
   border-radius: 8px;
 }
+/*     SHEETS MOVEMENT     */
+.sheet-carousel {
+  position: relative;
+  width: 100%;
+  height: 800px;
+  overflow: hidden;
+  border-radius: 8px;
+}
 
+.sheet {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.sheet.active {
+  opacity: 1;
+}
+
+.sheet img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.sheet-controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sheet-controls button {
+  padding: 8px 14px;
+  border: 1px solid #6a5acd;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
 </style>
 </head>
 
@@ -146,8 +186,44 @@ const campaignData = {
     <p>This is a cursed expedition into the wilds where reality begins to break down.</p>
   `,
   characterSheet: `
-  <h2>Character Sheet</h2>
-  <img src="../../assets/Rahman.jpg" class="character-img">
+  <h2>Character Sheets</h2>
+
+  <div class="sheet-carousel">
+
+    <div class="sheet active">
+      <img src="../../assets/Rahman.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Grux.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Hollowgrave.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Midlir.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Renny.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Shi.jpg">
+    </div>
+
+    <div class="sheet">
+      <img src="../../assets/Yisheng.jpg">
+    </div>
+
+  </div>
+
+  <div class="sheet-controls">
+    <button onclick="changeSheet(-1)">←</button>
+    <button onclick="changeSheet(1)">→</button>
+  </div>
 `,
   npcs: `
     <h2>NPCs Encountered</h2>
@@ -175,6 +251,31 @@ function loadSection(section) {
   }
 }
 
+let currentSheetIndex = 0;
+
+function updateSheets() {
+  const sheets = document.querySelectorAll(".sheet");
+
+  sheets.forEach((s, i) => {
+    s.classList.toggle("active", i === currentSheetIndex);
+  });
+}
+
+function changeSheet(direction) {
+  const sheets = document.querySelectorAll(".sheet");
+
+  currentSheetIndex += direction;
+
+  if (currentSheetIndex < 0) {
+    currentSheetIndex = sheets.length - 1;
+  }
+
+  if (currentSheetIndex >= sheets.length) {
+    currentSheetIndex = 0;
+  }
+
+  updateSheets();
+}
 
 </script>
 
