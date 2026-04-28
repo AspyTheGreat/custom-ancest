@@ -1,0 +1,1170 @@
+{
+  "campaign": "Aspy's Test game",
+  "battle": "Battle of Shiverpeaks pass",
+  "rounds": 2,
+  "images": {
+    "start": null,
+    "end": null
+  },
+  "characters": [
+    {
+      "name": "Neptune",
+      "levelClass": "11 fighter",
+      "portrait": null,
+      "stats": {
+        "hp": {
+          "current": 232,
+          "max": 240
+        },
+        "actionsTotal": 7,
+        "bonusActionsTotal": 1,
+        "actions": {
+          "attack": 7,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 0
+        },
+        "bonusActions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 1,
+          "misc": 0,
+          "none": 0
+        },
+        "reactions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 0
+        },
+        "attacks": {
+          "hit": 3,
+          "total": 3
+        },
+        "saves": {
+          "forced": 1,
+          "succeeded": 0
+        },
+        "defense": {
+          "attacksDodged": 0,
+          "attacksTaken": 0,
+          "savesMade": 0,
+          "savesTotal": 0
+        },
+        "spellSlotsUsed": {
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0
+        },
+        "resources": {
+          "Second wind": {
+            "current": 1,
+            "max": 2
+          }
+        },
+        "damage": 66,
+        "healing": 10,
+        "cc": 4,
+        "damageTaken": 0,
+        "conditions": [],
+        "nat20": 0,
+        "nat1": 0
+      },
+      "summons": [],
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 45,
+          "healing": 10,
+          "cc": 4,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 3,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 1,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 3,
+            "total": 3
+          },
+          "saves": {
+            "forced": 1,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "round": 2,
+          "damage": 21,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 4,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        }
+      ],
+      "roundCount": 2
+    },
+    {
+      "name": "BBEG",
+      "levelClass": "20 artificer",
+      "portrait": null,
+      "stats": {
+        "hp": {
+          "current": 400,
+          "max": 400
+        },
+        "actionsTotal": 0,
+        "bonusActionsTotal": 0,
+        "actions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": null
+        },
+        "bonusActions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": null
+        },
+        "reactions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 0
+        },
+        "attacks": {
+          "hit": 0,
+          "total": 0
+        },
+        "saves": {
+          "forced": 0,
+          "succeeded": 0
+        },
+        "defense": {
+          "attacksDodged": 0,
+          "attacksTaken": 0,
+          "savesMade": 0,
+          "savesTotal": 0
+        },
+        "spellSlotsUsed": {
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0
+        },
+        "resources": {
+          "flash of genius": {
+            "current": 3,
+            "max": 5
+          }
+        },
+        "damage": 23,
+        "healing": 0,
+        "cc": 0,
+        "damageTaken": 0,
+        "conditions": [],
+        "nat20": 0,
+        "nat1": 0
+      },
+      "summons": [],
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 0,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "round": 2,
+          "damage": 23,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        }
+      ],
+      "roundCount": 2
+    },
+    {
+      "name": "Aspy",
+      "levelClass": "14 barbarian",
+      "portrait": null,
+      "stats": {
+        "hp": {
+          "current": 250,
+          "max": 300
+        },
+        "actionsTotal": 5,
+        "bonusActionsTotal": 1,
+        "actions": {
+          "attack": 4,
+          "spell": 1,
+          "move": 0,
+          "misc": 0,
+          "none": null
+        },
+        "bonusActions": {
+          "attack": 1,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": null
+        },
+        "reactions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 0
+        },
+        "attacks": {
+          "hit": 0,
+          "total": 0
+        },
+        "saves": {
+          "forced": 0,
+          "succeeded": 0
+        },
+        "defense": {
+          "attacksDodged": 0,
+          "attacksTaken": 0,
+          "savesMade": 0,
+          "savesTotal": 0
+        },
+        "spellSlotsUsed": {
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0
+        },
+        "resources": {
+          "rage": {
+            "current": 4,
+            "max": 5
+          }
+        },
+        "damage": 57,
+        "healing": 0,
+        "cc": 0,
+        "damageTaken": 0,
+        "conditions": [],
+        "nat20": 0,
+        "nat1": 0
+      },
+      "summons": [],
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 13,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 4,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 1,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "round": 2,
+          "damage": 44,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 1,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        }
+      ],
+      "roundCount": 2
+    }
+  ],
+  "roundSummaries": [
+    {
+      "round": 1,
+      "totals": {
+        "damage": 58,
+        "healing": 10,
+        "cc": 4,
+        "averageDamage": 14.5
+      },
+      "players": [
+        {
+          "name": "Neptune",
+          "damage": 45,
+          "healing": 10,
+          "cc": 4,
+          "actions": {
+            "attack": 3,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 1,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "attacks": {
+            "hit": 3,
+            "total": 3
+          },
+          "saves": {
+            "forced": 1,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "name": "BBEG",
+          "damage": 0,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 4,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 1,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 1,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "attacks": {
+            "hit": 5,
+            "total": 5
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "name": "BBEG",
+          "damage": 0,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "name": "Aspy",
+          "damage": 13,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 4,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 1,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "totals": {
+        "damage": 88,
+        "healing": 0,
+        "cc": 0,
+        "averageDamage": 29.333333333333332
+      },
+      "players": [
+        {
+          "name": "Neptune",
+          "damage": 21,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 4,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "name": "BBEG",
+          "damage": 23,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "name": "Aspy",
+          "damage": 44,
+          "healing": 0,
+          "cc": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 1,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "spellSlots": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        }
+      ]
+    }
+  ],
+  "partyTotals": {
+    "damage": 146,
+    "healing": 10,
+    "cc": 4
+  },
+  "roundsDetailed": [
+    {
+      "name": "Neptune",
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 45,
+          "healing": 10,
+          "cc": 4,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 3,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 1,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 3,
+            "total": 3
+          },
+          "saves": {
+            "forced": 1,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "round": 2,
+          "damage": 21,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 4,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "BBEG",
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 0,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "round": 2,
+          "damage": 23,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "Aspy",
+      "rounds": [
+        {
+          "round": 1,
+          "damage": 13,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 4,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 1,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        },
+        {
+          "round": 2,
+          "damage": 44,
+          "healing": 0,
+          "cc": 0,
+          "damageTaken": 0,
+          "actions": {
+            "attack": 0,
+            "spell": 1,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "bonusActions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          },
+          "attacks": {
+            "hit": 0,
+            "total": 0
+          },
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+          "defense": {
+            "attacksDodged": 0,
+            "attacksTaken": 0,
+            "savesMade": 0,
+            "savesTotal": 0
+          },
+          "reactions": {
+            "attack": 0,
+            "spell": 0,
+            "move": 0,
+            "misc": 0,
+            "none": 0
+          }
+        }
+      ]
+    }
+  ],
+  "archive": {
+    "id": "Aspy's_Test_game_Battle_of_Shiverpeaks_pass",
+    "title": "Battle of Shiverpeaks pass",
+    "campaign": "Aspy's Test game",
+    "date": "2026-04-28T06:56:03.575Z",
+    "summary": {
+      "rounds": 2,
+      "partyDamage": 146,
+      "partyHealing": 10
+    },
+    "thumbnail": null
+  },
+  "campaignSlug": "aspy-s-test-game",
+  "battleSlug": "battle-of-shiverpeaks-pass",
+  "slug": "aspy-s-test-game-battle-of-shiverpeaks-pass",
+  "displayName": "Aspy's Test game — Battle of Shiverpeaks pass",
+  "timestamp": "2026-04-28T06:56:03.576Z"
+}
