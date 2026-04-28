@@ -1256,10 +1256,9 @@ characters.push({
 
 selectedCharacter = 0;
 
-// hide setup, show meta input instead
+// hide setup, show battle meta screen
 document.getElementById("setup").classList.add("hidden");
-document.getElementById("combat").classList.remove("hidden");
-document.getElementById("sidePanel").classList.remove("hidden");
+document.getElementById("battleMeta").classList.remove("hidden");
 
 // store initiative preview for later
 document.getElementById("initiativeDisplay").innerText =
@@ -1268,6 +1267,19 @@ document.getElementById("initiativeDisplay").innerText =
 
   currentTurn = 0;
   round = 1;
+
+  renderCharacterBar();
+  updateTurnUI();
+}
+
+function confirmBattleMeta() {
+  battleName =
+    document.getElementById("battleName")?.value.trim() ||
+    "Unnamed Battle";
+
+  document.getElementById("battleMeta").classList.add("hidden");
+  document.getElementById("combat").classList.remove("hidden");
+  document.getElementById("sidePanel").classList.remove("hidden");
 
   renderCharacterBar();
   updateTurnUI();

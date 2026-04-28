@@ -212,18 +212,33 @@ function openBattle(url) {
 // =========================
 // 🧼 FORMAT NAMES
 // =========================
-function renderImage(base64) {
-  if (!base64) return "";
+function normalizeImageSrc(image) {
+  if (!image) return "";
 
-  // detect type (jpeg vs png)
-  const isPNG = base64.startsWith("iVBOR");
+  // already a valid data URL
+  if (image.startsWith("data:image")) {
+    return image;
+  }
+
+  // raw base64 fallback
+  const isPNG = image.startsWith("iVBOR");
   const type = isPNG ? "image/png" : "image/jpeg";
+
+  return `data:${type};base64,${image}`;
+}
+
+function renderImage(image) {
+  if (!image) return "";
 
   return `
     <div class="battle-image">
-      <img loading="lazy" src="data:${type};base64,${base64}" />
+      <img
+        loading="lazy"
+        src="${normalizeImageSrc(image)}"
+      />
     </div>
   `;
+
 }
 function formatName(slug) {
   return slug
@@ -399,15 +414,105 @@ renderPartyCharts(data.characters || []);
 renderPerRoundCharts(data.roundSummaries || [], data.characters || []);
 }
 
+const characterColorCache = {};
+
+async function getCharacterColorFromPortrait(character, fallbackIndex = 0) {
+
+  // already cached
+  if (characterColorCache[character.name]) {
+    return characterColorCache[character.name];
+  }
+
+  // fallback if no portrait
+  const portrait = character.image || character.portrait;
+
+if (!portrait) {
+    const fallback = getCharacterColor(fallbackIndex);
+
+    characterColorCache[character.name] = fallback;
+
+    return fallback;
+  }
+
+  return new Promise(resolve => {
+
+    const img = new Image();
+
+    img.crossOrigin = "Anonymous";
+
+    img.onload = () => {
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = 50;
+      canvas.height = 50;
+
+      ctx.drawImage(img, 0, 0, 50, 50);
+
+      const data = ctx.getImageData(0, 0, 50, 50).data;
+
+      let r = 0;
+      let g = 0;
+      let b = 0;
+      let count = 0;
+
+      for (let i = 0; i < data.length; i += 4) {
+
+        const alpha = data[i + 3];
+
+        // ignore transparent pixels
+        if (alpha < 128) continue;
+
+        r += data[i];
+        g += data[i + 1];
+        b += data[i + 2];
+
+        count++;
+      }
+
+      if (!count) {
+        const fallback = getCharacterColor(fallbackIndex);
+
+        characterColorCache[character.name] = fallback;
+
+        resolve(fallback);
+        return;
+      }
+
+      r = Math.round(r / count);
+      g = Math.round(g / count);
+      b = Math.round(b / count);
+
+      const color = `rgb(${r}, ${g}, ${b})`;
+
+      characterColorCache[character.name] = color;
+
+      resolve(color);
+    };
+
+    img.onerror = () => {
+
+      const fallback = getCharacterColor(fallbackIndex);
+
+      characterColorCache[character.name] = fallback;
+
+      resolve(fallback);
+    };
+
+    img.src = normalizeImageSrc(portrait);
+  });
+}
+
 function sumObj(obj = {}) {
   return Object.values(obj).reduce((a, b) => a + b, 0);
 }
 
-function renderCharacters(characters) {
+async function renderCharacters(characters) {
   const el = document.getElementById("characters");
   el.innerHTML = "";
 
-  characters.forEach(char => {
+  for (const char of characters) {
   const stats = char.stats || {};
   const defense = stats.defense || {};
 
@@ -480,24 +585,51 @@ if (hpPercent === 0) {
   `;
 
   el.appendChild(row);
-});
+}
 }
 
-function renderPerRoundCharts(rounds, characters) {
+const CHARACTER_COLORS = [
+  "#4fc3f7",
+  "#ff6384",
+  "#ffd54f",
+  "#81c784",
+  "#ba68c8",
+  "#ff8a65",
+  "#64b5f6",
+  "#f06292",
+  "#aed581",
+  "#9575cd"
+];
+
+function getCharacterColor(index) {
+  return CHARACTER_COLORS[index % CHARACTER_COLORS.length];
+}
+
+async function renderPerRoundCharts(rounds, characters) {
   if (!rounds.length) return;
 
   const labels = rounds.map(r => `R${r.round}`);
   const names = characters.map(c => c.name);
-
+const colors = await Promise.all(
+  characters.map((c, i) =>
+    getCharacterColorFromPortrait(c, i)
+  )
+);
   function buildDataset(statKey) {
   return names.map(name => {
 
     let runningTotal = 0;
 
-    return {
-      label: name,
+const color = colors[names.indexOf(name)];
 
-      data: rounds.map(r => {
+return {
+  label: name,
+  borderColor: color,
+  backgroundColor: color,
+  pointBackgroundColor: color,
+  pointBorderColor: color,
+
+  data: rounds.map(r => {
         const player = (r.players || []).find(
           p => p.name === name
         );
@@ -530,7 +662,7 @@ function renderPerRoundCharts(rounds, characters) {
   createLine("line-damage", "Damage per Round", labels, buildDataset("damage"));
   createLine("line-healing", "Healing per Round", labels, buildDataset("healing"));
   createLine("line-cc", "CC per Round", labels, buildDataset("cc"));
-  createLine("line-targeted", "Targeted per Round", labels, buildDataset("targeted"));
+  createLine("line-targeted", "Tanked per Round", labels, buildDataset("targeted"));
 }
 
 function createLine(canvasId, title, labels, datasets) {
@@ -543,11 +675,17 @@ function createLine(canvasId, title, labels, datasets) {
     data: {
       labels: labels,
       datasets: datasets.map(d => ({
-        label: d.label,
-        data: d.data,
-        fill: false,
-        tension: 0.2
-      }))
+  label: d.label,
+  data: d.data,
+
+  borderColor: d.borderColor,
+  backgroundColor: d.backgroundColor,
+  pointBackgroundColor: d.pointBackgroundColor,
+  pointBorderColor: d.pointBorderColor,
+
+  fill: false,
+  tension: 0.2
+}))
     },
     options: {
   responsive: true,
@@ -620,30 +758,97 @@ function renderRounds(rounds) {
         </div>
       </div>
 
-      <div class="round-players">
-        ${(r.players || []).map(p => `
-          <div class="round-player">
-            <span class="name">${p.name}</span>
-            <span class="dmg">${p.damage ?? 0} dmg</span>
-          </div>
-        `).join("")}
+     <div class="round-players">
+  ${(r.players || []).map(p => {
+
+    const attacksMade =
+      p.attacks?.total ??
+      p.attacksMade ??
+      0;
+
+    const attacksHit =
+      p.attacks?.hit ??
+      p.attacksHit ??
+      0;
+
+    const accuracy = attacksMade
+      ? Math.round((attacksHit / attacksMade) * 100)
+      : 0;
+
+    const savesForced =
+      p.saves?.forced ??
+      p.savesForced ??
+      0;
+
+    const savesSucceeded =
+      p.saves?.succeeded ??
+      p.savesSucceeded ??
+      0;
+
+    const potency = savesForced
+      ? Math.round(((savesForced - savesSucceeded) / savesForced) * 100)
+      : 0;
+
+    const defense = p.defense || {};
+
+    const timesTargeted =
+      (defense.attacksTaken || 0) +
+      (defense.savesMade || 0);
+
+    return `
+      <div class="round-player expanded">
+
+        <div class="round-player-name">
+          ${p.name}
+        </div>
+
+        <div class="round-player-stats">
+
+          <span>${p.damage ?? 0} dmg</span>
+
+          <span>${p.healing ?? 0} heal</span>
+
+          <span>${p.cc ?? 0} cc</span>
+
+          <span>${timesTargeted} targeted</span>
+
+          <span>
+            Accuracy:
+            ${attacksHit}/${attacksMade}
+            (${accuracy}%)
+          </span>
+
+          <span>
+            Potency:
+            ${savesForced - savesSucceeded}/${savesForced}
+            (${potency}%)
+          </span>
+
+        </div>
+
       </div>
+    `;
+  }).join("")}
+</div>
     `;
 
     el.appendChild(div);
   });
 }
-function renderPartyBreakdown(characters) {
+async function renderPartyBreakdown(characters) {
   
   const el = document.getElementById("party-breakdown");
   el.innerHTML = "";
 
-  characters.forEach(char => {
+  for (const char of characters) {
     console.log("CHAR KEYS:", Object.keys(char));
      console.log("CHAR:", char);
     const stats = char.stats || {};
     const defense = stats.defense || {};
-
+const color = await getCharacterColorFromPortrait(
+  char,
+  characters.indexOf(char)
+);
     const timesTargeted =
       (defense.attacksTaken || 0) +
       (defense.savesMade || 0);
@@ -690,9 +895,28 @@ if (hpPercent === 0) {
 }
 
     row.innerHTML = `
-      <div class="party-left">
+     <div class="party-left">
 
-        <h4>${char.name} <span>${char.levelClass}</span></h4>
+  <div class="party-header">
+
+    ${
+      (char.image || char.portrait)
+        ? `
+          <img
+            class="character-portrait"
+            src="${normalizeImageSrc(char.image || char.portrait)}"
+            alt="${char.name}"
+          >
+        `
+        : ""
+    }
+
+    <div>
+      <h4>${char.name}</h4>
+      <span>${char.levelClass}</span>
+    </div>
+
+  </div>
 
 
 <div class="hp-block">
@@ -725,7 +949,7 @@ if (hpPercent === 0) {
 
 <div><b>DPR:</b> ${dpr}</div>
 
-<div><b>Save Fail Rate:</b> ${saveRate}%</div>
+<div><b>Potency:</b> ${saveRate}%</div>
 <div><b>Saves Forced:</b> ${savesForced}</div>
 
 <div><b>Natural 20s:</b> ${stats.nat20}</div>
@@ -740,14 +964,221 @@ if (hpPercent === 0) {
       </div>
 
       <div class="party-right">
-        <!-- Reserved for advanced analytics -->
-      </div>
+  <canvas id="radar-${char.name.replace(/\s+/g, "-")}"></canvas>
+</div>
     `;
 
     el.appendChild(row);
+    renderCharacterRadar(
+  `radar-${char.name.replace(/\s+/g, "-")}`,
+  char,
+  characters,
+  color
+);
+    }
+}
+function hexToRGBA(hex, alpha = 1) {
+
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+function renderCharacterRadar(canvasId, char, allCharacters, color) {
+
+  const canvas = document.getElementById(canvasId);
+
+  if (!canvas) return;
+
+  const stats = char.stats || {};
+  const defense = stats.defense || {};
+
+  // =========================
+  // PARTY TOTALS
+  // =========================
+
+  const totalDamage = allCharacters.reduce(
+    (s, c) => s + (c.stats?.damage || 0),
+    0
+  );
+
+  const totalHealing = allCharacters.reduce(
+    (s, c) => s + (c.stats?.healing || 0),
+    0
+  );
+
+  const totalCC = allCharacters.reduce(
+    (s, c) => s + (c.stats?.cc || 0),
+    0
+  );
+
+  const totalTargeted = allCharacters.reduce((s, c) => {
+    const d = c.stats?.defense || {};
+
+    return s +
+      (d.attacksTaken || 0) +
+      (d.savesMade || 0);
+  }, 0);
+
+  // =========================
+  // INDIVIDUAL SCORES
+  // =========================
+
+  const damageScore = totalDamage
+    ? ((stats.damage || 0) / totalDamage) * 10
+    : 0;
+
+  const healingScore = totalHealing
+    ? ((stats.healing || 0) / totalHealing) * 10
+    : 0;
+
+  const ccScore = totalCC
+    ? ((stats.cc || 0) / totalCC) * 10
+    : 0;
+
+  const targeted =
+    (defense.attacksTaken || 0) +
+    (defense.savesMade || 0);
+
+  const tankScore = totalTargeted
+    ? (targeted / totalTargeted) * 10
+    : 0;
+
+  // =========================
+  // LUCK SCORE
+  // =========================
+
+  const attacksMade = stats.attacks?.total || 0;
+  const attacksHit = stats.attacks?.hit || 0;
+
+  const accuracy = attacksMade
+    ? attacksHit / attacksMade
+    : 0;
+
+  const savesForced = stats.saves?.forced || 0;
+  const savesSucceeded = stats.saves?.succeeded || 0;
+
+  // offensive potency
+  const potency = savesForced
+    ? (savesForced - savesSucceeded) / savesForced
+    : 0;
+
+  // defensive saves
+  const savesMade = defense.savesMade || 0;
+  const savesPassed = defense.savesSucceeded || 0;
+
+  const saveSuccess = savesMade
+    ? savesPassed / savesMade
+    : 0;
+
+  // dodges
+  const attacksTaken = defense.attacksTaken || 0;
+  const attacksDodged = defense.attacksDodged || 0;
+
+  const dodgeRate = attacksTaken
+    ? attacksDodged / attacksTaken
+    : 0;
+
+  const nat20 = stats.nat20 || 0;
+  const nat1 = stats.nat1 || 0;
+
+  // weighted formula
+  let luck =
+    (
+      accuracy * 0.30 +
+      potency * 0.25 +
+      saveSuccess * 0.20 +
+      dodgeRate * 0.15
+    ) * 10;
+
+  // nat weighting
+  luck += nat20 * 0.15;
+  luck -= nat1 * 0.10;
+
+  luck = Math.max(0, Math.min(10, luck));
+
+  // =========================
+  // CHART
+  // =========================
+const charIndex = allCharacters.findIndex(c => c.name === char.name);
+
+const fill = color.startsWith("rgb")
+  ? color.replace("rgb", "rgba").replace(")", ", 0.25)")
+  : hexToRGBA(color, 0.25);
+
+  new Chart(canvas, {
+    type: "radar",
+
+    data: {
+      labels: [
+        "Luck",
+        "Damage",
+        "Healing",
+        "Tank",
+        "CC"
+      ],
+
+      datasets: [{
+        data: [
+          luck,
+          damageScore,
+          healingScore,
+          tankScore,
+          ccScore
+        ],
+
+        borderColor: color,
+backgroundColor: fill,
+pointBackgroundColor: color,
+        pointRadius: 4,
+        borderWidth: 2
+      }]
+    },
+
+    options: {
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+
+      scales: {
+        r: {
+
+          min: 0,
+          max: 10,
+
+          ticks: {
+            stepSize: 2,
+            color: "#999",
+            backdropColor: "transparent"
+          },
+
+          angleLines: {
+            color: "#444"
+          },
+
+          grid: {
+            color: "#333"
+          },
+
+          pointLabels: {
+            color: "#ddd",
+            font: {
+              size: 14
+            }
+          }
+        }
+      }
+    }
   });
 }
-function createPie(canvasId, label, labels, data) {
+function createPie(canvasId, label, labels, data, colors){
   const ctx = document.getElementById(canvasId);
 
   if (!ctx) return;
@@ -757,8 +1188,9 @@ function createPie(canvasId, label, labels, data) {
     data: {
       labels: labels,
       datasets: [{
-        data: data
-      }]
+  data: data,
+  backgroundColor: colors
+}]
     },
     options: {
       plugins: {
@@ -778,20 +1210,24 @@ function createPie(canvasId, label, labels, data) {
     }
   });
 }
-function renderPartyCharts(characters) {
+async function renderPartyCharts(characters) {
   const names = characters.map(c => c.name);
 
   const damage = characters.map(c => c.stats?.damage || 0);
   const healing = characters.map(c => c.stats?.healing || 0);
   const cc = characters.map(c => c.stats?.cc || 0);
-
+const colors = await Promise.all(
+  characters.map((c, i) =>
+    getCharacterColorFromPortrait(c, i)
+  )
+);
   const targeted = characters.map(c => {
     const d = c.stats?.defense || {};
     return (d.attacksTaken || 0) + (d.savesMade || 0);
   });
 
-  createPie("chart-damage", "Damage", names, damage);
-  createPie("chart-healing", "Healing", names, healing);
-  createPie("chart-cc", "CC", names, cc);
-  createPie("chart-targeted", "Targeted", names, targeted);
+  createPie("chart-damage", "Damage", names, damage, colors);
+createPie("chart-healing", "Healing", names, healing, colors);
+createPie("chart-cc", "CC", names, cc, colors);
+createPie("chart-targeted", "Targeted", names, targeted, colors);
 }
