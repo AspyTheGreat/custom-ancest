@@ -1,435 +1,585 @@
+
 {
   "campaign": "Test Campaign",
   "campaignSlug": "test-campaign",
-  "battle": "Full System Stress Test",
-  "battleSlug": "full-system-stress-test",
-  "displayName": "Full System Stress Test",
-  "timestamp": "2026-04-27T12:00:00Z",
-  "roundcount": 5,
+
+  "battle": "The Fall of Blackstone Keep",
+  "battleSlug": "the-fall-of-blackstone-keep",
+
+  "displayName": "The Fall of Blackstone Keep",
+
+  "timestamp": "2026-04-28T19:30:00Z",
+
+  "roundCount": 6,
+
   "images": {
-    "start": null,
-    "end": null
+    "start": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBUQEBAVFhUVFRUVFRUVFRUVFRUVFRUWFhUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGi0fHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAAEAAgMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABQYBBAcDAv/EADQQAAIBAgQDBgQEBwAAAAAAAAECAwQRAAUSITFBBhMiUWFxFDKBkaGxwdHwQlLR8SNSYnL/xAAZAQADAQEBAAAAAAAAAAAAAAACAwQBBQD/xAAnEQACAgICAgICAgMAAAAAAAAAAQIRAyESMUEEE1FhInGBkaHB8P/aAAwDAQACEQMRAD8A9xREQEREBERAREQEREBERAREQEREBERAX//Z",
+    "end": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBUQEBAVFhUVFRUVFRUVFRUVFRUVFRUWFhUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGi0fHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAAEAAgMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABQYBBAcDAv/EADQQAAIBAgQDBgQEBwAAAAAAAAECAwQRAAUSITFBBhMiUWFxFDKBkaGxwdHwQlLR8SNSYnL/xAAZAQADAQEBAAAAAAAAAAAAAAACAwQBBQD/xAAnEQACAgICAgICAgMAAAAAAAAAAQIRAyESMUEEE1FhInGBkaHB8P/aAAwDAQACEQMRAD8A9xREQEREBERAREQEREBERAREQEREBERAX//Z"
   },
+
+  "partyTotals": {
+    "damage": 684,
+    "healing": 198,
+    "cc": 21
+  },
+
   "characters": [
     {
-      "name": "Aelric",
-      "levelClass": "Level 5 Ranger",
-      "portrait": null,
+      "name": "Arannis",
+      "levelClass": "Level 12 Wizard",
+
+      "image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBUQEBAVFhUVFRUVFRUVFRUVFRUVFRUWFhUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGi0fHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAAEAAgMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABQYBBAcDAv/EADQQAAIBAgQDBgQEBwAAAAAAAAECAwQRAAUSITFBBhMiUWFxFDKBkaGxwdHwQlLR8SNSYnL/xAAZAQADAQEBAAAAAAAAAAAAAAACAwQBBQD/xAAnEQACAgICAgICAgMAAAAAAAAAAQIRAyESMUEEE1FhInGBkaHB8P/aAAwDAQACEQMRAD8A9xREQEREBERAREQEREBERAREQEREBERAX//Z",
+
+      "roundCount": 6,
+
       "stats": {
         "hp": {
-          "current": 43,
-          "max": 75
+          "current": 41,
+          "max": 72
         },
-        "actionsTotal": 10,
-        "bonusActionsTotal": 5,
-        "actions": {
-          "attack": 6,
-          "spell": 2,
-          "move": 1,
-          "misc": 1
-        },
-        "bonusActions": {
-          "attack": 1,
-          "spell": 2,
-          "move": 2,
-          "misc": 0
-        },
-        "reactions": {
-          "attack": 2,
-          "spell": 1,
-          "move": 0,
-          "misc": 0,
-          "none": 2
-        },
-        "attacks": {
-          "hit": 7,
-          "total": 12
-        },
-        "saves": {
-          "forced": 5,
-          "succeeded": 3
-        },
-        "defense": {
-          "attacksDodged": 4,
-          "attacksTaken": 8,
-          "savesMade": 3,
-          "savesTotal": 5
-        },
-        "spellSlotsUsed": {
-          "1": 3,
-          "2": 2,
-          "3": 1,
-          "4": 0,
-          "5": 0,
-          "6": 0,
-          "7": 0,
-          "8": 0,
-          "9": 0
-        },
-        "resources": {
-          "Arrows": {
-            "current": 8,
-            "max": 20
-          },
-          "Potions": {
-            "current": 1,
-            "max": 3
-          }
-        },
-        "damage": 85,
-        "healing": 15,
-        "cc": 6,
-        "damageTaken": 40,
-        "conditions": [
-          {
-            "round": 1,
-            "turn": 0,
-            "character": "Aelric",
-            "text": "Poisoned"
-          },
-          {
-            "round": 3,
-            "turn": 0,
-            "character": "Aelric",
-            "text": "Hidden"
-          },
-          {
-            "round": 5,
-            "turn": 0,
-            "character": "Aelric",
-            "text": "Exhausted"
-          }
-        ],
+
+        "damage": 212,
+        "healing": 12,
+        "cc": 11,
+        "damageTaken": 39,
+
+        "actionsTotal": 6,
+        "bonusActionsTotal": 2,
+
         "nat20": 2,
-        "nat1": 1
-      },
-      "summons": [
-        {
-          "name": "Wolf Companion",
-          "count": 1,
-          "roundsActive": 4,
-          "totals": {
-            "damage": 20,
-            "healing": 0,
-            "damageTaken": 10,
-            "cc": 2
-          }
+        "nat1": 0,
+
+        "reactions": {
+          "Shield": 3,
+          "Counterspell": 2
+        },
+
+        "attacks": {
+          "total": 14,
+          "hit": 11
+        },
+
+        "saves": {
+          "forced": 18,
+          "succeeded": 6
+        },
+
+        "defense": {
+          "attacksTaken": 4,
+          "attacksDodged": 2,
+          "savesMade": 3,
+          "savesSucceeded": 2
         }
-      ],
-      "rounds": [
-        {
-          "round": 1,
-          "damage": 20,
-          "healing": 0,
-          "cc": 1,
-          "damageTaken": 10
-        },
-        {
-          "round": 2,
-          "damage": 15,
-          "healing": 5,
-          "cc": 1,
-          "damageTaken": 5
-        },
-        {
-          "round": 3,
-          "damage": 18,
-          "healing": 0,
-          "cc": 2,
-          "damageTaken": 8
-        },
-        {
-          "round": 4,
-          "damage": 12,
-          "healing": 5,
-          "cc": 1,
-          "damageTaken": 7
-        },
-        {
-          "round": 5,
-          "damage": 20,
-          "healing": 5,
-          "cc": 1,
-          "damageTaken": 10
-        }
-      ],
-      "roundCount": 5
+      }
     },
+
     {
       "name": "Lyra",
-      "levelClass": "Level 5 Sorcerer",
-      "portrait": null,
+      "levelClass": "Level 12 Cleric",
+
+      "image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBUQEBAVFhUVFRUVFRUVFRUVFRUVFRUWFhUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGi0fHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAAEAAgMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABQYBBAcDAv/EADQQAAIBAgQDBgQEBwAAAAAAAAECAwQRAAUSITFBBhMiUWFxFDKBkaGxwdHwQlLR8SNSYnL/xAAZAQADAQEBAAAAAAAAAAAAAAACAwQBBQD/xAAnEQACAgICAgICAgMAAAAAAAAAAQIRAyESMUEEE1FhInGBkaHB8P/aAAwDAQACEQMRAD8A9xREQEREBERAREQEREBERAREQEREBERAX//Z",
+
+      "roundCount": 6,
+
       "stats": {
         "hp": {
-          "current": 35,
-          "max": 60
+          "current": 88,
+          "max": 88
         },
-        "actionsTotal": 10,
-        "bonusActionsTotal": 4,
-        "actions": {
-          "attack": 2,
-          "spell": 7,
-          "move": 1,
-          "misc": 0
-        },
-        "bonusActions": {
-          "attack": 0,
-          "spell": 3,
-          "move": 1,
-          "misc": 0
-        },
+
+        "damage": 104,
+        "healing": 152,
+        "cc": 4,
+        "damageTaken": 58,
+
+        "actionsTotal": 6,
+        "bonusActionsTotal": 6,
+
+        "nat20": 1,
+        "nat1": 1,
+
         "reactions": {
-          "attack": 0,
-          "spell": 2,
-          "move": 0,
-          "misc": 1,
-          "none": 2
+          "Opportunity Attack": 1
         },
+
         "attacks": {
-          "hit": 3,
-          "total": 5
+          "total": 11,
+          "hit": 8
         },
+
         "saves": {
           "forced": 6,
-          "succeeded": 4
+          "succeeded": 3
         },
+
         "defense": {
-          "attacksDodged": 2,
-          "attacksTaken": 6,
-          "savesMade": 4,
-          "savesTotal": 6
-        },
-        "spellSlotsUsed": {
-          "1": 4,
-          "2": 3,
-          "3": 2,
-          "4": 1,
-          "5": 0,
-          "6": 0,
-          "7": 0,
-          "8": 0,
-          "9": 0
-        },
-        "resources": {
-          "Sorcery Points": {
-            "current": 2,
-            "max": 5
-          }
-        },
-        "damage": 95,
-        "healing": 10,
-        "cc": 8,
-        "damageTaken": 30,
-        "conditions": [
-          {
-            "round": 2,
-            "turn": 1,
-            "character": "Lyra",
-            "text": "Stunned"
-          },
-          {
-            "round": 4,
-            "turn": 1,
-            "character": "Lyra",
-            "text": "Invisible"
-          }
-        ],
-        "nat20": 1,
-        "nat1": 2
-      },
-      "summons": [],
-      "rounds": [
-        {
-          "round": 1,
-          "damage": 15,
-          "healing": 0,
-          "cc": 2,
-          "damageTaken": 5
-        },
-        {
-          "round": 2,
-          "damage": 20,
-          "healing": 5,
-          "cc": 2,
-          "damageTaken": 5
-        },
-        {
-          "round": 3,
-          "damage": 25,
-          "healing": 0,
-          "cc": 1,
-          "damageTaken": 8
-        },
-        {
-          "round": 4,
-          "damage": 15,
-          "healing": 5,
-          "cc": 2,
-          "damageTaken": 6
-        },
-        {
-          "round": 5,
-          "damage": 20,
-          "healing": 0,
-          "cc": 1,
-          "damageTaken": 6
+          "attacksTaken": 7,
+          "attacksDodged": 1,
+          "savesMade": 6,
+          "savesSucceeded": 5
         }
-      ],
-      "roundCount": 5
+      }
+    },
+
+    {
+      "name": "Thorne",
+      "levelClass": "Level 12 Fighter",
+
+      "image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBUQEBAVFhUVFRUVFRUVFRUVFRUVFRUWFhUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGi0fHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAAEAAgMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABQYBBAcDAv/EADQQAAIBAgQDBgQEBwAAAAAAAAECAwQRAAUSITFBBhMiUWFxFDKBkaGxwdHwQlLR8SNSYnL/xAAZAQADAQEBAAAAAAAAAAAAAAACAwQBBQD/xAAnEQACAgICAgICAgMAAAAAAAAAAQIRAyESMUEEE1FhInGBkaHB8P/aAAwDAQACEQMRAD8A9xREQEREBERAREQEREBERAREQEREBERAX//Z",
+
+      "roundCount": 6,
+
+      "stats": {
+        "hp": {
+          "current": 19,
+          "max": 134
+        },
+
+        "damage": 298,
+        "healing": 0,
+        "cc": 2,
+        "damageTaken": 144,
+
+        "actionsTotal": 6,
+        "bonusActionsTotal": 4,
+
+        "nat20": 3,
+        "nat1": 2,
+
+        "reactions": {
+          "Riposte": 4,
+          "Opportunity Attack": 2
+        },
+
+        "attacks": {
+          "total": 29,
+          "hit": 21
+        },
+
+        "saves": {
+          "forced": 2,
+          "succeeded": 1
+        },
+
+        "defense": {
+          "attacksTaken": 16,
+          "attacksDodged": 5,
+          "savesMade": 4,
+          "savesSucceeded": 3
+        }
+      }
+    },
+
+    {
+      "name": "Selene",
+      "levelClass": "Level 12 Rogue",
+
+      "image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBUQEBAVFhUVFRUVFRUVFRUVFRUVFRUWFhUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGi0fHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAAEAAgMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABQYBBAcDAv/EADQQAAIBAgQDBgQEBwAAAAAAAAECAwQRAAUSITFBBhMiUWFxFDKBkaGxwdHwQlLR8SNSYnL/xAAZAQADAQEBAAAAAAAAAAAAAAACAwQBBQD/xAAnEQACAgICAgICAgMAAAAAAAAAAQIRAyESMUEEE1FhInGBkaHB8P/aAAwDAQACEQMRAD8A9xREQEREBERAREQEREBERAREQEREBERAX//Z",
+
+      "roundCount": 6,
+
+      "stats": {
+        "hp": {
+          "current": 54,
+          "max": 79
+        },
+
+        "damage": 70,
+        "healing": 34,
+        "cc": 4,
+        "damageTaken": 48,
+
+        "actionsTotal": 6,
+        "bonusActionsTotal": 6,
+
+        "nat20": 1,
+        "nat1": 1,
+
+        "reactions": {
+          "Uncanny Dodge": 5
+        },
+
+        "attacks": {
+          "total": 15,
+          "hit": 12
+        },
+
+        "saves": {
+          "forced": 5,
+          "succeeded": 2
+        },
+
+        "defense": {
+          "attacksTaken": 8,
+          "attacksDodged": 4,
+          "savesMade": 3,
+          "savesSucceeded": 2
+        }
+      }
     }
   ],
+
   "roundSummaries": [
     {
       "round": 1,
+
       "totals": {
-        "damage": 35,
-        "healing": 0,
-        "cc": 3,
-        "averageDamage": 17.5
+        "damage": 104,
+        "healing": 18,
+        "cc": 4,
+        "averageDamage": 26
       },
+
       "players": [
         {
-          "name": "Aelric",
-          "damage": 20
+          "name": "Arannis",
+          "damage": 35,
+          "healing": 0,
+          "cc": 2,
+
+          "attacks": {
+            "total": 2,
+            "hit": 2
+          },
+
+          "saves": {
+            "forced": 4,
+            "succeeded": 1
+          },
+
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 0
+          }
         },
+
         {
           "name": "Lyra",
-          "damage": 15
+          "damage": 14,
+          "healing": 18,
+          "cc": 1,
+
+          "attacks": {
+            "total": 2,
+            "hit": 1
+          },
+
+          "saves": {
+            "forced": 1,
+            "succeeded": 0
+          },
+
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 1
+          }
+        },
+
+        {
+          "name": "Thorne",
+          "damage": 43,
+          "healing": 0,
+          "cc": 0,
+
+          "attacks": {
+            "total": 5,
+            "hit": 4
+          },
+
+          "saves": {
+            "forced": 0,
+            "succeeded": 0
+          },
+
+          "defense": {
+            "attacksTaken": 3,
+            "savesMade": 1
+          }
+        },
+
+        {
+          "name": "Selene",
+          "damage": 12,
+          "healing": 0,
+          "cc": 1,
+
+          "attacks": {
+            "total": 2,
+            "hit": 2
+          },
+
+          "saves": {
+            "forced": 1,
+            "succeeded": 1
+          },
+
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 0
+          }
         }
       ]
     },
+
     {
       "round": 2,
       "totals": {
-        "damage": 35,
-        "healing": 10,
+        "damage": 118,
+        "healing": 42,
         "cc": 3,
-        "averageDamage": 17.5
+        "averageDamage": 29
       },
       "players": [
         {
-          "name": "Aelric",
-          "damage": 15
+          "name": "Arannis",
+          "damage": 42,
+          "healing": 0,
+          "cc": 2,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 1
+          }
         },
         {
           "name": "Lyra",
-          "damage": 20
+          "damage": 16,
+          "healing": 42,
+          "cc": 0,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 1
+          }
+        },
+        {
+          "name": "Thorne",
+          "damage": 49,
+          "healing": 0,
+          "cc": 0,
+          "defense": {
+            "attacksTaken": 4,
+            "savesMade": 0
+          }
+        },
+        {
+          "name": "Selene",
+          "damage": 11,
+          "healing": 0,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 0
+          }
         }
       ]
     },
+
     {
       "round": 3,
       "totals": {
-        "damage": 43,
-        "healing": 0,
-        "cc": 3,
-        "averageDamage": 21.5
+        "damage": 132,
+        "healing": 27,
+        "cc": 2,
+        "averageDamage": 33
       },
       "players": [
         {
-          "name": "Aelric",
-          "damage": 18
+          "name": "Arannis",
+          "damage": 54,
+          "healing": 0,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 0,
+            "savesMade": 1
+          }
         },
         {
           "name": "Lyra",
-          "damage": 25
+          "damage": 13,
+          "healing": 27,
+          "cc": 0,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 2
+          }
+        },
+        {
+          "name": "Thorne",
+          "damage": 51,
+          "healing": 0,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 3,
+            "savesMade": 1
+          }
+        },
+        {
+          "name": "Selene",
+          "damage": 14,
+          "healing": 0,
+          "cc": 0,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 0
+          }
         }
       ]
     },
+
     {
       "round": 4,
       "totals": {
-        "damage": 27,
-        "healing": 10,
-        "cc": 3,
-        "averageDamage": 13.5
+        "damage": 109,
+        "healing": 36,
+        "cc": 5,
+        "averageDamage": 27
       },
       "players": [
         {
-          "name": "Aelric",
-          "damage": 12
+          "name": "Arannis",
+          "damage": 31,
+          "healing": 0,
+          "cc": 3,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 0
+          }
         },
         {
           "name": "Lyra",
-          "damage": 15
+          "damage": 18,
+          "healing": 36,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 1
+          }
+        },
+        {
+          "name": "Thorne",
+          "damage": 47,
+          "healing": 0,
+          "cc": 0,
+          "defense": {
+            "attacksTaken": 2,
+            "savesMade": 1
+          }
+        },
+        {
+          "name": "Selene",
+          "damage": 13,
+          "healing": 0,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 2,
+            "savesMade": 0
+          }
         }
       ]
     },
+
     {
       "round": 5,
       "totals": {
-        "damage": 40,
-        "healing": 5,
-        "cc": 2,
-        "averageDamage": 20
+        "damage": 127,
+        "healing": 51,
+        "cc": 4,
+        "averageDamage": 31
       },
       "players": [
         {
-          "name": "Aelric",
-          "damage": 20
+          "name": "Arannis",
+          "damage": 29,
+          "healing": 12,
+          "cc": 2,
+          "defense": {
+            "attacksTaken": 0,
+            "savesMade": 1
+          }
         },
         {
           "name": "Lyra",
-          "damage": 20
-        }
-      ]
-    }
-  ],
-  "roundsDetailed": [
-    {
-      "name": "Aelric",
-      "rounds": [
-        {
-          "round": 1,
-          "damage": 20
+          "damage": 21,
+          "healing": 39,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 2,
+            "savesMade": 1
+          }
         },
         {
-          "round": 2,
-          "damage": 15
+          "name": "Thorne",
+          "damage": 61,
+          "healing": 0,
+          "cc": 0,
+          "defense": {
+            "attacksTaken": 3,
+            "savesMade": 0
+          }
         },
         {
-          "round": 3,
-          "damage": 18
-        },
-        {
-          "round": 4,
-          "damage": 12
-        },
-        {
-          "round": 5,
-          "damage": 20
+          "name": "Selene",
+          "damage": 16,
+          "healing": 0,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 2,
+            "savesMade": 1
+          }
         }
       ]
     },
+
     {
-      "name": "Lyra",
-      "rounds": [
+      "round": 6,
+      "totals": {
+        "damage": 94,
+        "healing": 24,
+        "cc": 3,
+        "averageDamage": 23
+      },
+      "players": [
         {
-          "round": 1,
-          "damage": 15
+          "name": "Arannis",
+          "damage": 21,
+          "healing": 0,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 0
+          }
         },
         {
-          "round": 2,
-          "damage": 20
+          "name": "Lyra",
+          "damage": 22,
+          "healing": 24,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 0
+          }
         },
         {
-          "round": 3,
-          "damage": 25
+          "name": "Thorne",
+          "damage": 47,
+          "healing": 0,
+          "cc": 1,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 1
+          }
         },
         {
-          "round": 4,
-          "damage": 15
-        },
-        {
-          "round": 5,
-          "damage": 20
+          "name": "Selene",
+          "damage": 4,
+          "healing": 0,
+          "cc": 0,
+          "defense": {
+            "attacksTaken": 1,
+            "savesMade": 1
+          }
         }
       ]
     }
-  ],
-  "partyTotals": {
-    "damage": 180,
-    "healing": 25,
-    "cc": 14
-  }
+  ]
 }
+

@@ -483,7 +483,9 @@ async function getCharacterColorFromPortrait(character, fallbackIndex = 0) {
       resolve(fallback);
     };
 
-    img.src = character.image;
+    img.src = character.image.startsWith("data:")
+  ? character.image
+  : `data:image/jpeg;base64,${character.image}`;
   });
 }
 
