@@ -4,6 +4,15 @@ body {
   color: #f0f0ff;
   background: linear-gradient(135deg, #14002b, #020024);
 }
+/* =========================
+   DEFAULT SITE BACKDROP
+========================= */
+
+body:not(.previous-battles-page) {
+  background: #020024;
+  overflow-x: hidden;
+}
+
 
 /* ================= HOME ================= */
 .hero {
@@ -13,12 +22,51 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-
+position: relative;
+  overflow: hidden;
+  isolation: isolate;
   background: radial-gradient(circle at 30% 30%, #2a1a4a, #0b0b0f),
               linear-gradient(120deg, #1a0033, #000814);
   background-blend-mode: screen;
 }
 
+  
+
+
+.hero::before,
+.page::before,
+.detail::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background-image: url("../assets/nat1backdrop.png");
+  background-repeat: no-repeat;
+
+  background-position: center center;
+
+  /* controls dice size */
+  background-size: 340px auto;
+
+  opacity: 0.08;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+.page,
+.detail {
+  background:
+    radial-gradient(circle at 30% 30%, #2a1a4a, #0b0b0f),
+    linear-gradient(120deg, #1a0033, #000814);
+
+  background-blend-mode: screen;
+}
 h1 {
   font-size: 6rem;
   margin: 0;
