@@ -591,10 +591,10 @@ async function renderCharacters(characters) {
   const savesForced = stats.saves?.forced || 0;
   const savesSucceeded = stats.saves?.succeeded || 0;
 
-  const savesFailed = savesForced - savesSucceeded;
+  const savesFailed = savesMade - savesTotal;
 
   const saveRate = savesForced
-    ? Math.round((savesFailed / savesForced) * 100)
+    ? Math.round((savesMade / savesTotal) * 100)
     : 0;
 
   // ✅ HP CALCULATIONS HERE
@@ -851,8 +851,24 @@ async function renderRounds(rounds, characters = []) {
         (defense.attacksTaken || 0) +
         (defense.savesMade || 0);
 
-      partyNat20 += p.nat20 || 0;
-      partyNat1 += p.nat1 || 0;
+      const fullChar = characterMap[p.name] || {};
+
+const roundData =
+  (fullChar.rounds || []).find(
+    rr => rr.round === r.round
+  ) || {};
+
+partyNat20 +=
+  p.nat20 ??
+  roundData.nat20 ??
+  p.stats?.nat20 ??
+  0;
+
+partyNat1 +=
+  p.nat1 ??
+  roundData.nat1 ??
+  p.stats?.nat1 ??
+  0;
 
       partyAttacksMade += p.attacks?.total || 0;
       partyAttacksHit += p.attacks?.hit || 0;
@@ -874,9 +890,9 @@ async function renderRounds(rounds, characters = []) {
     const partyPotency = partySavesForced
       ? Math.round(
           (
-            (partySavesForced - partySavesSucceeded) /
-            partySavesForced
-          ) * 100
+        partySavesSucceeded /
+        partySavesForced
+      ) * 100
         )
       : 0;
 
@@ -917,21 +933,30 @@ async function renderRounds(rounds, characters = []) {
         const potency = savesForced
           ? Math.round(
               (
-                (savesForced - savesSucceeded) /
-                savesForced
+                savesSucceeded / savesForced
               ) * 100
             )
           : 0;
 
         const defense = p.defense || {};
 
-        const timesTargeted =
-          (defense.attacksTaken || 0) +
-          (defense.savesMade || 0);
+const fullChar = characterMap[p.name] || {};
+
+const roundData =
+  (fullChar.rounds || []).find(
+    rr => rr.round === r.round
+  ) || {};
+
+const timesTargeted =
+  (defense.attacksTaken || 0) +
+  (defense.savesMade || 0);
 
         const slotEntries = Object.entries(
-          p.spellSlotsUsed || {}
-        ).filter(([_, value]) => value > 0);
+  p.spellSlotsUsed ||
+  p.spellSlots ||
+  p.stats?.spellSlotsUsed ||
+  {}
+).filter(([_, value]) => value > 0);
 
         const spellSlotDisplay = slotEntries.length
           ? slotEntries
@@ -1074,12 +1099,24 @@ async function renderRounds(rounds, characters = []) {
             </div>
 
             <div class="round-player-stat">
-              Nat 20s: ${p.nat20 || 0}
-            </div>
+  Nat 20s:
+  ${
+    p.nat20 ??
+    roundData.nat20 ??
+    p.stats?.nat20 ??
+    0
+  }
+</div>
 
-            <div class="round-player-stat">
-              Nat 1s: ${p.nat1 || 0}
-            </div>
+<div class="round-player-stat">
+  Nat 1s:
+  ${
+    p.nat1 ??
+    roundData.nat1 ??
+    p.stats?.nat1 ??
+    0
+  }
+</div>
 
             <div class="round-player-stat">
               Slots: ${spellSlotDisplay}
@@ -1269,10 +1306,8 @@ const attacksMade = stats.attacks?.total || 0;
 const savesForced = stats.saves?.forced || 0;
 const savesSucceeded = stats.saves?.succeeded || 0;
 
-const savesFailed = savesForced - savesSucceeded;
-
 const saveRate = savesForced
-  ? Math.round((savesFailed / savesForced) * 100)
+  ? Math.round((savesSucceeded / savesForced) * 100)
   : 0;
   const hp = getHP(char);
 const current = hp.current;
@@ -1446,8 +1481,11 @@ if (hpPercent === 0) {
       <div>
         <b>Spell Slots Expended:</b>
         ${
-          Object.values(stats.spellSlotsUsed || {})
-            .reduce((a,b)=>a+b,0)
+          Object.values(
+  stats.spellSlotsUsed ||
+  stats.spellSlots ||
+  {}
+).reduce((a,b)=>a+b,0)
         }
       </div>
 
@@ -1498,12 +1536,12 @@ if (hpPercent === 0) {
 
       <div>
         <b>Nat 20s:</b>
-        ${stats.nat20}
+        ${stats.nat20 ?? 0}
       </div>
 
       <div>
         <b>Nat 1s:</b>
-        ${stats.nat1}
+        ${stats.nat1 ?? 0}
       </div>
 
     </div>
@@ -1599,54 +1637,61 @@ function renderCharacterRadar(canvasId, char, allCharacters, color) {
   // LUCK SCORE
   // =========================
 
-  const attacksMade = stats.attacks?.total || 0;
-  const attacksHit = stats.attacks?.hit || 0;
+ // =========================
+// LUCK SCORE
+// =========================
 
-  const accuracy = attacksMade
-    ? attacksHit / attacksMade
-    : 0;
+// Offensive rolls
+const attacksMade = stats.attacks?.total || 0;
+const attacksHit = stats.attacks?.hit || 0;
 
-  const savesForced = stats.saves?.forced || 0;
-  const savesSucceeded = stats.saves?.succeeded || 0;
+// Offensive saves
+const savesForced = stats.saves?.forced || 0;
+const savesSucceeded = stats.saves?.succeeded || 0;
 
-  // offensive potency
-  const potency = savesForced
-    ? (savesForced - savesSucceeded) / savesForced
-    : 0;
+// Defensive saves
+const savesMade = defense.savesMade || 0;
+const savesTotal = defense.savesTotal || savesMade;
 
-  // defensive saves
-  const savesMade = defense.savesMade || 0;
-  const savesPassed = defense.savesSucceeded || 0;
+// Defensive dodges
+const attacksTaken = defense.attacksTaken || 0;
+const attacksDodged = defense.attacksDodged || 0;
 
-  const saveSuccess = savesMade
-    ? savesPassed / savesMade
-    : 0;
+// =========================
+// TOTAL SUCCESSFUL ROLLS
+// =========================
 
-  // dodges
-  const attacksTaken = defense.attacksTaken || 0;
-  const attacksDodged = defense.attacksDodged || 0;
+const successfulRolls =
+  attacksHit +
+  savesMade +
+  attacksDodged;
 
-  const dodgeRate = attacksTaken
-    ? attacksDodged / attacksTaken
-    : 0;
+const totalRolls =
+  attacksMade +
+  savesTotal +
+  attacksTaken;
 
-  const nat20 = stats.nat20 || 0;
-  const nat1 = stats.nat1 || 0;
+// =========================
+// BASE SUCCESS RATE
+// =========================
 
-  // weighted formula
-  let luck =
-    (
-      accuracy * 0.30 +
-      potency * 0.25 +
-      saveSuccess * 0.20 +
-      dodgeRate * 0.15
-    ) * 10;
+let luck = totalRolls
+  ? (successfulRolls / totalRolls) * 10
+  : 0;
 
-  // nat weighting
-  luck += nat20 * 0.15;
-  luck -= nat1 * 0.10;
+// =========================
+// CRITICAL MODIFIERS
+// =========================
 
-  luck = Math.max(0, Math.min(10, luck));
+const nat20 = stats.nat20 || 0;
+const nat1 = stats.nat1 || 0;
+
+// small adjustments
+luck += nat20 * 0.15;
+luck -= nat1 * 0.10;
+
+// clamp between 0–10
+luck = Math.max(0, Math.min(10, luck));
 
   // =========================
   // CHART
