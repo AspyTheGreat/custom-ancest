@@ -47,6 +47,8 @@ const GITHUB_REPO = "custom-ancest";
 const container = document.getElementById("content");
 if (!container) throw new Error("#content not found");
 
+let currentCampaignPath = null;
+
 // =========================
 // 📁 LOAD CAMPAIGNS
 // =========================
@@ -112,6 +114,7 @@ async function loadCampaigns() {
 // =========================
 
 async function loadBattles(campaignPath) {
+  currentCampaignPath = campaignPath;
   container.innerHTML = "Loading battles...";
 
   await logGroup(`loadBattles(${campaignPath})`, async () => {
@@ -376,7 +379,13 @@ console.log("RoundCount:", data.roundCount);
     ${renderImage(data.images?.end)}
   `;
 
-  container.querySelector(".backBtn").onclick = loadCampaigns;
+  container.querySelector(".backBtn").onclick = () => {
+    if (currentCampaignPath) {
+      loadBattles(currentCampaignPath);
+    } else {
+      loadCampaigns();
+    }
+  };
 
   renderRounds(data.roundSummaries || []);
 renderPartyBreakdown(data.characters || []);
