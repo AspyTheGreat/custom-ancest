@@ -1922,6 +1922,8 @@ function endCombat() {
 if (liveNameInput) {
   battleName = liveNameInput.value.trim() || battleName || "Unnamed Battle";
 }
+
+
   const totalRounds = round - 1;
 
   let finalReport = {
@@ -1937,6 +1939,14 @@ if (liveNameInput) {
     partyTotals: {}
   };
 
+  const finalCharacter = characters[currentTurn];
+
+finalReport.combatEndState = {
+  finalRound: round,
+  finalTurnIndex: currentTurn,
+  finalCharacter: finalCharacter?.name || null,
+  combatEndedMidRound: currentTurn !== 0
+};
   // =========================
   // 🔹 CHARACTER DATA
   // =========================
@@ -1947,7 +1957,11 @@ if (liveNameInput) {
     finalReport.characters.push({
   name: c.name,
   levelClass: c.levelClass,
-  // ✅ ADD THIS LINE
+   initiative:
+  c.initiative ??
+  c.initiativeRoll ??
+  c.init ??
+  0,
   portrait: c.portrait || null,
 
  stats: {

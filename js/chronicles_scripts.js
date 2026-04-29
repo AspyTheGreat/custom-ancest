@@ -308,7 +308,7 @@ try {
 
     console.log("Battle data:", data);
 
-    renderBattleUI(data);
+    await renderBattleUI(data);
 
   } catch (err) {
     console.error("Failed to load battle:", err);
@@ -342,7 +342,7 @@ function getHP(char) {
   };
 }
 
-function renderBattleUI(data) {
+async function renderBattleUI(data) {
   const date = new Date(data.timestamp).toLocaleString();
   data.characters.forEach(c => {
   console.log(c.name, c.stats?.hp);
@@ -365,6 +365,18 @@ const partyHPPercent = totalMaxHP
   console.log("FULL CHARACTERS ARRAY:", data.characters);
 console.log("Battle data keys:", Object.keys(data));
 console.log("RoundCount:", data.roundCount);
+
+const lastRound =
+  (data.roundSummaries || [])
+    [data.roundSummaries.length - 1];
+
+const finalTurnPlayer =
+  (lastRound?.players || [])
+    [lastRound.players.length - 1];
+
+const finalTurnName =
+  finalTurnPlayer?.name || "Unknown";
+
   container.innerHTML = `
   <div class="backBtn">← Back</div>
 
@@ -413,6 +425,10 @@ console.log("RoundCount:", data.roundCount);
     <h3>CC</h3>
     <span>${data.partyTotals.cc}</span>
   </div>
+  <div class="stat-box">
+  <h3>Final Turn</h3>
+  <span>${finalTurnName}</span>
+</div>
 </div>
 
    <!-- PIE CHARTS -->
@@ -452,7 +468,7 @@ console.log("RoundCount:", data.roundCount);
   loadBattles(campaign);
 };
 
-  renderRounds(
+ await renderRounds(
   data.roundSummaries || [],
   data.characters || []
 );
@@ -783,19 +799,34 @@ function createLine(canvasId, title, labels, datasets) {
   });
 }
 
-function renderRounds(rounds, characters = [])  {
-  const el = document.getElementById("rounds");
-  el.innerHTML = "";
-const characterMap = {};
+async function renderRounds(rounds, characters = []) {
 
-characters.forEach(c => {
-  characterMap[c.name] = c;
-});
-  rounds.forEach(r => {
+  const el = document.getElementById("rounds");
+
+  if (!el) return;
+
+  el.innerHTML = "";
+
+  // =========================
+  // CHARACTER LOOKUP
+  // =========================
+
+  const characterMap = {};
+
+  characters.forEach(c => {
+    characterMap[c.name] = c;
+  });
+
+  // =========================
+  // LOOP ROUNDS
+  // =========================
+
+  for (const r of rounds) {
 
     // =========================
     // PARTY TOTALS
     // =========================
+
     let partyDamage = 0;
     let partyHealing = 0;
     let partyCC = 0;
@@ -809,6 +840,7 @@ characters.forEach(c => {
     let partySummons = 0;
 
     (r.players || []).forEach(p => {
+
       const defense = p.defense || {};
 
       partyDamage += p.damage || 0;
@@ -828,7 +860,7 @@ characters.forEach(c => {
       partySavesForced += p.saves?.forced || 0;
       partySavesSucceeded += p.saves?.succeeded || 0;
 
-            partySummons +=
+      partySummons +=
         (p.summons || []).reduce(
           (sum, s) => sum + (s.count || 1),
           0
@@ -849,249 +881,258 @@ characters.forEach(c => {
       : 0;
 
     // =========================
+    // PLAYER COLUMNS
+    // =========================
+
+    const playerColumns = await Promise.all(
+
+      (r.players || []).map(async p => {
+
+        const attacksMade =
+          p.attacks?.total ??
+          p.attacksMade ??
+          0;
+
+        const attacksHit =
+          p.attacks?.hit ??
+          p.attacksHit ??
+          0;
+
+        const accuracy = attacksMade
+          ? Math.round(
+              (attacksHit / attacksMade) * 100
+            )
+          : 0;
+
+        const savesForced =
+          p.saves?.forced ??
+          p.savesForced ??
+          0;
+
+        const savesSucceeded =
+          p.saves?.succeeded ??
+          p.savesSucceeded ??
+          0;
+
+        const potency = savesForced
+          ? Math.round(
+              (
+                (savesForced - savesSucceeded) /
+                savesForced
+              ) * 100
+            )
+          : 0;
+
+        const defense = p.defense || {};
+
+        const timesTargeted =
+          (defense.attacksTaken || 0) +
+          (defense.savesMade || 0);
+
+        const slotEntries = Object.entries(
+          p.spellSlotsUsed || {}
+        ).filter(([_, value]) => value > 0);
+
+        const spellSlotDisplay = slotEntries.length
+          ? slotEntries
+              .map(([level, amount]) =>
+                `${level}:${amount}`
+              )
+              .join(" | ")
+          : "None";
+
+        const color =
+          await getCharacterColorFromPortrait(
+            characterMap[p.name] || {},
+            Object.keys(characterMap).indexOf(p.name)
+          );
+
+        // =========================
+        // SUMMONS
+        // =========================
+
+        const summons = p.summons || [];
+
+        const summonDisplay = summons.length
+          ? summons.map(s => {
+
+              if (typeof s === "string") {
+                return s;
+              }
+
+              const totals = s.totals || {};
+
+              return `
+                <div class="active-summon-entry">
+
+                  <div>
+                    <b>${s.name || "Unknown"}</b>
+                    ${s.count ? `(x${s.count})` : ""}
+                  </div>
+
+                  <div class="active-summon-substats">
+                    ${totals.damage || 0} dmg /
+                    ${totals.healing || 0} heal /
+                    ${totals.cc || 0} cc /
+                    ${totals.damageTaken || 0} taken
+                  </div>
+
+                  <div class="active-summon-substats">
+                    Active:
+                    ${s.roundsActive || 0} rounds
+                  </div>
+
+                </div>
+              `;
+
+            }).join("")
+          : "None";
+
+        // =========================
+        // PLAYER CARD
+        // =========================
+
+        return `
+          <div class="round-player-column">
+
+            <div class="round-player-name">
+
+              ${
+                (
+                  characterMap[p.name]?.image ||
+                  characterMap[p.name]?.portrait
+                )
+                  ? `
+                    <img
+                      class="round-player-portrait"
+                      src="${normalizeImageSrc(
+                        characterMap[p.name]?.image ||
+                        characterMap[p.name]?.portrait
+                      )}"
+                      alt="${p.name}"
+                    >
+                  `
+                  : ""
+              }
+
+              <span class="round-player-name-text">
+
+                ${p.name}
+
+                ${
+                  (
+                    p.initiative ??
+                    characterMap[p.name]?.initiative
+                  ) !== undefined
+                    ? `
+                      <span
+                        class="initiative-badge"
+                        style="
+                          background:${color};
+                          box-shadow:0 0 12px ${color};
+                        "
+                      >
+                        INIT ${
+                          p.initiative ??
+                          characterMap[p.name]?.initiative
+                        }
+                      </span>
+                    `
+                    : ""
+                }
+
+              </span>
+
+            </div>
+
+            <div class="round-player-stat">
+              Damage: ${p.damage ?? 0}
+            </div>
+
+            <div class="round-player-stat">
+              Healing: ${p.healing ?? 0}
+            </div>
+
+            <div class="round-player-stat">
+              CC: ${p.cc ?? 0}
+            </div>
+
+            <div class="round-player-stat">
+              Targeted: ${timesTargeted}
+            </div>
+
+            <div class="round-player-stat">
+              Accuracy:
+              ${attacksHit}/${attacksMade}
+              (${accuracy}%)
+            </div>
+
+            <div class="round-player-stat">
+              Potency:
+              ${savesForced - savesSucceeded}/${savesForced}
+              (${potency}%)
+            </div>
+
+            <div class="round-player-stat">
+              Nat 20s: ${p.nat20 || 0}
+            </div>
+
+            <div class="round-player-stat">
+              Nat 1s: ${p.nat1 || 0}
+            </div>
+
+            <div class="round-player-stat">
+              Slots: ${spellSlotDisplay}
+            </div>
+
+            <div class="round-player-summons">
+
+              <div class="round-player-summons-title">
+                Active Summons
+              </div>
+
+              <div class="round-player-summons-list">
+                ${summonDisplay}
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      })
+    );
+
+    const playerColumnsHTML =
+      playerColumns.join("");
+
+    // =========================
     // ROUND CARD
     // =========================
+
     const div = document.createElement("div");
+
     div.className = "round-card";
 
     div.innerHTML = `
       <div class="round-header">
+
         <div class="round-title">
           Round ${r.round}
         </div>
 
-       
       </div>
-
-      <!-- ========================= -->
-      <!-- PLAYER BREAKDOWN -->
-      <!-- ========================= -->
 
       <div class="round-player-columns">
-
-        ${(r.players || []).map(p => {
-
-          const attacksMade =
-            p.attacks?.total ??
-            p.attacksMade ??
-            0;
-
-          const attacksHit =
-            p.attacks?.hit ??
-            p.attacksHit ??
-            0;
-
-          const accuracy = attacksMade
-            ? Math.round(
-                (attacksHit / attacksMade) * 100
-              )
-            : 0;
-
-          const savesForced =
-            p.saves?.forced ??
-            p.savesForced ??
-            0;
-
-          const savesSucceeded =
-            p.saves?.succeeded ??
-            p.savesSucceeded ??
-            0;
-
-          const potency = savesForced
-            ? Math.round(
-                (
-                  (savesForced - savesSucceeded) /
-                  savesForced
-                ) * 100
-              )
-            : 0;
-
-          const defense = p.defense || {};
-
-          const timesTargeted =
-            (defense.attacksTaken || 0) +
-            (defense.savesMade || 0);
-
-          const slotEntries = Object.entries(
-            p.spellSlotsUsed || {}
-          ).filter(([_, value]) => value > 0);
-
-          const spellSlotDisplay = slotEntries.length
-            ? slotEntries
-                .map(([level, amount]) =>
-                  `${level}:${amount}`
-                )
-                .join(" | ")
-            : "None";
-
-          // =========================
-          // SUMMONS
-          // =========================
-
-                    // =========================
-          // ACTIVE SUMMONS
-          // =========================
-
-          const summons = p.summons || [];
-
-          const summonDisplay = summons.length
-            ? summons.map(s => {
-
-                // support string fallback
-                if (typeof s === "string") {
-                  return s;
-                }
-
-                // exported tracker format
-                const totals = s.totals || {};
-
-                return `
-                  <div class="active-summon-entry">
-                    <div>
-                      <b>${s.name || "Unknown"}</b>
-                      ${s.count ? `(x${s.count})` : ""}
-                    </div>
-
-                    <div class="active-summon-substats">
-                      ${totals.damage || 0} dmg /
-                      ${totals.healing || 0} heal /
-                      ${totals.cc || 0} cc /
-                      ${totals.damageTaken || 0} taken
-                    </div>
-
-                    <div class="active-summon-substats">
-                      Active:
-                      ${s.roundsActive || 0} rounds
-                    </div>
-                  </div>
-                `;
-              }).join("")
-            : "None";
-
-          return `
-            <div class="round-player-column">
-
-              <div class="round-player-name">
-
-  ${
-  (
-    characterMap[p.name]?.image ||
-    characterMap[p.name]?.portrait
-  )
-      ? `
-        <img
-          class="round-player-portrait"
-          src="${normalizeImageSrc(
-  characterMap[p.name]?.image ||
-  characterMap[p.name]?.portrait
-)}"
-          alt="${p.name}"
-        >
-      `
-      : ""
-  }
-
-  <span>
-    ${p.name}
-  </span>
-
-</div>
-
-              <!-- ========================= -->
-              <!-- CORE STATS -->
-              <!-- ========================= -->
-
-              <div class="round-player-stat">
-                Damage: ${p.damage ?? 0}
-              </div>
-
-              <div class="round-player-stat">
-                Healing: ${p.healing ?? 0}
-              </div>
-
-              <div class="round-player-stat">
-                CC: ${p.cc ?? 0}
-              </div>
-
-              <div class="round-player-stat">
-                Targeted: ${timesTargeted}
-              </div>
-
-              <!-- ========================= -->
-              <!-- ROLLS -->
-              <!-- ========================= -->
-
-              <div class="round-player-stat">
-                Accuracy:
-                ${attacksHit}/${attacksMade}
-                (${accuracy}%)
-              </div>
-
-              <div class="round-player-stat">
-                Potency:
-                ${savesForced - savesSucceeded}/${savesForced}
-                (${potency}%)
-              </div>
-
-              <div class="round-player-stat">
-                Nat 20s: ${p.nat20 || 0}
-              </div>
-
-              <div class="round-player-stat">
-                Nat 1s: ${p.nat1 || 0}
-              </div>
-
-              <!-- ========================= -->
-              <!-- SPELLS -->
-              <!-- ========================= -->
-
-              <div class="round-player-stat">
-                Slots: ${spellSlotDisplay}
-              </div>
-
-              <!-- ========================= -->
-              <!-- SUMMONS -->
-              <!-- ========================= -->
-
-              <div class="round-player-summons">
-
-  <div class="round-player-summons-title">
-    Active Summons
-  </div>
-
-  <div class="round-player-summons-list">
-    ${summonDisplay}
-  </div>
-
-</div>
-
-            </div>
-          `;
-        }).join("")}
-
+        ${playerColumnsHTML}
       </div>
-
-      <!-- ========================= -->
-      <!-- PARTY BREAKDOWN -->
-      <!-- ========================= -->
-
-            <!-- ========================= -->
-      <!-- PARTY BREAKDOWN -->
-      <!-- ========================= -->
 
       <div class="round-party-box">
 
         <div class="round-party-header">
 
-          <div>
-            <div class="round-party-title">
-              Party Breakdown
-            </div>
-
-            
+          <div class="round-party-title">
+            Party Breakdown
           </div>
-
-         
 
         </div>
 
@@ -1129,116 +1170,22 @@ characters.forEach(c => {
 
           <div class="round-party-stat-card">
             <span class="round-party-label">Accuracy</span>
+
             <span class="round-party-value">
               ${partyAttacksHit}/${partyAttacksMade}
             </span>
 
-            <small>
-              ${partyAccuracy}%
-            </small>
+            <small>${partyAccuracy}%</small>
           </div>
 
           <div class="round-party-stat-card">
             <span class="round-party-label">Potency</span>
+
             <span class="round-party-value">
               ${partySavesForced - partySavesSucceeded}/${partySavesForced}
             </span>
 
-            <small>
-              ${partyPotency}%
-            </small>
-          </div>
-
-        </div>
-
-        <!-- ========================= -->
-        <!-- PARTY SUMMONS -->
-        <!-- ========================= -->
-
-        <div class="round-party-summons-box">
-
-          <div class="round-party-summons-header">
-
-            <div class="round-party-summons-title">
-              Active Summons
-            </div>
-
-            <div class="round-party-summons-count">
-              ${partySummons}
-            </div>
-
-          </div>
-
-          <div class="round-party-summons-list">
-
-            ${
-              (() => {
-
-                const allSummons = [];
-
-                (r.players || []).forEach(player => {
-
-                  (player.summons || []).forEach(s => {
-
-                    if (typeof s === "string") {
-
-                      allSummons.push(`
-                        <div class="active-summon-entry">
-
-                          <div>
-                            <b>${s}</b>
-                          </div>
-
-                        </div>
-                      `);
-
-                      return;
-                    }
-
-                    const totals = s.totals || {};
-
-                    allSummons.push(`
-                      <div class="active-summon-entry">
-
-                        <div>
-                          <b>${s.name || "Unknown"}</b>
-                          ${s.count ? `(x${s.count})` : ""}
-                        </div>
-
-                        <div class="active-summon-substats">
-                          ${totals.damage || 0} dmg /
-                          ${totals.healing || 0} heal /
-                          ${totals.cc || 0} cc /
-                          ${totals.damageTaken || 0} taken
-                        </div>
-
-                        <div class="active-summon-substats">
-                          Owner: ${player.name}
-                        </div>
-
-                        <div class="active-summon-substats">
-                          Active:
-                          ${s.roundsActive || 0} rounds
-                        </div>
-
-                      </div>
-                    `);
-
-                  });
-
-                });
-
-                return allSummons.length
-                  ? allSummons.join("")
-                  : `
-                    <div class="round-party-no-summons">
-                      No active summons
-                    </div>
-                  `;
-
-              })()
-            }
-
+            <small>${partyPotency}%</small>
           </div>
 
         </div>
@@ -1247,8 +1194,9 @@ characters.forEach(c => {
     `;
 
     el.appendChild(div);
-  });
+  }
 }
+
 function renderActionUsage(actionSet = {}) {
 
   return `
@@ -1279,15 +1227,18 @@ function renderActionUsage(actionSet = {}) {
       </div>
 
       <div style="text-align:center;">
-        <span title="Unused" class="unused-action">
+        <span
+          title="Unused"
+          class="unused-action"
+        >
           ❌ ${actionSet.none || 0}
         </span>
       </div>
 
     </div>
   `;
-
 }
+
 async function renderPartyBreakdown(characters) {
   
   const el = document.getElementById("party-breakdown");
@@ -1365,9 +1316,28 @@ if (hpPercent === 0) {
     }
 
     <div>
-      <h4>${char.name}</h4>
-      <span>${char.levelClass}</span>
-    </div>
+  <h4>
+    ${char.name}
+
+    ${
+      char.initiative !== undefined
+        ? `
+          <span
+  class="initiative-badge"
+  style="
+  background:${color};
+  box-shadow:0 0 12px ${color};
+"
+>
+            INITIATIVE ${char.initiative}
+          </span>
+        `
+        : ""
+    }
+  </h4>
+
+  <span>${char.levelClass}</span>
+</div>
 
   </div>
 

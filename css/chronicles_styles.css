@@ -580,9 +580,9 @@ width: 100%;
 }
 .grid-3 {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin: 20px 0;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0;
 }
 
 .stat-box {
@@ -593,6 +593,22 @@ width: 100%;
   display: block;
   font-size: 1.8rem;
   margin-top: 6px;
+}
+.party-totals .stat-box {
+  padding: 8px 10px;
+}
+
+.party-totals .stat-box h3 {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.party-totals .stat-box span {
+  font-size: 1.35rem;
+}
+
+.party-totals .stat-box small {
+  font-size: 0.75rem;
 }
 .party-row {
    display: flex;
@@ -1042,4 +1058,31 @@ width: 100%;
   border: 2px solid #3b3b3b;
 
   flex-shrink: 0;
+}
+.initiative-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 8px;
+  padding: 2px 8px;
+
+  border-radius: 999px;
+
+  color: white;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+
+  vertical-align: middle;
+
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.round-player-name-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
