@@ -5,7 +5,8 @@
   "battleSlug": "ra-droppins-assassins",
   "displayName": "Ra droppin's assassins",
   "partyLevel": 3,
-  "rounds": 5,
+  "roundCount": 5,
+  "roundSummaries": [],
 
   "initiative": [
     {
@@ -34,7 +35,7 @@
     }
   ],
 
-  "players": [
+  "characters": [
     {
       "name": "Bolad Khatagin",
       "levelClass": "Level-1 Rogue, Level-2 Ranger",
@@ -519,7 +520,7 @@
     }
   ],
 
-  "partyBreakdown": {
+  "partyTotals": {
     "totalTurns": 28,
 
     "actionsLost": 6,
