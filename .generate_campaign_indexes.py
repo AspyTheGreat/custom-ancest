@@ -23,11 +23,17 @@ for campaign_dir in sorted(root.iterdir()):
             continue
 
         try:
-            data = json.loads(file.read_text(encoding='utf-8'))
+            data = json.loads(
+                file.read_text(encoding='utf-8')
+            )
 
         except Exception as e:
             print(f'ERROR reading {file}: {e}')
             continue
+
+        # =========================
+        # BASIC DATA
+        # =========================
 
         campaign_slug = (
             data.get('campaignSlug')
@@ -45,7 +51,9 @@ for campaign_dir in sorted(root.iterdir()):
 
         campaign_name = (
             data.get('campaign')
-            or campaign_slug.replace('-', ' ').title()
+            or campaign_slug
+                .replace('-', ' ')
+                .title()
         )
 
         battle_name = (
@@ -73,48 +81,81 @@ for campaign_dir in sorted(root.iterdir()):
             start_image = data.get('startImage')
 
         # =========================
-        # Campaign-local index entry
+        # CAMPAIGN INDEX ENTRY
         # =========================
+
         campaign_entry = {
-            'name': f'{campaign_name} — {battle_name}',
-            'slug': battle_slug,
-            'file': f'battles/{campaign_dir.name}/{file.name}',
-            'timestamp': timestamp,
-            'startImage': start_image if start_image is not None else None,
+            'id': (
+                f'{campaign_slug}/{battle_slug}'
+                if battle_slug
+                else f'{campaign_slug}/'
+            ),
+
+            'name': battle_name,
+
+            'campaign': campaign_name,
+
+            'campaignSlug': campaign_slug,
+
+            'battleSlug': battle_slug,
+
+            'file':
+                f'battles/{campaign_dir.name}/{file.name}',
+
+            'startImage': (
+                start_image
+                if start_image is not None
+                else None
+            ),
+
+            'date': timestamp,
         }
 
         entries.append(campaign_entry)
 
         # =========================
-        # Global index entry
+        # GLOBAL INDEX ENTRY
         # =========================
+
         global_entry = {
             'id': (
                 f'{campaign_slug}/{battle_slug}'
                 if battle_slug
                 else f'{campaign_slug}/'
             ),
+
             'name': battle_name,
+
             'campaign': campaign_name,
+
             'campaignSlug': campaign_slug,
+
             'battleSlug': battle_slug,
+
             'startImage': (
                 start_image
                 if start_image is not None
                 else None
             ),
+
             'date': timestamp,
         }
 
         all_battles.append(global_entry)
 
-    # Sort newest first
+    # =========================
+    # SORT NEWEST FIRST
+    # =========================
+
     entries.sort(
-        key=lambda e: e.get('timestamp') or '',
+        key=lambda e: e.get('date') or '',
         reverse=True
     )
 
-    # Write campaign index
+    # =========================
+    # WRITE CAMPAIGN INDEX
+    # =========================
+
     index_path = campaign_dir / 'index.json'
 
     index_path.write_text(
@@ -125,7 +166,7 @@ for campaign_dir in sorted(root.iterdir()):
     created.append(str(index_path))
 
 # =========================
-# Global index
+# GLOBAL INDEX
 # =========================
 
 all_battles.sort(

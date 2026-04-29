@@ -1,5 +1,6 @@
 exports.handler = async (event) => {
   try {
+
     const data = JSON.parse(event.body);
 
     const token = process.env.GITHUB_TOKEN;
@@ -126,6 +127,30 @@ exports.handler = async (event) => {
     );
 
     // =========================
+    // COMMON DATA
+    // =========================
+
+    const timestamp =
+      data.timestamp ||
+      data.date ||
+      "";
+
+    const startImage =
+      data.images?.start ||
+      data.startImage ||
+      null;
+
+    const battleName =
+      data.displayName ||
+      data.name ||
+      data.battle ||
+      battleSlug;
+
+    const campaignName =
+      data.campaign ||
+      campaignSlug;
+
+    // =========================
     // UPDATE CAMPAIGN INDEX
     // =========================
 
@@ -135,31 +160,41 @@ exports.handler = async (event) => {
     // remove duplicates
     const filteredCampaignEntries =
       campaignIndex.data.filter(
-        b => b.slug !== battleSlug
+        b => b.battleSlug !== battleSlug
       );
 
     filteredCampaignEntries.push({
 
-      name: data.displayName ||
-            battleSlug,
+      id:
+        `${campaignSlug}/${battleSlug}`,
 
-      slug: battleSlug,
+      name:
+        battleName,
+
+      campaign:
+        campaignName,
+
+      campaignSlug:
+        campaignSlug,
+
+      battleSlug:
+        battleSlug,
 
       file:
         `battles/${campaignSlug}/${battleSlug}.json`,
 
-      timestamp:
-        data.timestamp || Date.now(),
-
       startImage:
-        data.images?.start || null
+        startImage,
+
+      date:
+        timestamp
     });
 
     // newest first
     filteredCampaignEntries.sort(
       (a, b) =>
-        new Date(b.timestamp) -
-        new Date(a.timestamp)
+        new Date(b.date || 0) -
+        new Date(a.date || 0)
     );
 
     await putJsonFile(
@@ -170,41 +205,55 @@ exports.handler = async (event) => {
     );
 
     // =========================
-    // UPDATE BATTLES INDEX
+    // UPDATE GLOBAL INDEX
     // =========================
 
     const battlesIndex =
       await getJsonFile(battlesIndexPath);
 
-    const campaignExists =
-      battlesIndex.data.some(
-        c => c.slug === campaignSlug
+    // remove duplicates
+    const filteredBattles =
+      battlesIndex.data.filter(
+        b => !(
+          b.campaignSlug === campaignSlug &&
+          b.battleSlug === battleSlug
+        )
       );
 
-    if (!campaignExists) {
+    filteredBattles.push({
 
-      battlesIndex.data.push({
+      id:
+        `${campaignSlug}/${battleSlug}`,
 
-        name:
-          data.campaign ||
-          campaignSlug,
+      name:
+        battleName,
 
-        slug:
-          campaignSlug,
+      campaign:
+        campaignName,
 
-        path:
-          `battles/${campaignSlug}`
-      });
-    }
+      campaignSlug:
+        campaignSlug,
 
-    battlesIndex.data.sort(
+      battleSlug:
+        battleSlug,
+
+      startImage:
+        startImage,
+
+      date:
+        timestamp
+    });
+
+    // newest first
+    filteredBattles.sort(
       (a, b) =>
-        a.name.localeCompare(b.name)
+        new Date(b.date || 0) -
+        new Date(a.date || 0)
     );
 
     await putJsonFile(
       battlesIndexPath,
-      battlesIndex.data,
+      filteredBattles,
       "Update battles index",
       battlesIndex.sha
     );
