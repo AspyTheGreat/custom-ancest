@@ -1,0 +1,518 @@
+{
+  "campaign": "Ravenfall: Sands of Aranie",
+  "campaignSlug": "ravenfall-sands-of-aranie",
+  "battle": "Rats of the Watchsewers",
+  "battleSlug": "rats-of-the-watchsewers",
+  "partyLevel": 3,
+  "roundCount": 4,
+  "timestamp": "2026-04-30T00:00:00Z",
+  "images": {
+    "start": "",
+    "end": ""
+  },
+  "partyTotals": {
+    "damage": 178,
+    "healing": 0,
+    "cc": 5
+  },
+  "characters": [
+    {
+      "name": "Bolad Khatagin",
+      "levelClass": "Level-1 Rogue, Level-2 Ranger",
+      "initiative": 12.2,
+      "roundCount": 4,
+      "stats": {
+        "hp": {
+          "current": 15,
+          "max": 34
+        },
+        "damage": 60,
+        "healing": 0,
+        "cc": 0,
+        "damageTaken": 19,
+        "actionsTotal": 8,
+        "bonusActionsTotal": 4,
+        "actions": {
+          "attack": 4,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 0
+        },
+        "bonusActions": {
+          "attack": 0,
+          "spell": 1,
+          "move": 0,
+          "misc": 3,
+          "none": 0
+        },
+        "reactions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 4
+        },
+        "attacks": {
+          "hit": 4,
+          "total": 4
+        },
+        "saves": {
+          "forced": 0,
+          "succeeded": 0
+        },
+        "defense": {
+          "attacksTaken": 4,
+          "attacksDodged": 2,
+          "savesMade": 2,
+          "savesTotal": 2
+        },
+        "spellSlots": {
+          "1": 1
+        },
+        "spellSlotsUsed": {},
+        "resources": [
+          {
+            "name": "Favored Foe",
+            "remaining": 1,
+            "max": 2
+          }
+        ],
+        "timesDowned": 0,
+        "nat20": 1,
+        "nat1": 0,
+        "temporaryHP": 0,
+        "damageReduced": 0,
+        "buffs": [],
+        "itemsUsed": [],
+        "averageDPR": 15,
+        "conditions": []
+      },
+      "rounds": [],
+      "summons": []
+    },
+    {
+      "name": "Yin Jianshi",
+      "levelClass": "Level-3 Forge domain cleric",
+      "initiative": 3.14,
+      "roundCount": 4,
+      "stats": {
+        "hp": {
+          "current": 9,
+          "max": 28
+        },
+        "damage": 40,
+        "healing": 0,
+        "cc": 2,
+        "damageTaken": 19,
+        "actionsTotal": 0,
+        "bonusActionsTotal": 3,
+        "actions": {
+          "attack": 3,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 0
+        },
+        "bonusActions": {
+          "attack": 1,
+          "spell": 1,
+          "move": 0,
+          "misc": 1,
+          "none": 0
+        },
+        "reactions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 3
+        },
+        "attacks": {
+          "hit": 2,
+          "total": 3
+        },
+        "saves": {
+          "forced": 2,
+          "succeeded": 2
+        },
+        "defense": {
+          "attacksTaken": 5,
+          "attacksDodged": 3,
+          "savesMade": 1,
+          "savesTotal": 1
+        },
+        "spellSlots": {
+          "1": 4,
+          "2": 1
+        },
+        "spellSlotsUsed": {},
+        "resources": [
+          {
+            "name": "Blessing of the Raven queen",
+            "remaining": 1,
+            "max": 2
+          },
+          {
+            "name": "Strixhaven Shield",
+            "remaining": 1,
+            "max": 1
+          }
+        ],
+        "timesDowned": 0,
+        "nat20": 1,
+        "nat1": 0,
+        "temporaryHP": 0,
+        "damageReduced": 0,
+        "buffs": [],
+        "itemsUsed": [],
+        "averageDPR": 10,
+        "conditions": []
+      },
+      "rounds": [],
+      "summons": []
+    },
+    {
+      "name": "Ankha Pyramid",
+      "levelClass": "Level-3 Order domain cleric",
+      "initiative": 10.14,
+      "roundCount": 4,
+      "stats": {
+        "hp": {
+          "current": 21,
+          "max": 28
+        },
+        "damage": 31,
+        "healing": 0,
+        "cc": 0,
+        "damageTaken": 7,
+        "actionsTotal": 0,
+        "bonusActionsTotal": 2,
+        "actions": {
+          "attack": 2,
+          "spell": 1,
+          "move": 0,
+          "misc": 0,
+          "none": 0
+        },
+        "bonusActions": {
+          "attack": 1,
+          "spell": 1,
+          "move": 0,
+          "misc": 0,
+          "none": 1
+        },
+        "reactions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 3
+        },
+        "attacks": {
+          "hit": 1,
+          "total": 2
+        },
+        "saves": {
+          "forced": 2,
+          "succeeded": 0
+        },
+        "defense": {
+          "attacksTaken": 2,
+          "attacksDodged": 1,
+          "savesMade": 2,
+          "savesTotal": 2
+        },
+        "spellSlots": {
+          "1": 3,
+          "2": 1
+        },
+        "spellSlotsUsed": {},
+        "resources": [
+          {
+            "name": "Channel Divinity",
+            "remaining": 1,
+            "max": 1
+          },
+          {
+            "name": "Battle Prowess",
+            "remaining": 2,
+            "max": 2
+          }
+        ],
+        "timesDowned": 0,
+        "nat20": 0,
+        "nat1": 0,
+        "temporaryHP": 0,
+        "damageReduced": 0,
+        "buffs": [],
+        "itemsUsed": [],
+        "averageDPR": 7.8,
+        "conditions": []
+      },
+      "rounds": [],
+      "summons": []
+    },
+    {
+      "name": "Flux Monolith",
+      "levelClass": "Level-3 Circle of the moon Druid",
+      "initiative": 5.16,
+      "roundCount": 4,
+      "stats": {
+        "hp": {
+          "current": 31,
+          "max": 31
+        },
+        "damage": 18,
+        "healing": 0,
+        "cc": 3,
+        "damageTaken": 0,
+        "actionsTotal": 0,
+        "bonusActionsTotal": 1,
+        "actions": {
+          "attack": 2,
+          "spell": 0,
+          "move": 0,
+          "misc": 1,
+          "none": 0
+        },
+        "bonusActions": {
+          "attack": 0,
+          "spell": 1,
+          "move": 0,
+          "misc": 0,
+          "none": 2
+        },
+        "reactions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 3
+        },
+        "attacks": {
+          "hit": 0,
+          "total": 0
+        },
+        "saves": {
+          "forced": 3,
+          "succeeded": 0
+        },
+        "defense": {
+          "attacksTaken": 0,
+          "attacksDodged": 0,
+          "savesMade": 2,
+          "savesTotal": 2
+        },
+        "spellSlots": {
+          "1": 2,
+          "2": 2
+        },
+        "spellSlotsUsed": {},
+        "resources": [
+          {
+            "name": "Wild shape",
+            "remaining": 2,
+            "max": 2
+          },
+          {
+            "name": "Merge with stone",
+            "remaining": 2,
+            "max": 2
+          }
+        ],
+        "timesDowned": 0,
+        "nat20": 0,
+        "nat1": 0,
+        "temporaryHP": 0,
+        "damageReduced": 0,
+        "buffs": [],
+        "itemsUsed": [],
+        "averageDPR": 4.5,
+        "conditions": []
+      },
+      "rounds": [],
+      "summons": []
+    },
+    {
+      "name": "Ahmose",
+      "levelClass": "Level-1 Artificer, Level-2 Blood hunter",
+      "initiative": 19.18,
+      "roundCount": 4,
+      "stats": {
+        "hp": {
+          "current": 27,
+          "max": 36
+        },
+        "damage": 17,
+        "healing": 0,
+        "cc": 0,
+        "damageTaken": 9,
+        "actionsTotal": 1,
+        "bonusActionsTotal": 0,
+        "actions": {
+          "attack": 2,
+          "spell": 0,
+          "move": 0,
+          "misc": 2,
+          "none": 0
+        },
+        "bonusActions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 4
+        },
+        "reactions": {
+          "attack": 1,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 3
+        },
+        "attacks": {
+          "hit": 3,
+          "total": 3
+        },
+        "saves": {
+          "forced": 0,
+          "succeeded": 0
+        },
+        "defense": {
+          "attacksTaken": 4,
+          "attacksDodged": 3,
+          "savesMade": 1,
+          "savesTotal": 1
+        },
+        "spellSlots": {
+          "1": 0
+        },
+        "spellSlotsUsed": {},
+        "resources": [
+          {
+            "name": "Blood Maledict",
+            "remaining": 1,
+            "max": 1
+          },
+          {
+            "name": "Crimson Rite",
+            "remaining": 0,
+            "max": 1
+          }
+        ],
+        "timesDowned": 0,
+        "nat20": 0,
+        "nat1": 0,
+        "temporaryHP": 0,
+        "damageReduced": 0,
+        "buffs": [],
+        "itemsUsed": [],
+        "averageDPR": 4.3,
+        "conditions": []
+      },
+      "rounds": [],
+      "summons": []
+    },
+    {
+      "name": "Ash Alade",
+      "levelClass": "Level-3 College of Eloquence Bard",
+      "initiative": 12.14,
+      "roundCount": 4,
+      "stats": {
+        "hp": {
+          "current": 20,
+          "max": 30
+        },
+        "damage": 12,
+        "healing": 0,
+        "cc": 0,
+        "damageTaken": 10,
+        "actionsTotal": 0,
+        "bonusActionsTotal": 0,
+        "actions": {
+          "attack": 2,
+          "spell": 1,
+          "move": 0,
+          "misc": 0,
+          "none": 0
+        },
+        "bonusActions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 3
+        },
+        "reactions": {
+          "attack": 0,
+          "spell": 0,
+          "move": 0,
+          "misc": 0,
+          "none": 3
+        },
+        "attacks": {
+          "hit": 0,
+          "total": 0
+        },
+        "saves": {
+          "forced": 2,
+          "succeeded": 2
+        },
+        "defense": {
+          "attacksTaken": 0,
+          "attacksDodged": 0,
+          "savesMade": 0,
+          "savesTotal": 0
+        },
+        "spellSlots": {
+          "1": 3,
+          "2": 2
+        },
+        "spellSlotsUsed": {},
+        "resources": [
+          {
+            "name": "Bardic Inspiration",
+            "remaining": 4,
+            "max": 4
+          },
+          {
+            "name": "Charm person (Devil's Tongue)",
+            "remaining": 1,
+            "max": 1
+          }
+        ],
+        "timesDowned": 0,
+        "nat20": 0,
+        "nat1": 0,
+        "temporaryHP": 0,
+        "damageReduced": 0,
+        "buffs": [],
+        "itemsUsed": [],
+        "averageDPR": 3,
+        "conditions": []
+      },
+      "rounds": [],
+      "summons": []
+    }
+  ],
+  "roundSummaries": [
+    {
+      "round": 1,
+      "players": []
+    },
+    {
+      "round": 2,
+      "players": []
+    },
+    {
+      "round": 3,
+      "players": []
+    },
+    {
+      "round": 4,
+      "players": []
+    }
+  ],
+  "campaignName": "Ravenfall: Sands of Aranie"
+}
