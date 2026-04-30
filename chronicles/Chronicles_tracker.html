@@ -119,6 +119,15 @@
   <div id="uploadStatus" style="color:#aaa; margin-top:6px;"></div>
 </div>
 
+<div class="box">
+  <b>Convert Text Report → JSON</b><br><br>
+
+  <input type="file" id="textUploadFile" accept=".txt">
+  <button onclick="convertTextToJSON()">Convert to JSON</button>
+
+  <div id="convertStatus" style="color:#aaa; margin-top:6px;"></div>
+</div>
+
 </div>
 
 <div id="battleMeta" class="hidden box">
@@ -411,6 +420,219 @@ let round = 1;
 let history = [];
 let tempTurn;
 let roundLog = {};
+
+function convertTextToJSON() {
+  const input = document.getElementById("textUploadFile");
+  const status = document.getElementById("convertStatus");
+
+  if (!input.files.length) {
+    status.innerText = "No file selected.";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    try {
+      let text = e.target.result.replace(/\r/g, "");
+
+      // -------------------------
+      // 🔹 HELPERS
+      // -------------------------
+      const makeSlug = (str = "") =>
+        str
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
+
+      const normalize = str =>
+        str.toLowerCase().replace(/\s+/g, "");
+
+      const getNum = (str, regex) => {
+        const m = str.match(regex);
+        return m ? parseFloat(m[1]) || 0 : 0;
+      };
+
+      const getText = (str, regex) => {
+        const m = str.match(regex);
+        return m ? m[1].trim() : "";
+      };
+
+      // -------------------------
+      // 🔹 BASIC META
+      // -------------------------
+      const lines = text.split("\n");
+
+      const campaign = lines[0]?.trim() || "Unknown Campaign";
+      const battle = lines[2]?.trim() || "Unknown Battle";
+
+      const campaignSlug = makeSlug(campaign);
+      const battleSlug = makeSlug(battle);
+
+      const partyLevel =
+        parseInt(text.match(/Party level:\s*(\d+)/i)?.[1] || 0);
+
+      const roundCount =
+        parseInt(text.match(/(\d+)\s*round combat/i)?.[1] || 0);
+
+      // -------------------------
+      // 🔹 INITIATIVE MAP
+      // -------------------------
+      let initiativeMap = {};
+
+      const initLine =
+        text.match(/Initiative order:(.*)/i)?.[1] || "";
+
+      initLine.split(",").forEach(entry => {
+        const m = entry.match(/:\w+:\s*([^()]+)\(([\d.]+)\)/);
+        if (m) {
+          initiativeMap[normalize(m[1])] = parseFloat(m[2]);
+        }
+      });
+
+      // -------------------------
+      // 🔹 REMOVE PARTY RESOURCES
+      // -------------------------
+      text = text.replace(
+        /Party resources before combat[\s\S]*?Initiative order:/i,
+        match => "Initiative order:" + match.split("Initiative order:")[1]
+      );
+
+      // -------------------------
+      // 🔹 CHARACTER PARSING
+      // -------------------------
+      const charRegex =
+        /:(\w+):([A-Za-z\s]+):\n([\s\S]*?)(?=\n:\w+:|\nParty Breakdown:)/g;
+
+      let characters = [];
+      let match;
+
+      while ((match = charRegex.exec(text)) !== null) {
+        const name = match[2].trim();
+        const body = match[3];
+
+        if (!name || name.length < 2) continue;
+
+        const levelClass =
+          body.split("\n")[0]?.trim() || "";
+
+        characters.push({
+          name,
+          levelClass,
+          initiative: initiativeMap[normalize(name)] ?? -1,
+          portrait: null,
+
+          stats: {
+            hp: {
+              current: getNum(body, /Hp remaining:\s*(\d+)/i),
+              max: getNum(body, /\/(\d+)/)
+            },
+
+            actionsTotal: getNum(body, /Actions taken:\s*(\d+)/i),
+            bonusActionsTotal: 0,
+
+            actions: {},
+            bonusActions: {},
+            reactions: {},
+
+            attacks: {
+              hit: getNum(body, /Attacks hit:\s*(\d+)/i),
+              total: getNum(body, /Attacks hit:\s*\d+[\/|](\d+)/i)
+            },
+
+            saves: {
+              forced: getNum(body, /Saving throws forced:\s*(\d+)/i),
+              succeeded: getNum(body, /Saving throws succeeded:\s*(\d+)/i)
+            },
+
+            defense: {
+              attacksDodged: getNum(body, /Attacks dodged:\s*(\d+)/i),
+              attacksTaken: getNum(body, /Attacks dodged:\s*\d+[\/|](\d+)/i),
+              savesMade: 0,
+              savesTotal: 0
+            },
+
+            spellSlotsUsed: {},
+            resources: {},
+
+            damage: 0,
+            healing: getNum(body, /Total healing:\s*(\d+)/i),
+            cc: getNum(body, /CCpr:\s*(\d+)/i),
+            damageTaken: 0,
+            conditions: [],
+
+            nat20: getNum(body, /Nat 20s.*:\s*(\d+)/i),
+            nat1: getNum(body, /Nat 20s.*[\/|](\d+)/i)
+          },
+
+          summons: [],
+          rounds: [],
+          roundCount: roundCount
+        });
+      }
+
+      // -------------------------
+      // 🔹 VALIDATION (CRITICAL)
+      // -------------------------
+      if (!characters.length) {
+        throw new Error("No characters parsed — invalid format.");
+      }
+
+      // -------------------------
+      // 🔹 FINAL JSON (FULL SCHEMA)
+      // -------------------------
+      const finalJSON = {
+        campaign,
+        campaignSlug,
+        battle,
+        battleSlug,
+
+        partyLevel,
+        rounds: roundCount,
+
+        // uploader compatibility
+        name: battle,
+        displayName: battle,
+
+        timestamp: "",
+
+        characters,
+        roundSummaries: [],
+
+        partyTotals: {
+          damage: 0,
+          healing: 0,
+          cc: 0
+        }
+      };
+
+      // -------------------------
+      // 🔹 DOWNLOAD
+      // -------------------------
+      const blob = new Blob(
+        [JSON.stringify(finalJSON, null, 2)],
+        { type: "application/json" }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+
+      a.href = url;
+      a.download =
+        `${campaignSlug}_${battleSlug}.json`;
+
+      a.click();
+      URL.revokeObjectURL(url);
+
+      status.innerText = "Conversion successful!";
+    } catch (err) {
+      console.error(err);
+      status.innerText = "Failed to convert.";
+    }
+  };
+
+  reader.readAsText(input.files[0]);
+}
 
 function addCharacter() {
   const div = document.createElement("div");
