@@ -270,12 +270,12 @@ Succeeded
   <b>Hit Points</b><br>
 
   <button onclick="changeHP(-1)">-</button>
-  <input id="hpInputmain" type="number" style="width:60px;">
+  <input id="hpInputmain" type="number" style="width:60px;" onchange="setHP(this.value)">
   <button onclick="changeHP(1)">+</button>
 
   / <span id="hpMax"></span>
 </div>
-hitpoints<input id="hpInput" type="number" onchange="setHP(this.value)">
+
     Damage <input id="damage" type="number">
 Healing <input id="healing" type="number">
 CC <input id="cc" type="number">
@@ -967,14 +967,16 @@ function importTemplateUI() {
 function renderHP() {
   const c = characters[selectedCharacter];
 
-  document.getElementById("hpInput").value = c.stats.hp.current;
+  document.getElementById("hpInputmain").value = c.stats.hp.current;
   document.getElementById("hpMax").innerText = c.stats.hp.max;
 }
-
 function changeHP(delta) {
   const c = characters[selectedCharacter];
 
-  c.stats.hp.current = Math.max(0, Math.min(c.stats.hp.max, c.stats.hp.current + delta));
+  c.stats.hp.current = Math.max(
+    0,
+    Math.min(c.stats.hp.max, c.stats.hp.current + delta)
+  );
 
   renderHP();
   updateLiveSummary();
@@ -983,7 +985,10 @@ function changeHP(delta) {
 function setHP(value) {
   const c = characters[selectedCharacter];
 
-  c.stats.hp.current = Math.max(0, Math.min(c.stats.hp.max, +value || 0));
+  c.stats.hp.current = Math.max(
+    0,
+    Math.min(c.stats.hp.max, +value || 0)
+  );
 
   renderHP();
   updateLiveSummary();
