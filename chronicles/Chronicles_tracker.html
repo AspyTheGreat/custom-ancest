@@ -437,13 +437,10 @@ function convertTextToJSON() {
       let text = e.target.result.replace(/\r/g, "");
 
       // -------------------------
-      // 🔹 HELPERS
+      // HELPERS
       // -------------------------
       const makeSlug = (str = "") =>
-        str
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)/g, "");
+        str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
       const normalize = str =>
         str.toLowerCase().replace(/\s+/g, "");
@@ -453,13 +450,8 @@ function convertTextToJSON() {
         return m ? parseFloat(m[1]) || 0 : 0;
       };
 
-      const getText = (str, regex) => {
-        const m = str.match(regex);
-        return m ? m[1].trim() : "";
-      };
-
       // -------------------------
-      // 🔹 BASIC META
+      // BASIC META
       // -------------------------
       const lines = text.split("\n");
 
@@ -470,18 +462,15 @@ function convertTextToJSON() {
       const battleSlug = makeSlug(battle);
 
       const partyLevel =
-        parseInt(text.match(/Party level:\s*(\d+)/i)?.[1] || 0);
+        parseInt(text.match(/Party level:\s*(\d+)/i)?.[1]) || 0;
 
-     let roundCount =
-  parseInt(text.match(/(\d+)\s*round combat/i)?.[1]);
+      let roundCount =
+        parseInt(text.match(/(\d+)\s*round combat/i)?.[1]);
 
-// fallback if missing or invalid
-if (!roundCount || isNaN(roundCount)) {
-  roundCount = 1; // minimum safe value
-}
+      const safeRounds = (!roundCount || isNaN(roundCount)) ? 1 : roundCount;
 
       // -------------------------
-      // 🔹 INITIATIVE MAP
+      // INITIATIVE MAP
       // -------------------------
       let initiativeMap = {};
 
@@ -496,7 +485,7 @@ if (!roundCount || isNaN(roundCount)) {
       });
 
       // -------------------------
-      // 🔹 REMOVE PARTY RESOURCES
+      // REMOVE PARTY RESOURCES
       // -------------------------
       text = text.replace(
         /Party resources before combat[\s\S]*?Initiative order:/i,
@@ -504,14 +493,14 @@ if (!roundCount || isNaN(roundCount)) {
       );
 
       // -------------------------
-      // 🔹 CHARACTER PARSING
+      // CHARACTER PARSING
       // -------------------------
       const charRegex =
         /:(\w+):([A-Za-z\s]+):\n([\s\S]*?)(?=\n:\w+:|\nParty Breakdown:)/g;
 
       let characters = [];
       let match;
-const safeRounds = Math.max(1, roundCount);
+
       while ((match = charRegex.exec(text)) !== null) {
         const name = match[2].trim();
         const body = match[3];
@@ -571,47 +560,54 @@ const safeRounds = Math.max(1, roundCount);
           },
 
           summons: [],
-rounds: roundCount,
+
+          // ✅ FIXED: ALWAYS ARRAY
+          rounds: Array.from({ length: safeRounds }, (_, i) => ({
+            round: i + 1,
+            damage: 0,
+            healing: 0,
+            cc: 0
+          }))
         });
       }
 
-      // -------------------------
-      // 🔹 VALIDATION (CRITICAL)
-      // -------------------------
       if (!characters.length) {
         throw new Error("No characters parsed — invalid format.");
       }
 
       // -------------------------
-      // 🔹 FINAL JSON (FULL SCHEMA)
+      // FINAL JSON
       // -------------------------
       const finalJSON = {
         campaign,
         campaignSlug,
         battle,
         battleSlug,
-players: characters.map(c => ({
-  name: c.name
-})),
-        partyLevel,
-        rounds: roundCount,
 
-        // uploader compatibility
+        players: characters.map(c => ({ name: c.name })),
+
+        partyLevel,
+
+        // ✅ FIXED: always valid
+        rounds: safeRounds,
+
         name: battle,
         displayName: battle,
 
         timestamp: "",
 
         characters,
-        roundSummaries: Array.from({ length: roundCount }, (_, i) => ({
-  round: i + 1,
-  players: characters.map(c => ({
-    name: c.name,
-    damage: 0,
-    healing: 0,
-    cc: 0
-  }))
-})),
+
+        // ✅ FIXED: always populated
+        roundSummaries: Array.from({ length: safeRounds }, (_, i) => ({
+          round: i + 1,
+          players: characters.map(c => ({
+            name: c.name,
+            damage: 0,
+            healing: 0,
+            cc: 0
+          }))
+        })),
 
         partyTotals: {
           damage: 0,
@@ -621,7 +617,7 @@ players: characters.map(c => ({
       };
 
       // -------------------------
-      // 🔹 DOWNLOAD
+      // DOWNLOAD
       // -------------------------
       const blob = new Blob(
         [JSON.stringify(finalJSON, null, 2)],
@@ -632,8 +628,7 @@ players: characters.map(c => ({
       const a = document.createElement("a");
 
       a.href = url;
-      a.download =
-        `${campaignSlug}_${battleSlug}.json`;
+      a.download = `${campaignSlug}_${battleSlug}.json`;
 
       a.click();
       URL.revokeObjectURL(url);
