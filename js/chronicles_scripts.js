@@ -370,9 +370,8 @@ const lastRound =
   (data.roundSummaries || [])
     [data.roundSummaries.length - 1];
 
-const finalTurnPlayer =
-  (lastRound?.players || [])
-    [lastRound.players.length - 1];
+const players = lastRound?.players || [];
+const finalTurnPlayer = players[players.length - 1];
 
 const finalTurnName =
   finalTurnPlayer?.name || "Unknown";

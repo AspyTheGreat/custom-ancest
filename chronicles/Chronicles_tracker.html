@@ -434,7 +434,7 @@ function convertTextToJSON() {
 
   reader.onload = function (e) {
     try {
-      let text = e.target.result.replace(/\r/g, "");
+      let text = (e.target.result || "").replace(/\r/g, "");
 
       // =========================
       // HELPERS
@@ -444,7 +444,7 @@ function convertTextToJSON() {
         str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
       const normalize = str =>
-        str.toLowerCase().replace(/\s+/g, "");
+        (str || "").toLowerCase().replace(/\s+/g, "");
 
       const safeNum = val => {
         const n = parseFloat(val);
@@ -457,15 +457,15 @@ function convertTextToJSON() {
       };
 
       const getPipeNums = (str, regex) => {
-  const m = str.match(regex);
-  if (!m || !m[1]) return [0, 0, 0, 0];
+        const m = str.match(regex);
+        if (!m || !m[1]) return [0, 0, 0, 0];
 
-  return m[1]
-    .split("|")
-    .map(v => parseFloat(v.trim()) || 0)
-    .concat([0, 0, 0, 0])
-    .slice(0, 4);
-};
+        return m[1]
+          .split("|")
+          .map(v => safeNum(v))
+          .concat([0, 0, 0, 0])
+          .slice(0, 4);
+      };
 
       const getPair = (str, regex) => {
         const m = str.match(regex);
@@ -502,8 +502,10 @@ function convertTextToJSON() {
       const battleSlug = makeSlug(battle);
 
       const partyLevel = getNum(text, /Party level:\s*(\d+)/i);
-      const roundCount = getNum(text, /(\d+)\s*round combat/i);
-      const safeRounds = roundCount || 1;
+      const roundCount = getNum(text, /(\d+)\s*round combat/i) || 1;
+
+      // ✅ REQUIRED BY UI
+      const date = new Date().toISOString();
 
       // =========================
       // INITIATIVE MAP
@@ -521,21 +523,19 @@ function convertTextToJSON() {
         });
       }
 
-     
-
       // =========================
       // CHARACTER PARSING
       // =========================
 
-     const charRegex =
-/^:(\w+):\s*([^\n:]+):\s*\n([\s\S]*?)(?=\n:\w+:|\nParty Breakdown:|$)/gm;
+      const charRegex =
+        /^:(\w+):\s*([^\n:]+):\s*\n([\s\S]*?)(?=\n:\w+:|\nParty Breakdown:|$)/gm;
 
       let characters = [];
       let match;
 
       while ((match = charRegex.exec(text)) !== null) {
-        const name = match[2].trim();
-        const body = match[3];
+        const name = match[2]?.trim();
+        const body = match[3] || "";
 
         if (!name) continue;
 
@@ -548,31 +548,21 @@ function convertTextToJSON() {
         const [succeeded] = getPair(body, /Saving throws succeeded:\s*([\d\/|]+)/i);
         const [dodged, taken] = getPair(body, /Attacks dodged:\s*([\d\/|]+)/i);
 
-        let dprMatch = body.match(/Average DPR:\s*([^\n]+)/i);
-let dpr = 0;
-
-if (dprMatch) {
-  dpr = parseFloat(dprMatch[1].trim()) || 0;
-}
-
-        const [aAtk, aSpell, aMove, aMisc] =
-  getPipeNums(body, /Actions used.*?:\s*([0-9|\s]+)/i);
-
-const [bAtk, bSpell, bMove, bMisc] =
-  getPipeNums(body, /Bonus Actions used.*?:\s*([0-9|\s]+)/i);
-
-const [rAtk, rSpell, rMove, rMisc] =
-  getPipeNums(body, /Reactions used.*?:\s*([0-9|\s]+)/i);
-
-        let actionsTotal = getNum(body, /Actions taken:\s*(\d+)/i);
-        if (!actionsTotal) {
-          actionsTotal = aAtk + aSpell + aMove + aMisc;
-        }
+        let dpr = safeNum(body.match(/Average DPR:\s*([^\n]+)/i)?.[1]);
 
         // fallback DPR
-        if (!dpr) {
-          dpr = hit * 5;
-        }
+        if (!dpr) dpr = hit * 5;
+
+        const ccpr = safeNum(body.match(/CCpr:\s*([^\n]+)/i)?.[1]);
+
+        const [aAtk, aSpell, aMove, aMisc] =
+          getPipeNums(body, /Actions used.*?:\s*([0-9|\s]+)/i);
+
+        const [bAtk, bSpell, bMove, bMisc] =
+          getPipeNums(body, /Bonus Actions used.*?:\s*([0-9|\s]+)/i);
+
+        const [rAtk, rSpell, rMove, rMisc] =
+          getPipeNums(body, /Reactions used.*?:\s*([0-9|\s]+)/i);
 
         characters.push({
           name,
@@ -582,12 +572,14 @@ const [rAtk, rSpell, rMove, rMisc] =
 
           stats: {
             hp,
-            actionsTotal,
+
+            actionsTotal: getNum(body, /Actions taken:\s*(\d+)/i),
             bonusActionsTotal: 0,
 
-            actions: { attack: aAtk, spellcasting: aSpell, movement: aMove, misc: aMisc },
-            bonusActions: { attack: bAtk, spellcasting: bSpell, movement: bMove, misc: bMisc },
-            reactions: { attack: rAtk, spellcasting: rSpell, movement: rMove, misc: rMisc },
+            // ✅ MATCH UI EXPECTED KEYS
+            actions: { attack: aAtk, spell: aSpell, move: aMove, misc: aMisc },
+            bonusActions: { attack: bAtk, spell: bSpell, move: bMove, misc: bMisc },
+            reactions: { attack: rAtk, spell: rSpell, move: rMove, misc: rMisc },
 
             attacks: { hit, total },
             saves: { forced, succeeded },
@@ -595,16 +587,16 @@ const [rAtk, rSpell, rMove, rMisc] =
             defense: {
               attacksDodged: dodged,
               attacksTaken: taken,
-              savesMade: 0,
-              savesTotal: 0
+              savesMade: succeeded,
+              savesTotal: forced
             },
 
             spellSlotsUsed: {},
             resources: {},
 
-            damage: dpr * safeRounds,
+            damage: dpr * roundCount,
             healing: getNum(body, /Total healing:\s*(\d+)/i),
-            cc: getNum(body, /CCpr:\s*([\d.]+)/i),
+            cc: ccpr * roundCount,
 
             damageTaken: 0,
             conditions: [],
@@ -614,18 +606,58 @@ const [rAtk, rSpell, rMove, rMisc] =
           },
 
           summons: [],
-          rounds: Array.from({ length: safeRounds }, (_, i) => ({
-  round: i + 1,
-  damage: dpr,
-  healing: 0,
-  cc: 0
-}))
+
+          rounds: Array.from({ length: roundCount }, (_, i) => ({
+            round: i + 1,
+            damage: dpr,
+            healing: 0,
+            cc: ccpr
+          }))
         });
       }
 
       if (!characters.length) {
         throw new Error("No characters parsed — invalid format.");
       }
+
+      // =========================
+      // SAFE ROUND SUMMARIES
+      // =========================
+
+     // =========================
+// SAFE ROUND SUMMARIES (BULLETPROOF)
+// =========================
+
+const roundSummaries = Array.from({ length: roundCount }, (_, i) => ({
+  round: i + 1,
+  players: characters.map(c => {
+    const roundData = (c.rounds && c.rounds[i]) || {};
+
+    return {
+      name: c.name,
+
+      damage: safeNum(roundData.damage),
+      healing: safeNum(roundData.healing),
+      cc: safeNum(roundData.cc),
+
+      // ✅ ALWAYS PRESENT (prevents UI crashes)
+      defense: {
+        attacksDodged: 0,
+        attacksTaken: 0,
+        savesMade: 0,
+        savesTotal: 0
+      },
+      attacks: {
+        hit: 0,
+        total: 0
+      },
+      saves: {
+        forced: 0,
+        succeeded: 0
+      }
+    };
+  })
+}));
 
       // =========================
       // FINAL JSON
@@ -640,29 +672,24 @@ const [rAtk, rSpell, rMove, rMisc] =
         players: characters.map(c => ({ name: c.name })),
 
         partyLevel,
-        rounds: safeRounds,
+
+        // ✅ CRITICAL FIXES
+        roundCount,
+        rounds: roundCount,
+        date,
 
         name: battle,
         displayName: battle,
-
-        timestamp: "",
+        timestamp: date,
 
         characters,
 
-        roundSummaries: Array.from({ length: safeRounds }, (_, i) => ({
-          round: i + 1,
-          players: characters.map(c => ({
-            name: c.name,
-            damage: 0,
-            healing: 0,
-            cc: 0
-          }))
-        })),
+        roundSummaries,
 
         partyTotals: {
-          damage: characters.reduce((s, c) => s + c.stats.damage, 0),
-          healing: characters.reduce((s, c) => s + c.stats.healing, 0),
-          cc: characters.reduce((s, c) => s + c.stats.cc, 0)
+          damage: characters.reduce((s, c) => s + (c.stats.damage || 0), 0),
+          healing: characters.reduce((s, c) => s + (c.stats.healing || 0), 0),
+          cc: characters.reduce((s, c) => s + (c.stats.cc || 0), 0)
         }
       };
 
@@ -693,6 +720,7 @@ const [rAtk, rSpell, rMove, rMisc] =
 
   reader.readAsText(input.files[0]);
 }
+
 function addCharacter() {
   const div = document.createElement("div");
   div.classList.add("charBlock");
