@@ -436,67 +436,99 @@ function convertTextToJSON() {
     try {
       let text = e.target.result.replace(/\r/g, "");
 
-      // -------------------------
+      // =========================
       // HELPERS
-      // -------------------------
+      // =========================
+
       const makeSlug = (str = "") =>
         str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
       const normalize = str =>
         str.toLowerCase().replace(/\s+/g, "");
 
-      const getNum = (str, regex) => {
-        const m = str.match(regex);
-        return m ? parseFloat(m[1]) || 0 : 0;
+      const safeNum = val => {
+        const n = parseFloat(val);
+        return isNaN(n) ? 0 : n;
       };
 
-      // -------------------------
-      // BASIC META
-      // -------------------------
-      const lines = text.split("\n");
+      const getNum = (str, regex) => {
+        const m = str.match(regex);
+        return m && m[1] ? safeNum(m[1]) : 0;
+      };
 
-      const campaign = lines[0]?.trim() || "Unknown Campaign";
-      const battle = lines[2]?.trim() || "Unknown Battle";
+      const getPipeNums = (str, regex) => {
+  const m = str.match(regex);
+  if (!m || !m[1]) return [0, 0, 0, 0];
+
+  return m[1]
+    .split("|")
+    .map(v => parseFloat(v.trim()) || 0)
+    .concat([0, 0, 0, 0])
+    .slice(0, 4);
+};
+
+      const getPair = (str, regex) => {
+        const m = str.match(regex);
+        if (!m) return [0, 0];
+        return m[1].split(/[\/|]/).map(safeNum);
+      };
+
+      const getHP = (str) => {
+        const m = str.match(/Hp remaining:\s*(\d+)\s*\/\s*(\d+)(?:\+(\d+))?/i);
+        if (!m) return { current: 0, max: 0 };
+        return {
+          current: safeNum(m[1]),
+          max: safeNum(m[2]) + safeNum(m[3])
+        };
+      };
+
+      // =========================
+      // META
+      // =========================
+
+      const lines = text.split("\n").map(l => l.trim());
+
+      const campaign = lines[0] || "Unknown Campaign";
+
+      let battle = "Unknown Battle";
+      for (let i = 1; i < lines.length; i++) {
+        if (lines[i]) {
+          battle = lines[i];
+          break;
+        }
+      }
 
       const campaignSlug = makeSlug(campaign);
       const battleSlug = makeSlug(battle);
 
-      const partyLevel =
-        parseInt(text.match(/Party level:\s*(\d+)/i)?.[1]) || 0;
+      const partyLevel = getNum(text, /Party level:\s*(\d+)/i);
+      const roundCount = getNum(text, /(\d+)\s*round combat/i);
+      const safeRounds = roundCount || 1;
 
-      let roundCount =
-        parseInt(text.match(/(\d+)\s*round combat/i)?.[1]);
-
-      const safeRounds = (!roundCount || isNaN(roundCount)) ? 1 : roundCount;
-
-      // -------------------------
+      // =========================
       // INITIATIVE MAP
-      // -------------------------
+      // =========================
+
       let initiativeMap = {};
 
-      const initLine =
-        text.match(/Initiative order:(.*)/i)?.[1] || "";
+      const initMatch = text.match(/Initiative order:\s*([\s\S]*?)\n/i);
+      if (initMatch) {
+        initMatch[1].split(",").forEach(entry => {
+          const m = entry.match(/:\w+:\s*([^()]+)\(([\d.]+)\)/);
+          if (m) {
+            initiativeMap[normalize(m[1])] = safeNum(m[2]);
+          }
+        });
+      }
 
-      initLine.split(",").forEach(entry => {
-        const m = entry.match(/:\w+:\s*([^()]+)\(([\d.]+)\)/);
-        if (m) {
-          initiativeMap[normalize(m[1])] = parseFloat(m[2]);
-        }
-      });
+     
 
-      // -------------------------
-      // REMOVE PARTY RESOURCES
-      // -------------------------
-      text = text.replace(
-        /Party resources before combat[\s\S]*?Initiative order:/i,
-        match => "Initiative order:" + match.split("Initiative order:")[1]
-      );
-
-      // -------------------------
+      // =========================
       // CHARACTER PARSING
-      // -------------------------
-      const charRegex =
-        /:(\w+):([A-Za-z\s]+):\n([\s\S]*?)(?=\n:\w+:|\nParty Breakdown:)/g;
+      // =========================
+
+     const charRegex =
+/^:(\w+):\s*([^\n:]+):\s*\n([\s\S]*?)(?=\n:\w+:|\nParty Breakdown:|$)/gm;
 
       let characters = [];
       let match;
@@ -505,43 +537,64 @@ function convertTextToJSON() {
         const name = match[2].trim();
         const body = match[3];
 
-        if (!name || name.length < 2) continue;
+        if (!name) continue;
 
-        const levelClass =
-          body.split("\n")[0]?.trim() || "";
+        const levelClass = body.split("\n")[0]?.trim() || "";
+
+        const hp = getHP(body);
+
+        const [hit, total] = getPair(body, /Attacks hit:\s*([\d\/|]+)/i);
+        const [forced] = getPair(body, /Saving throws forced:\s*([\d\/|]+)/i);
+        const [succeeded] = getPair(body, /Saving throws succeeded:\s*([\d\/|]+)/i);
+        const [dodged, taken] = getPair(body, /Attacks dodged:\s*([\d\/|]+)/i);
+
+        let dprMatch = body.match(/Average DPR:\s*([^\n]+)/i);
+let dpr = 0;
+
+if (dprMatch) {
+  dpr = parseFloat(dprMatch[1].trim()) || 0;
+}
+
+        const [aAtk, aSpell, aMove, aMisc] =
+  getPipeNums(body, /Actions used.*?:\s*([0-9|\s]+)/i);
+
+const [bAtk, bSpell, bMove, bMisc] =
+  getPipeNums(body, /Bonus Actions used.*?:\s*([0-9|\s]+)/i);
+
+const [rAtk, rSpell, rMove, rMisc] =
+  getPipeNums(body, /Reactions used.*?:\s*([0-9|\s]+)/i);
+
+        let actionsTotal = getNum(body, /Actions taken:\s*(\d+)/i);
+        if (!actionsTotal) {
+          actionsTotal = aAtk + aSpell + aMove + aMisc;
+        }
+
+        // fallback DPR
+        if (!dpr) {
+          dpr = hit * 5;
+        }
 
         characters.push({
           name,
           levelClass,
-          initiative: initiativeMap[normalize(name)] ?? -1,
+          initiative: initiativeMap[normalize(name)] ?? 0,
           portrait: null,
 
           stats: {
-            hp: {
-              current: getNum(body, /Hp remaining:\s*(\d+)/i),
-              max: getNum(body, /\/(\d+)/)
-            },
-
-            actionsTotal: getNum(body, /Actions taken:\s*(\d+)/i),
+            hp,
+            actionsTotal,
             bonusActionsTotal: 0,
 
-            actions: {},
-            bonusActions: {},
-            reactions: {},
+            actions: { attack: aAtk, spellcasting: aSpell, movement: aMove, misc: aMisc },
+            bonusActions: { attack: bAtk, spellcasting: bSpell, movement: bMove, misc: bMisc },
+            reactions: { attack: rAtk, spellcasting: rSpell, movement: rMove, misc: rMisc },
 
-            attacks: {
-              hit: getNum(body, /Attacks hit:\s*(\d+)/i),
-              total: getNum(body, /Attacks hit:\s*\d+[\/|](\d+)/i)
-            },
-
-            saves: {
-              forced: getNum(body, /Saving throws forced:\s*(\d+)/i),
-              succeeded: getNum(body, /Saving throws succeeded:\s*(\d+)/i)
-            },
+            attacks: { hit, total },
+            saves: { forced, succeeded },
 
             defense: {
-              attacksDodged: getNum(body, /Attacks dodged:\s*(\d+)/i),
-              attacksTaken: getNum(body, /Attacks dodged:\s*\d+[\/|](\d+)/i),
+              attacksDodged: dodged,
+              attacksTaken: taken,
               savesMade: 0,
               savesTotal: 0
             },
@@ -549,9 +602,10 @@ function convertTextToJSON() {
             spellSlotsUsed: {},
             resources: {},
 
-            damage: 0,
+            damage: dpr * safeRounds,
             healing: getNum(body, /Total healing:\s*(\d+)/i),
-            cc: getNum(body, /CCpr:\s*(\d+)/i),
+            cc: getNum(body, /CCpr:\s*([\d.]+)/i),
+
             damageTaken: 0,
             conditions: [],
 
@@ -560,14 +614,12 @@ function convertTextToJSON() {
           },
 
           summons: [],
-
-          // ✅ FIXED: ALWAYS ARRAY
           rounds: Array.from({ length: safeRounds }, (_, i) => ({
-            round: i + 1,
-            damage: 0,
-            healing: 0,
-            cc: 0
-          }))
+  round: i + 1,
+  damage: dpr,
+  healing: 0,
+  cc: 0
+}))
         });
       }
 
@@ -575,9 +627,10 @@ function convertTextToJSON() {
         throw new Error("No characters parsed — invalid format.");
       }
 
-      // -------------------------
+      // =========================
       // FINAL JSON
-      // -------------------------
+      // =========================
+
       const finalJSON = {
         campaign,
         campaignSlug,
@@ -587,8 +640,6 @@ function convertTextToJSON() {
         players: characters.map(c => ({ name: c.name })),
 
         partyLevel,
-
-        // ✅ FIXED: always valid
         rounds: safeRounds,
 
         name: battle,
@@ -598,7 +649,6 @@ function convertTextToJSON() {
 
         characters,
 
-        // ✅ FIXED: always populated
         roundSummaries: Array.from({ length: safeRounds }, (_, i) => ({
           round: i + 1,
           players: characters.map(c => ({
@@ -610,15 +660,16 @@ function convertTextToJSON() {
         })),
 
         partyTotals: {
-          damage: 0,
-          healing: 0,
-          cc: 0
+          damage: characters.reduce((s, c) => s + c.stats.damage, 0),
+          healing: characters.reduce((s, c) => s + c.stats.healing, 0),
+          cc: characters.reduce((s, c) => s + c.stats.cc, 0)
         }
       };
 
-      // -------------------------
+      // =========================
       // DOWNLOAD
-      // -------------------------
+      // =========================
+
       const blob = new Blob(
         [JSON.stringify(finalJSON, null, 2)],
         { type: "application/json" }
@@ -642,7 +693,6 @@ function convertTextToJSON() {
 
   reader.readAsText(input.files[0]);
 }
-
 function addCharacter() {
   const div = document.createElement("div");
   div.classList.add("charBlock");
