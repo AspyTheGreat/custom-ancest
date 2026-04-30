@@ -69,7 +69,12 @@ async function loadCampaigns() {
         a.name.localeCompare(b.name)
       );
 
-      container.innerHTML = "<h3>Campaigns</h3>";
+      container.innerHTML = `
+  <h3>Campaigns</h3>
+  <div id="campaignGrid"></div>
+`;
+
+const grid = document.getElementById("campaignGrid");
 
       // =========================
       // RENDER CAMPAIGNS
@@ -88,7 +93,7 @@ async function loadCampaigns() {
           loadBattles(campaign.slug);
         };
 
-        container.appendChild(div);
+        grid.appendChild(div);
 
         // preload cache
         campaignBattleCache[campaign.slug] =
@@ -146,9 +151,12 @@ async function loadBattles(campaignSlug) {
       );
 
       container.innerHTML = `
-        <div class="backBtn">← Back</div>
-        <h3>${formatName(campaignSlug)}</h3>
-      `;
+  <div class="backBtn">← Back</div>
+  <h3>${formatName(campaignSlug)}</h3>
+  <div id="battleGrid"></div>
+`;
+
+const grid = document.getElementById("battleGrid");
 
       container.querySelector(".backBtn").onclick =
         () => loadCampaigns();
@@ -199,7 +207,7 @@ async function loadBattles(campaignSlug) {
           openBattle(battleUrl);
         };
 
-        container.appendChild(div);
+        grid.appendChild(div);
       }
 
       if (!battles.length) {
@@ -1017,7 +1025,7 @@ const timesTargeted =
         // =========================
 
         return `
-          <div class="round-player-column">
+  <div class="round-player-column" style="width:260px;">
 
             <div class="round-player-name">
 

@@ -348,13 +348,10 @@ object-position: center center;
 }
 
 .battle-card-title {
- 
- position: absolute;
-  bottom: 16px;
-  width: 100%;
-  text-align: center;
- 
+  position: absolute;
 
+  left: 16px;
+  bottom: 16px;
 
   font-size: 1.35rem;
   font-weight: 700;
@@ -545,18 +542,18 @@ width: 100%;
 }
 
 .round-player-columns {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-
-  padding: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
 .round-player-column {
   background: #1b1b1b;
   border: 1px solid #303030;
   border-radius: 10px;
-
+width: 320px;
+  flex: 0 0 260px;
   padding: 14px;
 }
 
