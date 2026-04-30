@@ -55,6 +55,30 @@ position: relative;
   z-index: 0;
 }
 
+.chronicles-home-page .page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: none;
+}
+
+.chronicles-home-page .page::before {
+  background-image: url("../assets/chronicles background.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+}
+
+.chronicles-home-page .page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .hero > * {
   position: relative;
   z-index: 1;
@@ -138,6 +162,17 @@ h1 {
   justify-content: center;
   gap: 20px;
   margin-top: 30px;
+}
+
+.chronicles-home-page .page {
+  display: flex;
+  flex-direction: column;
+}
+
+.chronicles-home-page .grid {
+  margin-top: auto;
+  margin-bottom: 80px;
+  z-index: 1;
 }
 
 .world-card {

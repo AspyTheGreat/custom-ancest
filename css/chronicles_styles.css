@@ -376,6 +376,76 @@ object-position: center center;
 }
 
 /* =========================
+   CHRONICLES STATS PAGE
+========================= */
+
+.chronicles-stats-page .page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: none;
+  position: relative;
+}
+
+.chronicles-stats-page .page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/chronicles stats background.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.chronicles-stats-page .grid {
+  position: absolute;
+  inset: 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 🔥 left page / right page */
+  align-items: center;
+
+  padding: 12vh 10vw; /* controls top/bottom + page margins */
+
+  z-index: 1;
+}
+
+.chronicles-stats-page .world-card {
+  width: clamp(225px, 15%, 450px);
+  height: 20%;
+
+  justify-self: center;
+  align-self: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: transparent;
+border: none;
+backdrop-filter: none;
+
+  font-size: 1.2rem;
+  font-weight: 600;
+
+ 
+}
+.chronicles-stats-page .world-card:first-child {
+  transform: translate(125%, -43%);  /* X + Y */
+}
+
+.chronicles-stats-page .world-card:last-child {
+  transform: translate(-125%, -43%); /* X + Y */
+}
+.chronicles-stats-page .world-card:hover {
+  background: rgba(255,255,255,0.08);
+  
+}
+
+/* =========================
    👥 CHARACTERS GRID
 ========================= */
 .char-left {
