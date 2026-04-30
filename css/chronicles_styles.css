@@ -348,10 +348,13 @@ object-position: center center;
 }
 
 .battle-card-title {
-  position: absolute;
-
-  left: 16px;
+ 
+ position: absolute;
   bottom: 16px;
+  width: 100%;
+  text-align: center;
+ 
+
 
   font-size: 1.35rem;
   font-weight: 700;
