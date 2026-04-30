@@ -1,6 +1,8 @@
 {
   "campaign": "Ravenfall: Sands of Aranie",
+  "campaignSlug": "ravenfall-sands-of-aranie",
   "battle": "The glutton of the mines",
+   "battleSlug": "the-glutton-of-the-mines",
   "partyLevel": 4,
   "rounds": 6,
   "characters": [
@@ -44,8 +46,8 @@
         "nat1": 1
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 6
+      "rounds": 6
+      
     },
     {
       "name": "Yin Jianshi",
@@ -87,8 +89,8 @@
         "nat1": 1
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 6
+      "rounds": 6
+      
     },
     {
       "name": "Flux Monolith",
@@ -130,8 +132,8 @@
         "nat1": 0
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 6
+      "rounds": 6
+      
     },
     {
       "name": "Ahmose",
@@ -173,8 +175,8 @@
         "nat1": 0
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 6
+      "rounds": 6
+      
     },
     {
       "name": "Ash Alade",
@@ -216,11 +218,16 @@
         "nat1": 1
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 6
+      "rounds": 6
+      
     }
   ],
-  "roundSummaries": [],
+  "roundSummaries": [
+  {
+    "round": 1,
+    "players": []
+  }
+],
   "partyTotals": {
     "damage": 0,
     "healing": 0,

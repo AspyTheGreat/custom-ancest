@@ -472,8 +472,13 @@ function convertTextToJSON() {
       const partyLevel =
         parseInt(text.match(/Party level:\s*(\d+)/i)?.[1] || 0);
 
-      const roundCount =
-        parseInt(text.match(/(\d+)\s*round combat/i)?.[1] || 0);
+     let roundCount =
+  parseInt(text.match(/(\d+)\s*round combat/i)?.[1]);
+
+// fallback if missing or invalid
+if (!roundCount || isNaN(roundCount)) {
+  roundCount = 1; // minimum safe value
+}
 
       // -------------------------
       // 🔹 INITIATIVE MAP
@@ -506,7 +511,7 @@ function convertTextToJSON() {
 
       let characters = [];
       let match;
-
+const safeRounds = Math.max(1, roundCount);
       while ((match = charRegex.exec(text)) !== null) {
         const name = match[2].trim();
         const body = match[3];
@@ -566,8 +571,7 @@ function convertTextToJSON() {
           },
 
           summons: [],
-          rounds: [],
-          roundCount: roundCount
+rounds: roundCount,
         });
       }
 
@@ -586,7 +590,9 @@ function convertTextToJSON() {
         campaignSlug,
         battle,
         battleSlug,
-
+players: characters.map(c => ({
+  name: c.name
+})),
         partyLevel,
         rounds: roundCount,
 
@@ -597,7 +603,15 @@ function convertTextToJSON() {
         timestamp: "",
 
         characters,
-        roundSummaries: [],
+        roundSummaries: Array.from({ length: roundCount }, (_, i) => ({
+  round: i + 1,
+  players: characters.map(c => ({
+    name: c.name,
+    damage: 0,
+    healing: 0,
+    cc: 0
+  }))
+})),
 
         partyTotals: {
           damage: 0,
@@ -1054,7 +1068,8 @@ function autoSave() {
     selectedCharacter,
 
     // full state
-    characters,
+    players: characters,
+characters, // optional, keep for compatibility
     tempGlobal,
     roundLog,
 

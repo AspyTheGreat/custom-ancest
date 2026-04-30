@@ -1,6 +1,8 @@
 {
   "campaign": "Ravenfall: Sands of Aranie",
+  "campaignSlug": "ravenfall-sands-of-aranie",
   "battle": "Ritual of the blood god",
+  "battleSlug": "ritual-of-the-blood-god",
   "partyLevel": 5,
   "rounds": 5,
   "characters": [
@@ -44,8 +46,8 @@
         "nat1": 1
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 5
+      "rounds": 5
+      
     },
     {
       "name": "Yin Jianshi",
@@ -87,8 +89,8 @@
         "nat1": 0
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 5
+      "rounds": 5
+      
     },
     {
       "name": "Ankha Pyramid",
@@ -130,8 +132,8 @@
         "nat1": 1
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 5
+      "rounds": 5
+      
     },
     {
       "name": "Flux Monolith",
@@ -173,8 +175,8 @@
         "nat1": 0
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 5
+      "rounds": 5
+      
     },
     {
       "name": "Ahmose",
@@ -216,8 +218,8 @@
         "nat1": 0
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 5
+      "rounds": 5
+      
     },
     {
       "name": "Ash Alade",
@@ -259,11 +261,16 @@
         "nat1": 0
       },
       "summons": [],
-      "rounds": [],
-      "roundCount": 5
+      "rounds": 5
+      
     }
   ],
-  "roundSummaries": [],
+ "roundSummaries": [
+  {
+    "round": 1,
+    "players": []
+  }
+],
   "partyTotals": {
     "damage": 0,
     "healing": 0,
