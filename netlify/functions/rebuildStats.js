@@ -166,8 +166,8 @@ totalNat1: 0,
 
 function processBattleStats(data, stats) {
    
-if (!data?.roundSummaries || !Array.isArray(data.roundSummaries)) {
-  console.log("No roundSummaries, skipping");
+if (!data?.characters || !Array.isArray(data.characters)) {
+  console.log("No characters, skipping");
   return;
 }
   if (!data || !data.characters) {
