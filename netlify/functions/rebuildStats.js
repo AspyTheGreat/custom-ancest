@@ -79,9 +79,10 @@ exports.handler = async () => {
 
         const battleData = await getJsonFile(path);
 
-        if (!battleData) continue;
-
-        processBattleStats(battleData, statsData);
+if (!battleData || !battleData.characters) {
+  console.log("Skipping invalid battle:", path);
+  continue;
+}
 
         statsData.processedBattles.push(
           `${campaignSlug}/${battle.battleSlug}`
@@ -138,28 +139,13 @@ totalNat1: 0,
 }
 
 function processBattleStats(data, stats) {
-for (const round of data.roundSummaries || []) {
-  for (const turn of round.players || []) {
+   
 
-    const actor = turn.actor;
-    if (!actor) continue;
-
-    const slug =
-      actor.slug ||
-      actor.toLowerCase().replace(/\s+/g, "-");
-
-    if (!slug) continue;
-
-    ensureChar(stats, slug, actor);
-
-    const c = stats.characters[slug];
-
-    if (turn.initiativeOrder !== undefined) {
-      c.totalInitiative += turn.initiativeOrder;
-      c.initiativeCount += 1;
-    }
+  if (!data || !data.characters) {
+    console.log("Invalid data passed to processBattleStats");
+    return;
   }
-}
+
   for (const char of data.characters || []) {
 
     const slug =
