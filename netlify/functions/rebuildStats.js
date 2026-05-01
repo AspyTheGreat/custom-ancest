@@ -77,7 +77,7 @@ exports.handler = async () => {
 
         const path = `${basePath}/${campaignSlug}/${battle.battleSlug}.json`;
 
-        const battleData = await getJsonFile(path);
+       
 
 const battleData = await getJsonFile(path);
 
