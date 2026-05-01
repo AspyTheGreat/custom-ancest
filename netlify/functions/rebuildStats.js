@@ -7,6 +7,8 @@ exports.handler = async () => {
     const basePath = "battles";
 
    async function getJsonFile(path) {
+    
+
   const res = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
     {
@@ -108,7 +110,7 @@ if (!battleData || !battleData.characters) {
 }
 
 // ✅ THIS WAS MISSING
-processBattleStats(battleData, statsData);
+processBattleStats(battleData, statsData, path);
 
 statsData.processedBattles.push(
   `${campaignSlug}/${battle.battleSlug}`
