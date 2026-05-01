@@ -165,7 +165,8 @@ totalNat1: 0,
 }
 
 function processBattleStats(data, stats) {
-   
+   console.log("Processing battle:", path);
+console.log("Characters:", battleData.characters?.length);
 if (!data?.characters || !Array.isArray(data.characters)) {
   console.log("No characters, skipping");
   return;
