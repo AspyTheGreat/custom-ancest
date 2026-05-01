@@ -6,24 +6,45 @@ exports.handler = async () => {
 
     const basePath = "battles";
 
-    async function getJsonFile(path) {
-      const res = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
-        {
-          headers: {
-            Authorization: `token ${token}`
-          }
-        }
-      );
-
-      if (res.status !== 200) return null;
-
-      const json = await res.json();
-
-      return JSON.parse(
-        Buffer.from(json.content, "base64").toString()
-      );
+   async function getJsonFile(path) {
+  const res = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+    {
+      headers: {
+        Authorization: `token ${token}`
+      }
     }
+  );
+
+  if (res.status !== 200) {
+    console.log("Failed to fetch:", path, res.status);
+    return null;
+  }
+
+  const json = await res.json();
+
+  // 🚨 Handle directories or invalid responses
+  if (!json.content) {
+    console.log("No content in response for:", path);
+    return null;
+  }
+
+  try {
+    const decoded = Buffer.from(json.content, "base64").toString();
+
+    if (!decoded.trim()) {
+      console.log("Empty file:", path);
+      return null;
+    }
+
+    return JSON.parse(decoded);
+
+  } catch (err) {
+    console.log("JSON parse failed for:", path);
+    console.log("Raw content:", json.content);
+    return null;
+  }
+}
 
     async function putJsonFile(path, content, message) {
       const body = {
@@ -77,7 +98,7 @@ exports.handler = async () => {
 
         const path = `${basePath}/${campaignSlug}/${battle.battleSlug}.json`;
 
-        const battleData = await getJsonFile(path);
+       
 
 const battleData = await getJsonFile(path);
 
