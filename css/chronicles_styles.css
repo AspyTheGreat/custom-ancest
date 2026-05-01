@@ -196,6 +196,18 @@ body.previous-battles-page::after {
 
   line-height: 1;
   box-sizing: border-box;
+
+  /* ✅ FIX */
+  color: #f0f0ff;
+  text-decoration: none;
+}
+
+.back:visited {
+  color: #f0f0ff;
+}
+
+.back:hover {
+  color: #fff;
 }
 
  
@@ -212,6 +224,7 @@ body.previous-battles-page::after {
   margin: 20px auto 0;
   padding: 0 16px;
   box-sizing: border-box;
+  align-items: center;
 }
 
 /* =========================
@@ -239,11 +252,15 @@ body.previous-battles-page::after {
 /* =========================
    📦 CONTAINERS
 ========================= */
+.world-card-previous-battles > * {
+  width: 100%;
+  text-align: center;
+}
 .world-card-previous-battles {
   display: flex;
   align-items: center;
   justify-content: center;
-
+text-align: center;
   width: 100%;
   min-height: 72px;
 
@@ -285,8 +302,12 @@ body.previous-battles-page::after {
 .box {
   border: 1px solid #444;
   padding: 14px;
-  margin: 16px 0;
+
+  margin: 16px auto;     /* centers container */
+
   width: 100%;
+  max-width: 1200px;     /* 🔥 actual constraint */
+
   border-radius: 12px;
   background: #1a1a1a;
 }
@@ -349,17 +370,22 @@ object-position: center center;
 
 .battle-card-title {
   position: absolute;
+  inset: 0; /* fills entire card */
 
-  left: 16px;
-  bottom: 16px;
+  display: flex;
+  align-items: center;     /* vertical center */
+  justify-content: center; /* horizontal center */
+
+  text-align: center;
 
   font-size: 1.35rem;
   font-weight: 700;
-
   color: white;
 
   text-shadow:
     0 2px 6px rgba(0,0,0,0.8);
+
+  padding: 0 20px; /* prevents edge clipping */
 }
 
 /* Prevent weird text wrapping */
@@ -367,8 +393,10 @@ object-position: center center;
   overflow-wrap: break-word;
   word-break: normal;
   white-space: normal;
-   width: 100%;
-  max-width: 100%;
+  width: 100%;
+  text-align: center;
+  display: block;
+
 }
 
 .battle-card h4 {
@@ -680,10 +708,17 @@ width: 320px;
 .party-totals .stat-box small {
   font-size: 0.75rem;
 }
+#party-breakdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 🔥 centers children horizontally */
+}
 .party-row {
    display: flex;
   gap: 24px;
-
+ width: 100%;
+  max-width: 1200px;   /* 🔥 key: prevents full stretch */
+  margin: 0 auto 16px;
   align-items: stretch;
   border: 1px solid #333;
   border-radius: 10px;
@@ -703,9 +738,16 @@ width: 320px;
 }
 
 .party-right {
-  width: 340px;
-  min-height: 340px;
+
   background: #111;
+  width: 50%;
+  background: #111;
+
+  position: relative;
+  min-height: 420px;
+
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .party-grid {
@@ -847,16 +889,7 @@ width: 320px;
   font-size: 0.85rem;
   color: #ccc;
 }
-.party-right {
-  width: 50%;
-  background: #111;
 
-  position: relative;
-  min-height: 420px;
-
-  padding: 20px;
-  box-sizing: border-box;
-}
 
 .party-right canvas {
   width: 100% !important;

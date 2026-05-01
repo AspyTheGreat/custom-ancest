@@ -87,7 +87,7 @@ const grid = document.getElementById("campaignGrid");
         div.className =
           "world-card-previous-battles clickable";
 
-        div.innerText = campaign.name;
+        div.innerHTML = `<span class="battle-card-text">${campaign.name}</span>`;
 
         div.onclick = () => {
           loadBattles(campaign.slug);
@@ -150,11 +150,20 @@ async function loadBattles(campaignSlug) {
           new Date(a.date).getTime()
       );
 
-      container.innerHTML = `
+    container.innerHTML = `
   <div class="backBtn">← Back</div>
   <h3>${formatName(campaignSlug)}</h3>
+
+  <div style="margin-bottom: 12px;">
+    <button id="viewCampaignStats">📊 View Campaign Stats</button>
+  </div>
+
   <div id="battleGrid"></div>
 `;
+
+document.getElementById("viewCampaignStats").onclick = () => {
+  renderCampaignBreakdown(campaignSlug);
+};
 
 const grid = document.getElementById("battleGrid");
 
@@ -1865,4 +1874,176 @@ const colors = await Promise.all(
 createPie("chart-healing", "Healing", names, healing, colors);
 createPie("chart-cc", "CC", names, cc, colors);
 createPie("chart-targeted", "Targeted", names, targeted, colors);
+}
+//Character and all time stats//
+
+async function loadCampaignStats(campaignSlug) {
+  const res = await fetch(`../battles/${campaignSlug}/characterStats.json`);
+
+  if (!res.ok) {
+    console.error("No stats file found");
+    return null;
+  }
+
+  return await res.json();
+}
+async function loadStatsCampaigns() {
+  container.innerHTML = "Loading campaign stats...";
+
+  try {
+    const res = await fetch("../battles/index.json");
+    const battles = await res.json();
+
+    // group campaigns (same logic as loadCampaigns)
+    const campaignMap = {};
+
+    battles.forEach(b => {
+      if (!campaignMap[b.campaignSlug]) {
+        campaignMap[b.campaignSlug] = {
+          name: b.campaign,
+          slug: b.campaignSlug
+        };
+      }
+    });
+
+    const campaigns = Object.values(campaignMap);
+
+    campaigns.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+
+    container.innerHTML = `
+      <h3>Character Stats</h3>
+      <div id="campaignGrid"></div>
+    `;
+
+    const grid = document.getElementById("campaignGrid");
+
+    campaigns.forEach(campaign => {
+
+      const div = document.createElement("div");
+
+      div.className =
+        "world-card-previous-battles clickable";
+
+      div.innerHTML = `
+        <span class="battle-card-text">
+          ${campaign.name}
+        </span>
+      `;
+
+      div.onclick = () => {
+        renderCampaignBreakdown(campaign.slug);
+      };
+
+      grid.appendChild(div);
+    });
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = "Failed to load stats.";
+  }
+}
+function buildCampaignCharacters(statsData) {
+  const chars = Object.values(statsData.characters);
+
+  return chars.map(c => ({
+    name: c.name,
+
+    stats: {
+      damage: c.totalDamage,
+      healing: c.totalHealing,
+      cc: c.totalCC,
+
+      attacks: {
+        total: c.totalAttacks,
+        hit: c.totalHits
+      },
+
+      saves: {
+        forced: c.totalPotencyAttempts,
+        succeeded: c.totalPotencySuccess
+      },
+
+      defense: {
+        attacksTaken: c.totalAttacksTaken || 0,
+        attacksDodged: c.totalAttacksDodged || 0,
+        savesMade: c.totalSavesMade || 0,
+        savesTotal: c.totalSavesTotal || 0
+      },
+
+      nat20: c.totalNat20 || 0,
+      nat1: c.totalNat1 || 0
+    }
+  }));
+}
+async function renderCampaignBreakdown(campaignSlug) {
+
+  container.innerHTML = "Loading campaign stats...";
+
+  const statsData = await loadCampaignStats(campaignSlug);
+
+  if (!statsData) {
+    container.innerHTML = "No stats found.";
+    return;
+  }
+
+  const characters = buildCampaignCharacters(statsData);
+
+  container.innerHTML = `
+    <div class="backBtn">← Back</div>
+    <h3>Campaign Stats</h3>
+    <div id="campaign-breakdown"></div>
+  `;
+
+  container.querySelector(".backBtn").onclick =
+    () => loadBattles(campaignSlug);
+
+  const el = document.getElementById("campaign-breakdown");
+
+  for (const char of characters) {
+
+    const stats = char.stats;
+    const extra = char._campaignStats;
+
+    const row = document.createElement("div");
+    row.className = "party-row";
+
+    row.innerHTML = `
+      <div class="party-left">
+
+        <h4>${char.name}</h4>
+
+        <div class="party-grid">
+
+          <div><b>Total Damage:</b> ${stats.damage}</div>
+          <div><b>Total Healing:</b> ${stats.healing}</div>
+          <div><b>Total CC:</b> ${stats.cc}</div>
+
+          <div><b>Accuracy:</b> ${extra.accuracy}%</div>
+          <div><b>Potency:</b> ${extra.potency}%</div>
+          <div><b>Avg Initiative:</b> ${extra.avgInit}</div>
+
+        </div>
+
+      </div>
+
+      <div class="party-right">
+        <canvas id="campaign-radar-${char.name.replace(/\s+/g, "-")}"></canvas>
+      </div>
+    `;
+
+    el.appendChild(row);
+
+    const color = getCharacterColor(
+  characters.indexOf(char)
+);
+
+renderCharacterRadar(
+  `campaign-radar-${char.name.replace(/\s+/g, "-")}`,
+  char,
+  characters, // 🔥 ALL characters (important)
+  color
+);
+  }
 }
