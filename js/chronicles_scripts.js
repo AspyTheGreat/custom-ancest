@@ -2,6 +2,7 @@
 // ⚙️ CONFIG (EDIT THIS)
 // =========================
 const campaignBattleCache = {};
+const campaignPortraitCache = {};
 const DEBUG = true;
 
 function log(...args) {
@@ -592,7 +593,8 @@ async function renderCharacters(characters) {
   el.innerHTML = "";
 
   for (const char of characters) {
-  const stats = char.stats || {};
+     const stats = char.stats || {};
+ 
   const defense = stats.defense || {};
 
   const timesTargeted =
@@ -605,9 +607,10 @@ async function renderCharacters(characters) {
   const attacksMade = stats.attacks?.total || 0;
 
   const savesForced = stats.saves?.forced || 0;
-  const savesSucceeded = stats.saves?.succeeded || 0;
+const savesSucceeded = stats.saves?.succeeded || 0;
+const savesFailed = Math.max(0, savesForced - savesSucceeded);
+// enemy FAILED saves = total - succeeded
 
-  const savesFailed = savesMade - savesTotal;
 
   const saveRate = savesForced
     ? Math.round((savesMade / savesTotal) * 100)
@@ -946,13 +949,10 @@ partyNat1 +=
           p.savesSucceeded ??
           0;
 
-        const potency = savesForced
-          ? Math.round(
-              (
-                savesSucceeded / savesForced
-              ) * 100
-            )
-          : 0;
+    
+const potency = savesForced
+  ? Math.round((savesFailed / savesForced) * 100)
+  : 0;
 
         const defense = p.defense || {};
 
@@ -1321,7 +1321,11 @@ const attacksMade = stats.attacks?.total || 0;
 
 const savesForced = stats.saves?.forced || 0;
 const savesSucceeded = stats.saves?.succeeded || 0;
+const savesFailed = Math.max(0, savesForced - savesSucceeded);
 
+const potency = savesForced
+  ? Math.round((savesFailed / savesForced) * 100)
+  : 0;
 const saveRate = savesForced
   ? Math.round((savesSucceeded / savesForced) * 100)
   : 0;
@@ -1536,7 +1540,7 @@ if (hpPercent === 0) {
 
       <div>
         <b>Potency:</b>
-        ${saveRate}%
+         ${savesFailed}/${savesForced} (${potency}%)
       </div>
 
       <div>
@@ -1664,7 +1668,7 @@ const attacksHit = stats.attacks?.hit || 0;
 // Offensive saves
 const savesForced = stats.saves?.forced || 0;
 const savesSucceeded = stats.saves?.succeeded || 0;
-
+const savesFailed = Math.max(0, savesForced - savesSucceeded);
 // Defensive saves
 const savesMade = defense.savesMade || 0;
 const savesTotal = defense.savesTotal || savesMade;
@@ -1944,6 +1948,54 @@ async function loadStatsCampaigns() {
     container.innerHTML = "Failed to load stats.";
   }
 }
+
+async function getCampaignCharacterPortraits(campaignSlug) {
+    if (campaignPortraitCache[campaignSlug]) {
+    return campaignPortraitCache[campaignSlug];
+  }
+let battles = campaignBattleCache[campaignSlug];
+
+if (!battles) {
+  const res = await fetch("../battles/index.json");
+  const allBattles = await res.json();
+
+  battles = allBattles.filter(
+    b => b.campaignSlug === campaignSlug
+  );
+
+  campaignBattleCache[campaignSlug] = battles;
+}
+
+  const campaignBattles = battles.filter(
+    b => b.campaignSlug === campaignSlug
+  );
+
+  const portraitMap = {};
+
+  for (const battle of campaignBattles) {
+    try {
+      const url = `../battles/${battle.campaignSlug}/${battle.battleSlug}.json`;
+      const res = await fetch(url);
+
+      if (!res.ok) continue;
+
+      const data = await res.json();
+
+      (data.characters || []).forEach(char => {
+        if (!portraitMap[char.name]) {
+          portraitMap[char.name] =
+            char.image || char.portrait || null;
+        }
+      });
+
+    } catch (err) {
+      console.warn("Failed to load battle for portraits:", err);
+    }
+  }
+
+  return portraitMap;
+}
+
 function buildCampaignCharacters(statsData) {
   const chars = Object.values(statsData.characters);
 
@@ -1990,6 +2042,13 @@ async function renderCampaignBreakdown(campaignSlug) {
 
   const characters = buildCampaignCharacters(statsData);
 
+const portraitMap =
+  await getCampaignCharacterPortraits(campaignSlug);
+
+characters.forEach(char => {
+  char.image = portraitMap[char.name] || null;
+});
+
   container.innerHTML = `
     <div class="backBtn">← Back</div>
     <h3>Campaign Stats</h3>
@@ -2003,47 +2062,76 @@ async function renderCampaignBreakdown(campaignSlug) {
 
   for (const char of characters) {
 
-    const stats = char.stats;
-    const extra = char._campaignStats;
+  const stats = char.stats || {};
 
-    const row = document.createElement("div");
-    row.className = "party-row";
+  const attacksMade = stats.attacks?.total || 0;
+  const attacksHit = stats.attacks?.hit || 0;
 
-    row.innerHTML = `
-      <div class="party-left">
+  const savesForced = stats.saves?.forced || 0;
+  const savesSucceeded = stats.saves?.succeeded || 0;
+const savesFailed = Math.max(0, savesForced - savesSucceeded);
+  const accuracy = attacksMade
+    ? Math.round((attacksHit / attacksMade) * 100)
+    : 0;
 
-        <h4>${char.name}</h4>
+ 
+const potency = savesForced
+  ? Math.round((savesFailed / savesForced) * 100)
+  : 0;
+  const row = document.createElement("div");
+  row.className = "party-row";
 
-        <div class="party-grid">
+  row.innerHTML = `
+    <div class="party-left">
 
-          <div><b>Total Damage:</b> ${stats.damage}</div>
-          <div><b>Total Healing:</b> ${stats.healing}</div>
-          <div><b>Total CC:</b> ${stats.cc}</div>
+      <div class="party-header">
 
-          <div><b>Accuracy:</b> ${extra.accuracy}%</div>
-          <div><b>Potency:</b> ${extra.potency}%</div>
-          <div><b>Avg Initiative:</b> ${extra.avgInit}</div>
+  ${
+    char.image
+      ? `
+        <img
+          class="character-portrait"
+          src="${normalizeImageSrc(char.image)}"
+          alt="${char.name}"
+        >
+      `
+      : ""
+  }
 
-        </div>
+  <h4>${char.name}</h4>
+
+</div>
+
+      <div class="party-grid">
+
+        <div><b>Total Damage:</b> ${stats.damage}</div>
+        <div><b>Total Healing:</b> ${stats.healing}</div>
+        <div><b>Total CC:</b> ${stats.cc}</div>
+
+        <div><b>Accuracy:</b> ${accuracy}%</div>
+        <div><b>Potency:</b> ${potency}%</div>
 
       </div>
 
-      <div class="party-right">
-        <canvas id="campaign-radar-${char.name.replace(/\s+/g, "-")}"></canvas>
-      </div>
-    `;
+    </div>
 
-    el.appendChild(row);
+    <div class="party-right">
+      <canvas id="campaign-radar-${char.name.replace(/\s+/g, "-")}"></canvas>
+    </div>
+  `;
 
-    const color = getCharacterColor(
+  el.appendChild(row);
+
+  const color = await getCharacterColorFromPortrait(
+  char,
   characters.indexOf(char)
 );
+  renderCharacterRadar(
+    `campaign-radar-${char.name.replace(/\s+/g, "-")}`,
+    char,
+    characters,
+    color
+  );
 
-renderCharacterRadar(
-  `campaign-radar-${char.name.replace(/\s+/g, "-")}`,
-  char,
-  characters, // 🔥 ALL characters (important)
-  color
-);
   }
 }

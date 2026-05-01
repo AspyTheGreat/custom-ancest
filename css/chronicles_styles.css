@@ -220,7 +220,7 @@ body.previous-battles-page::after {
 ========================= */
 #content {
   width: 100%;
-  max-width: 1400px;   /* 🔥 more room */
+  max-width: 1600px;   /* 🔥 more room */
   margin: 20px auto 0;
   padding: 0 16px;
   box-sizing: border-box;
@@ -306,7 +306,7 @@ text-align: center;
   margin: 16px auto;     /* centers container */
 
   width: 100%;
-  max-width: 1200px;     /* 🔥 actual constraint */
+  max-width: 1400px;     /* 🔥 actual constraint */
 
   border-radius: 12px;
   background: #1a1a1a;
@@ -710,6 +710,8 @@ width: 320px;
 }
 #party-breakdown {
   display: flex;
+   width: 1400px;
+  max-width: none;
   flex-direction: column;
   align-items: center; /* 🔥 centers children horizontally */
 }
@@ -717,7 +719,7 @@ width: 320px;
    display: flex;
   gap: 24px;
  width: 100%;
-  max-width: 1200px;   /* 🔥 key: prevents full stretch */
+  max-width: 1400px;   /* 🔥 key: prevents full stretch */
   margin: 0 auto 16px;
   align-items: stretch;
   border: 1px solid #333;
