@@ -79,14 +79,19 @@ exports.handler = async () => {
 
         const battleData = await getJsonFile(path);
 
+const battleData = await getJsonFile(path);
+
 if (!battleData || !battleData.characters) {
   console.log("Skipping invalid battle:", path);
   continue;
 }
 
-        statsData.processedBattles.push(
-          `${campaignSlug}/${battle.battleSlug}`
-        );
+// ✅ THIS WAS MISSING
+processBattleStats(battleData, statsData);
+
+statsData.processedBattles.push(
+  `${campaignSlug}/${battle.battleSlug}`
+);
       }
 
       // write stats file
@@ -140,7 +145,10 @@ totalNat1: 0,
 
 function processBattleStats(data, stats) {
    
-
+if (!data?.roundSummaries || !Array.isArray(data.roundSummaries)) {
+  console.log("No roundSummaries, skipping");
+  return;
+}
   if (!data || !data.characters) {
     console.log("Invalid data passed to processBattleStats");
     return;
@@ -218,5 +226,3 @@ function processBattleStats(data, stats) {
   }
 }
   
-processBattleStats()
-ensureChar()
