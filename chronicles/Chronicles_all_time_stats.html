@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -9,20 +10,69 @@
   <link rel="stylesheet" href="../css/chronicles_styles.css">
 </head>
 
-<body class="alltime-stats-page">
+<body class="chronicles-stats-page">
+<div id="content" style="display:none;"></div>
   <div class="page">
-    <div class="world-header">
-      <div class="back back-top-left" onclick="window.location.href='Chronicles_stats.html'">← Back</div>
-    </div>
 
-    <h2>ALL TIME STATS</h2>
 
-    <div class="grid">
-      <div class="world-card">placeholder</div>
-      <div class="world-card">placeholder</div>
-    </div>
+<div class="world-header">
+  <div class="back back-top-left"
+       onclick="window.location.href='Chronicles_stats.html'">
+    ← Back
+  </div>
+</div>
+
+<h2>ALL TIME STATS</h2>
+
+<!-- ✅ IMPORTANT: class matches JS -->
+<div class="all-time-container">
+
+
+<div class="stat-window wide">
+  <h3>Campaigns</h3>
+  <div class="stat-list scrollable" id="alltime-campaigns"></div>
+</div>
+
+<div class="stat-window wide">
+    <h3>Battles</h3>
+    <div class="stat-list scrollable" id="alltime-battles"></div>
+  </div>
+  <!-- Stats -->
+<div class="stat-window wide">
+    <h3>Stats</h3>
+    <div class="stat-list scrollable" id="alltime-stats"></div>
+  </div>
+
+  <!-- Stats -->
+
+  
+  <!-- Stats -->
+<div class="stat-window wide">
+  <h3>Characters</h3>
+  <div class="stat-list scrollable" id="alltime-characters"></div>
+</div>
+
+  <!-- Stats -->
+<div class="stat-window wide">
+    <h3>Classes</h3>
+    <div class="stat-list scrollable" id="alltime-classes"></div>
+  </div>
+
+  <!-- ✅ ADD THIS -->
+  <!-- Stats -->
+<div class="stat-window wide">
+    <h3>Subclasses</h3>
+    <div class="stat-list scrollable" id="alltime-subclasses"></div>
+  </div>
+
+  
+
+</div>
+```
 
   </div>
+
   <script src="../js/chronicles_scripts.js"></script>
+
 </body>
 </html>

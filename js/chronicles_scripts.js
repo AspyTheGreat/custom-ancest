@@ -2001,7 +2001,7 @@ function buildCampaignCharacters(statsData) {
 
   return chars.map(c => ({
     name: c.name,
-
+ battles: c.battles || 0,
     stats: {
       damage: c.totalDamage,
       healing: c.totalHealing,
@@ -2102,16 +2102,18 @@ const potency = savesForced
 
 </div>
 
-      <div class="party-grid">
+    <div class="all-time-party-grid">
 
-        <div><b>Total Damage:</b> ${stats.damage}</div>
-        <div><b>Total Healing:</b> ${stats.healing}</div>
-        <div><b>Total CC:</b> ${stats.cc}</div>
+  <div><b>Battles Fought:</b> ${char.battles}</div>
 
-        <div><b>Accuracy:</b> ${accuracy}%</div>
-        <div><b>Potency:</b> ${potency}%</div>
+  <div><b>Total Damage:</b> ${stats.damage}</div>
+  <div><b>Total Healing:</b> ${stats.healing}</div>
+  <div><b>Total CC:</b> ${stats.cc}</div>
 
-      </div>
+  <div><b>Accuracy:</b> ${accuracy}%</div>
+  <div><b>Potency:</b> ${potency}%</div>
+
+</div>
 
     </div>
 
@@ -2134,4 +2136,354 @@ const potency = savesForced
   );
 
   }
+}
+//All-time stats//
+async function getAllCharacterPortraits() {
+  const battles = await loadAllBattles();
+
+  const portraitMap = {};
+
+  for (const b of battles) {
+    const res = await fetch(`../battles/${b.campaignSlug}/${b.battleSlug}.json`);
+    if (!res.ok) continue;
+
+    const data = await res.json();
+
+    (data.characters || []).forEach(char => {
+      if (!portraitMap[char.name]) {
+        portraitMap[char.name] =
+          char.image || char.portrait || null;
+      }
+    });
+  }
+
+  return portraitMap;
+}
+
+async function loadAllBattles() {
+  const res = await fetch("../battles/index.json");
+  return await res.json();
+}
+async function computeAllTimeStats() {
+  const battles = await loadAllBattles();
+
+  let totalDamage = 0;
+  let totalHealing = 0;
+  let totalCC = 0;
+
+  const seenCampaigns = new Set();
+
+  let topDamage = { name: "—", value: 0, image: null };
+let topHealing = { name: "—", value: 0, image: null };
+let topCC = { name: "—", value: 0, image: null };
+
+  for (const b of battles) {
+    if (seenCampaigns.has(b.campaignSlug)) continue;
+    seenCampaigns.add(b.campaignSlug);
+
+    const res = await fetch(`../battles/${b.campaignSlug}/characterStats.json`);
+    if (!res.ok) continue;
+
+    const data = await res.json();
+
+    Object.values(data.characters).forEach(c => {
+      const dmg = c.totalDamage || 0;
+      const heal = c.totalHealing || 0;
+      const cc = c.totalCC || 0;
+        const img = c.image || c.portrait || null;
+
+      totalDamage += dmg;
+      totalHealing += heal;
+      totalCC += cc;
+
+      if (dmg > topDamage.value) {
+  topDamage = { name: c.name, value: dmg, image: img };
+}
+
+if (heal > topHealing.value) {
+  topHealing = { name: c.name, value: heal, image: img };
+}
+
+if (cc > topCC.value) {
+  topCC = { name: c.name, value: cc, image: img };
+}
+    });
+  }
+
+  return {
+    totalDamage,
+    totalHealing,
+    totalCC,
+    topDamage,
+    topHealing,
+    topCC
+  };
+}
+
+function capitalizeWords(str) {
+  return str.replace(/\b\w/g, l => l.toUpperCase());
+}
+
+async function computeClassStats() {
+  const battles = await loadAllBattles();
+
+  const classMap = {};
+  const subclassMap = {};
+
+  const seen = new Set(); // prevents duplicates per character per class
+
+  for (const b of battles) {
+    const res = await fetch(`../battles/${b.campaignSlug}/${b.battleSlug}.json`);
+    if (!res.ok) continue;
+
+    const data = await res.json();
+
+    (data.characters || []).forEach(char => {
+      const key = `${char.name}`;
+
+     const parsed = parseLevelClass(char.levelClass || char.levelclass);
+
+parsed.forEach(lc => {
+  const classKey = `${char.name}-${lc.className}`;
+
+  if (!seen.has(classKey)) {
+    classMap[lc.className] = (classMap[lc.className] || 0) + 1;
+    seen.add(classKey);
+  }
+
+  if (lc.subclass) {
+  const subclassLabel = `${capitalizeWords(lc.subclass)} (${capitalizeWords(lc.className)})`;
+  const subclassKey = `${key}-${subclassLabel}`;
+
+  if (!seen.has(subclassKey)) {
+    subclassMap[subclassLabel] =
+      (subclassMap[subclassLabel] || 0) + 1;
+
+    seen.add(subclassKey);
+  }
+}
+});
+    });
+  }
+
+  return { classMap, subclassMap };
+}
+async function getAllBattlesList() {
+  const battles = await loadAllBattles();
+
+  return battles.map(b => ({
+    name: b.name,
+    campaign: b.campaign
+  }));
+}
+
+async function getAllCampaigns() {
+  const battles = await loadAllBattles();
+
+  const campaignMap = new Map();
+
+  battles.forEach(b => {
+    if (!campaignMap.has(b.campaignSlug)) {
+      campaignMap.set(b.campaignSlug, {
+        name: b.campaign,
+        slug: b.campaignSlug,
+        battles: 0
+      });
+    }
+
+    campaignMap.get(b.campaignSlug).battles++;
+  });
+
+  return Array.from(campaignMap.values());
+}
+function parseLevelClass(levelClassStr) {
+  if (!levelClassStr) return [];
+
+  return levelClassStr
+    // ✅ split on comma OR pipe
+    .split(/[,|]/)
+    .map(entry => entry.trim())
+    .filter(Boolean)
+    .map(entry => {
+
+      // remove "Level-X"
+      entry = entry.replace(/Level-\d+\s*/i, "");
+
+      const parts = entry.split(" ").filter(Boolean);
+
+      if (!parts.length) return null;
+
+      const className = parts.pop().toLowerCase();
+      const subclass = parts.length
+        ? parts.join(" ").toLowerCase()
+        : null;
+
+      return {
+        className,
+        subclass
+      };
+    })
+    .filter(Boolean);
+}
+function renderTopStat(label, total, top) {
+  return `
+    <div class="stat-item">
+      <span>${label}</span>
+      <span>${total}</span>
+    </div>
+
+    <div class="stat-sub stat-top">
+      ${
+        top.image
+          ? `<img class="stat-portrait" src="${normalizeImageSrc(top.image)}">`
+          : ""
+      }
+      <span>${top.name} (${top.value})</span>
+    </div>
+  `;
+}
+async function renderAllTimeStats() {
+
+  const campaigns = await getAllCampaigns();
+
+// sort alphabetically
+campaigns.sort((a, b) =>
+  a.name.localeCompare(b.name)
+);
+
+document.getElementById("alltime-campaigns").innerHTML =
+  campaigns.map(c => `
+    <div class="stat-item">
+      <span>${c.name}</span>
+      <span>${c.battles}</span>
+    </div>
+  `).join("");
+
+const characters = await getAllCharactersWithCampaign();
+
+// sort by campaign, then name
+characters.sort((a, b) =>
+  a.campaign.localeCompare(b.campaign) ||
+  a.name.localeCompare(b.name)
+);
+
+document.getElementById("alltime-characters").innerHTML =
+  characters.map(char => `
+    <div class="stat-item stat-character">
+      ${
+        char.image
+          ? `<img class="stat-portrait" src="${normalizeImageSrc(char.image)}">`
+          : ""
+      }
+      <span>${char.name} (${char.campaign})</span>
+    </div>
+  `).join("");
+  const stats = await computeAllTimeStats();
+  const classes = await computeClassStats();
+  const battles = await getAllBattlesList();
+
+battles.sort((a, b) =>
+  a.campaign.localeCompare(b.campaign) ||
+  a.name.localeCompare(b.name)
+);
+const portraitMap = await getAllCharacterPortraits();
+
+// attach portraits if missing
+if (!stats.topDamage.image) {
+  stats.topDamage.image = portraitMap[stats.topDamage.name];
+}
+if (!stats.topHealing.image) {
+  stats.topHealing.image = portraitMap[stats.topHealing.name];
+}
+if (!stats.topCC.image) {
+  stats.topCC.image = portraitMap[stats.topCC.name];
+}
+  // Window 1
+document.getElementById("alltime-stats").innerHTML = `
+  ${renderTopStat("Damage", Math.round(stats.totalDamage), stats.topDamage)}
+  ${renderTopStat("Healing", stats.totalHealing, stats.topHealing)}
+  ${renderTopStat("CC", stats.totalCC, stats.topCC)}
+`;
+
+  // Window 2
+  const classHTML = Object.entries(classes.classMap)
+    .map(([k,v]) => `
+  <div class="stat-item">
+    <span>${capitalizeWords(k)}</span>
+    <span>${v}</span>
+  </div>
+`)
+    .join("");
+
+  const subclassHTML = Object.entries(classes.subclassMap)
+    .map(([k,v]) => `
+  <div class="stat-item">
+    <span>${capitalizeWords(k)}</span>
+    <span>${v}</span>
+  </div>
+`)
+    .join("");
+
+ // Classes
+document.getElementById("alltime-classes").innerHTML =
+  Object.entries(classes.classMap)
+    .sort((a, b) => b[1] - a[1])
+    .map(([k, v]) => `
+      <div class="stat-item">
+        <span>${capitalizeWords(k)}</span>
+        <span>${v}</span>
+      </div>
+    `)
+    .join("");
+
+// Subclasses
+document.getElementById("alltime-subclasses").innerHTML =
+  Object.entries(classes.subclassMap)
+    .sort((a, b) => b[1] - a[1])
+    .map(([k, v]) => `
+      <div class="stat-item">
+        <span>${capitalizeWords(k)}</span>
+        <span>${v}</span>
+      </div>
+    `)
+    .join("");
+  // Window 3
+ document.getElementById("alltime-battles").innerHTML =
+  battles
+    .map(b => `
+      <div class="stat-item">
+        <span>${b.name} (${b.campaign})</span>
+      </div>
+    `)
+    .join("");
+    
+}
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.querySelector(".all-time-container")) {
+    renderAllTimeStats();
+  }
+});
+async function getAllCharactersWithCampaign() {
+  const battles = await loadAllBattles();
+
+  const characterMap = new Map();
+
+  for (const b of battles) {
+    const res = await fetch(`../battles/${b.campaignSlug}/${b.battleSlug}.json`);
+    if (!res.ok) continue;
+
+    const data = await res.json();
+
+    (data.characters || []).forEach(char => {
+      if (!characterMap.has(char.name)) {
+        characterMap.set(char.name, {
+          name: char.name,
+          campaign: b.campaign,
+          image: char.image || char.portrait || null
+        });
+      }
+    });
+  }
+
+  return Array.from(characterMap.values());
 }

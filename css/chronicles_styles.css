@@ -152,10 +152,12 @@ body.previous-battles-page::after {
 
 /* ================= HEADER ================= */
 .world-header {
-  position: relative;
+   position: relative;
+  z-index: 10;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+ width: 100%;  
+  height: 50px;         /* 🔥 gives it real space */
 }
 
 #worldTitle {
@@ -165,10 +167,12 @@ body.previous-battles-page::after {
 }
 
 .back-top-left {
-  display: inline-flex;
   position: absolute;
-  left: 0;
-  top: 0;
+
+  top: 10px;
+  left: 10px;
+
+  z-index: 10;          /* 🔥 prevents overlap issues */
 }
 
 .top-tabs {
@@ -189,7 +193,9 @@ body.previous-battles-page::after {
   border: 1px solid #888;
   border-radius: 6px;
   cursor: pointer;
-
+   position: relative;
+  z-index: 20;         /* 🔥 ensures it sits above overlays */
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -407,26 +413,49 @@ object-position: center center;
    CHRONICLES STATS PAGE
 ========================= */
 
+body.chronicles-stats-page {
+  background: #020024;
+  overflow-x: hidden;
+}
 .chronicles-stats-page .page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background: none;
-  position: relative;
+  align-items: center; /* 🔥 centers EVERYTHING horizontally */
 }
-
-.chronicles-stats-page .page::before {
+body.chronicles-stats-page::before {
   content: "";
-  position: absolute;
+filter: brightness(1.3);
+  position: fixed;
+   z-index: -10;
+  pointer-events: none; /* 🔥 ensures they NEVER block clicks */
   inset: 0;
+
   background-image: url("../assets/chronicles stats background.png");
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover;
-  opacity: 1;
+  background-size: cover; /* ✅ keep cover */
+
+  z-index: -2;
   pointer-events: none;
-  z-index: -1;
 }
+
+body.chronicles-stats-page::after {
+  content: "";
+ z-index: -10;
+  pointer-events: none; /* 🔥 ensures they NEVER block clicks */
+  position: fixed;
+  inset: 0;
+
+  background: linear-gradient(
+    rgba(0,0,0,0.2),
+    rgba(0,0,0,0.35)
+  );
+
+  z-index: -1;
+  pointer-events: none;
+}
+
+
 
 .chronicles-stats-page .grid {
   position: absolute;
@@ -1190,4 +1219,294 @@ width: 320px;
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+/* Container: vertical stack */
+.all-time-party-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* space between stat boxes */
+  margin-top: 10px;
+}
+
+/* Each stat = its own box */
+.all-time-party-grid > div {
+  display: flex;
+  justify-content: space-between; /* label left, value right */
+  align-items: center;
+
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  font-size: 14px;
+}
+
+/* Label styling */
+.all-time-party-grid b {
+  font-weight: 600;
+  color: #cfd3ff;
+}
+
+/* Optional: hover polish */
+.all-time-party-grid > div:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(2px);
+  transition: 0.15s ease;
+}
+/* =========================
+   ALL-TIME PARTY GRID
+   /* Wrapper: horizontal scroll */
+.all-time-wrapper {
+  display: flex;
+  gap: 20px;
+
+  overflow-x: auto;
+  padding: 20px;
+
+  scroll-snap-type: x mandatory;
+}
+
+/* Each window */
+.stat-window {
+  min-width: 320px;
+  max-width: 400px;
+  height: 500px;
+
+  flex-shrink: 0;
+
+  background: #141414;
+  border: 1px solid #2f2f2f;
+  border-radius: 14px;
+
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  scroll-snap-align: start;
+}
+
+/* Header */
+.stat-window h3 {
+  margin: 0 0 12px;
+  color: #fff;
+}
+
+/* Scrollable content inside window */
+.stat-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Individual stat rows */
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 8px 10px;
+  border-radius: 8px;
+
+  background: #1d1d1d;
+  border: 1px solid #2a2a2a;
+}
+.all-time-container {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 16px;
+  
+}
+.stat-sub {
+  font-size: 0.85em;
+  color: #aaa;
+  margin-bottom: 10px;
+  padding-left: 6px;
+}
+.stat-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #aaa;
+}
+
+.stat-portrait {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #555;
+}
+.stat-character {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-portrait {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+/* ========================= */
+/* MAIN ALL-TIME CONTAINER   */
+/* ========================= */
+
+.all-time-container {
+  width: 75%;
+  margin: 60px auto;
+  padding: 24px;
+
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(420px, 1fr));
+  gap: 20px;
+
+  justify-content: center;   /* 🔥 centers the grid columns */
+  justify-items: stretch;    /* keeps windows filling their columns */
+
+  background: rgba(15, 15, 20, 0.85);
+  border-radius: 18px;
+}
+
+/* ========================= */
+/* STAT WINDOWS              */
+/* ========================= */
+
+.stat-window {
+  background: rgba(18, 18, 22, 0.95); /* neutral dark, no purple */
+  border: 1px solid rgba(255,255,255,0.06);
+ width: 720px;
+  max-width: 900px;   /* 🔥 prevents weird stretching */
+  margin: 0 auto; 
+  border-radius: 14px;
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 280px;
+
+  /* subtle depth */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-window:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.5);
+}
+/* Make some windows span full width */
+.stat-window.full-width {
+  grid-column: span 2;
+}
+
+/* ========================= */
+/* HEADINGS                  */
+/* ========================= */
+
+.stat-window h3 {
+  margin: 0 0 32px;
+  padding-bottom: 32px;
+
+  border-bottom: 5px solid rgba(255,255,255,0.08);
+  text-align: center;
+  letter-spacing: 1px;
+   width: 720px;
+  max-width: 900px;   /* 🔥 prevents weird stretching */
+  margin: 0 auto; 
+  letter-spacing: 1px;
+}
+
+/* ========================= */
+/* LISTS                     */
+/* ========================= */
+
+.stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Scrollable areas */
+.scrollable {
+  flex: 1;                 /* 🔥 fills remaining space */
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* ========================= */
+/* ITEMS                     */
+/* ========================= */
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 6px 8px;
+  border-radius: 6px;
+
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.stat-sub {
+  font-size: 0.85em;
+  opacity: 0.8;
+  padding-left: 8px;
+}
+
+/* ========================= */
+/* CHARACTER ROW             */
+/* ========================= */
+
+.stat-character {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ========================= */
+/* PORTRAITS                 */
+/* ========================= */
+
+.stat-portrait {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: cover;
+
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* ========================= */
+/* RESPONSIVE                */
+/* ========================= */
+
+@media (max-width: 900px) {
+  .all-time-container {
+    width: 95%;
+    grid-template-columns: 1fr; /* stack on mobile */
+  }
+
+  .stat-window.full-width {
+    grid-column: span 1;
+  }
+}
+.stat-window.wide {
+  grid-column: span 2;
+  
 }
