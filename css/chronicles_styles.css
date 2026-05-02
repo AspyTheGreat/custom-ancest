@@ -258,6 +258,34 @@ body.previous-battles-page::after {
 /* =========================
    📦 CONTAINERS
 ========================= */
+
+.round-body.collapsed {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-icon {
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+
+#rounds-wrapper {
+  transition: all 0.25s ease;
+}
+
+#rounds-wrapper.collapsed {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
 .world-card-previous-battles > * {
   width: 100%;
   text-align: center;

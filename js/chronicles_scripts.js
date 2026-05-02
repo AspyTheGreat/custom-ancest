@@ -407,12 +407,17 @@ const finalTurnName =
   ${renderImage(data.images?.start)}
 
     
+<div class="box">
+  <div class="collapsible-header" id="rounds-toggle">
+    <h3>Rounds</h3>
+    <span class="toggle-icon">▼</span>
+  </div>
 
-   <div class="box">
-  <h3>Rounds</h3>
-  <div id="rounds"></div>
+  <div id="rounds-wrapper" class="collapsed">
+    <div id="rounds"></div>
+  </div>
 </div>
-
+   
 
   <div class="box">
   <h3>Party Breakdown</h3>
@@ -477,8 +482,18 @@ const finalTurnName =
 </div>
 
     ${renderImage(data.images?.end)}
-  `;
 
+    
+  `;
+const toggle = document.getElementById("rounds-toggle");
+const wrapper = document.getElementById("rounds-wrapper");
+
+toggle.onclick = () => {
+  wrapper.classList.toggle("collapsed");
+
+  const icon = toggle.querySelector(".toggle-icon");
+  icon.textContent = wrapper.classList.contains("collapsed") ? "▼" : "▲";
+};
   container.querySelector(".backBtn").onclick = () => {
   const campaign = data.campaignSlug || data.campaign?.toLowerCase().replace(/\s+/g, "-");
 
@@ -905,7 +920,10 @@ partyNat1 +=
     const partyAccuracy = partyAttacksMade
       ? Math.round((partyAttacksHit / partyAttacksMade) * 100)
       : 0;
-
+const savesFailed = Math.max(
+  0,
+  partySavesForced - partySavesSucceeded
+);
     const partyPotency = partySavesForced
       ? Math.round(
           (
@@ -1167,13 +1185,14 @@ const timesTargeted =
     div.className = "round-card";
 
     div.innerHTML = `
-      <div class="round-header">
+      <div class="round-header collapsible-round-header">
+  <div class="round-title">
+    Round ${r.round}
+  </div>
+  <span class="toggle-icon">▼</span>
+</div>
 
-        <div class="round-title">
-          Round ${r.round}
-        </div>
-
-      </div>
+<div class="round-body collapsed">
 
       <div class="round-player-columns">
         ${playerColumnsHTML}
@@ -1244,9 +1263,19 @@ const timesTargeted =
         </div>
 
       </div>
+      </div> <!-- round-body -->
     `;
 
     el.appendChild(div);
+    const header = div.querySelector(".collapsible-round-header");
+const body = div.querySelector(".round-body");
+
+header.onclick = () => {
+  body.classList.toggle("collapsed");
+
+  const icon = header.querySelector(".toggle-icon");
+  icon.textContent = body.classList.contains("collapsed") ? "▼" : "▲";
+};
   }
 }
 
