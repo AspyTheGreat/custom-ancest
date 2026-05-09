@@ -1135,7 +1135,7 @@ try {
 
     } catch (err) {
       console.error(err);
-      status.innerText = "Invalid or corrupted JSON.";
+      status.innerText = err.message;
     }
   };
 
@@ -2428,21 +2428,24 @@ async function uploadBattle() {
       body: JSON.stringify(window.finalReport)
     });
 
-    let result;
+   const text = await res.text();
+console.log("RAW RESPONSE:", text);
+
+let result;
 
 try {
-  result = await res.json();
+  result = JSON.parse(text);
 } catch (e) {
-  const text = await res.text();
-  console.error("Non-JSON response:", text);
-  throw new Error("Server returned invalid JSON");
+  console.error("Failed to parse JSON. Raw response:", text);
+  throw new Error("Server returned invalid JSON:\n" + text);
 }
 
     if (result.success) {
-      alert("Battle uploaded successfully!");
-    } else {
-      alert("Upload failed.");
-    }
+  status.innerText = "Upload successful!";
+} else {
+  console.error("SERVER ERROR:", result);
+  status.innerText = "Upload failed: " + (result.error || "Unknown error");
+}
 
   } catch (err) {
     console.error(err);
