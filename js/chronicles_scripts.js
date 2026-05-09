@@ -634,9 +634,9 @@ const savesFailed = Math.max(0, savesForced - savesSucceeded);
 // enemy FAILED saves = total - succeeded
 
 
-  const saveRate = savesForced
-    ? Math.round((savesMade / savesTotal) * 100)
-    : 0;
+const saveRate = savesForced
+  ? Math.round((savesSucceeded / savesForced) * 100)
+  : 0;
 
   // ✅ HP CALCULATIONS HERE
  const hp = getHP(char);
@@ -927,18 +927,15 @@ partyNat1 +=
     const partyAccuracy = partyAttacksMade
       ? Math.round((partyAttacksHit / partyAttacksMade) * 100)
       : 0;
-const savesFailed = Math.max(
+   
+      const partySavesFailed = Math.max(
   0,
   partySavesForced - partySavesSucceeded
 );
-    const partyPotency = partySavesForced
-      ? Math.round(
-          (
-        partySavesSucceeded /
-        partySavesForced
-      ) * 100
-        )
-      : 0;
+
+const partyPotency = partySavesForced
+  ? Math.round((partySavesFailed / partySavesForced) * 100)
+  : 0;
 
     // =========================
     // PLAYER COLUMNS
@@ -974,6 +971,7 @@ const savesFailed = Math.max(
           p.savesSucceeded ??
           0;
 
+          const savesFailed = Math.max(0, savesForced - savesSucceeded);
     
 const potency = savesForced
   ? Math.round((savesFailed / savesForced) * 100)
@@ -2212,7 +2210,14 @@ async function getAllCharacterPortraits() {
 
   return portraitMap;
 }
+async function getAllBattlesList() {
+  const battles = await loadAllBattles();
 
+  return battles.map(b => ({
+    name: b.name,
+    campaign: b.campaign
+  }));
+}
 async function loadAllBattles() {
   const res = await fetch("../battles/index.json");
   return await res.json();
@@ -2283,51 +2288,51 @@ async function computeClassStats() {
   const classMap = {};
   const subclassMap = {};
 
-  const seen = new Set(); // prevents duplicates per character per class
+  const seen = new Set();
 
-  for (const b of battles) {
-    const res = await fetch(`../battles/${b.campaignSlug}/${b.battleSlug}.json`);
-    if (!res.ok) continue;
+  // unique campaigns
+  const campaigns = [
+    ...new Set(battles.map(b => b.campaignSlug))
+  ];
 
-    const data = await res.json();
+  for (const campaignSlug of campaigns) {
 
-    (data.characters || []).forEach(char => {
-      const key = `${char.name}`;
+    const stats = await loadCampaignStats(campaignSlug);
+    if (!stats?.characters) continue;
 
-     const parsed = parseLevelClass(char.levelClass || char.levelclass);
+    Object.values(stats.characters).forEach(char => {
 
-parsed.forEach(lc => {
-  const classKey = `${char.name}-${lc.className}`;
+      (char.classes || []).forEach(c => {
 
-  if (!seen.has(classKey)) {
-    classMap[lc.className] = (classMap[lc.className] || 0) + 1;
-    seen.add(classKey);
-  }
+        const classKey = `${char.name}-${c.class}`;
 
-  if (lc.subclass) {
-  const subclassLabel = `${capitalizeWords(lc.subclass)} (${capitalizeWords(lc.className)})`;
-  const subclassKey = `${key}-${subclassLabel}`;
+        if (!seen.has(classKey)) {
+          classMap[c.class] =
+            (classMap[c.class] || 0) + 1;
 
-  if (!seen.has(subclassKey)) {
-    subclassMap[subclassLabel] =
-      (subclassMap[subclassLabel] || 0) + 1;
+          seen.add(classKey);
+        }
 
-    seen.add(subclassKey);
-  }
-}
-});
+        if (c.subclass) {
+          const label =
+            `${capitalizeWords(c.subclass)} (${capitalizeWords(c.class)})`;
+
+          const subKey = `${char.name}-${label}`;
+
+          if (!seen.has(subKey)) {
+            subclassMap[label] =
+              (subclassMap[label] || 0) + 1;
+
+            seen.add(subKey);
+          }
+        }
+
+      });
+
     });
   }
 
   return { classMap, subclassMap };
-}
-async function getAllBattlesList() {
-  const battles = await loadAllBattles();
-
-  return battles.map(b => ({
-    name: b.name,
-    campaign: b.campaign
-  }));
 }
 
 async function getAllCampaigns() {
@@ -2547,5 +2552,4 @@ async function getAllCharactersWithCampaign() {
   }
 
   return characters;
-  console.log(char.name, char.portrait?.slice(0, 40));
 }
