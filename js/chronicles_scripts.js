@@ -271,19 +271,25 @@ function openBattle(url) {
 // =========================
 // 🧼 FORMAT NAMES
 // =========================
-function normalizeImageSrc(image) {
-  if (!image) return "";
+function normalizeImageSrc(src) {
+  if (!src) return "";
 
-  // already a valid data URL
-  if (image.startsWith("data:image")) {
-    return image;
+  // ✅ already a base64 image
+  if (src.startsWith("data:image")) {
+    return src;
   }
 
-  // raw base64 fallback
-  const isPNG = image.startsWith("iVBOR");
-  const type = isPNG ? "image/png" : "image/jpeg";
+  // ✅ already absolute
+  if (
+    src.startsWith("http://") ||
+    src.startsWith("https://") ||
+    src.startsWith("/")
+  ) {
+    return src;
+  }
 
-  return `data:${type};base64,${image}`;
+  // relative image path
+  return `../${src}`;
 }
 
 function renderImage(image) {
@@ -2237,7 +2243,7 @@ let topCC = { name: "—", value: 0, image: null };
       const dmg = c.totalDamage || 0;
       const heal = c.totalHealing || 0;
       const cc = c.totalCC || 0;
-        const img = c.image || c.portrait || null;
+        const img = c.portrait || null;
 
       totalDamage += dmg;
       totalHealing += heal;
@@ -2541,4 +2547,5 @@ async function getAllCharactersWithCampaign() {
   }
 
   return characters;
+  console.log(char.name, char.portrait?.slice(0, 40));
 }
