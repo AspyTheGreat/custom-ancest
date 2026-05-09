@@ -1117,7 +1117,15 @@ if (!data.campaignName && data.campaign) {
         body: JSON.stringify(data)
       });
 
-      const result = await res.json();
+      let result;
+
+try {
+  result = await res.json();
+} catch (e) {
+  const text = await res.text();
+  console.error("Non-JSON response:", text);
+  throw new Error("Server returned invalid JSON");
+}
 
       if (result.success) {
         status.innerText = "Upload successful!";
@@ -2420,7 +2428,15 @@ async function uploadBattle() {
       body: JSON.stringify(window.finalReport)
     });
 
-    const result = await res.json();
+    let result;
+
+try {
+  result = await res.json();
+} catch (e) {
+  const text = await res.text();
+  console.error("Non-JSON response:", text);
+  throw new Error("Server returned invalid JSON");
+}
 
     if (result.success) {
       alert("Battle uploaded successfully!");

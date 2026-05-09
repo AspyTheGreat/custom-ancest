@@ -313,9 +313,12 @@ await putJsonFile(
   } catch (err) {
 
     return {
-      statusCode: 500,
-      body: err.toString()
-    };
+  statusCode: 500,
+  body: JSON.stringify({
+    success: false,
+    error: err.message || err.toString()
+  })
+};
   }
   
 };
