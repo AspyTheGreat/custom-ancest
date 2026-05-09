@@ -360,17 +360,18 @@ totalNat1: 0,
       totalPotencyAttempts: 0,
       totalPotencySuccess: 0
     };
+    if (
+  stats.characters[slug].portrait === undefined
+) {
+  stats.characters[slug].portrait = null;
+}
   }
   stats.characters[slug].portraits =
   stats.characters[slug].portraits || [];
 }
 
 
-if (
-  stats.characters[slug].portrait === undefined
-) {
-  stats.characters[slug].portrait = null;
-}
+
 
 function parseLevelClass(levelClassStr) {
 
@@ -432,13 +433,13 @@ for (const round of data.roundSummaries || []) {
     const actor = turn.actor;
     if (!actor) continue;
 
-    const slug =
-      actor.slug ||
-      actor.toLowerCase().replace(/\s+/g, "-");
+   const slug =
+  actor.slug ||
+  actor.name?.toLowerCase().replace(/\s+/g, "-");
 
     if (!slug) continue;
 
-    ensureChar(stats, slug, actor);
+    ensureChar(stats, slug, actor.name || actor);
 
     const c = stats.characters[slug];
 const levelClass =
