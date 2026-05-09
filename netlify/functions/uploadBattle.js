@@ -326,8 +326,19 @@ await putJsonFile(
 function ensureChar(stats, slug, name) {
   if (!stats.characters[slug]) {
     stats.characters[slug] = {
-      name,
-      battles: 0,
+  name,
+  slug,
+
+  // =========================
+  // PORTRAITS
+  // =========================
+
+  portrait: null,
+  portraits: [],
+
+  classes: [],
+  levelClass: null,
+  battles: 0,
 totalInitiative: 0,
 initiativeCount: 0,
       totalDamage: 0,
@@ -351,6 +362,67 @@ totalNat1: 0,
     };
   }
 }
+stats.characters[slug].portraits =
+  stats.characters[slug].portraits || [];
+
+if (
+  stats.characters[slug].portrait === undefined
+) {
+  stats.characters[slug].portrait = null;
+}
+
+function parseLevelClass(levelClassStr) {
+
+  if (!levelClassStr) {
+    return [];
+  }
+
+  return levelClassStr
+    .split(/[,|]/)
+    .map(entry => entry.trim())
+    .filter(Boolean)
+    .map(entry => {
+
+      // extract level
+      const levelMatch =
+        entry.match(/Level-(\d+)/i);
+
+      const level =
+        levelMatch
+          ? Number(levelMatch[1])
+          : 0;
+
+      // remove "Level-X"
+      entry = entry.replace(
+        /Level-\d+\s*/i,
+        ""
+      );
+
+      const parts =
+        entry.split(" ").filter(Boolean);
+
+      if (!parts.length) {
+        return null;
+      }
+
+      // final word = class
+      const className =
+        parts.pop().toLowerCase();
+
+      // remaining words = subclass
+      const subclass =
+        parts.length
+          ? parts.join(" ").toLowerCase()
+          : null;
+
+      return {
+        class: className,
+        subclass,
+        level
+      };
+    })
+    .filter(Boolean);
+}
 
 function processBattleStats(data, stats) {
 for (const round of data.roundSummaries || []) {
@@ -368,7 +440,18 @@ for (const round of data.roundSummaries || []) {
     ensureChar(stats, slug, actor);
 
     const c = stats.characters[slug];
+const levelClass =
+  char.levelClass ||
+  char.levelclass ||
+  null;
 
+if (levelClass) {
+
+  c.levelClass = levelClass;
+
+  c.classes =
+    parseLevelClass(levelClass);
+}
     if (turn.initiativeOrder !== undefined) {
       c.totalInitiative += turn.initiativeOrder;
       c.initiativeCount += 1;
@@ -385,9 +468,33 @@ for (const round of data.roundSummaries || []) {
 
     ensureChar(stats, slug, char.name);
 
-    const c = stats.characters[slug];
-    const s = char.stats || {};
-    const defense = s.defense || {};
+   const c = stats.characters[slug];
+
+// =========================
+// PORTRAITS
+// =========================
+
+const portrait =
+  typeof char.portrait === "string" &&
+  char.portrait.startsWith("data:image")
+    ? char.portrait
+    : null;
+
+if (portrait) {
+
+  // latest portrait
+  c.portrait = portrait;
+
+  // ensure array exists
+  c.portraits = c.portraits || [];
+
+  // avoid duplicates
+ // keep only latest portrait
+c.portraits = [portrait];
+}
+
+const s = char.stats || {};
+const defense = s.defense || {};
 
     // =========================
     // BASIC TOTALS

@@ -3,6 +3,7 @@
 // =========================
 const campaignBattleCache = {};
 const campaignPortraitCache = {};
+const characterStatsCache = {};
 const DEBUG = true;
 
 function log(...args) {
@@ -1911,14 +1912,25 @@ createPie("chart-targeted", "Targeted", names, targeted, colors);
 //Character and all time stats//
 
 async function loadCampaignStats(campaignSlug) {
-  const res = await fetch(`../battles/${campaignSlug}/characterStats.json`);
+
+  if (characterStatsCache[campaignSlug]) {
+    return characterStatsCache[campaignSlug];
+  }
+
+  const res = await fetch(
+    `../battles/${campaignSlug}/characterStats.json`
+  );
 
   if (!res.ok) {
     console.error("No stats file found");
     return null;
   }
 
-  return await res.json();
+  const data = await res.json();
+
+  characterStatsCache[campaignSlug] = data;
+
+  return data;
 }
 async function loadStatsCampaigns() {
   container.innerHTML = "Loading campaign stats...";
@@ -1979,48 +1991,23 @@ async function loadStatsCampaigns() {
 }
 
 async function getCampaignCharacterPortraits(campaignSlug) {
-    if (campaignPortraitCache[campaignSlug]) {
-    return campaignPortraitCache[campaignSlug];
+
+  const stats =
+    await loadCampaignStats(campaignSlug);
+
+  if (!stats?.characters) {
+    return {};
   }
-let battles = campaignBattleCache[campaignSlug];
-
-if (!battles) {
-  const res = await fetch("../battles/index.json");
-  const allBattles = await res.json();
-
-  battles = allBattles.filter(
-    b => b.campaignSlug === campaignSlug
-  );
-
-  campaignBattleCache[campaignSlug] = battles;
-}
-
-  const campaignBattles = battles.filter(
-    b => b.campaignSlug === campaignSlug
-  );
 
   const portraitMap = {};
 
-  for (const battle of campaignBattles) {
-    try {
-      const url = `../battles/${battle.campaignSlug}/${battle.battleSlug}.json`;
-      const res = await fetch(url);
+  Object.values(stats.characters).forEach(char => {
 
-      if (!res.ok) continue;
-
-      const data = await res.json();
-
-      (data.characters || []).forEach(char => {
-        if (!portraitMap[char.name]) {
-          portraitMap[char.name] =
-            char.image || char.portrait || null;
-        }
-      });
-
-    } catch (err) {
-      console.warn("Failed to load battle for portraits:", err);
+    if (char.name) {
+      portraitMap[char.name] =
+        char.portrait || null;
     }
-  }
+  });
 
   return portraitMap;
 }
@@ -2168,22 +2155,53 @@ const potency = savesForced
 }
 //All-time stats//
 async function getAllCharacterPortraits() {
-  const battles = await loadAllBattles();
+
+  const battlesIndexRes =
+    await fetch("../battles/index.json");
+
+  if (!battlesIndexRes.ok) {
+    return {};
+  }
+
+  const battles =
+    await battlesIndexRes.json();
 
   const portraitMap = {};
 
-  for (const b of battles) {
-    const res = await fetch(`../battles/${b.campaignSlug}/${b.battleSlug}.json`);
+  // unique campaigns
+  const campaigns = [
+    ...new Set(
+      battles.map(b => b.campaignSlug)
+    )
+  ];
+
+  // load each campaign's characterStats.json
+  for (const campaignSlug of campaigns) {
+
+    const res = await fetch(
+      `../battles/${campaignSlug}/characterStats.json`
+    );
+
     if (!res.ok) continue;
 
-    const data = await res.json();
+    const stats = await res.json();
 
-    (data.characters || []).forEach(char => {
-      if (!portraitMap[char.name]) {
+    const chars =
+      stats.characters || {};
+
+    for (const slug in chars) {
+
+      const char = chars[slug];
+
+      if (
+        char.name &&
+        char.portrait
+      ) {
+
         portraitMap[char.name] =
-          char.image || char.portrait || null;
+          char.portrait;
       }
-    });
+    }
   }
 
   return portraitMap;
@@ -2493,26 +2511,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 async function getAllCharactersWithCampaign() {
+
   const battles = await loadAllBattles();
 
-  const characterMap = new Map();
+  const campaigns = [
+    ...new Set(
+      battles.map(b => b.campaignSlug)
+    )
+  ];
 
-  for (const b of battles) {
-    const res = await fetch(`../battles/${b.campaignSlug}/${b.battleSlug}.json`);
-    if (!res.ok) continue;
+  const characters = [];
 
-    const data = await res.json();
+  for (const slug of campaigns) {
 
-    (data.characters || []).forEach(char => {
-      if (!characterMap.has(char.name)) {
-        characterMap.set(char.name, {
-          name: char.name,
-          campaign: b.campaign,
-          image: char.image || char.portrait || null
-        });
-      }
+    const stats =
+      await loadCampaignStats(slug);
+
+    if (!stats?.characters) continue;
+
+    Object.values(stats.characters).forEach(char => {
+
+      characters.push({
+        name: char.name,
+        campaign: stats.campaign || formatName(slug),
+        image: char.portrait || null
+      });
+
     });
   }
 
-  return Array.from(characterMap.values());
+  return characters;
 }
