@@ -1117,14 +1117,17 @@ if (!data.campaignName && data.campaign) {
         body: JSON.stringify(data)
       });
 
-      let result;
+    const text = await res.text();
+
+console.log("STATUS:", res.status);
+console.log("RAW RESPONSE:", text);
+
+let result;
 
 try {
-  result = await res.json();
+  result = JSON.parse(text);
 } catch (e) {
-  const text = await res.text();
-  console.error("Non-JSON response:", text);
-  throw new Error("Server returned invalid JSON");
+  throw new Error("Server returned non-JSON:\n" + text);
 }
 
       if (result.success) {
@@ -2440,10 +2443,10 @@ try {
   throw new Error("Server returned invalid JSON:\n" + text);
 }
 
-    if (result.success) {
+   if (result.success) {
   status.innerText = "Upload successful!";
 } else {
-  console.error("SERVER ERROR:", result);
+  console.error("SERVER ERROR OBJECT:", result);
   status.innerText = "Upload failed: " + (result.error || "Unknown error");
 }
 
