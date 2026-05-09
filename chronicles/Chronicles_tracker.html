@@ -792,7 +792,9 @@ function saveBattleState() {
     selectedCharacter,
     characters,
     tempGlobal,
-    roundLog
+    roundLog,
+     battleStartImage,
+    battleEndImage
   };
 
   const filename = `${campaignName}_${battleName}_SAVE.json`
@@ -836,6 +838,8 @@ function loadBattleState() {
       characters = data.characters;
       tempGlobal = data.tempGlobal || {};
       roundLog = data.roundLog || {};
+       battleStartImage = data.battleStartImage || null;
+      battleEndImage = data.battleEndImage || null;
 
       // switch UI to combat mode
       document.getElementById("setup").classList.add("hidden");

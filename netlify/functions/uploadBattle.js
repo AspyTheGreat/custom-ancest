@@ -361,9 +361,10 @@ totalNat1: 0,
       totalPotencySuccess: 0
     };
   }
-}
-stats.characters[slug].portraits =
+  stats.characters[slug].portraits =
   stats.characters[slug].portraits || [];
+}
+
 
 if (
   stats.characters[slug].portrait === undefined
@@ -441,8 +442,8 @@ for (const round of data.roundSummaries || []) {
 
     const c = stats.characters[slug];
 const levelClass =
-  char.levelClass ||
-  char.levelclass ||
+  actor.levelClass ||
+  actor.levelclass ||
   null;
 
 if (levelClass) {
