@@ -2021,7 +2021,9 @@ function buildCampaignCharacters(statsData) {
 
   return chars.map(c => ({
     name: c.name,
- battles: c.battles || 0,
+    battles: c.battles || 0,
+    levelClass: c.levelClass || "", // ✅ ADD THIS
+
     stats: {
       damage: c.totalDamage,
       healing: c.totalHealing,
@@ -2118,7 +2120,14 @@ const potency = savesForced
       : ""
   }
 
+<div class="character-text">
   <h4>${char.name}</h4>
+  ${
+    char.levelClass
+      ? `<div class="character-subtitle">${char.levelClass}</div>`
+      : ""
+  }
+</div>
 
 </div>
 
@@ -2413,10 +2422,9 @@ document.getElementById("alltime-campaigns").innerHTML =
   campaigns.map(c => `
     <div class="stat-item">
       <span>${c.name}</span>
-      <span>${c.battles}</span>
+      <span>Number of Battles: ${c.battles}</span>
     </div>
   `).join("");
-
 const characters = await getAllCharactersWithCampaign();
 
 // sort by campaign, then name
@@ -2425,17 +2433,34 @@ characters.sort((a, b) =>
   a.name.localeCompare(b.name)
 );
 
-document.getElementById("alltime-characters").innerHTML =
-  characters.map(char => `
-    <div class="stat-item stat-character">
-      ${
-        char.image
-          ? `<img class="stat-portrait" src="${normalizeImageSrc(char.image)}">`
-          : ""
-      }
-      <span>${char.name} (${char.campaign})</span>
+const groupedChars = {};
+
+characters.forEach(char => {
+  if (!groupedChars[char.campaign]) {
+    groupedChars[char.campaign] = [];
+  }
+  groupedChars[char.campaign].push(char);
+});
+
+const charHTML = Object.entries(groupedChars)
+  .map(([campaign, chars]) => `
+    <div class="campaign-section">
+      <h4 class="campaign-header">${campaign}</h4>
+
+      ${chars.map(char => `
+        <div class="stat-item stat-character">
+          ${
+            char.image
+              ? `<img class="stat-portrait" src="${normalizeImageSrc(char.image)}">`
+              : ""
+          }
+          <span>${char.name}</span>
+        </div>
+      `).join("")}
     </div>
   `).join("");
+
+document.getElementById("alltime-characters").innerHTML = charHTML;
   const stats = await computeAllTimeStats();
   const classes = await computeClassStats();
   const battles = await getAllBattlesList();
@@ -2506,14 +2531,29 @@ document.getElementById("alltime-subclasses").innerHTML =
     `)
     .join("");
   // Window 3
- document.getElementById("alltime-battles").innerHTML =
-  battles
-    .map(b => `
-      <div class="stat-item">
-        <span>${b.name} (${b.campaign})</span>
-      </div>
-    `)
-    .join("");
+const groupedBattles = {};
+
+battles.forEach(b => {
+  if (!groupedBattles[b.campaign]) {
+    groupedBattles[b.campaign] = [];
+  }
+  groupedBattles[b.campaign].push(b);
+});
+
+const battleHTML = Object.entries(groupedBattles)
+  .map(([campaign, bs]) => `
+    <div class="campaign-section">
+      <h4 class="campaign-header">${campaign}</h4>
+
+      ${bs.map(b => `
+        <div class="stat-item">
+          <span>${b.name}</span>
+        </div>
+      `).join("")}
+    </div>
+  `).join("");
+
+document.getElementById("alltime-battles").innerHTML = battleHTML;
     
 }
 document.addEventListener("DOMContentLoaded", () => {

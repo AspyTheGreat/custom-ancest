@@ -325,6 +325,9 @@ await putJsonFile(
 // =========================
 // CHARACTER STAT HELPERS
 // =========================
+function makeSlug(name) {
+  return name?.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+}
 
 function ensureChar(stats, slug, name) {
   if (!stats.characters[slug]) {
@@ -433,12 +436,13 @@ function processBattleStats(data, stats) {
 for (const round of data.roundSummaries || []) {
   for (const turn of round.players || []) {
 
-    const actor = turn.actor;
-    if (!actor) continue;
+   const actor = turn.actor || {
+  name: turn.name,
+  levelClass: null
+};
 
    const slug =
-  actor.slug ||
-  actor.name?.toLowerCase().replace(/\s+/g, "-");
+  actor.slug || makeSlug(actor.name);
 
     if (!slug) continue;
 
@@ -457,17 +461,16 @@ if (levelClass) {
   c.classes =
     parseLevelClass(levelClass);
 }
-    if (turn.initiativeOrder !== undefined) {
-      c.totalInitiative += turn.initiativeOrder;
-      c.initiativeCount += 1;
-    }
+    if (turn.initiative !== undefined) {
+  c.totalInitiative += turn.initiative;
+  c.initiativeCount += 1;
+}
   }
 }
   for (const char of data.characters || []) {
 
-    const slug =
-      char.slug ||
-      char.name?.toLowerCase().replace(/\s+/g, "-");
+   const slug =
+  char.slug || makeSlug(char.name);
 
     if (!slug) continue;
 

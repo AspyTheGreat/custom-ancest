@@ -1409,6 +1409,17 @@ width: 320px;
   border-radius: 18px;
 }
 
+.campaign-section {
+  margin-bottom: 16px;
+}
+
+.campaign-header {
+  margin: 10px 0 6px;
+  font-size: 1.1em;
+  border-bottom: 1px solid #444;
+  padding-bottom: 4px;
+  color: #ccc;
+}
 /* ========================= */
 /* STAT WINDOWS              */
 /* ========================= */
@@ -1537,4 +1548,21 @@ width: 320px;
 .stat-window.wide {
   grid-column: span 2;
   
+}
+.character-subtitle {
+  font-size: 0.9em;
+  font-weight: 600;      /* strong but not identical to name */
+  color: #fff;
+  opacity: 0.9;          /* subtle separation */
+  margin-top: 2px;
+}
+.character-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.party-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
