@@ -2531,21 +2531,54 @@ document.getElementById("alltime-subclasses").innerHTML =
     `)
     .join("");
   // Window 3
+  battles.forEach((b, i) => {
+  b._index = i;
+});
+
 const groupedBattles = {};
 
 battles.forEach(b => {
-  if (!groupedBattles[b.campaign]) {
-    groupedBattles[b.campaign] = [];
+ const slug =
+  b.campaignSlug ||
+  b.campaign?.toLowerCase().trim() ||
+  "unknown";
+
+  if (!groupedBattles[slug]) {
+    groupedBattles[slug] = {
+      name: b.campaign,
+      battles: []
+    };
   }
-  groupedBattles[b.campaign].push(b);
+
+  groupedBattles[slug].battles.push(b);
 });
+Object.values(groupedBattles).forEach(group => {
+  group.battles.sort((a, b) => {
+    return a._index - b._index; // fallback-only (safe for now)
+  });
+});
+document.getElementById("alltime-battles").innerHTML =
+  Object.values(groupedBattles)
+    .map(group => `
+      <div class="campaign-section">
+        <h4 class="campaign-header">${group.name}</h4>
 
-const battleHTML = Object.entries(groupedBattles)
-  .map(([campaign, bs]) => `
+        ${group.battles.map(b => `
+          <div class="stat-item">
+            <span>${b.name}</span>
+          </div>
+        `).join("")}
+      </div>
+    `)
+    .join("");
+
+
+const battleHTML = Object.values(groupedBattles)
+  .map(group => `
     <div class="campaign-section">
-      <h4 class="campaign-header">${campaign}</h4>
+      <h4 class="campaign-header">${group.name}</h4>
 
-      ${bs.map(b => `
+      ${group.battles.map(b => `
         <div class="stat-item">
           <span>${b.name}</span>
         </div>

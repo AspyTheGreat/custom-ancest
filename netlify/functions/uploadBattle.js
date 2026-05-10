@@ -330,11 +330,13 @@ function makeSlug(name) {
 }
 
 function ensureChar(stats, slug, name) {
+  
   if (!stats.characters[slug]) {
     stats.characters[slug] = {
   name,
   slug,
 
+roundCount: 0,
   // =========================
   // PORTRAITS
   // =========================
@@ -347,6 +349,19 @@ function ensureChar(stats, slug, name) {
   battles: 0,
 totalInitiative: 0,
 initiativeCount: 0,
+actions: { attack: 0, spell: 0, move: 0, misc: 0, none: 0 },
+bonusActions: { attack: 0, spell: 0, move: 0, misc: 0, none: 0 },
+reactions: { attack: 0, spell: 0, move: 0, misc: 0, none: 0 },
+
+spellSlots: {
+  1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
+  6: 0, 7: 0, 8: 0, 9: 0
+},
+
+totalActions: 0,
+totalBonusActions: 0,
+totalReactions: 0,
+totalSpellSlotsUsed: 0,
       totalDamage: 0,
       totalHealing: 0,
       totalCC: 0,
@@ -360,11 +375,14 @@ totalSavesTotal: 0,
 
 totalNat20: 0,
 totalNat1: 0,
+conditions: [],
+totalConditions: 0,
       totalAttacks: 0,
       totalHits: 0,
 
       totalPotencyAttempts: 0,
       totalPotencySuccess: 0
+      
     };
     if (
   stats.characters[slug].portrait === undefined
@@ -432,10 +450,44 @@ function parseLevelClass(levelClassStr) {
     .filter(Boolean);
 }
 
+function mergeCounts(target, source) {
+  if (!source) return;
+
+  for (const key in source) {
+    target[key] = (target[key] || 0) + (source[key] || 0);
+  }
+}
+
 function processBattleStats(data, stats) {
 for (const round of data.roundSummaries || []) {
   for (const turn of round.players || []) {
+// =========================
+// ROUND CONDITIONS
+// =========================
 
+if (Array.isArray(turn.conditions)) {
+  const slug = makeSlug(turn.name);
+  if (!slug) continue;
+
+  ensureChar(stats, slug, turn.name);
+
+  const c = stats.characters[slug];
+
+  c.conditions = c.conditions || [];
+
+  turn.conditions.forEach(cond => {
+    if (!cond || !cond.text) return;
+
+    c.conditions.push({
+      text: cond.text,
+      round: cond.round ?? round.round,
+      turn: cond.turn ?? null,
+      battle: data.battle || null
+    });
+
+    c.totalConditions += 1;
+  });
+}
    const actor = turn.actor || {
   name: turn.name,
   levelClass: null
@@ -465,8 +517,13 @@ if (levelClass) {
   c.totalInitiative += turn.initiative;
   c.initiativeCount += 1;
 }
+c.roundCount += (data.roundSummaries || []).length;
   }
 }
+function sum(obj) {
+  return Object.values(obj || {}).reduce((a, b) => a + b, 0);
+}
+
   for (const char of data.characters || []) {
 
    const slug =
@@ -502,8 +559,25 @@ c.portraits = [portrait];
 }
 
 const s = char.stats || {};
+// =========================
+// CONDITIONS
+// =========================
+
 const defense = s.defense || {};
 
+// =========================
+// ACTION BREAKDOWNS
+// =========================
+
+mergeCounts(c.actions, s.actions);
+mergeCounts(c.bonusActions, s.bonusActions);
+mergeCounts(c.reactions, s.reactions);
+mergeCounts(c.spellSlots, s.spellSlots || s.spellSlotsUsed);
+
+c.totalActions += sum(s.actions);
+c.totalBonusActions += sum(s.bonusActions);
+c.totalReactions += sum(s.reactions);
+c.totalSpellSlotsUsed += sum(s.spellSlots || s.spellSlotsUsed);
     // =========================
     // BASIC TOTALS
     // =========================

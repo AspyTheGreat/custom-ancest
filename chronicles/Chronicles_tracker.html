@@ -419,7 +419,6 @@ let selectedCharacter = 0;
 let currentTurn = 0;
 let round = 1;
 let history = [];
-let tempTurns = {}; // key = character index 
 let roundLog = {};
 
 function convertTextToJSON() {
@@ -531,7 +530,7 @@ function convertTextToJSON() {
       const charRegex =
         /^:(\w+):\s*([^\n:]+):\s*\n([\s\S]*?)(?=\n:\w+:|\nParty Breakdown:|$)/gm;
 
-      let characters = [];
+      characters = [];
       let match;
 
       while ((match = charRegex.exec(text)) !== null) {
@@ -1324,24 +1323,65 @@ function setHP(value) {
   renderHP();
   updateLiveSummary();
 }
-function getGlobal() {
- if (!tempGlobal[selectedCharacter]) {
-  tempGlobal[selectedCharacter] = {
-    reactions:{attack:0,spell:0,move:0,misc:0,none:0},
-    attacksDodged:0,
-    attacksTaken:0,
-    savesMade:0,
-    savesTotal:0,
-    nat1:0,
-    nat20:0,
-    damageTaken:0
-  };
-}
-  return tempGlobal[selectedCharacter];
+
+function addCondition(text) {
+  const index = selectedCharacter; // force correct character
+  const g = getGlobal(index);
+
+  if (!g.conditions) g.conditions = [];
+
+  g.conditions.push({
+    round: Number(round) || 0,
+    turn: Number(currentTurn) || 0,
+    text: String(text || "").trim()
+  });
+
+  console.log("Condition added to", index, g.conditions);
+
+  updateLiveSummary();
 }
 
-function changeGlobal(type, delta) {
-  const g = getGlobal();
+function getGlobal(index = selectedCharacter) {
+  if (!tempGlobal[index]) {
+    tempGlobal[index] = {
+      // core
+      damage: 0,
+      healing: 0,
+      cc: 0,
+      damageTaken: 0,
+
+      // rolls
+      nat1: 0,
+      nat20: 0,
+
+      // actions
+      actions: { attack:0, spell:0, move:0, misc:0 },
+      bonusActions: { attack:0, spell:0, move:0, misc:0 },
+      reactions: { attack:0, spell:0, move:0, misc:0, none:0 },
+
+      // combat
+      attacks: { hit:0, total:0 },
+      saves: { forced:0, succeeded:0 },
+
+      defense: {
+        attacksDodged:0,
+        attacksTaken:0,
+        savesMade:0,
+        savesTotal:0
+      },
+
+      // resources
+      spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+
+      // misc
+      conditions: []
+    };
+  }
+  return tempGlobal[index];
+}
+
+function changeGlobal(type, delta, index = selectedCharacter) {
+  const g = getGlobal(index);
 
   g[type] = Math.max(0, (g[type] || 0) + delta);
 
@@ -1525,6 +1565,35 @@ function sortByInitiative() {
   characters.sort((a, b) => b.initiative - a.initiative);
 }
 
+function createEmptyTurn() {
+  return {
+    damage: 0,
+    healing: 0,
+    cc: 0,
+    damageTaken: 0,
+
+    actions: { attack:0, spell:0, move:0, misc:0 },
+    bonusActions: { attack:0, spell:0, move:0, misc:0 },
+    reactions: { attack:0, spell:0, move:0, misc:0, none:0 },
+
+    attacks: { hit:0, total:0 },
+    saves: { forced:0, succeeded:0 },
+
+    defense: {
+      attacksDodged:0,
+      attacksTaken:0,
+      savesMade:0,
+      savesTotal:0
+    },
+
+    spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+
+    nat1: 0,
+    nat20: 0,
+    conditions: []
+  };
+}
+
 function startCombat() {
 campaignName = document.getElementById("campaignName")?.value.trim() || campaignName || "Unknown Campaign";
 document.getElementById("battleHeader").innerText =
@@ -1540,7 +1609,10 @@ document.getElementById("battleHeader").innerText =
 
   characters = [];
   tempGlobal = {};
+
+
   for (let i = 0; i < names.length; i++) {
+
     let resources = {};
 const maxHP = +blocks[i].querySelector(".maxHP")?.value || 0;
 const currentHP = +blocks[i].querySelector(".currentHP")?.value || maxHP;
@@ -1556,6 +1628,7 @@ const currentHP = +blocks[i].querySelector(".currentHP")?.value || maxHP;
       
     });
 
+ tempGlobal[i] = createEmptyGlobal();
 
 characters.push({
   rounds: [],
@@ -1618,6 +1691,36 @@ sortByInitiative();
   updateTurnUI();
 }
 
+function createEmptyGlobal() {
+  return {
+    damage: 0,
+    healing: 0,
+    cc: 0,
+    damageTaken: 0,
+
+    nat1: 0,
+    nat20: 0,
+
+    actions: { attack:0, spell:0, move:0, misc:0 },
+    bonusActions: { attack:0, spell:0, move:0, misc:0 },
+    reactions: { attack:0, spell:0, move:0, misc:0, none:0 },
+
+    attacks: { hit:0, total:0 },
+    saves: { forced:0, succeeded:0 },
+
+    defense: {
+      attacksDodged:0,
+      attacksTaken:0,
+      savesMade:0,
+      savesTotal:0
+    },
+
+    spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+
+    conditions: []
+  };
+}
+
 function formatCounter(obj) {
   if (!obj) return "";
   return Object.entries(obj)
@@ -1629,10 +1732,10 @@ function formatCounter(obj) {
 
 function updateCounters() {
   document.getElementById("actionCounter").innerText =
-    formatCounter(getTempTurn(selectedCharacter).actions);
+    formatCounter(getGlobal(selectedCharacter).actions);
 
   document.getElementById("bonusActionsCounter").innerText =
-    formatCounter(getTempTurn(selectedCharacter).bonusActions);
+    formatCounter(getGlobal(selectedCharacter).bonusActions);
 
 }
 
@@ -1729,20 +1832,12 @@ function removeSummon(index) {
 }
 
 function switchCharacter(index) {
+  captureInputsToTemp();
   selectedCharacter = +index;
 
- if (!tempGlobal[index]) {
-  tempGlobal[index] = {
-      reactions:{attack:0,spell:0,move:0,misc:0,none:0},
-    attacksDodged:0,
-attacksTaken:0,
-savesMade:0,
-savesTotal:0,
-nat1:0,
-nat20:0,
-      damageTaken: 0,
-    };
-  }
+if (!tempGlobal[index]) {
+  tempGlobal[index] = createEmptyGlobal();
+}
 
   renderResources();
   updateLiveSummary();
@@ -1768,7 +1863,7 @@ if (input && input !== document.activeElement) {
     `Round ${round} — ${c.name}`;
 
 
-
+if (selectedCharacter === currentTurn) {
   [
   "attacksHit",
   "attacksTotal",
@@ -1782,10 +1877,12 @@ if (input && input !== document.activeElement) {
   "savesMadeInput",
   "savesTotalInput",
   "damageTaken"
+  
 ].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.value = "";
 });
+}
   updateCounters();
   renderResources();
   updateLiveSummary();
@@ -1794,21 +1891,21 @@ if (input && input !== document.activeElement) {
   renderHP();
 }
 
-function changeAction(type, sub, delta) {
-  if (!getTempTurn(selectedCharacter)[type][sub]) getTempTurn(selectedCharacter)[type][sub] = 0;
+function changeAction(type, sub, delta, index = selectedCharacter) {
+  const g = getGlobal(index);
 
-  getTempTurn(selectedCharacter)[type][sub] = Math.max(0, getTempTurn(selectedCharacter)[type][sub] + delta);
+  g[type][sub] = Math.max(0, (g[type][sub] || 0) + delta);
 
   updateCounters();
   updateLiveSummary();
 }
 
-function changeCounter(path, key, delta) {
-  let obj = getTempTurn(selectedCharacter)[path];
+function changeCounter(path, key, delta, index = selectedCharacter) {
+  const g = getGlobal(index);
 
-  if (!obj[key]) obj[key] = 0;
+  if (!g[path][key]) g[path][key] = 0;
 
-  obj[key] = Math.max(0, obj[key] + delta);
+  g[path][key] = Math.max(0, g[path][key] + delta);
 
   updateCounterUI();
   updateLiveSummary();
@@ -1819,34 +1916,33 @@ function saveSnapshot() {
 }
 
 function addSpellSlot() {
-  const select = document.getElementById("spellLevelSelect");
-  let level = +select.value;
-
+  const level = +document.getElementById("spellLevelSelect").value;
   if (!level) return;
 
-  getTempTurn(selectedCharacter).spellSlots[level]++;
-  
+  const g = getGlobal();
+
+  g.spellSlots[level]++;
+
   updateSpellSlotUI();
   updateLiveSummary();
 
-  // reset dropdown after selection
   select.value = "";
 }
 
 function updateCounterUI() {
   document.getElementById("attackCounter").innerText =
-    `Hit:${getTempTurn(selectedCharacter).attacks.hit} / Total:${getTempTurn(selectedCharacter).attacks.total}`;
+    `Hit:${getGlobal(selectedCharacter).attacks.hit} / Total:${getGlobal(selectedCharacter).attacks.total}`;
 
   document.getElementById("saveCounter").innerText =
-    `Forced:${getTempTurn(selectedCharacter).saves.forced} / Success:${getTempTurn(selectedCharacter).saves.succeeded}`;
+    `Forced:${getGlobal(selectedCharacter).saves.forced} / Success:${getGlobal(selectedCharacter).saves.succeeded}`;
 
   document.getElementById("defenseCounter").innerText =
-    `Dodged:${getTempTurn(selectedCharacter).defense.attacksDodged}/${getTempTurn(selectedCharacter).defense.attacksTaken} | Saves:${getTempTurn(selectedCharacter).defense.savesMade}/${getTempTurn(selectedCharacter).defense.savesTotal}`;
+    `Dodged:${getGlobal(selectedCharacter).defense.attacksDodged}/${getGlobal(selectedCharacter).defense.attacksTaken} | Saves:${getGlobal(selectedCharacter).defense.savesMade}/${getGlobal(selectedCharacter).defense.savesTotal}`;
 }
 
 function updateSpellSlotUI() {
   document.getElementById("spellSlotCounter").innerText =
-    Object.entries(getTempTurn(selectedCharacter).spellSlots)
+    Object.entries(getGlobal(selectedCharacter).spellSlots)
       .filter(([lvl,val]) => val > 0)
       .map(([lvl,val]) => `L${lvl}:${val}`)
       .join(" | ") || "none";
@@ -1902,15 +1998,15 @@ if (c.summons.length === 0) {
 let reactionSum = Object.values(g.reactions || {}).reduce((a,b)=>a+b,0);
   let rounds = Math.max(round-1,1);
 
-  let tempActionTotal = Object.values(getTempTurn(selectedCharacter).actions).reduce((a,b)=>a+b,0);
-  let tempbonusActionsTotal = Object.values(getTempTurn(selectedCharacter).bonusActions).reduce((a,b)=>a+b,0);
+  let tempActionTotal = Object.values(getGlobal(selectedCharacter).actions).reduce((a,b)=>a+b,0);
+  let tempbonusActionsTotal = Object.values(getGlobal(selectedCharacter).bonusActions).reduce((a,b)=>a+b,0);
 
   let dpr = (c.stats.damage / rounds).toFixed(2);
 
   let spellHTML = "<br><b>Spell Slots Used</b><br>";
 
 for (let lvl in c.stats.spellSlotsUsed) {
-  let val = c.stats.spellSlotsUsed[lvl] + (getTempTurn(selectedCharacter).spellSlots?.[lvl] || 0);
+  let val = c.stats.spellSlotsUsed[lvl] + (getGlobal(selectedCharacter).spellSlots?.[lvl] || 0);
   if (val > 0) spellHTML += `L${lvl}: ${val}<br>`;
 }
 
@@ -1922,10 +2018,13 @@ for (let key in c.resources) {
 }
 let conditionHTML = "<br><b>Conditions</b><br>";
 
-if (!c.stats.conditions || c.stats.conditions.length === 0) {
+const tempConds = getGlobal(selectedCharacter).conditions || [];
+const allConds = [...(c.stats.conditions || []), ...tempConds];
+
+if (allConds.length === 0) {
   conditionHTML += "none<br>";
 } else {
-  c.stats.conditions.slice(-5).forEach(cond => {
+  allConds.slice(-5).forEach(cond => {
     conditionHTML += `R${cond.round}T${cond.turn}: ${cond.text}<br>`;
   });
 }
@@ -1941,10 +2040,10 @@ ${hpHTML}
     Attacks: ${c.stats.attacksHit}/${c.stats.attacksTotal}<br>
     Saves: ${c.stats.savesForced}/${c.stats.savesSucceeded}<br><br>
 
-    Damage: ${c.stats.damage + getTempTurn(selectedCharacter).damage}<br>
-    Healing: ${c.stats.healing + getTempTurn(selectedCharacter).healing}
+    Damage: ${c.stats.damage + getGlobal(selectedCharacter).damage}<br>
+    Healing: ${c.stats.healing + getGlobal(selectedCharacter).healing}
 DPR: ${dpr}<br>
-CC: ${c.stats.cc + getTempTurn(selectedCharacter).cc}<br><br>
+CC: ${c.stats.cc + getGlobal(selectedCharacter).cc}<br><br>
 ${summonHTML}
 <b>Incoming</b><br>
 Off-turn reactions: ${reactionSum}<br>
@@ -1958,76 +2057,106 @@ ${conditionHTML}
   `;
 }
 
-function createEmptyTurn() {
-  return {
-    damage: 0,
-    healing: 0,
-    cc: 0,
-    damageTaken: 0,
-    nat1: 0,
-    nat20: 0,
-    actions: {attack:0,spell:0,move:0,misc:0,none:0},
-    bonusActions: {attack:0,spell:0,move:0,misc:0,none:0},
-    attacks: {hit:0,total:0},
-    saves: {forced:0,succeeded:0},
-    defense: {attacksDodged:0,attacksTaken:0,savesMade:0,savesTotal:0},
-    reactions: {attack:0,spell:0,move:0,misc:0,none:0},
-    spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0}
-  };
-}
 
-function getTempTurn(index) {
-  if (!tempTurns[index]) {
-    tempTurns[index] = createEmptyTurn();
-  }
-  return tempTurns[index];
+
+function captureInputsToTemp() {
+  const g = getGlobal(selectedCharacter);
+
+  // existing
+  g.damage += +document.getElementById("damage")?.value || 0;
+  g.healing += +document.getElementById("healing")?.value || 0;
+  g.cc += +document.getElementById("cc")?.value || 0;
+  g.damageTaken += +document.getElementById("damageTaken")?.value || 0;
+
+  // ✅ NEW: capture condition input
+const condInput = document.getElementById("conditionsInput");
+const text = condInput?.value?.trim();
+
+if (text) {
+  if (!g.conditions) g.conditions = [];
+
+  text.split(",").forEach(t => {
+    const clean = t.trim();
+    if (!clean) return;
+
+    g.conditions.push({
+      round: Number(round) || 0,
+      turn: Number(currentTurn) || 0,
+      text: clean
+    });
+  });
+
+  condInput.value = "";
+}
 }
 
 function nextTurn() {
+
+  // ✅ ALWAYS commit FIRST
+  captureInputsToTemp();
   commitTurn();
+
+  updateLiveSummary();
+
+  selectedCharacter = currentTurn;
 
   currentTurn++;
 
-  // ✅ END OF ROUND DETECTED
+  // ✅ END OF ROUND
+  if (currentTurn >= characters.length) {
 
-      if (currentTurn >= characters.length) {
+    characters.forEach(c => {
+      if (!c._roundTemp) return;
 
-  characters.forEach(c => {
-    if (!c._roundTemp) return;
+      // 🔥 APPLY TOTALS
+      c.stats.damage += c._roundTemp.damage;
+      c.stats.healing += c._roundTemp.healing;
+      c.stats.cc += c._roundTemp.cc;
+      c.stats.damageTaken += c._roundTemp.damageTaken;
 
-    // 🔥 APPLY TOTALS HERE
-    c.stats.damage += c._roundTemp.damage;
-    c.stats.healing += c._roundTemp.healing;
-    c.stats.cc += c._roundTemp.cc;
-    c.stats.damageTaken += c._roundTemp.damageTaken;
+      // attacks / saves
+      c.stats.attacksHit += c._roundTemp.attacks.hit;
+      c.stats.attacksTotal += c._roundTemp.attacks.total;
 
-    // attacks / saves
-    c.stats.attacksHit += c._roundTemp.attacks.hit;
-    c.stats.attacksTotal += c._roundTemp.attacks.total;
+      c.stats.savesForced += c._roundTemp.saves.forced;
+      c.stats.savesSucceeded += c._roundTemp.saves.succeeded;
 
-    c.stats.savesForced += c._roundTemp.saves.forced;
-    c.stats.savesSucceeded += c._roundTemp.saves.succeeded;
+      c.stats.attacksDodged += c._roundTemp.defense.attacksDodged;
+      c.stats.attacksTaken += c._roundTemp.defense.attacksTaken;
 
-    c.stats.attacksDodged += c._roundTemp.defense.attacksDodged;
-    c.stats.attacksTaken += c._roundTemp.defense.attacksTaken;
+      c.stats.savesMade += c._roundTemp.defense.savesMade;
+      c.stats.savesTotal += c._roundTemp.defense.savesTotal;
 
-    c.stats.savesMade += c._roundTemp.defense.savesMade;
-    c.stats.savesTotal += c._roundTemp.defense.savesTotal;
+      // ✅ ACTION TOTALS (your fix — keep this)
+      for (let k in c._roundTemp.actions) {
+        c.stats.actions[k] = (c.stats.actions[k] || 0) + (c._roundTemp.actions[k] || 0);
+      }
 
-    // push round snapshot
-    c.rounds.push({
-      round: round,
-      ...c._roundTemp
+      for (let k in c._roundTemp.bonusActions) {
+        c.stats.bonusActions[k] = (c.stats.bonusActions[k] || 0) + (c._roundTemp.bonusActions[k] || 0);
+      }
+
+      for (let k in c._roundTemp.reactions) {
+        c.stats.reactions[k] = (c.stats.reactions[k] || 0) + (c._roundTemp.reactions[k] || 0);
+      }
+
+      // totals
+      c.stats.actionsTotal = Object.values(c.stats.actions).reduce((a,b)=>a+b,0);
+      c.stats.bonusActionsTotal = Object.values(c.stats.bonusActions).reduce((a,b)=>a+b,0);
+
+      // ✅ SAVE ROUND
+      c.rounds.push({
+        round: round,
+        ...c._roundTemp
+      });
+
+      // reset
+      c._roundTemp = createEmptyTurn();
     });
 
-    // reset for next round
-    c._roundTemp = createEmptyTurn();
-  });
-
-  currentTurn = 0;
-  round++;
-}
-
+    currentTurn = 0;
+    round++;
+  }
 
   selectedCharacter = currentTurn;
 
@@ -2036,111 +2165,195 @@ function nextTurn() {
   renderSummons();
 }
 
+function hasGlobalData(g) {
+  if (!g) return false;
+
+  // ✅ CONDITIONS ALWAYS COUNT
+  if (g.conditions && g.conditions.length > 0) return true;
+
+  // check everything else
+  return Object.entries(g).some(([key, val]) => {
+    if (key === "conditions") return false;
+    if (typeof val === "number") return val !== 0;
+    if (typeof val === "object") {
+      return Object.values(val).some(v => v !== 0);
+    }
+    return false;
+  });
+}
+
 function commitTurn() {
   if (!characters.length) return;
 
   if (!roundLog[round]) roundLog[round] = [];
 
-  characters.forEach((c, i) => {
-    const t = tempTurns[i];
-    const g = tempGlobal[i];
+const i = selectedCharacter;
+const c = characters[i];
+const g = tempGlobal[i];
 
-    // 🛑 skip if no data (prevents zero-overwrites)
-    if (!t && !g) return;
+if (!g) return;
 
-    const hasData =
-      t && Object.values(t).some(v =>
-        typeof v === "object"
-          ? Object.values(v).some(x => x > 0)
-          : v > 0
-      ) ||
-      g && Object.values(g).some(v =>
-        typeof v === "object"
-          ? Object.values(v).some(x => x > 0)
-          : v > 0
-      );
-
-    if (!hasData) return;
+// ensure temp exists
+if (!c._roundTemp) c._roundTemp = createEmptyTurn();
 
     // =========================
-    // 🔹 ADD TO ROUND TEMP ONLY
+    // 🔥 CORE TOTALS
     // =========================
 
-    if (!c._roundTemp) c._roundTemp = createEmptyTurn();
-c.summons.forEach(s => {
-  s.totalDamage += s.turnDamage;
-  s.totalHealing += s.turnHealing;
-  s.totalCC += s.turnCC;
-  s.damageTaken += s.turnTaken;
+    c._roundTemp.damage += g.damage || 0;
+    c._roundTemp.healing += g.healing || 0;
+    c._roundTemp.cc += g.cc || 0;
+    c._roundTemp.damageTaken += g.damageTaken || 0;
 
-  // reset turn values
-  s.turnDamage = 0;
-  s.turnHealing = 0;
-  s.turnCC = 0;
-  s.turnTaken = 0;
-});
-    c._roundTemp.damage += t.damage || 0;
-    c._roundTemp.healing += t.healing || 0;
-    c._roundTemp.cc += t.cc || 0;
-    c._roundTemp.damageTaken += g?.damageTaken || 0;
+    // =========================
+    // 🔥 ACTIONS
+    // =========================
 
-    // attacks / saves
-    c._roundTemp.attacks.hit += t.attacks?.hit || 0;
-    c._roundTemp.attacks.total += t.attacks?.total || 0;
-
-    c._roundTemp.saves.forced += t.saves?.forced || 0;
-    c._roundTemp.saves.succeeded += t.saves?.succeeded || 0;
-
-    // defense
-    c._roundTemp.defense.attacksDodged += t.defense?.attacksDodged || 0;
-    c._roundTemp.defense.attacksTaken += t.defense?.attacksTaken || 0;
-
-    c._roundTemp.defense.savesMade += t.defense?.savesMade || 0;
-    c._roundTemp.defense.savesTotal += t.defense?.savesTotal || 0;
-
-    // reactions
-    for (let k in (g?.reactions || {})) {
-      c._roundTemp.reactions[k] += g.reactions[k];
+    for (let k in g.actions) {
+      c._roundTemp.actions[k] += g.actions[k] || 0;
     }
 
-    // spell slots
-    for (let lvl in (t.spellSlots || {})) {
-      c._roundTemp.spellSlots[lvl] += t.spellSlots[lvl];
+    for (let k in g.bonusActions) {
+      c._roundTemp.bonusActions[k] += g.bonusActions[k] || 0;
     }
 
+    for (let k in g.reactions) {
+      c._roundTemp.reactions[k] += g.reactions[k] || 0;
+    }
+
+    // =========================
+    // 🔥 ATTACKS / SAVES
+    // =========================
+
+    c._roundTemp.attacks.hit += g.attacks.hit || 0;
+    c._roundTemp.attacks.total += g.attacks.total || 0;
+
+    c._roundTemp.saves.forced += g.saves.forced || 0;
+    c._roundTemp.saves.succeeded += g.saves.succeeded || 0;
+
+    // =========================
+    // 🔥 DEFENSE
+    // =========================
+
+    c._roundTemp.defense.attacksDodged += g.defense.attacksDodged || 0;
+    c._roundTemp.defense.attacksTaken += g.defense.attacksTaken || 0;
+
+    c._roundTemp.defense.savesMade += g.defense.savesMade || 0;
+    c._roundTemp.defense.savesTotal += g.defense.savesTotal || 0;
+
+    // =========================
+    // 🔥 SPELL SLOTS
+    // =========================
+
+    for (let lvl in g.spellSlots) {
+      c._roundTemp.spellSlots[lvl] += g.spellSlots[lvl] || 0;
+    }
+
+    // =========================
+    // 🔥 NAT ROLLS
+    // =========================
+
+    c._roundTemp.nat1 += g.nat1 || 0;
+    c._roundTemp.nat20 += g.nat20 || 0;
+
+    // =========================
+    // 🔥 CONDITIONS
+    // =========================
+if (g.conditions?.length) {
+
+  if (!c.stats.conditions) c.stats.conditions = [];
+  if (!c._roundTemp.conditions) c._roundTemp.conditions = [];
+
+  g.conditions.forEach(cond => {
+    const clean = {
+      round: cond.round ?? round,
+      turn: cond.turn ?? currentTurn,
+      text: cond.text ?? ""
+    };
+
+    c._roundTemp.conditions.push(clean);
+    c.stats.conditions.push(clean);
+  });
+
+  g.conditions = [];
+}
     // =========================
     // 🔹 ROUND LOG (optional)
     // =========================
 
     roundLog[round].push({
       name: c.name,
-      damage: t.damage || 0,
-      healing: t.healing || 0,
-      cc: t.cc || 0
+      damage: g.damage || 0,
+      healing: g.healing || 0,
+      cc: g.cc || 0
     });
 
     // =========================
-    // 🔹 RESET ONLY TEMP INPUTS
+    // 🔁 RESET GLOBAL INPUT
     // =========================
 
-    tempTurns[i] = createEmptyTurn();
-    tempGlobal[i] = {
-      reactions:{attack:0,spell:0,move:0,misc:0,none:0},
-      attacksDodged:0,
-      attacksTaken:0,
-      savesMade:0,
-      savesTotal:0,
-      nat1:0,
-      nat20:0,
-      damageTaken:0
-    };
-  });
+    tempGlobal[i] = createEmptyGlobal();
+  
 }
 
 function updateResource(name, val) {
   characters[currentTurn].resources[name].current = +val;
   updateLiveSummary();
   autoSave();
+}
+
+function buildFinalStats(char) {
+  const s = char.stats || {};
+
+  // =========================
+  // ACTION TOTALS
+  // =========================
+
+  const actionTotal = Object.values(s.actions || {})
+    .reduce((a, b) => a + b, 0);
+
+  const bonusActionTotal = Object.values(s.bonusActions || {})
+    .reduce((a, b) => a + b, 0);
+
+  const reactionTotal = Object.values(s.reactions || {})
+    .reduce((a, b) => a + b, 0);
+
+  // =========================
+  // SPELL SLOTS USED
+  // =========================
+
+  const spellSlotsUsed = Object.values(s.spellSlots || {})
+    .reduce((a, b) => a + b, 0);
+
+  // =========================
+  // RETURN CLEAN STRUCTURE
+  // =========================
+
+  return {
+    damage: s.damage || 0,
+    healing: s.healing || 0,
+    cc: s.cc || 0,
+    damageTaken: s.damageTaken || 0,
+
+    nat20: s.nat20 || 0,
+    nat1: s.nat1 || 0,
+
+    actions: s.actions || {},
+    bonusActions: s.bonusActions || {},
+    reactions: s.reactions || {},
+
+    actionsTotal: actionTotal,
+    bonusActionsTotal: bonusActionTotal,
+    reactionsTotal: reactionTotal,
+
+    spellSlots: s.spellSlots || {},
+    spellSlotsUsed
+  };
+}
+
+function getTotals(obj) {
+  return Object.values(obj || {})
+    .reduce((a, b) => a + b, 0);
 }
 
 function endCombat() {
@@ -2171,7 +2384,40 @@ if (currentTurn !== 0) {
 
     c.stats.savesMade += c._roundTemp.defense.savesMade;
     c.stats.savesTotal += c._roundTemp.defense.savesTotal;
+// =========================
+// 🔥 APPLY ACTION TOTALS (FIX)
+// =========================
 
+for (let k in c._roundTemp.actions) {
+  c.stats.actions[k] = (c.stats.actions[k] || 0) + (c._roundTemp.actions[k] || 0);
+}
+
+for (let k in c._roundTemp.bonusActions) {
+  c.stats.bonusActions[k] = (c.stats.bonusActions[k] || 0) + (c._roundTemp.bonusActions[k] || 0);
+}
+
+for (let k in c._roundTemp.reactions) {
+  c.stats.reactions[k] = (c.stats.reactions[k] || 0) + (c._roundTemp.reactions[k] || 0);
+}
+// ✅ FORCE FLUSH ALL CONDITIONS (FINAL SAFETY)
+characters.forEach((c, i) => {
+  const g = tempGlobal[i];
+
+  if (g?.conditions?.length) {
+    if (!c.stats.conditions) c.stats.conditions = [];
+
+    // ✅ preserve round/turn info
+    g.conditions.forEach(cond => {
+      c.stats.conditions.push({
+        round: cond.round ?? round,
+        turn: cond.turn ?? currentTurn,
+        text: cond.text
+      });
+    });
+
+    g.conditions = [];
+  }
+});
     // push round snapshot
     c.rounds.push({
       round: round,
@@ -2185,7 +2431,12 @@ if (currentTurn !== 0) {
   currentTurn = 0;
   round++;
 }
-
+console.log("FINAL CONDITIONS:",
+  characters.map(c => ({
+    name: c.name,
+    conditions: c.stats.conditions
+  }))
+);
   const liveNameInput = document.getElementById("battleNameLive");
 if (liveNameInput) {
   battleName = liveNameInput.value.trim() || battleName || "Unnamed Battle";
@@ -2236,43 +2487,50 @@ finalReport.combatEndState = {
     portrait: c.portrait || null,
 
     stats: {
-      hp: {
-        current: c.stats.hp.current,
-        max: c.stats.hp.max
-      },
-      actionsTotal: c.stats.totalActions,
-      bonusActionsTotal: c.stats.bonusActionsTotal,
-      actions: { ...c.stats.actions },
-      bonusActions: { ...c.stats.bonusActions },
-      reactions: { ...c.stats.reactions },
+  hp: {
+    current: c.stats.hp.current,
+    max: c.stats.hp.max
+  },
 
-      attacks: {
-        hit: c.stats.attacksHit,
-        total: c.stats.attacksTotal
-      },
-      saves: {
-        forced: c.stats.savesForced,
-        succeeded: c.stats.savesSucceeded
-      },
+  actions: { ...c.stats.actions },
+  bonusActions: { ...c.stats.bonusActions },
+  reactions: { ...c.stats.reactions },
 
-      defense: {
-        attacksDodged: c.stats.attacksDodged,
-        attacksTaken: c.stats.attacksTaken,
-        savesMade: c.stats.savesMade,
-        savesTotal: c.stats.savesTotal
-      },
+  actionsTotal: getTotals(c.stats.actions),
+  bonusActionsTotal: getTotals(c.stats.bonusActions),
+  reactionsTotal: getTotals(c.stats.reactions),
 
-      spellSlotsUsed: { ...c.stats.spellSlotsUsed },
-      resources: c.resources,
+  attacks: {
+    hit: c.stats.attacksHit,
+    total: c.stats.attacksTotal
+  },
 
-      damage: c.stats.damage,
-      healing: c.stats.healing,
-      cc: c.stats.cc,
-      damageTaken: c.stats.damageTaken,
-      conditions: c.stats.conditions,
-      nat20: c.stats.nat20,
-      nat1: c.stats.nat1
-    },
+  saves: {
+    forced: c.stats.savesForced,
+    succeeded: c.stats.savesSucceeded
+  },
+
+  defense: {
+    attacksDodged: c.stats.attacksDodged,
+    attacksTaken: c.stats.attacksTaken,
+    savesMade: c.stats.savesMade,
+    savesTotal: c.stats.savesTotal
+  },
+
+  spellSlots: { ...c.stats.spellSlots },
+  spellSlotsUsed: getTotals(c.stats.spellSlots),
+
+  resources: c.resources,
+
+  damage: c.stats.damage,
+  healing: c.stats.healing,
+  cc: c.stats.cc,
+  damageTaken: c.stats.damageTaken,
+
+  conditions: c.stats.conditions,
+  nat20: c.stats.nat20,
+  nat1: c.stats.nat1
+},
 
     summons: c.summons.map(s => ({
       name: s.name,
@@ -2328,7 +2586,8 @@ for (let r = 1; r <= totalRounds; r++) {
       reactions: { ...(data.reactions || {}) },
 
       nat1: data.nat1 || 0,
-      nat20: data.nat20 || 0
+      nat20: data.nat20 || 0,
+      conditions: data.conditions || []
     };
 
     players.push(entry);
@@ -2414,8 +2673,6 @@ const combinedSlug = `${campaignSlug}-${battleSlug}`;
 
 finalReport.campaignSlug = campaignSlug;
 finalReport.battleSlug = battleSlug;
-finalReport.slug = combinedSlug;
-finalReport.displayName = `${campaignName} — ${battleName}`;
 finalReport.timestamp = new Date().toISOString();
 
 window.finalReport = finalReport;
