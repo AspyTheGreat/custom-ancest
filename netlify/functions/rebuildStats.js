@@ -7,7 +7,9 @@ exports.handler = async () => {
     const basePath = "battles";
 
    async function getJsonFile(path) {
-    
+    console.log("Fetching:", path);
+console.log("Status:", res.status);
+console.log("Response text:", await res.text());
 
   const res = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
@@ -74,6 +76,15 @@ exports.handler = async () => {
     // =========================
 
     const battlesIndex = await getJsonFile(`${basePath}/index.json`);
+
+if (!Array.isArray(battlesIndex)) {
+  console.log("index.json failed to load:", battlesIndex);
+
+  return {
+    statusCode: 500,
+    body: "Failed to load battles/index.json"
+  };
+}
 
     const campaigns = {};
 
