@@ -7,25 +7,29 @@ exports.handler = async () => {
     const basePath = "battles";
 
    async function getJsonFile(path) {
-    console.log("Fetching:", path);
-console.log("Status:", res.status);
-console.log("Response text:", await res.text());
+  console.log("Fetching:", path);
 
   const res = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
     {
       headers: {
-        Authorization: `token ${token}`
+        Authorization: `token ${token}`,
+        Accept: "application/vnd.github+json"
       }
     }
   );
+
+  console.log("Status:", res.status);
+
+  const text = await res.text();
+  console.log("Response text:", text);
 
   if (res.status !== 200) {
     console.log("Failed to fetch:", path, res.status);
     return null;
   }
 
-  const json = await res.json();
+  const json = JSON.parse(text);
 
   // 🚨 Handle directories or invalid responses
   if (!json.content) {
