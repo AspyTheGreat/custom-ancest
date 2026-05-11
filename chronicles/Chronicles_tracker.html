@@ -285,9 +285,9 @@ Succeeded
   / <span id="hpMax"></span>
 </div>
 
-    Damage <input id="damage" type="number">
-Healing <input id="healing" type="number">
-CC <input id="cc" type="number">
+    Damage <input onkeydown="if(event.key==='Enter'){ commitInput('damage', this) }">
+Healing <input onkeydown="if(event.key==='Enter'){ commitInput('healing', this) }">
+CC <input onkeydown="if(event.key==='Enter'){ commitInput('cc', this) }">
 
 
   </div>
@@ -355,7 +355,7 @@ none
 
 <div id="globalReactionCounter" class="counter"></div>
 
-Damage Taken <input id="damageTaken" type="number">
+Damage Taken <input onkeydown="if(event.key==='Enter'){ commitInput('damageTaken', this) }">
 Conditions <input id="conditionsInput" type="text" style="width:150px;">
 </div>
 
@@ -1721,6 +1721,19 @@ function createEmptyGlobal() {
   };
 }
 
+function commitInput(type, el) {
+  const val = +el.value || 0;
+  if (!val) return;
+
+  const g = getGlobal();
+
+  g[type] = (g[type] || 0) + val;
+
+  el.value = ""; // 🔥 critical: prevents double counting
+
+  updateLiveSummary();
+}
+
 function formatCounter(obj) {
   if (!obj) return "";
   return Object.entries(obj)
@@ -2063,10 +2076,7 @@ function captureInputsToTemp() {
   const g = getGlobal(selectedCharacter);
 
   // existing
-  g.damage += +document.getElementById("damage")?.value || 0;
-  g.healing += +document.getElementById("healing")?.value || 0;
-  g.cc += +document.getElementById("cc")?.value || 0;
-  g.damageTaken += +document.getElementById("damageTaken")?.value || 0;
+
 
   // ✅ NEW: capture condition input
 const condInput = document.getElementById("conditionsInput");
@@ -2093,6 +2103,7 @@ if (text) {
 function nextTurn() {
 
   // ✅ ALWAYS commit FIRST
+  document.activeElement?.blur();
   captureInputsToTemp();
   commitTurn();
 

@@ -2016,6 +2016,42 @@ async function getCampaignCharacterPortraits(campaignSlug) {
   return portraitMap;
 }
 
+function buildLevelTimeline(levelHistory = []) {
+
+  return levelHistory
+    .slice()
+
+    // sort by battleId (timestamp or slug order)
+    .sort((a, b) =>
+      (a.battleId || "").localeCompare(b.battleId || "")
+    )
+
+    // remove duplicates (same level repeated)
+    .filter((entry, i, arr) =>
+      i === 0 || entry.value !== arr[i - 1].value
+    );
+}
+
+function renderLevelTimeline(history) {
+
+  if (!history.length) return "";
+
+  return `
+    <div class="level-timeline">
+      ${history.map(entry => `
+        <div class="level-node">
+          <div class="level-label">
+            ${entry.value}
+          </div>
+          <div class="level-battle">
+            ${entry.battleId}
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
 function buildCampaignCharacters(statsData) {
   const chars = Object.values(statsData.characters);
 
@@ -2023,6 +2059,7 @@ function buildCampaignCharacters(statsData) {
     name: c.name,
     battles: c.battles || 0,
     levelClass: c.levelClass || "", // ✅ ADD THIS
+    levelHistory: c.levelHistory || [],
 
     stats: {
       damage: c.totalDamage,
@@ -2141,9 +2178,13 @@ const potency = savesForced
 
   <div><b>Accuracy:</b> ${accuracy}%</div>
   <div><b>Potency:</b> ${potency}%</div>
+  
 
 </div>
 
+${renderLevelTimeline(
+  buildLevelTimeline(char.levelHistory)
+)}
     </div>
 
     <div class="party-right">

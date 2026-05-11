@@ -2,7 +2,7 @@
   "characters": {
     "aurelian-noctevoire": {
       "name": "Aurelian Noctevoire",
-      "levelClass": "Level-10 College of Wand Bard | Level-2 Pact of the Raven Queen Warlock",
+      "levelClass": "Level-10 College of Wand Bard | Level-2 Raven Queen Patron Warlock",
       "classes": [
   {
     "class": "bard",
@@ -11,7 +11,7 @@
   },
   {
     "class": "warlock",
-    "subclass": "Pact of the Raven Queen",
+    "subclass": "Raven Queen Patron",
     "level": 2
   }
 ],
@@ -39,7 +39,7 @@
       "levelClass": "Level-12 Arcane Arms Sorcerer",
       "classes": [
   {
-    "class": "sorcerer",
+    "class": "Sorcerer",
     "subclass": "Arcane Arms",
     "level": 12
   }
@@ -65,16 +65,16 @@
     },
     "scryllix": {
       "name": "Scryllix",
-      "levelClass": "Level-11 Rogue | Level-1 Sorcerer",
+      "levelClass": "Level-11 Thief Rogue | Level-1 Divine Soul Sorcerer",
       "classes": [
   {
-    "class": "rogue",
-    "subclass": null,
+    "class": "Rogue",
+    "subclass": "Thief",
     "level": 11
   },
   {
-    "class": "sorcerer",
-    "subclass": null,
+    "class": "Sorcerer",
+    "subclass": "Divine Soul",
     "level": 1
   }
 ],
@@ -99,16 +99,16 @@
     },
     "tanros": {
       "name": "Tanros",
-      "levelClass": "Level-10 Cleric | Level-2 Druid",
+      "levelClass": "Level-10 Life Domain Cleric | Level-2 Circle of the Sheperd Druid",
       "classes": [
   {
-    "class": "cleric",
-    "subclass": null,
+    "class": "Cleric",
+    "subclass": "Life Domain",
     "level": 10
   },
   {
-    "class": "druid",
-    "subclass": null,
+    "class": "Druid",
+    "subclass": "Circle of the Sheperd",
     "level": 2
   }
 ],

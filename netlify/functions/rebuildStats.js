@@ -110,7 +110,9 @@ if (!battleData || !battleData.characters) {
 }
 
 // ✅ THIS WAS MISSING
-processBattleStats(battleData, statsData, path);
+const battleId = `${campaignSlug}/${battle.battleSlug}`;
+
+processBattleStats(battleData, statsData, battleId);
 
 statsData.processedBattles.push(
   `${campaignSlug}/${battle.battleSlug}`
@@ -140,6 +142,10 @@ statsData.processedBattles.push(
 function ensureChar(stats, slug, name) {
   if (!stats.characters[slug]) {
     stats.characters[slug] = {
+      classes: [],
+levelClass: null,
+levelHistory: [],
+_maxLevel: 0,
       name,
       battles: 0,
 totalInitiative: 0,
@@ -166,9 +172,90 @@ totalNat1: 0,
   }
 }
 
-function processBattleStats(data, stats) {
-   console.log("Processing battle:", path);
-console.log("Characters:", battleData.characters?.length);
+function processBattleStats(data, stats, battleId) {
+
+  // =========================
+// LEVEL CLASS + HISTORY (FROM ROUNDS)
+// =========================
+
+for (const round of data.roundSummaries || []) {
+  for (const turn of round.players || []) {
+
+    const actor = turn.actor || {
+      name: turn.name,
+      levelClass: null
+    };
+
+    const slug =
+      actor.slug ||
+      actor.name?.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+    if (!slug) continue;
+
+    ensureChar(stats, slug, actor.name);
+
+    const c = stats.characters[slug];
+
+    const levelClass =
+      actor.levelClass ||
+      actor.levelclass ||
+      null;
+
+    if (!levelClass) continue;
+
+    // =========================
+    // STORE HISTORY
+    // =========================
+
+    c.levelHistory = c.levelHistory || [];
+
+    const exists = c.levelHistory.some(
+      e => e.battleId === battleId
+    );
+
+    if (!exists) {
+      c.levelHistory.push({
+        battleId,
+        value: levelClass
+      });
+    }
+
+    // =========================
+    // PARSE + MERGE CLASSES
+    // =========================
+
+    const parsed = parseLevelClass(levelClass);
+
+    c.classes = c.classes || [];
+
+    parsed.forEach(newClass => {
+      const already = c.classes.some(existing =>
+        existing.classKey === newClass.classKey &&
+        existing.subclassKey === newClass.subclassKey
+      );
+
+      if (!already) {
+        c.classes.push(newClass);
+      }
+    });
+
+    // =========================
+    // HIGHEST LEVEL TRACKING
+    // =========================
+
+    const totalLevel = parsed.reduce(
+      (sum, cls) => sum + (cls.level || 0),
+      0
+    );
+
+    if (!c._maxLevel || totalLevel > c._maxLevel) {
+      c._maxLevel = totalLevel;
+      c.levelClass = levelClass;
+    }
+  }
+}
+
+ 
 if (!data?.characters || !Array.isArray(data.characters)) {
   console.log("No characters, skipping");
   return;

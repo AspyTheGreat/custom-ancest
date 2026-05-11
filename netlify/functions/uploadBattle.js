@@ -283,7 +283,7 @@ statsData.processedBattles =
 
 if (!statsData.processedBattles.includes(battleId)) {
 
-  processBattleStats(data, statsData);
+processBattleStats(data, statsData, battleId);
 
   statsData.processedBattles.push(battleId);
 
@@ -346,6 +346,7 @@ roundCount: 0,
 
   classes: [],
   levelClass: null,
+  levelHistory: [], 
   battles: 0,
 totalInitiative: 0,
 initiativeCount: 0,
@@ -432,20 +433,22 @@ function parseLevelClass(levelClassStr) {
       }
 
       // final word = class
-      const className =
-        parts.pop().toLowerCase();
+        const className = parts.pop();
 
-      // remaining words = subclass
       const subclass =
         parts.length
-          ? parts.join(" ").toLowerCase()
+          ? parts.join(" ")
           : null;
 
       return {
-        class: className,
-        subclass,
-        level
-      };
+  class: className,                      // original case (for display)
+  classKey: className.toLowerCase(),     // normalized (for logic)
+
+  subclass,
+  subclassKey: subclass?.toLowerCase() || null,
+
+  level
+};
     })
     .filter(Boolean);
 }
@@ -458,7 +461,7 @@ function mergeCounts(target, source) {
   }
 }
 
-function processBattleStats(data, stats) {
+function processBattleStats(data, stats, battleId) {
 for (const round of data.roundSummaries || []) {
   for (const turn of round.players || []) {
 // =========================
@@ -508,18 +511,59 @@ const levelClass =
 
 if (levelClass) {
 
-  c.levelClass = levelClass;
+  // store history (avoid duplicates per battle)
+  c.levelHistory = c.levelHistory || [];
 
-  c.classes =
-    parseLevelClass(levelClass);
+  const alreadyExists = c.levelHistory.some(
+    entry => entry.battleId === battleId
+  );
+
+  if (!alreadyExists) {
+    c.levelHistory.push({
+      battleId,
+      value: levelClass
+    });
+  }
+
+  // parse current entry
+  const parsed = parseLevelClass(levelClass);
+
+  // merge into classes (for class stats)
+  c.classes = c.classes || [];
+  parsed.forEach(newClass => {
+
+  const exists = c.classes.some(existing =>
+    existing.classKey === newClass.classKey &&
+    existing.subclassKey === newClass.subclassKey
+  );
+
+  if (!exists) {
+    c.classes.push(newClass);
+  }
+});
+
+  // =========================
+  // COMPUTE HIGHEST LEVEL
+  // =========================
+
+  const totalLevel = parsed.reduce(
+    (sum, cls) => sum + (cls.level || 0),
+    0
+  );
+
+  if (!c._maxLevel || totalLevel > c._maxLevel) {
+    c._maxLevel = totalLevel;
+    c.levelClass = levelClass; // display string
+  }
 }
     if (turn.initiative !== undefined) {
   c.totalInitiative += turn.initiative;
   c.initiativeCount += 1;
 }
-c.roundCount += (data.roundSummaries || []).length;
+
   }
 }
+c.roundCount += (data.roundSummaries || []).length;
 function sum(obj) {
   return Object.values(obj || {}).reduce((a, b) => a + b, 0);
 }
@@ -534,7 +578,8 @@ function sum(obj) {
     ensureChar(stats, slug, char.name);
 
    const c = stats.characters[slug];
-
+   
+c.roundCount += (data.roundSummaries || []).length;
 // =========================
 // PORTRAITS
 // =========================
