@@ -1687,9 +1687,7 @@ function renderCharacterRadar(canvasId, char, allCharacters, color) {
     ? (targeted / totalTargeted) * 10
     : 0;
 
-  // =========================
-  // LUCK SCORE
-  // =========================
+
 
  // =========================
 // LUCK SCORE
@@ -1703,6 +1701,7 @@ const attacksHit = stats.attacks?.hit || 0;
 const savesForced = stats.saves?.forced || 0;
 const savesSucceeded = stats.saves?.succeeded || 0;
 const savesFailed = Math.max(0, savesForced - savesSucceeded);
+
 // Defensive saves
 const savesMade = defense.savesMade || 0;
 const savesTotal = defense.savesTotal || savesMade;
@@ -1718,31 +1717,43 @@ const attacksDodged = defense.attacksDodged || 0;
 const successfulRolls =
   attacksHit +
   savesMade +
+  savesFailed +
   attacksDodged;
 
 const totalRolls =
   attacksMade +
   savesTotal +
+  savesForced +
   attacksTaken;
 
 // =========================
-// BASE SUCCESS RATE
+// SUCCESS SCORE (0–5)
 // =========================
 
-let luck = totalRolls
-  ? (successfulRolls / totalRolls) * 10
+const successScore = totalRolls
+  ? (successfulRolls / totalRolls) * 5
   : 0;
 
 // =========================
-// CRITICAL MODIFIERS
+// NAT SCORE (-5 to +5)
 // =========================
 
 const nat20 = stats.nat20 || 0;
 const nat1 = stats.nat1 || 0;
 
-// small adjustments
-luck += nat20 * 0.15;
-luck -= nat1 * 0.10;
+let natScore = nat20 - nat1;
+
+// clamp between -5 and +5
+natScore = Math.max(-5, Math.min(5, natScore));
+
+// shift to 0–5 scale
+natScore = ((natScore + 5) / 10) * 5;
+
+// =========================
+// FINAL LUCK SCORE (0–10)
+// =========================
+
+let luck = successScore + natScore;
 
 // clamp between 0–10
 luck = Math.max(0, Math.min(10, luck));
@@ -2202,6 +2213,9 @@ ${renderLevelTimeline(
 
   }
 }
+
+
+
 //All-time stats//
 async function getAllCharacterPortraits() {
 
@@ -2349,22 +2363,37 @@ async function computeClassStats() {
 
       (char.classes || []).forEach(c => {
 
-        const classKey = `${char.name}-${c.class}`;
+        // normalize class/subclass names
+        const normalizedClass =
+          (c.class || "").trim().toLowerCase();
 
-        if (!seen.has(classKey)) {
-          classMap[c.class] =
-            (classMap[c.class] || 0) + 1;
+        const normalizedSubclass =
+          (c.subclass || "").trim().toLowerCase();
+
+        // unique per character + class
+        const classKey =
+          `${char.name.toLowerCase()}-${normalizedClass}`;
+
+        if (
+          normalizedClass &&
+          !seen.has(classKey)
+        ) {
+          classMap[normalizedClass] =
+            (classMap[normalizedClass] || 0) + 1;
 
           seen.add(classKey);
         }
 
-        if (c.subclass) {
-          const label =
-            `${capitalizeWords(c.subclass)} (${capitalizeWords(c.class)})`;
+        if (normalizedSubclass) {
 
-          const subKey = `${char.name}-${label}`;
+          const label =
+            `${normalizedSubclass} (${normalizedClass})`;
+
+          const subKey =
+            `${char.name.toLowerCase()}-${label}`;
 
           if (!seen.has(subKey)) {
+
             subclassMap[label] =
               (subclassMap[label] || 0) + 1;
 
