@@ -2021,14 +2021,9 @@ function buildLevelTimeline(levelHistory = []) {
   return levelHistory
     .slice()
 
-    // sort by battleId (timestamp or slug order)
-    .sort((a, b) =>
-      (a.battleId || "").localeCompare(b.battleId || "")
-    )
-
-    // remove duplicates (same level repeated)
+    // remove duplicates (same level repeated consecutively)
     .filter((entry, i, arr) =>
-      i === 0 || entry.value !== arr[i - 1].value
+      i === 0 || entry !== arr[i - 1]
     );
 }
 
@@ -2037,14 +2032,14 @@ function renderLevelTimeline(history) {
   if (!history.length) return "";
 
   return `
+        <div class="level-header">
+        <div class="level-title">Level Progression</div>
+      </div>
     <div class="level-timeline">
-      ${history.map(entry => `
+      ${history.map(level => `
         <div class="level-node">
           <div class="level-label">
-            ${entry.value}
-          </div>
-          <div class="level-battle">
-            ${entry.battleId}
+            ${level}
           </div>
         </div>
       `).join("")}

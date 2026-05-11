@@ -512,18 +512,15 @@ const levelClass =
 if (levelClass) {
 
   // store history (avoid duplicates per battle)
-  c.levelHistory = c.levelHistory || [];
+ // STORE SIMPLE LEVELCLASS HISTORY (NO METADATA)
+c.levelHistory = c.levelHistory || [];
 
-  const alreadyExists = c.levelHistory.some(
-    entry => entry.battleId === battleId
-  );
+// avoid duplicate consecutive entries (optional but recommended)
+const last = c.levelHistory[c.levelHistory.length - 1];
 
-  if (!alreadyExists) {
-    c.levelHistory.push({
-      battleId,
-      value: levelClass
-    });
-  }
+if (last !== levelClass) {
+  c.levelHistory.push(levelClass);
+}
 
   // parse current entry
   const parsed = parseLevelClass(levelClass);
@@ -578,7 +575,7 @@ function sum(obj) {
     ensureChar(stats, slug, char.name);
 
    const c = stats.characters[slug];
-   
+
 c.roundCount += (data.roundSummaries || []).length;
 // =========================
 // PORTRAITS
