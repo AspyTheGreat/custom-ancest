@@ -15,7 +15,7 @@ const files = [
 const characterImages = {
   "Lady Lavender": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/lavender.jpg",
 
-  "Maximillion": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/maxmilion.webp",
+  "Maximillion": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/Max.jpg",
 
   "Sogark Okatir": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/sogark.png",
 
