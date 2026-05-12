@@ -1,354 +1,924 @@
 exports.handler = async () => {
+
   try {
+
     const token = process.env.GITHUB_TOKEN;
     const owner = process.env.GITHUB_OWNER;
     const repo = process.env.GITHUB_REPO;
 
+    if (!token || !owner || !repo) {
+      throw new Error(
+        "Missing GitHub environment variables"
+      );
+    }
+
     const basePath = "battles";
 
-   async function getJsonFile(path) {
-  console.log("Fetching:", path);
+    // =========================
+    // HELPERS
+    // =========================
 
-  const res = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
-    {
-      headers: {
-        Authorization: `token ${token}`,
-        Accept: "application/vnd.github+json"
+    function makeSlug(name) {
+
+      return name
+        ?.toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-");
+    }
+
+    function sum(obj) {
+
+      return Object.values(obj || {})
+        .reduce((a, b) => a + b, 0);
+    }
+
+    function mergeCounts(target, source) {
+
+      if (!source) return;
+
+      for (const key in source) {
+
+        target[key] =
+          (target[key] || 0) +
+          (source[key] || 0);
       }
     }
-  );
 
-  console.log("Status:", res.status);
+    async function githubFetch(
+      path,
+      options = {}
+    ) {
 
-  const text = await res.text();
-  console.log("Response text:", text);
+      const res = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+        {
+          ...options,
 
-  if (res.status !== 200) {
-    console.log("Failed to fetch:", path, res.status);
-    return null;
-  }
+          headers: {
+            Authorization: `token ${token}`,
+            Accept: "application/vnd.github+json",
+            "Content-Type": "application/json",
+            ...(options.headers || {})
+          }
+        }
+      );
 
-  const json = JSON.parse(text);
-
-  // 🚨 Handle directories or invalid responses
-  if (!json.content) {
-    console.log("No content in response for:", path);
-    return null;
-  }
-
-  try {
-    const decoded = Buffer.from(json.content, "base64").toString();
-
-    if (!decoded.trim()) {
-      console.log("Empty file:", path);
-      return null;
+      return res;
     }
 
-    return JSON.parse(decoded);
+    async function getJsonFile(
+      path,
+      fallback = null
+    ) {
 
-  } catch (err) {
-    console.log("JSON parse failed for:", path);
-    console.log("Raw content:", json.content);
-    return null;
-  }
-}
+      console.log("Fetching:", path);
 
-    async function putJsonFile(path, content, message) {
+      const res =
+        await githubFetch(path);
+
+      if (res.status === 404) {
+
+        console.log(
+          "Missing file:",
+          path
+        );
+
+        return {
+          exists: false,
+          sha: null,
+          data: fallback
+        };
+      }
+
+      if (!res.ok) {
+
+        const text =
+          await res.text();
+
+        throw new Error(
+          `GitHub GET failed (${res.status}) for ${path}: ${text}`
+        );
+      }
+
+      const json =
+        await res.json();
+
+      if (!json.content) {
+
+        throw new Error(
+          `No content in ${path}`
+        );
+      }
+
+      let parsed;
+
+      try {
+
+        const decoded =
+          Buffer.from(
+            json.content,
+            "base64"
+          ).toString("utf8");
+
+        if (!decoded.trim()) {
+
+          throw new Error(
+            "File is empty"
+          );
+        }
+
+        parsed =
+          JSON.parse(decoded);
+
+      } catch (err) {
+
+        throw new Error(
+          `Invalid JSON in ${path}`
+        );
+      }
+
+      return {
+        exists: true,
+        sha: json.sha,
+        data: parsed
+      };
+    }
+
+    async function putJsonFile(
+      path,
+      content,
+      message,
+      sha = null
+    ) {
+
       const body = {
+
         message,
+
         content: Buffer.from(
-          JSON.stringify(content, null, 2)
+          JSON.stringify(
+            content,
+            null,
+            2
+          )
         ).toString("base64")
       };
 
-      await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `token ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(body)
-        }
-      );
+      if (sha) {
+        body.sha = sha;
+      }
+
+      const res =
+        await githubFetch(
+          path,
+          {
+            method: "PUT",
+            body: JSON.stringify(body)
+          }
+        );
+
+      if (!res.ok) {
+
+        const text =
+          await res.text();
+
+        throw new Error(
+          `GitHub PUT failed (${res.status}) for ${path}: ${text}`
+        );
+      }
+
+      return await res.json();
     }
 
     // =========================
     // LOAD GLOBAL INDEX
     // =========================
 
-    const battlesIndex = await getJsonFile(`${basePath}/index.json`);
+    const battlesIndexFile =
+      await getJsonFile(
+        `${basePath}/index.json`,
+        []
+      );
 
-if (!Array.isArray(battlesIndex)) {
-  console.log("index.json failed to load:", battlesIndex);
+    const battlesIndex =
+      battlesIndexFile.data;
 
-  return {
-    statusCode: 500,
-    body: "Failed to load battles/index.json"
-  };
-}
+    if (!Array.isArray(battlesIndex)) {
+
+      throw new Error(
+        "battles/index.json is not an array"
+      );
+    }
+
+    // =========================
+    // GROUP BY CAMPAIGN
+    // =========================
 
     const campaigns = {};
 
-    // group battles by campaign
-    battlesIndex.forEach(b => {
-      if (!campaigns[b.campaignSlug]) {
-        campaigns[b.campaignSlug] = [];
+    for (const battle of battlesIndex) {
+
+      if (
+        !battle?.campaignSlug ||
+        !battle?.battleSlug
+      ) {
+
+        console.log(
+          "Skipping malformed battle index entry:",
+          battle
+        );
+
+        continue;
       }
-      campaigns[b.campaignSlug].push(b);
-    });
+
+      campaigns[
+        battle.campaignSlug
+      ] =
+        campaigns[
+          battle.campaignSlug
+        ] || [];
+
+      campaigns[
+        battle.campaignSlug
+      ].push(battle);
+    }
 
     // =========================
-    // PROCESS EACH CAMPAIGN
+    // PROCESS CAMPAIGNS
     // =========================
 
     for (const campaignSlug of Object.keys(campaigns)) {
 
+      console.log(
+        `\nRebuilding: ${campaignSlug}`
+      );
+
       const statsData = {
+
         characters: {},
+
         processedBattles: []
       };
 
+      const processedBattleSet =
+        new Set();
+
       for (const battle of campaigns[campaignSlug]) {
 
-        const path = `${basePath}/${campaignSlug}/${battle.battleSlug}.json`;
+        const battleId =
+          `${campaignSlug}/${battle.battleSlug}`;
 
-       
+        // prevent duplicates
+        if (
+          processedBattleSet.has(
+            battleId
+          )
+        ) {
 
-const battleData = await getJsonFile(path);
+          console.log(
+            "Skipping duplicate battle:",
+            battleId
+          );
 
-if (!battleData || !battleData.characters) {
-  console.log("Skipping invalid battle:", path);
-  continue;
-}
+          continue;
+        }
 
-// ✅ THIS WAS MISSING
-const battleId = `${campaignSlug}/${battle.battleSlug}`;
+        processedBattleSet.add(
+          battleId
+        );
 
-processBattleStats(battleData, statsData, battleId);
+        const battlePath =
+          `${basePath}/${campaignSlug}/${battle.battleSlug}.json`;
 
-statsData.processedBattles.push(
-  `${campaignSlug}/${battle.battleSlug}`
-);
+        const battleFile =
+          await getJsonFile(
+            battlePath,
+            null
+          );
+
+        const battleData =
+          battleFile.data;
+
+        if (
+          !battleData ||
+          !Array.isArray(
+            battleData.characters
+          )
+        ) {
+
+          console.log(
+            "Skipping invalid battle:",
+            battlePath
+          );
+
+          continue;
+        }
+
+        processBattleStats(
+          battleData,
+          statsData,
+          battleId
+        );
+
+        statsData.processedBattles.push(
+          battleId
+        );
       }
 
-      // write stats file
+      // =========================
+      // CLEAN INTERNAL FIELDS
+      // =========================
+
+      for (const slug of Object.keys(
+        statsData.characters
+      )) {
+
+        delete statsData.characters[
+          slug
+        ]._maxLevel;
+      }
+
+      // =========================
+      // WRITE FILE
+      // =========================
+
+      const statsPath =
+        `${basePath}/${campaignSlug}/characterStats.json`;
+
+      const existingStats =
+        await getJsonFile(
+          statsPath,
+          null
+        );
+
       await putJsonFile(
-        `${basePath}/${campaignSlug}/characterStats.json`,
+
+        statsPath,
+
         statsData,
-        `Rebuild stats for ${campaignSlug}`
+
+        `Rebuild stats for ${campaignSlug}`,
+
+        existingStats.sha
+      );
+
+      console.log(
+        `Finished: ${campaignSlug}`
       );
     }
 
+    // =========================
+    // DONE
+    // =========================
+
     return {
+
       statusCode: 200,
-      body: "Stats rebuilt successfully"
+
+      body: JSON.stringify({
+
+        success: true,
+
+        campaigns:
+          Object.keys(campaigns)
+            .length
+      })
     };
 
   } catch (err) {
+
+    console.error(err);
+
     return {
+
       statusCode: 500,
-      body: err.toString()
+
+      body: JSON.stringify({
+
+        success: false,
+
+        error:
+          err?.message ||
+          String(err)
+      })
     };
   }
 };
-function ensureChar(stats, slug, name) {
+
+// =========================
+// CHARACTER HELPERS
+// =========================
+
+function ensureChar(
+  stats,
+  slug,
+  name
+) {
+
+  stats.characters =
+    stats.characters || {};
+
   if (!stats.characters[slug]) {
+
     stats.characters[slug] = {
-      classes: [],
-levelClass: null,
-levelHistory: [],
-_maxLevel: 0,
+
       name,
+      slug,
+
+      roundCount: 0,
+
+      portrait: null,
+      portraits: [],
+
+      classes: [],
+      levelClass: null,
+      levelHistory: [],
+      _maxLevel: 0,
+
       battles: 0,
-totalInitiative: 0,
-initiativeCount: 0,
+
+      totalInitiative: 0,
+      initiativeCount: 0,
+
+      actions: {
+        attack: 0,
+        spell: 0,
+        move: 0,
+        misc: 0,
+        none: 0
+      },
+
+      bonusActions: {
+        attack: 0,
+        spell: 0,
+        move: 0,
+        misc: 0,
+        none: 0
+      },
+
+      reactions: {
+        attack: 0,
+        spell: 0,
+        move: 0,
+        misc: 0,
+        none: 0
+      },
+
+      spellSlots: {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+        7: 0,
+        8: 0,
+        9: 0
+      },
+
+      totalActions: 0,
+      totalBonusActions: 0,
+      totalReactions: 0,
+      totalSpellSlotsUsed: 0,
+
       totalDamage: 0,
       totalHealing: 0,
       totalCC: 0,
-totalDamageTaken: 0,
 
-totalAttacksTaken: 0,
-totalAttacksDodged: 0,
+      totalDamageTaken: 0,
 
-totalSavesMade: 0,
-totalSavesTotal: 0,
+      totalAttacksTaken: 0,
+      totalAttacksDodged: 0,
 
-totalNat20: 0,
-totalNat1: 0,
+      totalSavesMade: 0,
+      totalSavesTotal: 0,
+
+      totalNat20: 0,
+      totalNat1: 0,
+
       totalAttacks: 0,
       totalHits: 0,
 
       totalPotencyAttempts: 0,
-      totalPotencySuccess: 0
+      totalPotencySuccess: 0,
+
+      conditions: [],
+      totalConditions: 0,
+
+      processedBattles: []
     };
   }
+
+  const c =
+    stats.characters[slug];
+
+  c.classes =
+    c.classes || [];
+
+  c.levelHistory =
+    c.levelHistory || [];
+
+  c.conditions =
+    c.conditions || [];
+
+  c.portraits =
+    c.portraits || [];
+
+  c.processedBattles =
+    c.processedBattles || [];
 }
 
-function processBattleStats(data, stats, battleId) {
+function parseLevelClass(
+  levelClassStr
+) {
 
-  // =========================
-// LEVEL CLASS + HISTORY (FROM ROUNDS)
-// =========================
+  if (!levelClassStr) {
+    return [];
+  }
 
-for (const round of data.roundSummaries || []) {
-  for (const turn of round.players || []) {
+  return levelClassStr
 
-    const actor = turn.actor || {
-      name: turn.name,
-      levelClass: null
-    };
+    .split(/[,|]/)
 
-    const slug =
-      actor.slug ||
-      actor.name?.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    .map(entry => entry.trim())
 
-    if (!slug) continue;
+    .filter(Boolean)
 
-    ensureChar(stats, slug, actor.name);
+    .map(entry => {
 
-    const c = stats.characters[slug];
+      const levelMatch =
+        entry.match(
+          /Level-(\d+)/i
+        );
 
-    const levelClass =
-      actor.levelClass ||
-      actor.levelclass ||
-      null;
+      const level =
+        levelMatch
+          ? Number(
+              levelMatch[1]
+            )
+          : 0;
 
-    if (!levelClass) continue;
-
-    // =========================
-    // STORE HISTORY
-    // =========================
-
-    c.levelHistory = c.levelHistory || [];
-
-    const exists = c.levelHistory.some(
-      e => e.battleId === battleId
-    );
-
-    if (!exists) {
-      c.levelHistory.push({
-        battleId,
-        value: levelClass
-      });
-    }
-
-    // =========================
-    // PARSE + MERGE CLASSES
-    // =========================
-
-    const parsed = parseLevelClass(levelClass);
-
-    c.classes = c.classes || [];
-
-    parsed.forEach(newClass => {
-      const already = c.classes.some(existing =>
-        existing.classKey === newClass.classKey &&
-        existing.subclassKey === newClass.subclassKey
+      entry = entry.replace(
+        /Level-\d+\s*/i,
+        ""
       );
 
-      if (!already) {
-        c.classes.push(newClass);
+      const parts =
+        entry.split(" ")
+          .filter(Boolean);
+
+      if (!parts.length) {
+        return null;
       }
-    });
 
-    // =========================
-    // HIGHEST LEVEL TRACKING
-    // =========================
+      const className =
+        parts.pop();
 
-    const totalLevel = parsed.reduce(
-      (sum, cls) => sum + (cls.level || 0),
-      0
-    );
+      const subclass =
+        parts.length
+          ? parts.join(" ")
+          : null;
 
-    if (!c._maxLevel || totalLevel > c._maxLevel) {
-      c._maxLevel = totalLevel;
-      c.levelClass = levelClass;
+      return {
+
+        class: className,
+
+        classKey:
+          className.toLowerCase(),
+
+        subclass,
+
+        subclassKey:
+          subclass?.toLowerCase() ||
+          null,
+
+        level
+      };
+    })
+
+    .filter(Boolean);
+}
+
+function processBattleStats(
+  data,
+  stats,
+  battleId
+) {
+
+  // =========================
+  // ROUND DATA
+  // =========================
+
+  for (const round of data.roundSummaries || []) {
+
+    for (const turn of round.players || []) {
+
+      const actor =
+        turn.actor || {
+          name: turn.name
+        };
+
+      const slug =
+        actor.slug ||
+        makeSlug(actor.name);
+
+      if (!slug) continue;
+
+      ensureChar(
+        stats,
+        slug,
+        actor.name
+      );
+
+      const c =
+        stats.characters[slug];
+
+      // =========================
+      // CONDITIONS
+      // =========================
+
+      if (
+        Array.isArray(
+          turn.conditions
+        )
+      ) {
+
+        turn.conditions.forEach(
+          cond => {
+
+            if (!cond?.text) return;
+
+            c.conditions.push({
+
+              text:
+                cond.text,
+
+              round:
+                cond.round ??
+                round.round,
+
+              turn:
+                cond.turn ?? null,
+
+              battle:
+                data.battle ||
+                null
+            });
+
+            c.totalConditions += 1;
+          }
+        );
+      }
+
+      // =========================
+      // LEVEL CLASS
+      // =========================
+
+      const levelClass =
+        actor.levelClass ||
+        actor.levelclass ||
+        null;
+
+      if (levelClass) {
+
+        const last =
+          c.levelHistory[
+            c.levelHistory.length - 1
+          ];
+
+        if (last !== levelClass) {
+          c.levelHistory.push(
+            levelClass
+          );
+        }
+
+        const parsed =
+          parseLevelClass(
+            levelClass
+          );
+
+        parsed.forEach(
+          newClass => {
+
+            const exists =
+              c.classes.some(
+                existing =>
+
+                  existing.classKey ===
+                    newClass.classKey &&
+
+                  existing.subclassKey ===
+                    newClass.subclassKey
+              );
+
+            if (!exists) {
+              c.classes.push(
+                newClass
+              );
+            }
+          }
+        );
+
+        const totalLevel =
+          parsed.reduce(
+            (sum, cls) =>
+              sum +
+              (cls.level || 0),
+            0
+          );
+
+        if (
+          totalLevel >
+          c._maxLevel
+        ) {
+
+          c._maxLevel =
+            totalLevel;
+
+          c.levelClass =
+            levelClass;
+        }
+      }
+
+      // initiative
+      if (
+        turn.initiative !==
+        undefined
+      ) {
+
+        c.totalInitiative +=
+          turn.initiative;
+
+        c.initiativeCount += 1;
+      }
     }
   }
-}
 
- 
-if (!data?.characters || !Array.isArray(data.characters)) {
-  console.log("No characters, skipping");
-  return;
-}
-  if (!data || !data.characters) {
-    console.log("Invalid data passed to processBattleStats");
-    return;
-  }
+  // =========================
+  // CHARACTER TOTALS
+  // =========================
 
   for (const char of data.characters || []) {
 
     const slug =
       char.slug ||
-      char.name?.toLowerCase().replace(/\s+/g, "-");
+      makeSlug(char.name);
 
     if (!slug) continue;
 
-    ensureChar(stats, slug, char.name);
+    ensureChar(
+      stats,
+      slug,
+      char.name
+    );
 
-    const c = stats.characters[slug];
-    const s = char.stats || {};
-    const defense = s.defense || {};
+    const c =
+      stats.characters[slug];
 
-    // =========================
-    // BASIC TOTALS
-    // =========================
+    // avoid double battle count
+    if (
+      !c.processedBattles.includes(
+        battleId
+      )
+    ) {
 
-    c.totalDamage += s.damage || 0;
-    c.totalHealing += s.healing || 0;
-    c.totalCC += s.cc || 0;
+      c.battles += 1;
 
-    // =========================
-    // ACCURACY
-    // =========================
+      c.processedBattles.push(
+        battleId
+      );
+    }
 
-    const attacksMade = s.attacks?.total || 0;
-    const attacksHit = s.attacks?.hit || 0;
+    c.roundCount +=
+      (data.roundSummaries || [])
+        .length;
 
-    c.totalAttacks += attacksMade;
-    c.totalHits += attacksHit;
+    // portraits
+    const portrait =
 
-    // =========================
-    // POTENCY
-    // =========================
+      typeof char.portrait ===
+        "string" &&
 
-    const savesForced = s.saves?.forced || 0;
-    const savesSucceeded = s.saves?.succeeded || 0;
+      char.portrait.startsWith(
+        "data:image"
+      )
 
-    c.totalPotencyAttempts += savesForced;
-    c.totalPotencySuccess += savesSucceeded;
+        ? char.portrait
+        : null;
 
-    // =========================
-    // TANK
-    // =========================
+    if (portrait) {
 
-    c.totalDamageTaken += s.damageTaken || 0;
+      c.portrait = portrait;
 
-    c.totalAttacksTaken += defense.attacksTaken || 0;
-    c.totalAttacksDodged += defense.attacksDodged || 0;
+      c.portraits = [portrait];
+    }
 
-    c.totalSavesMade += defense.savesMade || 0;
-    c.totalSavesTotal += defense.savesTotal || defense.savesMade || 0;
+    const s =
+      char.stats || {};
 
-    // =========================
-    // LUCK
-    // =========================
+    const defense =
+      s.defense || {};
 
-    c.totalNat20 += s.nat20 || 0;
-    c.totalNat1 += s.nat1 || 0;
+    // actions
+    mergeCounts(
+      c.actions,
+      s.actions
+    );
 
-   
-   
+    mergeCounts(
+      c.bonusActions,
+      s.bonusActions
+    );
 
-    // =========================
-    // BATTLES
-    // =========================
+    mergeCounts(
+      c.reactions,
+      s.reactions
+    );
 
-    c.battles += 1;
+    mergeCounts(
+      c.spellSlots,
+      s.spellSlots ||
+      s.spellSlotsUsed
+    );
+
+    c.totalActions +=
+      sum(s.actions);
+
+    c.totalBonusActions +=
+      sum(s.bonusActions);
+
+    c.totalReactions +=
+      sum(s.reactions);
+
+    c.totalSpellSlotsUsed +=
+      sum(
+        s.spellSlots ||
+        s.spellSlotsUsed
+      );
+
+    // totals
+    c.totalDamage +=
+      s.damage || 0;
+
+    c.totalHealing +=
+      s.healing || 0;
+
+    c.totalCC +=
+      s.cc || 0;
+
+    // attacks
+    const attacksMade =
+      s.attacks?.total || 0;
+
+    const attacksHit =
+      s.attacks?.hit || 0;
+
+    c.totalAttacks +=
+      attacksMade;
+
+    c.totalHits +=
+      attacksHit;
+
+    // potency
+    const savesForced =
+      s.saves?.forced || 0;
+
+    const savesSucceeded =
+      s.saves?.succeeded || 0;
+
+    const savesFailed =
+      Math.max(
+        0,
+        savesForced -
+        savesSucceeded
+      );
+
+    c.totalPotencyAttempts +=
+      savesForced;
+
+    c.totalPotencySuccess +=
+      savesFailed;
+
+    // defense
+    c.totalDamageTaken +=
+      s.damageTaken || 0;
+
+    c.totalAttacksTaken +=
+      defense.attacksTaken || 0;
+
+    c.totalAttacksDodged +=
+      defense.attacksDodged || 0;
+
+    c.totalSavesMade +=
+      defense.savesMade || 0;
+
+    c.totalSavesTotal +=
+      defense.savesTotal || 0;
+
+    // luck
+    c.totalNat20 +=
+      s.nat20 || 0;
+
+    c.totalNat1 +=
+      s.nat1 || 0;
   }
 }
-  

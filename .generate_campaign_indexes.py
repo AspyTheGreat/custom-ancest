@@ -1,154 +1,246 @@
 import json
 import pathlib
 
-root = pathlib.Path('battles')
+# =========================
+# CONFIG
+# =========================
 
-if not root.exists():
-    raise SystemExit('battles directory not found')
+ROOT = pathlib.Path("battles")
+
+if not ROOT.exists():
+    raise SystemExit("battles directory not found")
+
+# =========================
+# HELPERS
+# =========================
+
+def get_time(entry):
+
+    value = entry.get("date") or ""
+
+    try:
+        return value
+
+    except Exception:
+        return ""
+
+def load_json(path):
+
+    try:
+
+        return json.loads(
+            path.read_text(encoding="utf-8")
+        )
+
+    except Exception as e:
+
+        print(f"ERROR reading {path}: {e}")
+
+        return None
+
+def make_campaign_entry(
+    data,
+    campaign_dir,
+    file
+):
+
+    campaign_slug = (
+        data.get("campaignSlug")
+        or campaign_dir.name
+    )
+
+    battle_slug = (
+        data.get("battleSlug")
+        or file.stem
+    )
+
+    if battle_slug is None:
+        battle_slug = ""
+
+    campaign_name = (
+        data.get("campaign")
+        or campaign_slug
+            .replace("-", " ")
+            .title()
+    )
+
+    battle_name = (
+        data.get("displayName")
+        or data.get("name")
+        or data.get("battle")
+        or battle_slug
+        or ""
+    )
+
+    timestamp = (
+        data.get("timestamp")
+        or data.get("date")
+        or ""
+    )
+
+    images = data.get("images")
+
+    start_image = None
+
+    if isinstance(images, dict):
+
+        start_image = (
+            images.get("start")
+        )
+
+    if start_image is None:
+
+        start_image = (
+            data.get("startImage")
+        )
+
+    return {
+
+        "id":
+            f"{campaign_slug}/{battle_slug}",
+
+        "name":
+            battle_name,
+
+        "campaign":
+            campaign_name,
+
+        "campaignSlug":
+            campaign_slug,
+
+        "battleSlug":
+            battle_slug,
+
+        "file":
+            f"battles/{campaign_dir.name}/{file.name}",
+
+        "startImage":
+            start_image,
+
+        "date":
+            timestamp
+    }
+
+def write_json(path, data):
+
+    path.write_text(
+
+        json.dumps(
+            data,
+            indent=2,
+            ensure_ascii=False
+        ),
+
+        encoding="utf-8"
+    )
+
+# =========================
+# MAIN
+# =========================
 
 created = []
+
 all_battles = []
 
-for campaign_dir in sorted(root.iterdir()):
+# =========================
+# LOOP CAMPAIGNS
+# =========================
+
+for campaign_dir in sorted(ROOT.iterdir()):
 
     if not campaign_dir.is_dir():
         continue
 
-    entries = []
+    print(f"\nProcessing: {campaign_dir.name}")
 
-    for file in sorted(campaign_dir.glob('*.json')):
+    campaign_entries = []
 
-        # Skip generated indexes
-        if file.name == 'index.json':
+    # =========================
+    # LOOP BATTLE FILES
+    # =========================
+
+    for file in sorted(
+        campaign_dir.glob("*.json")
+    ):
+
+        # =========================
+        # SKIP GENERATED FILES
+        # =========================
+
+        if file.name in (
+            "index.json",
+            "characterStats.json"
+        ):
             continue
 
-        try:
-            data = json.loads(
-                file.read_text(encoding='utf-8')
+        data = load_json(file)
+
+        if data is None:
+            continue
+
+        # Skip non-battle files
+        if not isinstance(data, dict):
+
+            print(
+                f"Skipping non-object JSON: {file}"
             )
 
-        except Exception as e:
-            print(f'ERROR reading {file}: {e}')
             continue
 
-        # =========================
-        # BASIC DATA
-        # =========================
-
-        campaign_slug = (
-            data.get('campaignSlug')
-            or campaign_dir.name
+        entry = make_campaign_entry(
+            data,
+            campaign_dir,
+            file
         )
 
-        battle_slug = (
-            data.get('battleSlug')
-            if data.get('battleSlug') is not None
-            else file.stem
-        )
+        campaign_entries.append(entry)
 
-        if battle_slug is None:
-            battle_slug = ''
+        all_battles.append({
 
-        campaign_name = (
-            data.get('campaign')
-            or campaign_slug
-                .replace('-', ' ')
-                .title()
-        )
+            "id":
+                entry["id"],
 
-        battle_name = (
-            data.get('displayName')
-            or data.get('name')
-            or data.get('battle')
-            or battle_slug
-            or ''
-        )
+            "name":
+                entry["name"],
 
-        timestamp = (
-            data.get('timestamp')
-            or data.get('date')
-            or ''
-        )
+            "campaign":
+                entry["campaign"],
 
-        images = data.get('images')
+            "campaignSlug":
+                entry["campaignSlug"],
 
-        start_image = None
+            "battleSlug":
+                entry["battleSlug"],
 
-        if isinstance(images, dict):
-            start_image = images.get('start')
+            "startImage":
+                entry["startImage"],
 
-        if start_image is None:
-            start_image = data.get('startImage')
+            "date":
+                entry["date"]
+        })
 
-        # =========================
-        # CAMPAIGN INDEX ENTRY
-        # =========================
+    # =========================
+    # REMOVE DUPLICATES
+    # =========================
 
-        campaign_entry = {
-            'id': (
-                f'{campaign_slug}/{battle_slug}'
-                if battle_slug
-                else f'{campaign_slug}/'
-            ),
+    deduped = {}
 
-            'name': battle_name,
+    for entry in campaign_entries:
 
-            'campaign': campaign_name,
+        deduped[
+            entry["battleSlug"]
+        ] = entry
 
-            'campaignSlug': campaign_slug,
-
-            'battleSlug': battle_slug,
-
-            'file':
-                f'battles/{campaign_dir.name}/{file.name}',
-
-            'startImage': (
-                start_image
-                if start_image is not None
-                else None
-            ),
-
-            'date': timestamp,
-        }
-
-        entries.append(campaign_entry)
-
-        # =========================
-        # GLOBAL INDEX ENTRY
-        # =========================
-
-        global_entry = {
-            'id': (
-                f'{campaign_slug}/{battle_slug}'
-                if battle_slug
-                else f'{campaign_slug}/'
-            ),
-
-            'name': battle_name,
-
-            'campaign': campaign_name,
-
-            'campaignSlug': campaign_slug,
-
-            'battleSlug': battle_slug,
-
-            'startImage': (
-                start_image
-                if start_image is not None
-                else None
-            ),
-
-            'date': timestamp,
-        }
-
-        all_battles.append(global_entry)
+    campaign_entries = list(
+        deduped.values()
+    )
 
     # =========================
     # SORT NEWEST FIRST
     # =========================
 
-    entries.sort(
-        key=lambda e: e.get('date') or '',
+    campaign_entries.sort(
+        key=get_time,
         reverse=True
     )
 
@@ -156,34 +248,69 @@ for campaign_dir in sorted(root.iterdir()):
     # WRITE CAMPAIGN INDEX
     # =========================
 
-    index_path = campaign_dir / 'index.json'
-
-    index_path.write_text(
-        json.dumps(entries, indent=2),
-        encoding='utf-8'
+    campaign_index_path = (
+        campaign_dir / "index.json"
     )
 
-    created.append(str(index_path))
+    write_json(
+        campaign_index_path,
+        campaign_entries
+    )
+
+    created.append(
+        str(campaign_index_path)
+    )
 
 # =========================
-# GLOBAL INDEX
+# GLOBAL DEDUPE
+# =========================
+
+global_deduped = {}
+
+for entry in all_battles:
+
+    key = (
+        entry["campaignSlug"],
+        entry["battleSlug"]
+    )
+
+    global_deduped[key] = entry
+
+all_battles = list(
+    global_deduped.values()
+)
+
+# =========================
+# SORT GLOBAL INDEX
 # =========================
 
 all_battles.sort(
-    key=lambda e: e.get('date') or '',
+    key=get_time,
     reverse=True
 )
 
-index_path = root / 'index.json'
+# =========================
+# WRITE GLOBAL INDEX
+# =========================
 
-index_path.write_text(
-    json.dumps(all_battles, indent=2),
-    encoding='utf-8'
+global_index_path = (
+    ROOT / "index.json"
 )
 
-created.append(str(index_path))
+write_json(
+    global_index_path,
+    all_battles
+)
 
-print('Created/updated files:')
+created.append(
+    str(global_index_path)
+)
+
+# =========================
+# DONE
+# =========================
+
+print("\nCreated/updated files:\n")
 
 for path in created:
     print(path)
