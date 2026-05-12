@@ -50,7 +50,12 @@ exports.handler = async (event) => {
           }
         }
       );
+const contentType = res.headers.get("content-type");
 
+if (contentType && !contentType.includes("application/json")) {
+  const text = await res.text();
+  throw new Error(`GitHub returned non-JSON for ${path}: ${text}`);
+}
       return res;
     }
 
@@ -86,12 +91,47 @@ async function getJsonFile(path, fallback = []) {
 
   const json = await res.json();
 
-  // not a file
-  if (!json.content) {
-    throw new Error(
-      `GitHub response for ${path} did not contain file content`
-    );
+// =========================
+// HANDLE LARGE FILES (no content, use download_url)
+// =========================
+
+if (!json.content && json.download_url) {
+  const rawRes = await fetch(json.download_url);
+
+  if (!rawRes.ok) {
+    throw new Error(`Failed to fetch raw file for ${path}`);
   }
+
+  const text = await rawRes.text();
+
+  if (!text.trim()) {
+    return {
+      exists: true,
+      data: fallback,
+      sha: json.sha
+    };
+  }
+
+  try {
+    return {
+      exists: true,
+      data: JSON.parse(text),
+      sha: json.sha
+    };
+  } catch (err) {
+    throw new Error(`Invalid JSON in raw file ${path}`);
+  }
+}
+
+// =========================
+// NORMAL FILE (has base64 content)
+// =========================
+
+if (!json.content) {
+  throw new Error(
+    `GitHub response for ${path} was not a file`
+  );
+}
 
   let decoded;
 
