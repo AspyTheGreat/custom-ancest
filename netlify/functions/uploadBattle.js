@@ -485,59 +485,84 @@ function mergeCounts(target, source) {
 }
 
 function parseLevelClass(levelClassStr) {
-  if (!levelClassStr) return [];
+  if (!levelClassStr || typeof levelClassStr !== "string") return [];
 
   return levelClassStr
-    // split on BOTH comma and pipe
     .split(/[|,]/)
-    .map(entry => entry.trim())
+    .map(e => e.trim())
     .filter(Boolean)
     .map(entry => {
 
-      // =========================
-      // EXTRACT LEVEL (case-insensitive)
-      // =========================
+      entry = entry.replace(/\s+/g, " ").trim();
 
-      const levelMatch = entry.match(/level-(\d+)/i);
+      const levelMatch = entry.match(/level\s*-\s*(\d+)/i);
       const level = levelMatch ? Number(levelMatch[1]) : 0;
 
-      // remove "level-X"
-      let rest = entry.replace(/level-\d+\s*/i, "").trim();
-
+      let rest = entry.replace(/level\s*-\s*\d+/i, "").trim();
       if (!rest) return null;
 
-      // =========================
-      // SPLIT WORDS SAFELY
-      // =========================
+      const parts = rest.split(" ");
+      const className = parts.at(-1);
 
-      const parts = rest.split(/\s+/);
-
-      if (!parts.length) return null;
-
-      // =========================
-      // CLASS = LAST WORD
-      // =========================
-
-      const className = parts[parts.length - 1];
-
-      // =========================
-      // SUBCLASS = EVERYTHING BEFORE
-      // =========================
-
-      const subclass =
-        parts.length > 1
-          ? parts.slice(0, -1).join(" ")
-          : null;
+      const subclassRaw = parts.slice(0, -1).join(" ").trim();
 
       return {
         class: className,
-        classKey: className.toLowerCase(),
-        subclass,
-        subclassKey: subclass ? subclass.toLowerCase() : null,
+        subclass: subclassRaw || "null",
         level
       };
     })
     .filter(Boolean);
+}
+
+// helper
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+function buildLevelHistory(classes) {
+  if (!classes || !classes.length) return [];
+
+  const history = [];
+
+  // Sort so main class (highest level) comes first
+  const sorted = [...classes].sort((a, b) => b.level - a.level);
+
+  const main = sorted[0];
+  const others = sorted.slice(1);
+
+  // --- MAIN CLASS LEVELING ---
+  // start from level 6 like your example (you can tweak this)
+  const START_LEVEL = 6;
+
+  for (let lvl = START_LEVEL; lvl <= main.level; lvl++) {
+    history.push(formatEntry([{ ...main, level: lvl }]));
+  }
+
+  // --- MULTICLASS ADDITIONS ---
+  others.forEach(cls => {
+    for (let lvl = 1; lvl <= cls.level; lvl++) {
+      history.push(
+        formatEntry([
+          main,
+          { ...cls, level: lvl }
+        ])
+      );
+    }
+  });
+
+  return history;
+}
+
+// helper
+function formatEntry(classes) {
+  return classes
+    .map(c =>
+      `Level-${c.level} ${
+        c.subclass !== "null" ? c.subclass + " " : ""
+      }${c.class}`
+    )
+    .join(" | ");
 }
 
 function ensureChar(stats, slug, name) {
