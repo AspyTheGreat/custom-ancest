@@ -387,6 +387,20 @@ const statsFile =
       statsData.processedBattles.push(
         battleId
       );
+      // rebuild level history for all characters
+for (const slug in statsData.characters) {
+  const history = await rebuildLevelHistory(
+    campaignSlug,
+    slug,
+    getJsonFile
+  );
+
+  statsData.characters[slug].levelHistory = history;
+
+  // ✅ ensure current levelClass = latest entry
+  statsData.characters[slug].levelClass =
+    history.length ? history[history.length - 1] : null;
+}
     }
 
     // =========================
@@ -484,6 +498,67 @@ function mergeCounts(target, source) {
   }
 }
 
+async function rebuildLevelHistory(
+  campaignSlug,
+  characterSlug,
+  getJsonFile
+) {
+  const basePath = `battles/${campaignSlug}`;
+
+  // get campaign index (list of battles)
+  const index = await getJsonFile(`${basePath}/index.json`, []);
+
+  const history = [];
+  let lastNormalized = null;
+
+  const normalize = str =>
+    str
+      .toLowerCase()
+      .split(/[|,]/)
+      .map(s => s.trim())
+      .sort()
+      .join("|");
+
+  // sort oldest → newest
+const safeTime = (d) => {
+  const t = new Date(d).getTime();
+  return isNaN(t) ? 0 : t;
+};
+
+const battles = [...index.data].sort(
+  (a, b) => safeTime(a.date) - safeTime(b.date)
+);
+
+  for (const battle of battles) {
+
+    const file = await getJsonFile(battle.file, null);
+    if (!file?.data) continue;
+
+    const char = (file.data.characters || []).find(c =>
+      (c.slug || makeSlug(c.name)) === characterSlug
+    );
+
+    if (!char) continue;
+
+    const lc =
+      char.levelClass ||
+      char.levelclass ||
+      null;
+
+    if (!lc) continue;
+
+    const cleaned = lc.trim().replace(/\s+/g, " ");
+    const normalized = normalize(cleaned);
+
+    if (normalized !== lastNormalized) {
+      history.push(cleaned);
+      lastNormalized = normalized;
+    }
+  }
+
+  return history;
+}
+
 function parseLevelClass(levelClassStr) {
   if (!levelClassStr || typeof levelClassStr !== "string") return [];
 
@@ -532,7 +607,7 @@ function buildLevelHistory(classes) {
 
   // --- MAIN CLASS LEVELING ---
   // start from level 6 like your example (you can tweak this)
-  const START_LEVEL = 6;
+  const START_LEVEL = 1;
 
   for (let lvl = START_LEVEL; lvl <= main.level; lvl++) {
     history.push(formatEntry([{ ...main, level: lvl }]));
@@ -796,21 +871,40 @@ function processBattleStats(
       );
     }
 
-     const levelClass =
+   const newLevelClass =
   char.levelClass ||
   char.levelclass ||
   null;
 
-if (levelClass) {
+if (newLevelClass) {
 
-  c.levelClass = levelClass;
+  const normalize = str =>
+    str
+      .toLowerCase()
+      .split(/[|,]/)
+      .map(s => s.trim())
+      .sort()
+      .join("|");
 
-  const parsed = parseLevelClass(levelClass);
+  const normalizedNew = normalize(newLevelClass);
+  const normalizedOld = c.levelClass
+    ? normalize(c.levelClass)
+    : null;
 
-  c.levelHistory = buildLevelHistory(parsed);
+  // ✅ only update if different
+  if (normalizedNew !== normalizedOld) {
+
+    // push ONLY the raw string (as you wanted)
+  
+
+    // update current
+    c.levelClass = newLevelClass.trim();
+  }
+
+  // still update class stats
+  const parsed = parseLevelClass(newLevelClass);
 
   parsed.forEach(newClass => {
-
     const index = c.classes.findIndex(existing =>
       existing.class === newClass.class &&
       existing.subclass === newClass.subclass
@@ -979,5 +1073,6 @@ if (levelClass) {
 
     c.totalNat1 +=
       s.nat1 || 0;
+ 
   }
 }
