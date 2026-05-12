@@ -485,64 +485,58 @@ function mergeCounts(target, source) {
 }
 
 function parseLevelClass(levelClassStr) {
-
-  if (!levelClassStr) {
-    return [];
-  }
+  if (!levelClassStr) return [];
 
   return levelClassStr
-
-    .split(/[,|]/)
-
+    // split on BOTH comma and pipe
+    .split(/[|,]/)
     .map(entry => entry.trim())
-
     .filter(Boolean)
-
     .map(entry => {
 
-      const levelMatch =
-        entry.match(/Level-(\d+)/i);
+      // =========================
+      // EXTRACT LEVEL (case-insensitive)
+      // =========================
 
-      const level =
-        levelMatch
-          ? Number(levelMatch[1])
-          : 0;
+      const levelMatch = entry.match(/level-(\d+)/i);
+      const level = levelMatch ? Number(levelMatch[1]) : 0;
 
-      entry = entry.replace(
-        /Level-\d+\s*/i,
-        ""
-      );
+      // remove "level-X"
+      let rest = entry.replace(/level-\d+\s*/i, "").trim();
 
-      const parts =
-        entry.split(" ").filter(Boolean);
+      if (!rest) return null;
 
-      if (!parts.length) {
-        return null;
-      }
+      // =========================
+      // SPLIT WORDS SAFELY
+      // =========================
 
-      const className = parts.pop();
+      const parts = rest.split(/\s+/);
+
+      if (!parts.length) return null;
+
+      // =========================
+      // CLASS = LAST WORD
+      // =========================
+
+      const className = parts[parts.length - 1];
+
+      // =========================
+      // SUBCLASS = EVERYTHING BEFORE
+      // =========================
 
       const subclass =
-        parts.length
-          ? parts.join(" ")
+        parts.length > 1
+          ? parts.slice(0, -1).join(" ")
           : null;
 
       return {
-
         class: className,
-
-        classKey:
-          className.toLowerCase(),
-
+        classKey: className.toLowerCase(),
         subclass,
-
-        subclassKey:
-          subclass?.toLowerCase() || null,
-
+        subclassKey: subclass ? subclass.toLowerCase() : null,
         level
       };
     })
-
     .filter(Boolean);
 }
 
