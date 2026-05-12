@@ -266,6 +266,408 @@ h1 {
   background: #6a5acd;
   color: #0b0b0f;
 }
+
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++
+CHARACTER SHEET DISPLAY SIDE
+/*++++++++++++++++++++++++++++++++++++++++++++++*/
+/* MAIN CARD */
+.character-card {
+  display: flex;
+  gap: 20px;
+
+  width: 100%;
+  max-width: 900px;
+
+  height: 800px;
+  flex: 0 0 800px;   /* IMPORTANT: locks flex sizing */
+
+  padding: 20px;
+
+  border: 1px solid #6a5acd;
+  border-radius: 12px;
+
+  background: rgba(106, 90, 205, 0.08);
+
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* LEFT IMAGE */
+.image-block {
+
+  width: 30%;
+
+  min-width: 260px;
+
+  max-width: 260px;
+
+  height: 360px;
+
+  border: 2px solid #6a5acd;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  background: rgba(255,255,255,0.04);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+.image-block img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+/* RIGHT SIDE */
+.content-block {
+
+  width: 70%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+  height: 100%;
+}
+
+#characters-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+}
+/* CHARACTER NAME  */
+.name-block {
+
+  flex: 0 0 90px;   /* absolute lock */
+  height: 90px;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 90px;
+  max-height: 90px;
+
+  overflow: hidden;
+}
+
+
+.name-block h2 {
+
+  margin: 0;
+
+  width: 100%;
+
+  text-align: center;
+
+  font-size: 1.8rem;
+
+  line-height: 1.1;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*  TOP INFO  */
+.top-info {
+
+  display: flex;
+
+  gap: 20px;
+}
+
+/* LEFT SIDE OF CONTENT */
+.stats-block {
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+
+  justify-items: center;
+
+  margin-top: 10px;
+}
+
+.stats-wrapper {
+
+  border: 2px solid #6a5acd;
+
+  border-radius: 60px;
+
+  padding: 10px;
+
+  background: rgba(106, 90, 205, 0.06);
+}
+.stat-card {
+
+  width: 110px;
+
+  height: 110px;
+
+  border: 2px solid #999;
+
+  border-radius: 50%;
+
+  background: #f4f4f4;
+
+  color: black;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  position: relative;
+
+  padding: 10px;
+}
+
+.stat-name {
+
+  position: absolute;
+
+  top: 18px;
+
+  font-size: 0.65rem;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+}
+
+.stat-mod {
+
+  font-size: 2rem;
+
+  font-weight: bold;
+
+  line-height: 1;
+}
+
+.stat-score {
+
+  position: absolute;
+
+  bottom: -10px;
+
+  width: 38px;
+
+  height: 38px;
+
+  border-radius: 50%;
+
+  border: 2px solid #888;
+
+  background: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 0.9rem;
+
+  font-weight: bold;
+}
+
+/* RIGHT SIDE OF CONTENT */
+.info-box {
+
+  flex: 1;
+
+  border: 1px solid #6a5acd;
+
+  border-radius: 10px;
+
+  padding: 15px;
+
+  background: rgba(106, 90, 205, 0.05);
+
+  overflow-wrap: break-word;
+}
+
+/* SMALL BOXES */
+.stat-box,
+.info-box {
+  
+  padding: 12px;
+
+  border: 1px solid #6a5acd;
+
+  border-radius: 8px;
+
+  background: rgba(106, 90, 205, 0.05);
+}
+
+/*   SLIDER  */
+.character-slider {
+  overflow: hidden;
+  width: 100%;
+}
+
+.character-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+#characters-container {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: stretch;  /* CRITICAL FIX */
+
+  height: 100%;
+  overflow: hidden;
+}
+
+.character-carousel {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 20px;
+
+  width: 100%;
+}
+.carousel-character {
+
+  flex: 1;
+
+  max-width: 1100px;
+}
+.carousel-btn {
+
+  width: 55px;
+
+  height: 55px;
+
+  border-radius: 50%;
+
+  border: 2px solid #6a5acd;
+
+  background: rgba(106, 90, 205, 0.15);
+
+  color: white;
+
+  font-size: 1.5rem;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+.carousel-btn:hover {
+
+  background: #6a5acd;
+
+  color: black;
+
+  transform: scale(1.08);
+}
+.carousel-controls {
+  display: flex;
+  gap: 15px;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  margin-top: 15px;
+
+  position: relative;   /* IMPORTANT */
+}
+
+
+.nav-tile {
+  width: 80px;
+  height: 65px;   /* shorter */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #6a5acd;
+  background: rgba(106, 90, 205, 0.15);
+
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: 0.2s;
+}
+.nav-tile:hover {
+  background: #6a5acd;
+  color: black;
+  transform: scale(1.05);
+}
+
+.nav-tile:active {
+  transform: scale(0.95);
+}
+.carousel-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  width: 100%;
+}
+#content-panel {
+  height: 75vh;
+  overflow: hidden;   /* IMPORTANT */
+  display: flex;
+  flex-direction: column;
+}
+#characters-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;  /* IMPORTANT */
+}
+
+
   /* =========================
    PREVIOUS BATTLES PAGE
   ======================*/
