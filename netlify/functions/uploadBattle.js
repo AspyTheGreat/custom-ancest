@@ -503,11 +503,10 @@ function parseLevelClass(levelClassStr) {
 
       const parts = rest.split(" ");
       const className = parts.at(-1);
-
       const subclassRaw = parts.slice(0, -1).join(" ").trim();
 
       return {
-        class: className,
+        class: capitalize(className),
         subclass: subclassRaw || "null",
         level
       };
@@ -581,7 +580,7 @@ function ensureChar(stats, slug, name) {
 
       portrait: null,
       portraits: [],
-
+_maxLevel: 0,
       classes: [],
       levelClass: null,
       levelHistory: [],
@@ -739,62 +738,52 @@ function processBattleStats(
         });
       }
 
-      // =========================
-      // LEVELCLASS
-      // =========================
+    const levelClass =
+  actor.levelClass ||
+  actor.levelclass ||
+  turn.levelClass ||
+  turn.levelclass ||
+  null;
 
-      const levelClass =
-        actor.levelClass ||
-        actor.levelclass ||
-        null;
+if (levelClass) {
 
-      if (levelClass) {
+  // ✅ fallback: always set latest seen value
+  c.levelClass = levelClass;
 
-        const last =
-          c.levelHistory[
-            c.levelHistory.length - 1
-          ];
+  const parsed = parseLevelClass(levelClass);
 
-        if (last !== levelClass) {
-          c.levelHistory.push(levelClass);
-        }
+  // ✅ rebuild level history properly
+  c.levelHistory = buildLevelHistory(parsed);
 
-        const parsed =
-          parseLevelClass(levelClass);
+  parsed.forEach(newClass => {
 
-        parsed.forEach(newClass => {
+    const exists = c.classes.some(existing =>
+      existing.class === newClass.class &&
+      existing.subclass === newClass.subclass
+    );
 
-          const exists =
-            c.classes.some(existing =>
+    if (index !== -1) {
+    // ✅ update level
+    c.classes[index].level = newClass.level;
+  } else {
+    c.classes.push(newClass);
+  }
+});
 
-              existing.classKey ===
-                newClass.classKey &&
+  const totalLevel =
+    parsed.reduce(
+      (sum, cls) => sum + (cls.level || 0),
+      0
+    );
 
-              existing.subclassKey ===
-                newClass.subclassKey
-            );
-
-          if (!exists) {
-            c.classes.push(newClass);
-          }
-        });
-
-        const totalLevel =
-          parsed.reduce(
-            (sum, cls) =>
-              sum + (cls.level || 0),
-            0
-          );
-
-        if (
-          !c._maxLevel ||
-          totalLevel > c._maxLevel
-        ) {
-
-          c._maxLevel = totalLevel;
-          c.levelClass = levelClass;
-        }
-      }
+  // ✅ still track highest level version
+  if (
+    !c._maxLevel ||
+    totalLevel > c._maxLevel
+  ) {
+    c._maxLevel = totalLevel;
+  }
+}
 
       if (
         turn.initiative !== undefined
