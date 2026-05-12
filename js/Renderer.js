@@ -2,12 +2,14 @@ function renderCharacter(character) {
 
   return `
 
-  <div class="character-card">
+  <div class="character-card" id="character-card">
 
     <!-- LEFT IMAGE -->
     <div class="image-block">
 
-      <img src="${character.image}" alt="${character.name}">
+      <img
+        id="character-portrait"
+        src="${character.image}" alt="${character.name}">
 
     </div>
 
@@ -49,16 +51,27 @@ function renderCharacter(character) {
         <!-- SAVES -->
         <div class="info-box">
 
-          <h3>Saving Throws</h3>
+          <h3 class="center-title">Saving Throws</h3>
 
-          ${Object.entries(character.stats).map(([name, stat]) => `
+         <div class="saving-list">
 
-            <p>
-              ${name.toUpperCase()}:
+           ${Object.entries(character.stats).map(([name, stat]) => `
+
+             <div class="save-row">
+
+               <span class="save-name">
+               ${name.toUpperCase()}
+               </span>
+
+               <span class="save-value">
               ${stat.save}
-            </p>
+               </span>
 
-          `).join("")}
+             </div>
+
+           `).join("")}
+
+          </div>
 
         </div>
 
