@@ -12,6 +12,17 @@ const files = [
 
 ];
 
+const characterImages = {
+  "Lady Lavender": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/lavender.jpg",
+
+  "Maximillion": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/maxmilion.webp",
+
+  "Sogark Okatir": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/sogark.png",
+
+  "Sovelias Xalixar": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/sovelias.jpg",
+
+  "Xue Yijun": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/Xue.webp"
+};
 let characters = [];
 
 let currentCharacterIndex = 0;
@@ -100,33 +111,19 @@ function loadSection(section) {
   
 }
 function renderCurrentCharacter() {
-
-  const container =
-    document.getElementById("characters-container");
+  const container = document.getElementById("characters-container");
 
   container.innerHTML = `
-
-    <div class="character-carousel">
-
-      <button
-        class="carousel-btn"
-        onclick="changeCharacter(-1)">
-        ←
-      </button>
+    <div class="carousel-wrapper">
 
       <div class="carousel-character">
-
-        ${renderCharacter(
-          characters[currentCharacterIndex]
-        )}
-
+        ${renderCharacter(characters[currentCharacterIndex])}
       </div>
 
-      <button
-        class="carousel-btn"
-        onclick="changeCharacter(1)">
-        →
-      </button>
+      <div class="carousel-controls">
+        <div class="nav-tile" onclick="changeCharacter(-1)">←</div>
+        <div class="nav-tile" onclick="changeCharacter(1)">→</div>
+      </div>
 
     </div>
   `;

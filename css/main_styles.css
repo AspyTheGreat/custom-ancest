@@ -204,22 +204,24 @@ CHARACTER SHEET DISPLAY SIDE
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
 /* MAIN CARD */
 .character-card {
-
   display: flex;
-
   gap: 20px;
+
+  width: 100%;
+  max-width: 900px;
+
+  height: 800px;
+  flex: 0 0 800px;   /* IMPORTANT: locks flex sizing */
 
   padding: 20px;
 
-  margin-bottom: 25px;
-
   border: 1px solid #6a5acd;
-
   border-radius: 12px;
 
   background: rgba(106, 90, 205, 0.08);
 
-  min-height: 420px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* LEFT IMAGE */
@@ -231,7 +233,7 @@ CHARACTER SHEET DISPLAY SIDE
 
   max-width: 260px;
 
-  height: 420px;
+  height: 360px;
 
   border: 2px solid #6a5acd;
 
@@ -271,21 +273,51 @@ CHARACTER SHEET DISPLAY SIDE
   flex-direction: column;
 
   gap: 20px;
+
+  height: 100%;
 }
 
+#characters-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+}
 /* CHARACTER NAME  */
 .name-block {
 
-  text-align: center;
+  flex: 0 0 90px;   /* absolute lock */
+  height: 90px;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 90px;
+  max-height: 90px;
+
+  overflow: hidden;
 }
+
 
 .name-block h2 {
 
   margin: 0;
 
-  font-size: 2rem;
+  width: 100%;
 
-  letter-spacing: 2px;
+  text-align: center;
+
+  font-size: 1.8rem;
+
+  line-height: 1.1;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /*  TOP INFO  */
@@ -314,9 +346,9 @@ CHARACTER SHEET DISPLAY SIDE
 
   border: 2px solid #6a5acd;
 
-  border-radius: 14px;
+  border-radius: 60px;
 
-  padding: 20px;
+  padding: 10px;
 
   background: rgba(106, 90, 205, 0.06);
 }
@@ -417,7 +449,7 @@ CHARACTER SHEET DISPLAY SIDE
 /* SMALL BOXES */
 .stat-box,
 .info-box {
-
+  
   padding: 12px;
 
   border: 1px solid #6a5acd;
@@ -438,8 +470,15 @@ CHARACTER SHEET DISPLAY SIDE
   transition: transform 0.4s ease;
 }
 
-.character-card {
-  min-width: 100%;
+#characters-container {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: stretch;  /* CRITICAL FIX */
+
+  height: 100%;
+  overflow: hidden;
 }
 
 .character-carousel {
@@ -488,6 +527,77 @@ CHARACTER SHEET DISPLAY SIDE
 
   transform: scale(1.08);
 }
+.carousel-controls {
+  display: flex;
+  gap: 15px;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  margin-top: 15px;
+
+  position: relative;   /* IMPORTANT */
+}
+
+
+.nav-tile {
+  width: 80px;
+  height: 65px;   /* shorter */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #6a5acd;
+  background: rgba(106, 90, 205, 0.15);
+
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: 0.2s;
+}
+.nav-tile:hover {
+  background: #6a5acd;
+  color: black;
+  transform: scale(1.05);
+}
+
+.nav-tile:active {
+  transform: scale(0.95);
+}
+.carousel-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  width: 100%;
+}
+#content-panel {
+  height: 75vh;
+  overflow: hidden;   /* IMPORTANT */
+  display: flex;
+  flex-direction: column;
+}
+#characters-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;  /* IMPORTANT */
+}
+
+
   /* =========================
    PREVIOUS BATTLES PAGE
   ======================*/

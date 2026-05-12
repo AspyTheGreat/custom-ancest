@@ -18,7 +18,7 @@ function parseCharacter(data) {
 
     name: data.character.name,
 
-    image: data.character.avatar,
+    image: characterImages[data.character.name] || data.character.avatar,
 
     class:
       current(attribs, "class_display") ||
@@ -57,10 +57,10 @@ function parseCharacter(data) {
     stats: {
 
       strength: {
-  score: current(attribs, "strength"),
-  mod: current(attribs, "strength_mod"),
-  save: current(attribs, "strength_save_bonus")
-},
+       score: current(attribs, "strength"),
+       mod: current(attribs, "strength_mod"),
+       save: current(attribs, "strength_save_bonus")
+      },
 
       dexterity: {
         score: current(attribs, "dexterity"),
@@ -94,5 +94,6 @@ function parseCharacter(data) {
     }
     
   };
+  
   
 }
