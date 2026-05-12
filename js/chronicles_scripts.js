@@ -1,5 +1,5 @@
 // =========================
-// ⚙️ CONFIG (EDIT THIS)
+// ⚙️ CONFIG (EDIT THIS).character-card
 // =========================
 const campaignBattleCache = {};
 const campaignPortraitCache = {};

@@ -3,7 +3,12 @@ function getAttr(attribs, name) {
 }
 
 function current(attribs, name) {
-  return getAttr(attribs, name)?.current || "";
+
+  const attr = getAttr(attribs, name);
+
+  if (!attr) return "0";
+
+  return attr.current ?? "0";
 }
 
 function max(attribs, name) {
@@ -33,17 +38,42 @@ function parseCharacter(data) {
     },
 
     skills: [
+
   "Acrobatics",
+  "Animal Handling",
   "Arcana",
   "Athletics",
   "Deception",
   "History",
   "Insight",
+  "Intimidation",
   "Investigation",
+  "Medicine",
+  "Nature",
   "Perception",
+  "Performance",
   "Persuasion",
-  "Stealth"
+  "Religion",
+  "Sleight of Hand",
+  "Stealth",
+  "Survival"
+
 ].filter(skill => {
+
+  const formatted =
+    skill
+      .toLowerCase()
+      .replace(/ /g, "_");
+
+  const attr =
+    getAttr(
+      attribs,
+      formatted + "_prof"
+    );
+
+  return attr?.current == "1";
+})
+.filter(skill => {
 
   const attr =
     getAttr(
@@ -57,37 +87,37 @@ function parseCharacter(data) {
     stats: {
 
       strength: {
-       score: current(attribs, "strength"),
+       score: current(attribs, "strength") || current(attribs, "strength_base"),
        mod: current(attribs, "strength_mod"),
        save: current(attribs, "strength_save_bonus")
       },
 
       dexterity: {
-        score: current(attribs, "dexterity"),
+        score: current(attribs, "dexterity") || current(attribs, "dexterity_base"),
         mod: current(attribs, "dexterity_mod"),
         save: current(attribs, "dexterity_save_bonus")
       },
 
       constitution: {
-        score: current(attribs, "constitution"),
+        score: current(attribs, "constitution") || current(attribs, "constitution_base"),
         mod: current(attribs, "constitution_mod"),
         save: current(attribs, "constitution_save_bonus")
       },
 
       intelligence: {
-        score: current(attribs, "intelligence"),
+        score: current(attribs, "intelligence") || current(attribs, "intelligence_base"),
         mod: current(attribs, "intelligence_mod"),
         save: current(attribs, "intelligence_save_bonus")
       },
 
       wisdom: {
-        score: current(attribs, "wisdom"),
+        score: current(attribs, "wisdom") || current(attribs, "wisdom_base"),
         mod: current(attribs, "wisdom_mod"),
         save: current(attribs, "wisdom_save_bonus")
       },
 
       charisma: {
-        score: current(attribs, "charisma"),
+        score: current(attribs, "charisma") || current(attribs, "charisma_base"),
         mod: current(attribs, "charisma_mod"),
         save: current(attribs, "charisma_save_bonus")
       }

@@ -277,11 +277,13 @@ CHARACTER SHEET DISPLAY SIDE
   display: flex;
   gap: 20px;
 
-  width: 100%;
-  max-width: 900px;
+ width: 100%;
+ max-width: 820px;
+ min-width: 820px;
 
-  height: 800px;
-  flex: 0 0 800px;   /* IMPORTANT: locks flex sizing */
+ height: 800px;
+ min-height: 800px;
+ max-height: 800px;   /* IMPORTANT: locks flex sizing */
 
   padding: 20px;
 
@@ -290,20 +292,40 @@ CHARACTER SHEET DISPLAY SIDE
 
   background: rgba(106, 90, 205, 0.08);
 
+  position: relative;
   overflow: hidden;
   box-sizing: border-box;
+}
+.character-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    rgba(10,10,15,0.45);
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+.character-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* LEFT IMAGE */
 .image-block {
 
-  width: 30%;
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
 
-  min-width: 260px;
-
-  max-width: 260px;
-
-  height: 360px;
+  height: 400px;
+  min-height: 400px;
+  max-height: 400px;
 
   border: 2px solid #6a5acd;
 
@@ -314,12 +336,11 @@ CHARACTER SHEET DISPLAY SIDE
   background: rgba(255,255,255,0.04);
 
   display: flex;
-
+  
   align-items: center;
 
   justify-content: center;
 
-  box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
 
 .image-block img {
@@ -336,7 +357,8 @@ CHARACTER SHEET DISPLAY SIDE
 /* RIGHT SIDE */
 .content-block {
 
-  width: 70%;
+  flex: 1;
+  min-width: 0;
 
   display: flex;
 
@@ -358,19 +380,21 @@ CHARACTER SHEET DISPLAY SIDE
 /* CHARACTER NAME  */
 .name-block {
 
-  flex: 0 0 90px;   /* absolute lock */
+  width: 100%;
   height: 90px;
 
-  width: 100%;
+  border: 2px solid #6a5acd;
+  border-radius: 12px;
+
+  background: rgba(106, 90, 205, 0.08);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  min-height: 90px;
-  max-height: 90px;
-
   overflow: hidden;
+
+  flex-shrink: 0;
 }
 
 
@@ -382,11 +406,14 @@ CHARACTER SHEET DISPLAY SIDE
 
   text-align: center;
 
-  font-size: 1.8rem;
+  font-size: 2rem;
 
-  line-height: 1.1;
+  letter-spacing: 2px;
+
+  white-space: nowrap;
 
   overflow: hidden;
+
   text-overflow: ellipsis;
 }
 
@@ -400,16 +427,17 @@ CHARACTER SHEET DISPLAY SIDE
 
 /* LEFT SIDE OF CONTENT */
 .stats-block {
-
   display: grid;
 
   grid-template-columns: repeat(3, 1fr);
 
-  gap: 12px;
+  gap: 4px;
+
+  row-gap: 8px;
 
   justify-items: center;
 
-  margin-top: 10px;
+  align-items: center;
 }
 
 .stats-wrapper {
@@ -425,8 +453,12 @@ CHARACTER SHEET DISPLAY SIDE
 .stat-card {
 
   width: 110px;
+  min-width: 110px;
+  max-width: 110px;
 
   height: 110px;
+  min-height: 110px;
+  max-height: 110px;
 
   border: 2px solid #999;
 
@@ -446,16 +478,16 @@ CHARACTER SHEET DISPLAY SIDE
 
   position: relative;
 
-  padding: 10px;
+  box-sizing: border-box;
 }
 
 .stat-name {
 
   position: absolute;
 
-  top: 18px;
+  top: 22px;
 
-  font-size: 0.65rem;
+  font-size: 0.7rem;
 
   font-weight: 900;
 
@@ -514,6 +546,11 @@ CHARACTER SHEET DISPLAY SIDE
   background: rgba(106, 90, 205, 0.05);
 
   overflow-wrap: break-word;
+
+  min-height: 260px;
+  max-height: 260px;
+
+  overflow-y: auto;
 }
 
 /* SMALL BOXES */
@@ -667,6 +704,54 @@ CHARACTER SHEET DISPLAY SIDE
   overflow: hidden;  /* IMPORTANT */
 }
 
+.center-title {
+  text-align: center;
+
+  margin-bottom: 18px;
+}
+.saving-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+.save-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+}
+.save-name {
+  font-size: 1rem;
+
+  font-weight: bold;
+
+  letter-spacing: 1px;
+}
+.save-value {
+  font-size: 1.1rem;
+
+  font-weight: bold;
+}
+
+@keyframes pulseGlow {
+
+  0% {
+    box-shadow:
+      0 0 12px var(--theme-color);
+  }
+
+  50% {
+    box-shadow:
+      0 0 30px var(--theme-color);
+  }
+
+  100% {
+    box-shadow:
+      0 0 12px var(--theme-color);
+  }
+}
 
   /* =========================
    PREVIOUS BATTLES PAGE
