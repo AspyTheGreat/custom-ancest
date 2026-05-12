@@ -1620,3 +1620,67 @@ width: 320px;
   opacity: 0.8;
   font-size: 1rem;
 }
+.character-subtitle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.level-history-btn {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.level-history-btn:hover {
+  color: white;
+  transform: scale(1.15);
+}
+
+.level-history-dropdown {
+  margin-top: 12px;
+
+  padding: 12px;
+
+  background: rgba(255,255,255,0.04);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 10px;
+
+  animation: fadeDown 0.2s ease;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.level-entry-header {
+  font-size: 0.85rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+
+  color: #cfcfcf;
+
+  margin-bottom: 6px;
+
+  opacity: 0.8;
+}

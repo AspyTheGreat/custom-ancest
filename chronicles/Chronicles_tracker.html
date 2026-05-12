@@ -307,13 +307,13 @@ Attacks Taken
 
 <br>
 
-<button onclick="changeCounter('defense','savesMade',-1)">-</button>
+<button onclick="changeCounter('defense','savesSucceeded',-1)">-</button>
 Saves Made
-<button onclick="changeCounter('defense','savesMade',1)">+</button>
+<button onclick="changeCounter('defense','savesSucceeded',1)">+</button>
 
-<button onclick="changeCounter('defense','savesTotal',-1)">-</button>
+<button onclick="changeCounter('defense','savesMade',-1)">-</button>
 Total
-<button onclick="changeCounter('defense','savesTotal',1)">+</button>
+<button onclick="changeCounter('defense','savesMade',1)">+</button>
 
 <div id="defenseCounter" class="counter"></div>
 
@@ -589,8 +589,8 @@ const bonusActionsTotal =
             defense: {
               attacksDodged: dodged,
               attacksTaken: taken,
-              savesMade: succeeded,
-              savesTotal: forced
+              savesSucceeded: succeeded,
+              savesMade: forced
             },
 
             spellSlotsUsed: {},
@@ -646,8 +646,8 @@ const roundSummaries = Array.from({ length: roundCount }, (_, i) => ({
       defense: {
         attacksDodged: 0,
         attacksTaken: 0,
-        savesMade: 0,
-        savesTotal: 0
+        savesSucceeded: 0,
+        savesMade: 0
       },
       attacks: {
         hit: 0,
@@ -867,47 +867,92 @@ function loadBattleState() {
   reader.readAsText(input.files[0]);
 }
 
-function handlePortraitUpload(input) {
-  const file = input.files[0];
-  if (!file) return;
+async function compressImage(file, {
+  maxWidth = 256,
+  maxHeight = 256,
+  quality = 0.7,
+  type = "image/jpeg"
+} = {}) {
 
-  const reader = new FileReader();
-  const block = input.closest(".charBlock");
+  return new Promise((resolve) => {
+    const img = new Image();
 
-  reader.onload = function(e) {
-    const base64 = e.target.result;
+    img.onload = () => {
+      let width = img.width;
+      let height = img.height;
 
-    // store data
-    block.querySelector(".portraitData").value = base64;
+      // resize
+      if (width > maxWidth || height > maxHeight) {
+        const ratio = Math.min(
+          maxWidth / width,
+          maxHeight / height
+        );
 
-    // show preview
-    const img = block.querySelector(".portraitPreview");
-    img.src = base64;
-    img.style.display = "block";
-  };
+        width *= ratio;
+        height *= ratio;
+      }
 
-  reader.readAsDataURL(file);
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+
+      resolve(
+        canvas.toDataURL(type, quality)
+      );
+    };
+
+    img.src = URL.createObjectURL(file);
+  });
 }
 
-function handleBattleImage(input, type) {
+async function handlePortraitUpload(input) {
   const file = input.files[0];
   if (!file) return;
 
-  const reader = new FileReader();
+  const block = input.closest(".charBlock");
 
-  reader.onload = function(e) {
-    if (type === "start") {
-      battleStartImage = e.target.result;
-      document.getElementById("startPreview").src = battleStartImage;
-      document.getElementById("startPreview").style.display = "block";
-    } else {
-      battleEndImage = e.target.result;
-      document.getElementById("endPreview").src = battleEndImage;
-      document.getElementById("endPreview").style.display = "block";
-    }
-  };
+  const compressed = await compressImage(file, {
+    maxWidth: 256,
+    maxHeight: 256,
+    quality: 0.7,
+    type: "image/jpeg"
+  });
 
-  reader.readAsDataURL(file);
+  block.querySelector(".portraitData").value = compressed;
+
+  const img = block.querySelector(".portraitPreview");
+  img.src = compressed;
+  img.style.display = "block";
+}
+
+async function handleBattleImage(input, type) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const compressed = await compressImage(file, {
+    maxWidth: 1280,
+    maxHeight: 1280,
+    quality: 0.75,
+    type: "image/jpeg"
+  });
+
+  if (type === "start") {
+    battleStartImage = compressed;
+
+    const img = document.getElementById("startPreview");
+    img.src = compressed;
+    img.style.display = "block";
+
+  } else {
+    battleEndImage = compressed;
+
+    const img = document.getElementById("endPreview");
+    img.src = compressed;
+    img.style.display = "block";
+  }
 }
 
 function downloadReportJSON() {
@@ -1366,8 +1411,8 @@ function getGlobal(index = selectedCharacter) {
       defense: {
         attacksDodged:0,
         attacksTaken:0,
-        savesMade:0,
-        savesTotal:0
+        savesSucceeded:0,
+        savesMade:0
       },
 
       // resources
@@ -1582,8 +1627,8 @@ function createEmptyTurn() {
     defense: {
       attacksDodged:0,
       attacksTaken:0,
-      savesMade:0,
-      savesTotal:0
+      savesSucceeded:0,
+      savesMade:0
     },
 
     spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
@@ -1659,9 +1704,9 @@ characters.push({
     damageTaken:0,
     conditions: [],
     attacksDodged: 0,
-    savesMade: 0,
+    savesSucceeded: 0,
     attacksTaken: 0,
-    savesTotal: 0,
+    savesMade: 0,
     nat1:0,
     nat20:0,
     reactions:{attack:0,spell:0,move:0,misc:0,none:0},
@@ -1711,8 +1756,8 @@ function createEmptyGlobal() {
     defense: {
       attacksDodged:0,
       attacksTaken:0,
-      savesMade:0,
-      savesTotal:0
+      savesSucceeded:0,
+      savesMade:0
     },
 
     spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
@@ -1887,8 +1932,8 @@ if (selectedCharacter === currentTurn) {
   "cc",
   "attacksDodgedInput",
   "attacksTakenInput",
+  "savesSucceededInput",
   "savesMadeInput",
-  "savesTotalInput",
   "damageTaken"
   
 ].forEach(id => {
@@ -1950,7 +1995,7 @@ function updateCounterUI() {
     `Forced:${getGlobal(selectedCharacter).saves.forced} / Success:${getGlobal(selectedCharacter).saves.succeeded}`;
 
   document.getElementById("defenseCounter").innerText =
-    `Dodged:${getGlobal(selectedCharacter).defense.attacksDodged}/${getGlobal(selectedCharacter).defense.attacksTaken} | Saves:${getGlobal(selectedCharacter).defense.savesMade}/${getGlobal(selectedCharacter).defense.savesTotal}`;
+    `Dodged:${getGlobal(selectedCharacter).defense.attacksDodged}/${getGlobal(selectedCharacter).defense.attacksTaken} | Saves:${getGlobal(selectedCharacter).defense.savesSucceeded}/${getGlobal(selectedCharacter).defense.savesMade}`;
 }
 
 function updateSpellSlotUI() {
@@ -1984,7 +2029,7 @@ const levelClassHTML = c.levelClass
 `;
 let g = tempGlobal[selectedCharacter] || {
   attacksDodged:0,
-savesMade:0,
+savesSucceeded:0,
 nat1:0,
 nat20:0,
   reactions:{attack:0,spell:0,move:0,misc:0,none:0},
@@ -2061,7 +2106,7 @@ ${summonHTML}
 <b>Incoming</b><br>
 Off-turn reactions: ${reactionSum}<br>
 Dodged: ${c.stats.attacksDodged}/${c.stats.attacksTaken}<br>
-Saves Made: ${c.stats.savesMade}/${c.stats.savesTotal}<br>
+Saves Made: ${c.stats.savesSucceeded}/${c.stats.savesMade}<br>
 Damage Taken: ${c.stats.damageTaken}<br>
 ${conditionHTML}
     ${resourceHTML}
@@ -2135,8 +2180,8 @@ function nextTurn() {
       c.stats.attacksDodged += c._roundTemp.defense.attacksDodged;
       c.stats.attacksTaken += c._roundTemp.defense.attacksTaken;
 
+      c.stats.savesSucceeded += c._roundTemp.defense.savesSucceeded;
       c.stats.savesMade += c._roundTemp.defense.savesMade;
-      c.stats.savesTotal += c._roundTemp.defense.savesTotal;
 
       // ✅ ACTION TOTALS (your fix — keep this)
       for (let k in c._roundTemp.actions) {
@@ -2249,8 +2294,8 @@ if (!c._roundTemp) c._roundTemp = createEmptyTurn();
     c._roundTemp.defense.attacksDodged += g.defense.attacksDodged || 0;
     c._roundTemp.defense.attacksTaken += g.defense.attacksTaken || 0;
 
+    c._roundTemp.defense.savesSucceeded += g.defense.savesSucceeded || 0;
     c._roundTemp.defense.savesMade += g.defense.savesMade || 0;
-    c._roundTemp.defense.savesTotal += g.defense.savesTotal || 0;
 
     // =========================
     // 🔥 SPELL SLOTS
@@ -2393,8 +2438,8 @@ if (currentTurn !== 0) {
     c.stats.attacksDodged += c._roundTemp.defense.attacksDodged;
     c.stats.attacksTaken += c._roundTemp.defense.attacksTaken;
 
+    c.stats.savesSucceeded += c._roundTemp.defense.savesSucceeded;
     c.stats.savesMade += c._roundTemp.defense.savesMade;
-    c.stats.savesTotal += c._roundTemp.defense.savesTotal;
 // =========================
 // 🔥 APPLY ACTION TOTALS (FIX)
 // =========================
@@ -2524,8 +2569,8 @@ finalReport.combatEndState = {
   defense: {
     attacksDodged: c.stats.attacksDodged,
     attacksTaken: c.stats.attacksTaken,
-    savesMade: c.stats.savesMade,
-    savesTotal: c.stats.savesTotal
+    savesSucceeded: c.stats.savesSucceeded,
+    savesMade: c.stats.savesMade
   },
 
   spellSlots: { ...c.stats.spellSlots },

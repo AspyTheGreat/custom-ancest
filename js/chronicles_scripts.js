@@ -621,7 +621,7 @@ async function renderCharacters(characters) {
 
   const timesTargeted =
     (defense.attacksTaken || 0) +
-    (defense.savesMade || 0);
+    (defense.savesTotal || 0);
 
   const rounds = char.roundCount || 1;
   const dpr = Math.round((stats.damage || 0) / rounds);
@@ -690,6 +690,27 @@ if (hpPercent === 0) {
 
   el.appendChild(row);
 }
+document
+  .querySelectorAll(".level-history-btn")
+  .forEach(btn => {
+
+    btn.onclick = () => {
+
+      const dropdown =
+        btn.parentElement
+          .parentElement
+          .querySelector(".level-history-dropdown");
+
+      if (!dropdown) return;
+
+      dropdown.classList.toggle("hidden");
+
+      btn.textContent =
+        dropdown.classList.contains("hidden")
+          ? "▶"
+          : "▼";
+    };
+  });
 }
 
 const CHARACTER_COLORS = [
@@ -890,7 +911,7 @@ async function renderRounds(rounds, characters = []) {
 
       partyTargeted +=
         (defense.attacksTaken || 0) +
-        (defense.savesMade || 0);
+        (defense.savesTotal || 0);
 
       const fullChar = characterMap[p.name] || {};
 
@@ -988,7 +1009,7 @@ const roundData =
 
 const timesTargeted =
   (defense.attacksTaken || 0) +
-  (defense.savesMade || 0);
+  (defense.savesTotal || 0);
 
         const slotEntries = Object.entries(
   p.spellSlotsUsed ||
@@ -1342,7 +1363,7 @@ const color = await getCharacterColorFromPortrait(
 );
     const timesTargeted =
       (defense.attacksTaken || 0) +
-      (defense.savesMade || 0);
+      (defense.savesTotal || 0);
 
     const row = document.createElement("div");
     row.className = "party-row";
@@ -1351,8 +1372,14 @@ const color = await getCharacterColorFromPortrait(
 
 const dpr = Math.round((stats.damage || 0) / rounds);
 
+      
 const attacksMade = stats.attacks?.total || 0;
+const attacksHit = stats.attacks?.hit || 0;
 
+const accuracy = attacksMade
+  ? Math.round((attacksHit / attacksMade) * 100)
+  : 0;
+          
 const savesForced = stats.saves?.forced || 0;
 const savesSucceeded = stats.saves?.succeeded || 0;
 const savesFailed = Math.max(0, savesForced - savesSucceeded);
@@ -1363,6 +1390,22 @@ const potency = savesForced
 const saveRate = savesForced
   ? Math.round((savesSucceeded / savesForced) * 100)
   : 0;
+  const attacksTaken = defense.attacksTaken || 0;
+const attacksDodged = defense.attacksDodged || 0;
+
+const evasion = attacksTaken
+  ? Math.round((attacksDodged / attacksTaken) * 100)
+  : 0;
+
+const savesMade = defense.savesMade ?? 0;
+
+const savesTotal =
+  defense.savesTotal ?? savesMade;
+
+const fortitude = savesTotal
+  ? Math.round((savesMade / savesTotal) * 100)
+  : 0;
+
   const hp = getHP(char);
 const current = hp.current;
 const max = hp.max;
@@ -1562,31 +1605,29 @@ if (hpPercent === 0) {
 
     <div class="party-grid">
 
-      <div>
-        <b>Attacks Dodged:</b>
-        ${defense.attacksDodged || 0}
-      </div>
+    <div>
+  <b>Evasion:</b>
+  ${attacksDodged}/${attacksTaken}
+  (${evasion}%)
+</div>
 
-      <div>
-        <b>Saves Made:</b>
-        ${defense.savesMade || 0}
-      </div>
+<div>
+  <b>Fortitude:</b>
+  ${savesMade}/${savesTotal}
+  (${fortitude}%)
+</div>
 
-      <div>
-        <b>Potency:</b>
-         ${savesFailed}/${savesForced} (${potency}%)
-      </div>
+<div>
+  <b>Potency:</b>
+  ${savesFailed}/${savesForced}
+  (${potency}%)
+</div>
 
-      <div>
-        <b>Accuracy:</b>
-        ${
-          stats.attacks?.total
-            ? Math.round(
-                (stats.attacks.hit / stats.attacks.total) * 100
-              )
-            : 0
-        }%
-      </div>
+<div>
+  <b>Accuracy:</b>
+  ${attacksHit}/${attacksMade}
+  (${accuracy}%)
+</div>
 
       <div>
         <b>Nat 20s:</b>
@@ -1618,6 +1659,7 @@ if (hpPercent === 0) {
   color
 );
     }
+    
 }
 function hexToRGBA(hex, alpha = 1) {
 
@@ -1703,8 +1745,8 @@ const savesSucceeded = stats.saves?.succeeded || 0;
 const savesFailed = Math.max(0, savesForced - savesSucceeded);
 
 // Defensive saves
-const savesMade = defense.savesMade || 0;
-const savesTotal = defense.savesTotal || savesMade;
+const savesMade = defense.savesMade ?? 0;
+const savesTotal = defense.savesTotal ?? savesMade;
 
 // Defensive dodges
 const attacksTaken = defense.attacksTaken || 0;
@@ -2042,18 +2084,59 @@ function renderLevelTimeline(history) {
 
   if (!history.length) return "";
 
+  // calculate total character level
+  const getTotalLevel = (entry) => {
+
+    const matches =
+      [...entry.matchAll(/Level-(\d+)/g)];
+
+    return matches.reduce(
+      (sum, match) =>
+        sum + parseInt(match[1]),
+      0
+    );
+  };
+
+  // sort highest total level first
+  const sortedHistory =
+    history
+      .slice()
+      .sort((a, b) =>
+        getTotalLevel(b) -
+        getTotalLevel(a)
+      );
+
   return `
-        <div class="level-header">
-        <div class="level-title">Level Progression</div>
+    <div class="level-header">
+      <div class="level-title">
+        Level Progression
       </div>
+    </div>
+
     <div class="level-timeline">
-      ${history.map(level => `
-        <div class="level-node">
-          <div class="level-label">
-            ${level}
-          </div>
-        </div>
-      `).join("")}
+
+     ${sortedHistory.map(level => {
+
+  const totalLevel =
+    getTotalLevel(level);
+
+  return `
+
+    <div class="level-node">
+
+      <div class="level-entry-header">
+        Level-${totalLevel}
+      </div>
+
+      <div class="level-label">
+        ${level}
+      </div>
+
+    </div>
+
+  `;
+}).join("")}
+
     </div>
   `;
 }
@@ -2118,6 +2201,7 @@ characters.forEach(char => {
     <div class="backBtn">← Back</div>
     <h3>Campaign Stats</h3>
     <div id="campaign-breakdown"></div>
+
   `;
 
   container.querySelector(".backBtn").onclick =
@@ -2143,6 +2227,31 @@ const savesFailed = Math.max(0, savesForced - savesSucceeded);
 const potency = savesForced
   ? Math.round((savesFailed / savesForced) * 100)
   : 0;
+  const defense = stats.defense || {};
+
+const attacksTaken =
+  defense.attacksTaken ?? 0;
+
+const attacksDodged =
+  defense.attacksDodged ?? 0;
+
+const evasion = attacksTaken
+  ? Math.round(
+      (attacksDodged / attacksTaken) * 100
+    )
+  : 0;
+
+const savesMade =
+  defense.savesMade ?? 0;
+
+const savesTotal =
+  defense.savesTotal ?? savesMade;
+
+const fortitude = savesTotal
+  ? Math.round(
+      (savesMade / savesTotal) * 100
+    )
+  : 0;
   const row = document.createElement("div");
   row.className = "party-row";
 
@@ -2164,12 +2273,50 @@ const potency = savesForced
   }
 
 <div class="character-text">
+
   <h4>${char.name}</h4>
+
   ${
     char.levelClass
-      ? `<div class="character-subtitle">${char.levelClass}</div>`
+      ? `
+        <div class="character-subtitle-row">
+
+          <div class="character-subtitle">
+            ${char.levelClass}
+          </div>
+
+        ${
+  char.levelHistory?.length
+    ? `
+      <button
+        class="level-history-btn"
+        data-character="${char.name}"
+      >
+        ▶
+      </button>
+    `
+    : ""
+}
+
+        </div>
+        ${
+  char.levelHistory?.length
+    ? `
+      <div class="level-history-dropdown hidden">
+
+        ${renderLevelTimeline(
+          buildLevelTimeline(char.levelHistory)
+        )}
+
+      </div>
+    `
+    : ""
+}
+      `
       : ""
+      
   }
+
 </div>
 
 </div>
@@ -2182,15 +2329,35 @@ const potency = savesForced
   <div><b>Total Healing:</b> ${stats.healing}</div>
   <div><b>Total CC:</b> ${stats.cc}</div>
 
-  <div><b>Accuracy:</b> ${accuracy}%</div>
-  <div><b>Potency:</b> ${potency}%</div>
+  <div>
+  <b>Accuracy:</b>
+  ${attacksHit}/${attacksMade}
+  (${accuracy}%)
+</div>
+
+<div>
+  <b>Potency:</b>
+  ${savesFailed}/${savesForced}
+  (${potency}%)
+</div>
+
+<div>
+  <b>Evasion:</b>
+  ${attacksDodged}/${attacksTaken}
+  (${evasion}%)
+</div>
+
+<div>
+  <b>Fortitude:</b>
+  ${savesMade}/${savesTotal}
+  (${fortitude}%)
+</div>
   
 
 </div>
 
-${renderLevelTimeline(
-  buildLevelTimeline(char.levelHistory)
-)}
+
+
     </div>
 
     <div class="party-right">
@@ -2212,8 +2379,34 @@ ${renderLevelTimeline(
   );
 
   }
-}
+ document
+  .querySelectorAll(".level-history-btn")
+  .forEach(btn => {
 
+    btn.onclick = () => {
+
+      const characterText =
+        btn.closest(".character-text");
+
+      if (!characterText) return;
+
+      const dropdown =
+        characterText.querySelector(
+          ".level-history-dropdown"
+        );
+
+      if (!dropdown) return;
+
+      dropdown.classList.toggle("hidden");
+
+      btn.textContent =
+        dropdown.classList.contains("hidden")
+          ? "▶"
+          : "▼";
+    };
+  });
+
+}
 
 
 //All-time stats//

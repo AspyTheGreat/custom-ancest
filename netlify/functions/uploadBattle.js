@@ -53,38 +53,46 @@ const characterStatsPath =
     // HELPERS
     // =========================
 
-    async function getJsonFile(path) {
+ async function getJsonFile(path) {
 
-      const res = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
-        {
-          headers: {
-            Authorization: `token ${token}`
-          }
-        }
-      );
-
-      if (res.status !== 200) {
-        return {
-          exists: false,
-          data: [],
-          sha: null
-        };
+  const res = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+    {
+      headers: {
+        Authorization: `token ${token}`
       }
-
-      const json = await res.json();
-
-      return {
-        exists: true,
-        sha: json.sha,
-        data: JSON.parse(
-          Buffer.from(
-            json.content,
-            "base64"
-          ).toString()
-        )
-      };
     }
+  );
+
+  if (res.status !== 200) {
+    return {
+      exists: false,
+      data: [],
+      sha: null
+    };
+  }
+
+  const json = await res.json();
+
+  let parsed;
+
+  try {
+    parsed = JSON.parse(
+      Buffer.from(
+        json.content,
+        "base64"
+      ).toString()
+    );
+  } catch (e) {
+    throw new Error(`Invalid JSON in ${path}`);
+  }
+
+  return {
+    exists: true,
+    sha: json.sha,
+    data: parsed
+  };
+}
 
     async function putJsonFile(
       path,
@@ -104,7 +112,7 @@ const characterStatsPath =
         body.sha = sha;
       }
 
-      await fetch(
+      const res = await fetch(
         `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
         {
           method: "PUT",
@@ -117,6 +125,14 @@ const characterStatsPath =
           body: JSON.stringify(body)
         }
       );
+      if (!res.ok) {
+
+  const text = await res.text();
+
+  throw new Error(
+    `GitHub PUT failed (${res.status}): ${text}`
+  );
+}
     }
 
     // =========================
@@ -194,11 +210,9 @@ const characterStatsPath =
     });
 
     // newest first
-    filteredCampaignEntries.sort(
-      (a, b) =>
-        new Date(b.date || 0) -
-        new Date(a.date || 0)
-    );
+   filteredCampaignEntries.sort(
+  (a, b) => getTime(b.date) - getTime(a.date)
+);
 
     await putJsonFile(
       campaignIndexPath,
@@ -248,11 +262,14 @@ const characterStatsPath =
     });
 
     // newest first
-    filteredBattles.sort(
-      (a, b) =>
-        new Date(b.date || 0) -
-        new Date(a.date || 0)
-    );
+   const getTime = d => {
+  const t = new Date(d).getTime();
+  return isNaN(t) ? 0 : t;
+};
+
+filteredBattles.sort(
+  (a, b) => getTime(b.date) - getTime(a.date)
+);
 
     await putJsonFile(
       battlesIndexPath,
@@ -371,8 +388,8 @@ totalDamageTaken: 0,
 totalAttacksTaken: 0,
 totalAttacksDodged: 0,
 
-totalSavesMade: 0,
-totalSavesTotal: 0,
+totalSavesSucceeded: 0,
+totalSavesMadel: 0,
 
 totalNat20: 0,
 totalNat1: 0,
@@ -560,7 +577,7 @@ if (last !== levelClass) {
 
   }
 }
-c.roundCount += (data.roundSummaries || []).length;
+
 function sum(obj) {
   return Object.values(obj || {}).reduce((a, b) => a + b, 0);
 }
@@ -658,7 +675,7 @@ c.totalSpellSlotsUsed += sum(s.spellSlots || s.spellSlotsUsed);
     c.totalAttacksDodged += defense.attacksDodged || 0;
 
     c.totalSavesMade += defense.savesMade || 0;
-    c.totalSavesTotal += defense.savesTotal || defense.savesMade || 0;
+    c.totalSavesTotal += defense.savesTotal || 0;
 
     // =========================
     // LUCK
@@ -674,7 +691,12 @@ c.totalSpellSlotsUsed += sum(s.spellSlots || s.spellSlotsUsed);
     // BATTLES
     // =========================
 
-    c.battles += 1;
+    c.processedBattles = c.processedBattles || [];
+
+if (!c.processedBattles.includes(battleId)) {
+  c.battles += 1;
+  c.processedBattles.push(battleId);
+}
   }
 }
   
