@@ -54,51 +54,91 @@ exports.handler = async (event) => {
       return res;
     }
 
-    async function getJsonFile(path, fallback) {
+async function getJsonFile(path, fallback = []) {
 
-      const res = await githubFetch(path);
+  const url =
+    `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-      if (res.status === 404) {
-        return {
-          exists: false,
-          sha: null,
-          data: fallback
-        };
-      }
-
-      if (!res.ok) {
-
-        const text = await res.text();
-
-        throw new Error(
-          `GitHub GET failed (${res.status}) for ${path}: ${text}`
-        );
-      }
-
-      const json = await res.json();
-
-      let parsed;
-
-      try {
-
-        parsed = JSON.parse(
-          Buffer.from(
-            json.content,
-            "base64"
-          ).toString("utf8")
-        );
-
-      } catch (err) {
-
-        throw new Error(`Invalid JSON in ${path}`);
-      }
-
-      return {
-        exists: true,
-        sha: json.sha,
-        data: parsed
-      };
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `token ${token}`,
+      Accept: "application/vnd.github+json"
     }
+  });
+
+  // file missing
+  if (res.status === 404) {
+    return {
+      exists: false,
+      data: fallback,
+      sha: null
+    };
+  }
+
+  // github error
+  if (!res.ok) {
+    const text = await res.text();
+
+    throw new Error(
+      `GitHub GET failed (${res.status}) for ${path}: ${text}`
+    );
+  }
+
+  const json = await res.json();
+
+  // not a file
+  if (!json.content) {
+    throw new Error(
+      `GitHub response for ${path} did not contain file content`
+    );
+  }
+
+  let decoded;
+
+  try {
+
+    decoded = Buffer.from(
+      json.content.replace(/\n/g, ""),
+      "base64"
+    ).toString("utf8");
+
+  } catch (err) {
+
+    throw new Error(
+      `Failed to decode base64 for ${path}`
+    );
+  }
+
+  // empty file
+  if (!decoded.trim()) {
+
+    return {
+      exists: true,
+      data: fallback,
+      sha: json.sha
+    };
+  }
+
+  try {
+
+    return {
+      exists: true,
+      data: JSON.parse(decoded),
+      sha: json.sha
+    };
+
+  } catch (err) {
+
+    console.error(
+      `BROKEN JSON IN ${path}:\n`,
+      decoded
+    );
+
+    throw new Error(
+      `Invalid JSON in ${path}: ${err.message}`
+    );
+  }
+}
 
     async function putJsonFile(
       path,
@@ -179,25 +219,19 @@ exports.handler = async (event) => {
     // =========================
 
     const campaignIndex =
-      await getJsonFile(
-        campaignIndexPath,
-        []
-      );
+  await getJsonFile(campaignIndexPath, []);
 
-    const battlesIndex =
-      await getJsonFile(
-        battlesIndexPath,
-        []
-      );
+const battlesIndex =
+  await getJsonFile(battlesIndexPath, []);
 
-    const statsFile =
-      await getJsonFile(
-        characterStatsPath,
-        {
-          characters: {},
-          processedBattles: []
-        }
-      );
+const statsFile =
+  await getJsonFile(
+    characterStatsPath,
+    {
+      characters: {},
+      processedBattles: []
+    }
+  );
 
     // =========================
     // COMMON DATA
