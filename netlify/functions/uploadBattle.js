@@ -675,7 +675,10 @@ _maxLevel: 0,
 
   c.processedBattles =
     c.processedBattles || [];
+ 
 }
+
+
 
 function processBattleStats(
   data,
@@ -738,52 +741,7 @@ function processBattleStats(
         });
       }
 
-    const levelClass =
-  actor.levelClass ||
-  actor.levelclass ||
-  turn.levelClass ||
-  turn.levelclass ||
-  null;
-
-if (levelClass) {
-
-  // ✅ fallback: always set latest seen value
-  c.levelClass = levelClass;
-
-  const parsed = parseLevelClass(levelClass);
-
-  // ✅ rebuild level history properly
-  c.levelHistory = buildLevelHistory(parsed);
-
-  parsed.forEach(newClass => {
-
-    const exists = c.classes.some(existing =>
-      existing.class === newClass.class &&
-      existing.subclass === newClass.subclass
-    );
-
-    if (index !== -1) {
-    // ✅ update level
-    c.classes[index].level = newClass.level;
-  } else {
-    c.classes.push(newClass);
-  }
-});
-
-  const totalLevel =
-    parsed.reduce(
-      (sum, cls) => sum + (cls.level || 0),
-      0
-    );
-
-  // ✅ still track highest level version
-  if (
-    !c._maxLevel ||
-    totalLevel > c._maxLevel
-  ) {
-    c._maxLevel = totalLevel;
-  }
-}
+  
 
       if (
         turn.initiative !== undefined
@@ -802,6 +760,8 @@ if (levelClass) {
   // =========================
 
   for (const char of data.characters || []) {
+
+   
 
     const slug =
       char.slug ||
@@ -836,6 +796,42 @@ if (levelClass) {
       );
     }
 
+     const levelClass =
+  char.levelClass ||
+  char.levelclass ||
+  null;
+
+if (levelClass) {
+
+  c.levelClass = levelClass;
+
+  const parsed = parseLevelClass(levelClass);
+
+  c.levelHistory = buildLevelHistory(parsed);
+
+  parsed.forEach(newClass => {
+
+    const index = c.classes.findIndex(existing =>
+      existing.class === newClass.class &&
+      existing.subclass === newClass.subclass
+    );
+
+    if (index !== -1) {
+      c.classes[index].level = newClass.level;
+    } else {
+      c.classes.push(newClass);
+    }
+  });
+
+  const totalLevel = parsed.reduce(
+    (sum, cls) => sum + (cls.level || 0),
+    0
+  );
+
+  if (!c._maxLevel || totalLevel > c._maxLevel) {
+    c._maxLevel = totalLevel;
+  }
+}
     // =========================
     // PORTRAITS
     // =========================
