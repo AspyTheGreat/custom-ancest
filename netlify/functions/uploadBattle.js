@@ -388,8 +388,8 @@ totalDamageTaken: 0,
 totalAttacksTaken: 0,
 totalAttacksDodged: 0,
 
-totalSavesSucceeded: 0,
-totalSavesMadel: 0,
+totalSavesTotal: 0,
+totalSavesMade: 0,
 
 totalNat20: 0,
 totalNat1: 0,
@@ -655,15 +655,22 @@ c.totalSpellSlotsUsed += sum(s.spellSlots || s.spellSlotsUsed);
     c.totalAttacks += attacksMade;
     c.totalHits += attacksHit;
 
-    // =========================
-    // POTENCY
-    // =========================
 
-    const savesForced = s.saves?.forced || 0;
-    const savesSucceeded = s.saves?.succeeded || 0;
+   // =========================
+// POTENCY
+// =========================
 
-    c.totalPotencyAttempts += savesForced;
-    c.totalPotencySuccess += savesSucceeded;
+const savesForced = s.saves?.forced || 0;
+
+// defender successes
+const savesSucceeded = s.saves?.succeeded || 0;
+
+// potency succeeds when enemies FAIL saves
+const savesFailed =
+  Math.max(0, savesForced - savesSucceeded);
+
+c.totalPotencyAttempts += savesForced;
+c.totalPotencySuccess += savesFailed;
 
     // =========================
     // TANK
