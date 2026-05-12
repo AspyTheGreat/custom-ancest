@@ -109,7 +109,7 @@
 
 <!-- ================= IMAGE ================= -->
 <div class="campaign-image">
-  <img src="../../assets/sample.jpg" alt="Campaign Image">
+  <img src="../../assets/nat1backdrop.png" alt="Campaign Image">
 </div>
 
 <!-- ================= BODY ================= -->
@@ -117,19 +117,45 @@
 
   <!-- LEFT (30%) -->
   <div class="side-panel">
-    <div class="side-tile">Campaign Synopsis</div>
-    <div class="side-tile">Characters</div>
-    <div class="side-tile">NPC's Encountered</div>
-    <div class="side-tile">Discoveries</div>
-    <div class="side-tile">Player Notes</div>
+
+  <div class="side-tile"
+       onclick="loadSection('synopsis')">
+       Campaign Synopsis
   </div>
 
-  <!-- RIGHT (70%) -->
-  <div class="content-panel">
-    <p>Content will go here.</p>
+  <div class="side-tile"
+       onclick="loadSection('characters')">
+       Characters
+  </div>
+
+  <div class="side-tile"
+       onclick="loadSection('npcs')">
+       NPC's Encountered
+  </div>
+
+  <div class="side-tile"
+       onclick="loadSection('discoveries')">
+       Discoveries
+  </div>
+
+  <div class="side-tile"
+       onclick="loadSection('notes')">
+       Player Notes
   </div>
 
 </div>
+
+  <!-- RIGHT (70%) -->
+<div class="content-panel" id="content-panel">
+
+  <div id="characters-container"></div>
+
+</div>
+
+</div>
+<script src="../../js/parser.js"></script>
+<script src="../../js/renderer.js"></script>
+<script src="../../js/main.js"></script>
 
 </body>
 </html>
