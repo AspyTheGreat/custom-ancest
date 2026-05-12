@@ -143,6 +143,19 @@ exports.handler = async () => {
       };
     }
 
+    async function listDirectory(path) {
+
+  const res = await githubFetch(path);
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to list ${path}`
+    );
+  }
+
+  return await res.json();
+}
+
     async function putJsonFile(
       path,
       content,
@@ -193,54 +206,91 @@ exports.handler = async () => {
     // LOAD GLOBAL INDEX
     // =========================
 
-    const battlesIndexFile =
-      await getJsonFile(
-        `${basePath}/index.json`,
-        []
-      );
+   // =========================
+// LOAD GLOBAL INDEX
+// =========================
 
-    const battlesIndex =
-      battlesIndexFile.data;
+let battlesIndex = [];
 
-    if (!Array.isArray(battlesIndex)) {
+try {
 
-      throw new Error(
-        "battles/index.json is not an array"
-      );
-    }
+  const battlesIndexFile =
+    await getJsonFile(
+      `${basePath}/index.json`,
+      []
+    );
+
+  battlesIndex =
+    battlesIndexFile.data || [];
+
+  if (!Array.isArray(battlesIndex)) {
+    battlesIndex = [];
+  }
+
+} catch (err) {
+
+  console.log(
+    "Global index missing/corrupt, rebuilding from battle files"
+  );
+
+  battlesIndex = [];
+}
 
     // =========================
-    // GROUP BY CAMPAIGN
-    // =========================
+// DISCOVER CAMPAIGNS
+// =========================
 
-    const campaigns = {};
+const campaigns = {};
 
-    for (const battle of battlesIndex) {
+const battleDirs =
+  await listDirectory(basePath);
 
-      if (
-        !battle?.campaignSlug ||
-        !battle?.battleSlug
-      ) {
+for (const dir of battleDirs) {
 
-        console.log(
-          "Skipping malformed battle index entry:",
-          battle
-        );
+  if (dir.type !== "dir") {
+    continue;
+  }
 
-        continue;
-      }
+  const campaignSlug = dir.name;
 
-      campaigns[
-        battle.campaignSlug
-      ] =
-        campaigns[
-          battle.campaignSlug
-        ] || [];
+  campaigns[campaignSlug] = [];
 
-      campaigns[
-        battle.campaignSlug
-      ].push(battle);
+  const files =
+    await listDirectory(
+      `${basePath}/${campaignSlug}`
+    );
+
+  for (const file of files) {
+
+    if (file.type !== "file") {
+      continue;
     }
+
+    if (
+      !file.name.endsWith(".json")
+    ) {
+      continue;
+    }
+
+    if (
+      file.name === "index.json" ||
+      file.name === "characterStats.json"
+    ) {
+      continue;
+    }
+
+    campaigns[campaignSlug].push({
+
+      campaignSlug,
+
+      battleSlug:
+        file.name.replace(
+          /\.json$/,
+          ""
+        )
+    });
+  }
+}
 
     // =========================
     // PROCESS CAMPAIGNS

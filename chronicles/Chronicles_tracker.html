@@ -421,307 +421,6 @@ let round = 1;
 let history = [];
 let roundLog = {};
 
-function convertTextToJSON() {
-  const input = document.getElementById("textUploadFile");
-  const status = document.getElementById("convertStatus");
-
-  if (!input.files.length) {
-    status.innerText = "No file selected.";
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = function (e) {
-    try {
-      let text = (e.target.result || "").replace(/\r/g, "");
-
-      // =========================
-      // HELPERS
-      // =========================
-
-      const makeSlug = (str = "") =>
-        str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-
-      const normalize = str =>
-        (str || "").toLowerCase().replace(/\s+/g, "");
-
-      const safeNum = val => {
-        const n = parseFloat(val);
-        return isNaN(n) ? 0 : n;
-      };
-
-      const getNum = (str, regex) => {
-        const m = str.match(regex);
-        return m && m[1] ? safeNum(m[1]) : 0;
-      };
-
-      const getPipeNums = (str, regex) => {
-        const m = str.match(regex);
-        if (!m || !m[1]) return [0, 0, 0, 0];
-
-        return m[1]
-          .split("|")
-          .map(v => safeNum(v))
-          .concat([0, 0, 0, 0])
-          .slice(0, 4);
-      };
-
-      const getPair = (str, regex) => {
-        const m = str.match(regex);
-        if (!m) return [0, 0];
-        return m[1].split(/[\/|]/).map(safeNum);
-      };
-
-      const getHP = (str) => {
-        const m = str.match(/Hp remaining:\s*(\d+)\s*\/\s*(\d+)(?:\+(\d+))?/i);
-        if (!m) return { current: 0, max: 0 };
-        return {
-          current: safeNum(m[1]),
-          max: safeNum(m[2]) + safeNum(m[3])
-        };
-      };
-
-      // =========================
-      // META
-      // =========================
-
-      const lines = text.split("\n").map(l => l.trim());
-
-      const campaign = lines[0] || "Unknown Campaign";
-
-      let battle = "Unknown Battle";
-      for (let i = 1; i < lines.length; i++) {
-        if (lines[i]) {
-          battle = lines[i];
-          break;
-        }
-      }
-
-      const campaignSlug = makeSlug(campaign);
-      const battleSlug = makeSlug(battle);
-
-      const partyLevel = getNum(text, /Party level:\s*(\d+)/i);
-      const roundCount = getNum(text, /(\d+)\s*round combat/i) || 1;
-
-      // ✅ REQUIRED BY UI
-      const date = new Date().toISOString();
-
-      // =========================
-      // INITIATIVE MAP
-      // =========================
-
-      let initiativeMap = {};
-
-      const initMatch = text.match(/Initiative order:\s*([\s\S]*?)(?:\n\n|$)/i);
-      if (initMatch) {
-        initMatch[1].split(",").forEach(entry => {
-          const m = entry.match(/:\w+:\s*([^()]+)\(([\d.]+)\)/);
-          if (m) {
-            initiativeMap[normalize(m[1])] = safeNum(m[2]);
-          }
-        });
-      }
-
-      // =========================
-      // CHARACTER PARSING
-      // =========================
-
-      const charRegex =
-        /^:(\w+):\s*([^\n:]+):\s*\n([\s\S]*?)(?=\n:\w+:|\nParty Breakdown:|$)/gm;
-
-      characters = [];
-      let match;
-
-      while ((match = charRegex.exec(text)) !== null) {
-        const name = match[2]?.trim();
-        const body = match[3] || "";
-
-        if (!name) continue;
-
-        const levelClass = body.split("\n")[0]?.trim() || "";
-
-        const hp = getHP(body);
-
-        const [hit, total] = getPair(body, /Attacks hit:\s*([\d\/|]+)/i);
-        const [forced] = getPair(body, /Saving throws forced:\s*([\d\/|]+)/i);
-        const [succeeded] = getPair(body, /Saving throws succeeded:\s*([\d\/|]+)/i);
-        const [dodged, taken] = getPair(body, /Attacks dodged:\s*([\d\/|]+)/i);
-
-        let dpr = safeNum(body.match(/Average DPR:\s*([^\n]+)/i)?.[1]);
-
-        // fallback DPR
-        if (!dpr) dpr = hit * 5;
-
-        const ccpr = safeNum(body.match(/CCpr:\s*([^\n]+)/i)?.[1]);
-
-        const [aAtk, aSpell, aMove, aMisc] =
-          getPipeNums(body, /Actions used.*?:\s*([0-9|\s]+)/i);
-
-       const [bAtk, bSpell, bMove, bMisc] =
-  getPipeNums(body, /Bonus Actions used.*?:\s*([0-9|\s]+)/i);
-
-const bonusActionsTotal =
-  [bAtk, bSpell, bMove, bMisc].reduce((sum, v) => sum + (v || 0), 0);
-
-        const [rAtk, rSpell, rMove, rMisc] =
-          getPipeNums(body, /Reactions used.*?:\s*([0-9|\s]+)/i);
-
-        characters.push({
-          name,
-          levelClass,
-          initiative: initiativeMap[normalize(name)] ?? 0,
-          portrait: null,
-
-          stats: {
-  hp,
-
-  actionsTotal: getNum(body, /Actions taken:\s*(\d+)/i),
-  bonusActionsTotal,
-
-  actions: { attack: aAtk, spell: aSpell, move: aMove, misc: aMisc },
-  bonusActions: { attack: bAtk, spell: bSpell, move: bMove, misc: bMisc },
-            reactions: { attack: rAtk, spell: rSpell, move: rMove, misc: rMisc },
-
-            attacks: { hit, total },
-            saves: { forced, succeeded },
-
-            defense: {
-              attacksDodged: dodged,
-              attacksTaken: taken,
-              savesSucceeded: succeeded,
-              savesMade: forced
-            },
-
-            spellSlotsUsed: {},
-            resources: {},
-
-            damage: dpr * roundCount,
-            healing: getNum(body, /Total healing:\s*(\d+)/i),
-            cc: ccpr * roundCount,
-
-            damageTaken: 0,
-            conditions: [],
-
-            nat20: getNum(body, /Nat 20s.*:\s*(\d+)/i),
-            nat1: getNum(body, /Nat 20s.*[\/|](\d+)/i)
-          },
-
-          summons: [],
-
-          rounds: Array.from({ length: roundCount }, (_, i) => ({
-            round: i + 1,
-            damage: dpr,
-            healing: 0,
-            cc: ccpr
-          }))
-        });
-      }
-
-      if (!characters.length) {
-        throw new Error("No characters parsed — invalid format.");
-      }
-
-      // =========================
-      // SAFE ROUND SUMMARIES
-      // =========================
-
-     // =========================
-// SAFE ROUND SUMMARIES (BULLETPROOF)
-// =========================
-
-const roundSummaries = Array.from({ length: roundCount }, (_, i) => ({
-  round: i + 1,
-  players: characters.map(c => {
-    const roundData = (c.rounds && c.rounds[i]) || {};
-
-    return {
-      name: c.name,
-
-      damage: safeNum(roundData.damage),
-      healing: safeNum(roundData.healing),
-      cc: safeNum(roundData.cc),
-
-      // ✅ ALWAYS PRESENT (prevents UI crashes)
-      defense: {
-        attacksDodged: 0,
-        attacksTaken: 0,
-        savesSucceeded: 0,
-        savesMade: 0
-      },
-      attacks: {
-        hit: 0,
-        total: 0
-      },
-      saves: {
-        forced: 0,
-        succeeded: 0
-      }
-    };
-  })
-}));
-
-      // =========================
-      // FINAL JSON
-      // =========================
-
-      const finalJSON = {
-        campaign,
-        campaignSlug,
-        battle,
-        battleSlug,
-
-        players: characters.map(c => ({ name: c.name })),
-
-        partyLevel,
-
-        // ✅ CRITICAL FIXES
-        roundCount,
-        rounds: roundCount,
-        date,
-
-        name: battle,
-        displayName: battle,
-        timestamp: date,
-
-        characters,
-
-        roundSummaries,
-
-        partyTotals: {
-          damage: characters.reduce((s, c) => s + (c.stats.damage || 0), 0),
-          healing: characters.reduce((s, c) => s + (c.stats.healing || 0), 0),
-          cc: characters.reduce((s, c) => s + (c.stats.cc || 0), 0)
-        }
-      };
-
-      // =========================
-      // DOWNLOAD
-      // =========================
-
-      const blob = new Blob(
-        [JSON.stringify(finalJSON, null, 2)],
-        { type: "application/json" }
-      );
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-
-      a.href = url;
-      a.download = `${campaignSlug}_${battleSlug}.json`;
-
-      a.click();
-      URL.revokeObjectURL(url);
-
-      status.innerText = "Conversion successful!";
-    } catch (err) {
-      console.error(err);
-      status.innerText = "Failed to convert.";
-    }
-  };
-
-  reader.readAsText(input.files[0]);
-}
 
 function addCharacter() {
   const div = document.createElement("div");
@@ -2778,6 +2477,805 @@ window.onload = () => {
   loadTemplateList();
   loadAutoSave(); // keep your autosave too
 };
+function convertTextToJSON() {
+
+  const input =
+    document.getElementById("textUploadFile");
+
+  const status =
+    document.getElementById("convertStatus");
+
+  if (!input.files.length) {
+    status.innerText = "No file selected.";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+
+    try {
+
+      let text =
+        (e.target.result || "")
+          .replace(/\r/g, "");
+
+      // =========================
+      // HELPERS
+      // =========================
+
+      function makeSlug(str = "") {
+        return str
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
+      }
+
+      function normalize(str = "") {
+        return str
+          .toLowerCase()
+          .replace(/\s+/g, "");
+      }
+
+      function safeNum(val) {
+
+        if (val === undefined || val === null) {
+          return 0;
+        }
+
+        const cleaned =
+          String(val)
+            .replace(/[\[\]\*]/g, "")
+            .trim();
+
+        const n = parseFloat(cleaned);
+
+        return isNaN(n) ? 0 : n;
+      }
+
+      function getNum(str, regex) {
+
+        const m = str.match(regex);
+
+        return m && m[1]
+          ? safeNum(m[1])
+          : 0;
+      }
+
+      function getPair(str, regex) {
+
+        const m = str.match(regex);
+
+        if (!m || !m[1]) {
+          return [0, 0];
+        }
+
+        return m[1]
+          .split(/[\/|]/)
+          .map(v => safeNum(v));
+      }
+
+      function getPipeNums(str, regex) {
+
+        const m = str.match(regex);
+
+        if (!m || !m[1]) {
+          return [0, 0, 0, 0];
+        }
+
+        return m[1]
+          .split("|")
+          .map(v => safeNum(v))
+          .concat([0, 0, 0, 0])
+          .slice(0, 4);
+      }
+
+      function getHP(str) {
+
+        const m =
+          str.match(
+            /Hp remaining:\s*(\d+)\s*\/\s*(\d+)(?:\+(\d+))?/i
+          );
+
+        if (!m) {
+          return {
+            current: 0,
+            max: 0
+          };
+        }
+
+        return {
+          current: safeNum(m[1]),
+          max:
+            safeNum(m[2]) +
+            safeNum(m[3])
+        };
+      }
+
+      function getTotals(obj = {}) {
+
+        return Object.values(obj)
+          .reduce(
+            (sum, v) => sum + (safeNum(v) || 0),
+            0
+          );
+      }
+
+      // =========================
+      // META
+      // =========================
+
+      const lines =
+        text
+          .split("\n")
+          .map(l => l.trim());
+
+      const campaign =
+        lines[0] || "Unknown Campaign";
+
+      let battle = "Unknown Battle";
+
+      for (let i = 1; i < lines.length; i++) {
+
+        if (lines[i]) {
+          battle = lines[i];
+          break;
+        }
+      }
+
+      const campaignSlug =
+        makeSlug(campaign);
+
+      const battleSlug =
+        makeSlug(battle);
+
+      const timestamp =
+        new Date().toISOString();
+
+      const partyLevel =
+        getNum(
+          text,
+          /Party level:\s*(\d+)/i
+        );
+
+      const roundCount =
+        getNum(
+          text,
+          /(\d+)\s*round combat/i
+        ) || 1;
+
+      // =========================
+      // INITIATIVE
+      // =========================
+
+      const initiativeMap = {};
+
+      const initMatch =
+        text.match(
+          /Initiative order:\s*([\s\S]*?)(?:\n\n|$)/i
+        );
+
+      if (initMatch) {
+
+        initMatch[1]
+          .split(",")
+          .forEach(entry => {
+
+            const m =
+              entry.match(
+                /:\w+:\s*([^()]+)\(([\d.]+)\)/
+              );
+
+            if (!m) return;
+
+            initiativeMap[
+              normalize(m[1])
+            ] = safeNum(m[2]);
+          });
+      }
+
+      // =========================
+      // CHARACTER PARSE
+      // =========================
+
+      const characters = [];
+
+      const charRegex =
+        /^:(\w+):\s*([^\n:]+):\s*\n([\s\S]*?)(?=\n:\w+:|\nParty Breakdown:|$)/gm;
+
+      let match;
+
+      while (
+        (match = charRegex.exec(text)) !== null
+      ) {
+
+        const icon = match[1];
+        const name = match[2]?.trim();
+        const body = match[3] || "";
+
+        if (!name) continue;
+
+        const slug = makeSlug(name);
+
+        const levelClass =
+          body
+            .split("\n")[0]
+            ?.trim() || "";
+
+        const hp = getHP(body);
+
+        const [attacksHit, attacksTotal] =
+          getPair(
+            body,
+            /Attacks hit:\s*([\d\/|]+)/i
+          );
+
+        const [savesSucceeded, savesForced] =
+          getPair(
+            body,
+            /Saving throws forced:\s*([\d\/|]+)/i
+          );
+
+        const [dodged, taken] =
+          getPair(
+            body,
+            /Attacks dodged:\s*([\d\/|]+)/i
+          );
+
+        const [saveMade, saveTotal] =
+          getPair(
+            body,
+            /Saving throws succeeded:\s*([\d\/|]+)/i
+          );
+
+        const [aAtk, aSpell, aMove, aMisc] =
+          getPipeNums(
+            body,
+            /Actions used.*?:\s*([0-9|\s]+)/i
+          );
+
+        const [bAtk, bSpell, bMove, bMisc] =
+          getPipeNums(
+            body,
+            /Bonus Actions used.*?:\s*([0-9|\s]+)/i
+          );
+
+        const [rAtk, rSpell, rMove, rMisc] =
+          getPipeNums(
+            body,
+            /Reactions used.*?:\s*([0-9|\s]+)/i
+          );
+
+        const spellSlotsRemaining =
+          body.match(
+            /Spell slots remaining:\s*([^\n]+)/i
+          )?.[1] || "";
+
+        const slotParts =
+          spellSlotsRemaining
+            .split("|")
+            .map(v => safeNum(v));
+
+        const spellSlots = {};
+
+        slotParts.forEach((v, i) => {
+          spellSlots[i + 1] = v;
+        });
+
+        let dpr =
+          safeNum(
+            body.match(
+              /Average DPR:\s*([^\n]+)/i
+            )?.[1]
+          );
+
+        let ccpr =
+          safeNum(
+            body.match(
+              /Average CCPR:\s*([^\n]+)/i
+            )?.[1]
+          );
+
+        const totalDamage =
+          dpr * roundCount;
+
+        const totalCC =
+          ccpr * roundCount;
+
+        const totalHealing =
+          getNum(
+            body,
+            /Total healing:\s*(\d+)/i
+          );
+
+        const nat20 =
+          getNum(
+            body,
+            /Nat 20s.*?:\s*(\d+)/i
+          );
+
+        const nat1 =
+          getNum(
+            body,
+            /Nat 20s.*?[\/|](\d+)/i
+          );
+
+        const actions = {
+          attack: aAtk,
+          spell: aSpell,
+          move: aMove,
+          misc: aMisc
+        };
+
+        const bonusActions = {
+          attack: bAtk,
+          spell: bSpell,
+          move: bMove,
+          misc: bMisc
+        };
+
+        const reactions = {
+          attack: rAtk,
+          spell: rSpell,
+          move: rMove,
+          misc: rMisc
+        };
+
+        // =========================
+        // ROUND DATA
+        // =========================
+
+        const rounds = [];
+
+        for (let r = 1; r <= roundCount; r++) {
+
+          const roundData =
+            createEmptyTurn();
+
+          roundData.round = r;
+
+          roundData.damage =
+            dpr;
+
+          roundData.healing =
+            r === roundCount
+              ? totalHealing
+              : 0;
+
+          roundData.cc =
+            ccpr;
+
+          roundData.actions =
+            { ...actions };
+
+          roundData.bonusActions =
+            { ...bonusActions };
+
+          roundData.reactions =
+            { ...reactions };
+
+          roundData.attacks = {
+            hit:
+              r === roundCount
+                ? attacksHit
+                : 0,
+
+            total:
+              r === roundCount
+                ? attacksTotal
+                : 0
+          };
+
+          roundData.saves = {
+            forced:
+              r === roundCount
+                ? savesForced
+                : 0,
+
+            succeeded:
+              r === roundCount
+                ? savesSucceeded
+                : 0
+          };
+
+          roundData.defense = {
+
+            attacksDodged:
+              r === roundCount
+                ? dodged
+                : 0,
+
+            attacksTaken:
+              r === roundCount
+                ? taken
+                : 0,
+
+            savesSucceeded:
+              r === roundCount
+                ? saveMade
+                : 0,
+
+            savesMade:
+              r === roundCount
+                ? saveTotal
+                : 0
+          };
+
+          roundData.spellSlots =
+            { ...spellSlots };
+
+          roundData.nat1 =
+            r === roundCount
+              ? nat1
+              : 0;
+
+          roundData.nat20 =
+            r === roundCount
+              ? nat20
+              : 0;
+
+          rounds.push(roundData);
+        }
+
+        characters.push({
+
+          actorIndex:
+            characters.length,
+
+          name,
+
+          slug,
+
+          icon,
+
+          levelClass,
+
+          initiative:
+            initiativeMap[
+              normalize(name)
+            ] ?? 0,
+
+          portrait: null,
+
+          stats: {
+
+            hp,
+
+            actions:
+              { ...actions },
+
+            bonusActions:
+              { ...bonusActions },
+
+            reactions:
+              { ...reactions },
+
+            actionsTotal:
+              getTotals(actions),
+
+            bonusActionsTotal:
+              getTotals(bonusActions),
+
+            reactionsTotal:
+              getTotals(reactions),
+
+            attacks: {
+              hit: attacksHit,
+              total: attacksTotal
+            },
+
+            saves: {
+              forced: savesForced,
+              succeeded: savesSucceeded
+            },
+
+            defense: {
+
+              attacksDodged:
+                dodged,
+
+              attacksTaken:
+                taken,
+
+              savesSucceeded:
+                saveMade,
+
+              savesMade:
+                saveTotal
+            },
+
+            spellSlots:
+              { ...spellSlots },
+
+            spellSlotsUsed:
+              getTotals(spellSlots),
+
+            resources: {},
+
+            damage:
+              totalDamage,
+
+            healing:
+              totalHealing,
+
+            cc:
+              totalCC,
+
+            damageTaken: 0,
+
+            conditions: [],
+
+            nat20,
+            nat1
+          },
+
+          summons: [],
+
+          rounds,
+
+          roundCount:
+            rounds.length
+        });
+      }
+
+      if (!characters.length) {
+        throw new Error(
+          "No characters parsed."
+        );
+      }
+
+      // =========================
+      // ROUND SUMMARIES
+      // =========================
+
+      const roundSummaries = [];
+
+      for (let r = 1; r <= roundCount; r++) {
+
+        let totalDamage = 0;
+        let totalHealing = 0;
+        let totalCC = 0;
+
+        const players = [];
+
+        characters.forEach(c => {
+
+          const data =
+            c.rounds[r - 1];
+
+          if (!data) return;
+
+          const entry = {
+
+            name: c.name,
+
+            initiative:
+              c.initiative ?? 0,
+
+            damage:
+              data.damage || 0,
+
+            healing:
+              data.healing || 0,
+
+            cc:
+              data.cc || 0,
+
+            damageTaken:
+              data.damageTaken || 0,
+
+            actions:
+              { ...(data.actions || {}) },
+
+            bonusActions:
+              { ...(data.bonusActions || {}) },
+
+            spellSlots:
+              { ...(data.spellSlots || {}) },
+
+            attacks:
+              { ...(data.attacks || {}) },
+
+            saves:
+              { ...(data.saves || {}) },
+
+            defense:
+              { ...(data.defense || {}) },
+
+            reactions:
+              { ...(data.reactions || {}) },
+
+            nat1:
+              data.nat1 || 0,
+
+            nat20:
+              data.nat20 || 0,
+
+            conditions:
+              data.conditions || []
+          };
+
+          players.push(entry);
+
+          totalDamage +=
+            entry.damage;
+
+          totalHealing +=
+            entry.healing;
+
+          totalCC +=
+            entry.cc;
+        });
+
+        roundSummaries.push({
+
+          round: r,
+
+          totals: {
+
+            damage:
+              totalDamage,
+
+            healing:
+              totalHealing,
+
+            cc:
+              totalCC,
+
+            averageDamage:
+              players.length
+                ? totalDamage / players.length
+                : 0
+          },
+
+          players
+        });
+      }
+
+      // =========================
+      // PARTY TOTALS
+      // =========================
+
+      const partyTotals = {
+        damage: 0,
+        healing: 0,
+        cc: 0
+      };
+
+      characters.forEach(c => {
+
+        partyTotals.damage +=
+          c.stats.damage || 0;
+
+        partyTotals.healing +=
+          c.stats.healing || 0;
+
+        partyTotals.cc +=
+          c.stats.cc || 0;
+      });
+
+      // =========================
+      // FINAL REPORT
+      // =========================
+
+      const finalReport = {
+
+        campaign,
+        campaignSlug,
+
+        battle,
+        battleSlug,
+
+        roundCount,
+
+        images: {
+          start: null,
+          end: null
+        },
+
+        characters,
+
+        roundSummaries,
+
+        roundsDetailed:
+          characters.map(c => ({
+            name: c.name,
+            rounds: c.rounds
+          })),
+
+        partyTotals,
+
+        combatEndState: {
+
+          finalRound:
+            roundCount,
+
+          finalTurnIndex: 0,
+
+          finalCharacter:
+            characters.at(-1)?.name || null,
+
+          combatEndedMidRound: false
+        },
+
+        archive: {
+
+          id:
+            `${campaign}_${battle}`
+              .replace(/\s+/g, "_"),
+
+          title: battle,
+
+          campaign,
+
+          date: timestamp,
+
+          summary: {
+
+            roundCount,
+
+            partyDamage:
+              partyTotals.damage,
+
+            partyHealing:
+              partyTotals.healing
+          },
+
+          thumbnail: null
+        },
+
+        timestamp
+      };
+
+      // =========================
+      // DOWNLOAD
+      // =========================
+
+      const blob = new Blob(
+        [
+          JSON.stringify(
+            finalReport,
+            null,
+            2
+          )
+        ],
+        {
+          type: "application/json"
+        }
+      );
+
+      const url =
+        URL.createObjectURL(blob);
+
+      const a =
+        document.createElement("a");
+
+      a.href = url;
+
+      a.download =
+        `${campaignSlug}_${battleSlug}.json`;
+
+      a.click();
+
+      URL.revokeObjectURL(url);
+
+      status.innerText =
+        "Conversion successful!";
+
+    } catch (err) {
+
+      console.error(err);
+
+      status.innerText =
+        "Failed to convert.";
+    }
+  };
+
+  reader.readAsText(
+    input.files[0]
+  );
+}
+
 </script>
 
 </body>
