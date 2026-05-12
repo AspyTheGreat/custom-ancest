@@ -15,11 +15,11 @@ const files = [
 const characterImages = {
   "Lady Lavender": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/lavender.jpg",
 
-  "Maximillion": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/Max.jpg",
+  "Maximillion Cardcastle": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/Max.jpg",
 
   "Sogark Okatir": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/sogark.png",
 
-  "Sovelias Xalixar": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/sovelias.jpg",
+  "Sovelias Xalixar (aka WeedMan)": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/sovelias.jpg",
 
   "Xue Yijun": "../../assets/Character_images/Lost_Tomb_of_Arkhanis/Xue.webp"
 };
