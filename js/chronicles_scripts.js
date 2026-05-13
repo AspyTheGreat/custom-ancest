@@ -92,7 +92,7 @@ const grid = document.getElementById("campaignGrid");
         div.innerHTML = `<span class="battle-card-text">${campaign.name}</span>`;
 
         div.onclick = () => {
-          loadBattles(campaign.slug);
+          window.location.hash = `#battles/${campaign.slug}`;
         };
 
         grid.appendChild(div);
@@ -170,7 +170,7 @@ document.getElementById("viewCampaignStats").onclick = () => {
 const grid = document.getElementById("battleGrid");
 
       container.querySelector(".backBtn").onclick =
-        () => loadCampaigns();
+        () => { window.location.hash = "#campaigns"; };
 
       // =========================
       // RENDER BATTLES
@@ -215,7 +215,7 @@ const grid = document.getElementById("battleGrid");
           `;
 
         div.onclick = () => {
-          openBattle(battleUrl);
+          window.location.hash = `#battle/${battle.campaignSlug}/${battle.battleSlug}`;
         };
 
         grid.appendChild(div);
@@ -341,7 +341,29 @@ try {
     container.innerHTML = "Failed to load battle.";
   }
 }
-document.addEventListener("DOMContentLoaded", loadCampaigns);
+function router() {
+  const hash = window.location.hash.slice(1) || "campaigns";
+  const parts = hash.split("/");
+
+  if (parts[0] === "campaigns" || hash === "") {
+    loadCampaigns();
+  } else if (parts[0] === "battles" && parts[1]) {
+    loadBattles(parts[1]);
+  } else if (parts[0] === "battle" && parts[1] && parts[2]) {
+    loadBattleView(`../battles/${parts[1]}/${parts[2]}.json`);
+  } else {
+    loadCampaigns();
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.querySelector(".all-time-container")) {
+    renderAllTimeStats();
+  } else {
+    router();
+  }
+});
+window.addEventListener("hashchange", router);
 
 function getHP(char) {
   // ✅ New system
@@ -504,7 +526,7 @@ toggle.onclick = () => {
   container.querySelector(".backBtn").onclick = () => {
   const campaign = data.campaignSlug || data.campaign?.toLowerCase().replace(/\s+/g, "-");
 
-  loadBattles(campaign);
+  window.location.hash = `#battles/${campaign}`;
 };
 
  await renderRounds(
@@ -1368,6 +1390,10 @@ const color = await getCharacterColorFromPortrait(
     const row = document.createElement("div");
     row.className = "party-row";
 
+  const dark1 = darkenColor(color, 0.45);
+  const dark2 = darkenColor(color, 0.15);
+  row.style.background = `linear-gradient(135deg, ${dark1}, ${dark2})`;
+
     const rounds = char.roundCount || 1;
 
 const dpr = Math.round((stats.damage || 0) / rounds);
@@ -1431,7 +1457,7 @@ if (hpPercent === 0) {
 }
 
     row.innerHTML = `
-     <div class="party-left">
+     <div class="party-left" style="background:transparent;">
 
   <div class="party-header">
 
@@ -1646,7 +1672,7 @@ if (hpPercent === 0) {
 
       </div>
 
-      <div class="party-right">
+      <div class="party-right" style="background:transparent;">
   <canvas id="radar-${char.name.replace(/\s+/g, "-")}"></canvas>
 </div>
     `;
@@ -1660,6 +1686,21 @@ if (hpPercent === 0) {
 );
     }
     
+}
+function darkenColor(c, factor, alpha) {
+  let r, g, b;
+  if (c.startsWith("rgb")) {
+    const m = c.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    if (!m) return c;
+    r = Math.round(m[1]*factor);
+    g = Math.round(m[2]*factor);
+    b = Math.round(m[3]*factor);
+  } else if (c.startsWith("#")) {
+    r = Math.round(parseInt(c.slice(1,3),16)*factor);
+    g = Math.round(parseInt(c.slice(3,5),16)*factor);
+    b = Math.round(parseInt(c.slice(5,7),16)*factor);
+  } else return c;
+  return alpha !== undefined ? `rgba(${r},${g},${b},${alpha})` : `rgb(${r},${g},${b})`;
 }
 function hexToRGBA(hex, alpha = 1) {
 
@@ -2197,6 +2238,8 @@ characters.forEach(char => {
   char.image = portraitMap[char.name] || null;
 });
 
+characters.sort((a, b) => b.battles - a.battles);
+
   container.innerHTML = `
     <div class="backBtn">← Back</div>
     <h3>Campaign Stats</h3>
@@ -2255,8 +2298,17 @@ const fortitude = savesTotal
   const row = document.createElement("div");
   row.className = "party-row";
 
+  const color = await getCharacterColorFromPortrait(
+  char,
+  characters.indexOf(char)
+);
+
+  const dark1 = darkenColor(color, 0.45);
+  const dark2 = darkenColor(color, 0.15);
+  row.style.background = `linear-gradient(135deg, ${dark1}, ${dark2})`;
+
   row.innerHTML = `
-    <div class="party-left">
+    <div class="party-left" style="background:transparent;">
 
       <div class="party-header">
 
@@ -2360,17 +2412,13 @@ const fortitude = savesTotal
 
     </div>
 
-    <div class="party-right">
+    <div class="party-right" style="background:transparent;">
       <canvas id="campaign-radar-${char.name.replace(/\s+/g, "-")}"></canvas>
     </div>
   `;
 
   el.appendChild(row);
 
-  const color = await getCharacterColorFromPortrait(
-  char,
-  characters.indexOf(char)
-);
   renderCharacterRadar(
     `campaign-radar-${char.name.replace(/\s+/g, "-")}`,
     char,
@@ -2567,14 +2615,15 @@ async function computeClassStats() {
         const classKey =
           `${char.name.toLowerCase()}-${normalizedClass}`;
 
-        if (
-          normalizedClass &&
-          !seen.has(classKey)
-        ) {
-          classMap[normalizedClass] =
-            (classMap[normalizedClass] || 0) + 1;
-
-          seen.add(classKey);
+        if (normalizedClass) {
+          if (!classMap[normalizedClass]) {
+            classMap[normalizedClass] = { count: 0, levels: 0 };
+          }
+          if (!seen.has(classKey)) {
+            classMap[normalizedClass].count++;
+            seen.add(classKey);
+          }
+          classMap[normalizedClass].levels += c.level || 0;
         }
 
         if (normalizedSubclass) {
@@ -2585,13 +2634,14 @@ async function computeClassStats() {
           const subKey =
             `${char.name.toLowerCase()}-${label}`;
 
+          if (!subclassMap[label]) {
+            subclassMap[label] = { count: 0, levels: 0 };
+          }
           if (!seen.has(subKey)) {
-
-            subclassMap[label] =
-              (subclassMap[label] || 0) + 1;
-
+            subclassMap[label].count++;
             seen.add(subKey);
           }
+          subclassMap[label].levels += c.level || 0;
         }
 
       });
@@ -2671,16 +2721,15 @@ async function renderAllTimeStats() {
 
   const campaigns = await getAllCampaigns();
 
-// sort alphabetically
 campaigns.sort((a, b) =>
-  a.name.localeCompare(b.name)
+  b.battles - a.battles
 );
 
 document.getElementById("alltime-campaigns").innerHTML =
   campaigns.map(c => `
     <div class="stat-item">
       <span>${c.name}</span>
-      <span>Number of Battles: ${c.battles}</span>
+      <span>${c.battles}</span>
     </div>
   `).join("");
 const characters = await getAllCharactersWithCampaign();
@@ -2751,7 +2800,7 @@ document.getElementById("alltime-stats").innerHTML = `
     .map(([k,v]) => `
   <div class="stat-item">
     <span>${capitalizeWords(k)}</span>
-    <span>${v}</span>
+    <span>${v.count} (Level ${v.levels})</span>
   </div>
 `)
     .join("");
@@ -2760,7 +2809,7 @@ document.getElementById("alltime-stats").innerHTML = `
     .map(([k,v]) => `
   <div class="stat-item">
     <span>${capitalizeWords(k)}</span>
-    <span>${v}</span>
+    <span>${v.count} (Level ${v.levels})</span>
   </div>
 `)
     .join("");
@@ -2768,11 +2817,12 @@ document.getElementById("alltime-stats").innerHTML = `
  // Classes
 document.getElementById("alltime-classes").innerHTML =
   Object.entries(classes.classMap)
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => b[1].levels - a[1].levels)
     .map(([k, v]) => `
-      <div class="stat-item">
+      <div class="stat-item-3col">
         <span>${capitalizeWords(k)}</span>
-        <span>${v}</span>
+        <span>${v.count}</span>
+        <span>${v.levels}</span>
       </div>
     `)
     .join("");
@@ -2780,11 +2830,12 @@ document.getElementById("alltime-classes").innerHTML =
 // Subclasses
 document.getElementById("alltime-subclasses").innerHTML =
   Object.entries(classes.subclassMap)
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => b[1].levels - a[1].levels)
     .map(([k, v]) => `
-      <div class="stat-item">
+      <div class="stat-item-3col">
         <span>${capitalizeWords(k)}</span>
-        <span>${v}</span>
+        <span>${v.count}</span>
+        <span>${v.levels}</span>
       </div>
     `)
     .join("");
@@ -2810,14 +2861,19 @@ battles.forEach(b => {
 
   groupedBattles[slug].battles.push(b);
 });
-Object.values(groupedBattles).forEach(group => {
-  group.battles.sort((a, b) => {
-    return a._index - b._index; // fallback-only (safe for now)
-  });
+
+const sortedGroups = Object.values(groupedBattles).sort(
+  (a, b) => b.battles.length - a.battles.length
+);
+
+sortedGroups.forEach(group => {
+  group.battles.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 });
-document.getElementById("alltime-battles").innerHTML =
-  Object.values(groupedBattles)
-    .map(group => `
+
+const battleHTML = sortedGroups
+  .map(group => `
       <div class="campaign-section">
         <h4 class="campaign-header">${group.name}</h4>
 
@@ -2829,20 +2885,6 @@ document.getElementById("alltime-battles").innerHTML =
       </div>
     `)
     .join("");
-
-
-const battleHTML = Object.values(groupedBattles)
-  .map(group => `
-    <div class="campaign-section">
-      <h4 class="campaign-header">${group.name}</h4>
-
-      ${group.battles.map(b => `
-        <div class="stat-item">
-          <span>${b.name}</span>
-        </div>
-      `).join("")}
-    </div>
-  `).join("");
 
 document.getElementById("alltime-battles").innerHTML = battleHTML;
     
