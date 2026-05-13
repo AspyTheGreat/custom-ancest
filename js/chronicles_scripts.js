@@ -770,7 +770,7 @@ return {
 
           value =
             (d.attacksTaken || 0) +
-            (d.savesMade || 0);
+            (d.savesTotal || 0);
 
         } else {
           value = player[statKey] || 0;
@@ -1702,7 +1702,7 @@ function renderCharacterRadar(canvasId, char, allCharacters, color) {
 
     return s +
       (d.attacksTaken || 0) +
-      (d.savesMade || 0);
+      (d.savesTotal || 0);
   }, 0);
 
   // =========================
@@ -1723,7 +1723,7 @@ function renderCharacterRadar(canvasId, char, allCharacters, color) {
 
   const targeted =
     (defense.attacksTaken || 0) +
-    (defense.savesMade || 0);
+    (defense.savesTotal || 0);
 
   const tankScore = totalTargeted
     ? (targeted / totalTargeted) * 10
@@ -1958,7 +1958,7 @@ const colors = await Promise.all(
 );
   const targeted = characters.map(c => {
     const d = c.stats?.defense || {};
-    return (d.attacksTaken || 0) + (d.savesMade || 0);
+    return (d.attacksTaken || 0) + (d.savesTotal || 0);
   });
 
   createPie("chart-damage", "Damage", names, damage, colors);
