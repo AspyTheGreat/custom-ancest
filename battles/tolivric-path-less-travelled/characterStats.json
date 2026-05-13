@@ -244,17 +244,18 @@
           "level": 4
         }
       ],
-      "levelClass": "Level-4 Battlesmith specialist artificer",
+      "levelClass": "Level-4 Battlesmith artificer",
       "levelHistory": [
         "Level-3 Battlesmith artificer",
-        "Level-4 Battlesmith specialist artificer"
+        "Level-4 Battlesmith specialist artificer",
+        "Level-4 Battlesmith artificer"
       ],
-      "battles": 5,
+      "battles": 6,
       "totalInitiative": 432.00000000000017,
       "initiativeCount": 30,
       "actions": {
-        "attack": 17,
-        "spell": 3,
+        "attack": 22,
+        "spell": 4,
         "move": 1,
         "misc": 1,
         "none": 0
@@ -263,12 +264,12 @@
         "attack": 1,
         "spell": 2,
         "move": 0,
-        "misc": 14,
+        "misc": 20,
         "none": 0
       },
       "reactions": {
-        "attack": 0,
-        "spell": 0,
+        "attack": 1,
+        "spell": 1,
         "move": 0,
         "misc": 0,
         "none": 0
@@ -284,24 +285,24 @@
         "8": 0,
         "9": 0
       },
-      "totalActions": 22,
-      "totalBonusActions": 17,
-      "totalReactions": 0,
+      "totalActions": 28,
+      "totalBonusActions": 23,
+      "totalReactions": 2,
       "totalSpellSlotsUsed": 7,
-      "totalDamage": 203,
+      "totalDamage": 353,
       "totalHealing": 0,
       "totalCC": 0,
       "totalDamageTaken": 67,
-      "totalAttacksTaken": 12,
-      "totalAttacksDodged": 3,
-      "totalSavesTotal": 0,
+      "totalAttacksTaken": 15,
+      "totalAttacksDodged": 4,
+      "totalSavesTotal": 1,
       "totalSavesMade": 4,
-      "totalNat20": 3,
+      "totalNat20": 6,
       "totalNat1": 3,
       "conditions": [],
       "totalConditions": 0,
-      "totalAttacks": 17,
-      "totalHits": 9,
+      "totalAttacks": 23,
+      "totalHits": 13,
       "totalPotencyAttempts": 2,
       "totalPotencySuccess": 1,
       "processedBattles": [
@@ -309,7 +310,8 @@
         "tolivric-path-less-travelled/family-trouble",
         "tolivric-path-less-travelled/dire-wolves-from-hell",
         "tolivric-path-less-travelled/desecrated-dice",
-        "tolivric-path-less-travelled/zombs-td"
+        "tolivric-path-less-travelled/zombs-td",
+        "tolivric-path-less-travelled/the-humble-lions"
       ],
       "_maxLevel": 4
     },
@@ -399,33 +401,39 @@
           "class": "Artificer",
           "subclass": "Artillerist",
           "level": 4
+        },
+        {
+          "class": "Artificer",
+          "subclass": "Artillerist specialist",
+          "level": 4
         }
       ],
-      "levelClass": "Level-4 Artillerist specialist artificer",
+      "levelClass": "Level-4 Artillerist artificer",
       "levelHistory": [
         "Level-3 Artillerist artificer",
-        "Level-4 Artillerist specialist artificer"
+        "Level-4 Artillerist specialist artificer",
+        "Level-4 Artillerist artificer"
       ],
-      "battles": 5,
+      "battles": 6,
       "totalInitiative": 30.8,
       "initiativeCount": 30,
       "actions": {
-        "attack": 10,
+        "attack": 12,
         "spell": 4,
-        "move": 1,
-        "misc": 7,
+        "move": 3,
+        "misc": 8,
         "none": 0
       },
       "bonusActions": {
         "attack": 12,
         "spell": 0,
         "move": 1,
-        "misc": 8,
+        "misc": 11,
         "none": 0
       },
       "reactions": {
         "attack": 0,
-        "spell": 4,
+        "spell": 5,
         "move": 0,
         "misc": 0,
         "none": 0
@@ -441,24 +449,24 @@
         "8": 0,
         "9": 0
       },
-      "totalActions": 22,
-      "totalBonusActions": 21,
-      "totalReactions": 4,
+      "totalActions": 27,
+      "totalBonusActions": 24,
+      "totalReactions": 5,
       "totalSpellSlotsUsed": 2,
-      "totalDamage": 167.3,
+      "totalDamage": 202.3,
       "totalHealing": 6,
-      "totalCC": 2,
+      "totalCC": 3,
       "totalDamageTaken": 53,
-      "totalAttacksTaken": 16,
-      "totalAttacksDodged": 13,
-      "totalSavesTotal": 0,
-      "totalSavesMade": 5,
+      "totalAttacksTaken": 18,
+      "totalAttacksDodged": 15,
+      "totalSavesTotal": 1,
+      "totalSavesMade": 6,
       "totalNat20": 1,
-      "totalNat1": 5,
+      "totalNat1": 6,
       "conditions": [],
       "totalConditions": 0,
-      "totalAttacks": 18,
-      "totalHits": 9,
+      "totalAttacks": 20,
+      "totalHits": 10,
       "totalPotencyAttempts": 14,
       "totalPotencySuccess": 13,
       "processedBattles": [
@@ -466,7 +474,8 @@
         "tolivric-path-less-travelled/family-trouble",
         "tolivric-path-less-travelled/dire-wolves-from-hell",
         "tolivric-path-less-travelled/desecrated-dice",
-        "tolivric-path-less-travelled/zombs-td"
+        "tolivric-path-less-travelled/zombs-td",
+        "tolivric-path-less-travelled/the-humble-lions"
       ],
       "_maxLevel": 4
     },
@@ -495,7 +504,7 @@
       "levelHistory": [
         "Level-1 Peace domain cleric, Level-3 Circle of the stars druid"
       ],
-      "battles": 2,
+      "battles": 3,
       "totalInitiative": 0,
       "initiativeCount": 0,
       "actions": {
@@ -507,9 +516,9 @@
       },
       "bonusActions": {
         "attack": 6,
-        "spell": 2,
-        "move": 0,
-        "misc": 1,
+        "spell": 4,
+        "move": 2,
+        "misc": 2,
         "none": 0
       },
       "reactions": {
@@ -531,28 +540,29 @@
         "9": 0
       },
       "totalActions": 9,
-      "totalBonusActions": 9,
+      "totalBonusActions": 14,
       "totalReactions": 1,
       "totalSpellSlotsUsed": 3,
-      "totalDamage": 66,
+      "totalDamage": 98,
       "totalHealing": 31,
       "totalCC": 0,
       "totalDamageTaken": 15,
       "totalAttacksTaken": 1,
       "totalAttacksDodged": 1,
-      "totalSavesTotal": 0,
+      "totalSavesTotal": 1,
       "totalSavesMade": 2,
       "totalNat20": 1,
       "totalNat1": 1,
       "conditions": [],
       "totalConditions": 0,
-      "totalAttacks": 10,
-      "totalHits": 3,
+      "totalAttacks": 12,
+      "totalHits": 5,
       "totalPotencyAttempts": 2,
       "totalPotencySuccess": 1,
       "processedBattles": [
         "tolivric-path-less-travelled/desecrated-dice",
-        "tolivric-path-less-travelled/zombs-td"
+        "tolivric-path-less-travelled/zombs-td",
+        "tolivric-path-less-travelled/the-humble-lions"
       ]
     },
     "tian-chuanze": {
@@ -576,15 +586,17 @@
           "level": 3
         }
       ],
-      "levelClass": null,
-      "levelHistory": [],
-      "battles": 1,
+      "levelClass": "Level-1 Fighter, Level-3 school of divination wizard",
+      "levelHistory": [
+        "Level-1 Fighter, Level-3 school of divination wizard"
+      ],
+      "battles": 2,
       "totalInitiative": 0,
       "initiativeCount": 0,
       "actions": {
-        "attack": 2,
-        "spell": 4,
-        "move": 0,
+        "attack": 4,
+        "spell": 5,
+        "move": 2,
         "misc": 0,
         "none": 0
       },
@@ -592,12 +604,12 @@
         "attack": 0,
         "spell": 0,
         "move": 0,
-        "misc": 0,
+        "misc": 1,
         "none": 0
       },
       "reactions": {
         "attack": 0,
-        "spell": 0,
+        "spell": 1,
         "move": 0,
         "misc": 1,
         "none": 0
@@ -613,28 +625,29 @@
         "8": 0,
         "9": 0
       },
-      "totalActions": 6,
-      "totalBonusActions": 0,
-      "totalReactions": 1,
+      "totalActions": 11,
+      "totalBonusActions": 1,
+      "totalReactions": 2,
       "totalSpellSlotsUsed": 2,
-      "totalDamage": 27,
+      "totalDamage": 46,
       "totalHealing": 0,
       "totalCC": 0,
       "totalDamageTaken": 0,
-      "totalAttacksTaken": 4,
-      "totalAttacksDodged": 4,
-      "totalSavesTotal": 0,
+      "totalAttacksTaken": 5,
+      "totalAttacksDodged": 5,
+      "totalSavesTotal": 1,
       "totalSavesMade": 0,
       "totalNat20": 0,
-      "totalNat1": 0,
+      "totalNat1": 1,
       "conditions": [],
       "totalConditions": 0,
-      "totalAttacks": 0,
-      "totalHits": 0,
+      "totalAttacks": 3,
+      "totalHits": 2,
       "totalPotencyAttempts": 4,
       "totalPotencySuccess": 4,
       "processedBattles": [
-        "tolivric-path-less-travelled/zombs-td"
+        "tolivric-path-less-travelled/zombs-td",
+        "tolivric-path-less-travelled/the-humble-lions"
       ]
     },
     "tanyth-rubenera": {
@@ -653,27 +666,29 @@
           "level": 4
         }
       ],
-      "levelClass": null,
-      "levelHistory": [],
-      "battles": 1,
+      "levelClass": "Level-4 Mastermind rogue",
+      "levelHistory": [
+        "Level-4 Mastermind rogue"
+      ],
+      "battles": 2,
       "totalInitiative": 0,
       "initiativeCount": 0,
       "actions": {
-        "attack": 5,
+        "attack": 9,
         "spell": 0,
-        "move": 0,
+        "move": 1,
         "misc": 0,
         "none": 0
       },
       "bonusActions": {
         "attack": 0,
         "spell": 0,
-        "move": 0,
-        "misc": 4,
+        "move": 3,
+        "misc": 6,
         "none": 0
       },
       "reactions": {
-        "attack": 0,
+        "attack": 1,
         "spell": 0,
         "move": 0,
         "misc": 0,
@@ -690,28 +705,29 @@
         "8": 0,
         "9": 0
       },
-      "totalActions": 5,
-      "totalBonusActions": 4,
-      "totalReactions": 0,
+      "totalActions": 10,
+      "totalBonusActions": 9,
+      "totalReactions": 1,
       "totalSpellSlotsUsed": 0,
-      "totalDamage": 32,
+      "totalDamage": 116,
       "totalHealing": 0,
       "totalCC": 0,
       "totalDamageTaken": 0,
-      "totalAttacksTaken": 2,
+      "totalAttacksTaken": 3,
       "totalAttacksDodged": 0,
-      "totalSavesTotal": 0,
+      "totalSavesTotal": 1,
       "totalSavesMade": 4,
       "totalNat20": 1,
-      "totalNat1": 0,
+      "totalNat1": 1,
       "conditions": [],
       "totalConditions": 0,
-      "totalAttacks": 5,
-      "totalHits": 5,
+      "totalAttacks": 9,
+      "totalHits": 9,
       "totalPotencyAttempts": 0,
       "totalPotencySuccess": 0,
       "processedBattles": [
-        "tolivric-path-less-travelled/zombs-td"
+        "tolivric-path-less-travelled/zombs-td",
+        "tolivric-path-less-travelled/the-humble-lions"
       ]
     },
     "xistao-eaussor": {
@@ -730,16 +746,18 @@
           "level": 4
         }
       ],
-      "levelClass": null,
-      "levelHistory": [],
-      "battles": 1,
+      "levelClass": "Level-4 Oath of conquest Paladin",
+      "levelHistory": [
+        "Level-4 Oath of conquest Paladin"
+      ],
+      "battles": 2,
       "totalInitiative": 0,
       "initiativeCount": 0,
       "actions": {
         "attack": 1,
-        "spell": 0,
-        "move": 1,
-        "misc": 2,
+        "spell": 1,
+        "move": 3,
+        "misc": 4,
         "none": 0
       },
       "bonusActions": {
@@ -750,7 +768,7 @@
         "none": 0
       },
       "reactions": {
-        "attack": 0,
+        "attack": 1,
         "spell": 1,
         "move": 0,
         "misc": 0,
@@ -767,16 +785,16 @@
         "8": 0,
         "9": 0
       },
-      "totalActions": 4,
+      "totalActions": 9,
       "totalBonusActions": 0,
-      "totalReactions": 1,
+      "totalReactions": 2,
       "totalSpellSlotsUsed": 2,
-      "totalDamage": 18,
+      "totalDamage": 44,
       "totalHealing": 0,
-      "totalCC": 0,
+      "totalCC": 7,
       "totalDamageTaken": 0,
-      "totalAttacksTaken": 4,
-      "totalAttacksDodged": 2,
+      "totalAttacksTaken": 11,
+      "totalAttacksDodged": 4,
       "totalSavesTotal": 0,
       "totalSavesMade": 0,
       "totalNat20": 0,
@@ -785,10 +803,11 @@
       "totalConditions": 0,
       "totalAttacks": 3,
       "totalHits": 3,
-      "totalPotencyAttempts": 0,
-      "totalPotencySuccess": 0,
+      "totalPotencyAttempts": 8,
+      "totalPotencySuccess": 4,
       "processedBattles": [
-        "tolivric-path-less-travelled/zombs-td"
+        "tolivric-path-less-travelled/zombs-td",
+        "tolivric-path-less-travelled/the-humble-lions"
       ]
     }
   },
@@ -797,6 +816,7 @@
     "tolivric-path-less-travelled/family-trouble",
     "tolivric-path-less-travelled/dire-wolves-from-hell",
     "tolivric-path-less-travelled/desecrated-dice",
-    "tolivric-path-less-travelled/zombs-td"
+    "tolivric-path-less-travelled/zombs-td",
+    "tolivric-path-less-travelled/the-humble-lions"
   ]
 }
