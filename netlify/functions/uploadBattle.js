@@ -1049,8 +1049,14 @@ if (newLevelClass) {
     // DEFENSE
     // =========================
 
-    c.totalDamageTaken +=
-      s.damageTaken || 0;
+    const damageTaken =
+      s.damageTaken ?? (
+        s.hp?.max && s.hp?.current !== undefined
+          ? s.hp.max - s.hp.current
+          : 0
+      );
+
+    c.totalDamageTaken += damageTaken;
 
     c.totalAttacksTaken +=
       defense.attacksTaken || 0;

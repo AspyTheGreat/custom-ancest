@@ -2210,7 +2210,8 @@ function buildCampaignCharacters(statsData) {
         attacksTaken: c.totalAttacksTaken || 0,
         attacksDodged: c.totalAttacksDodged || 0,
         savesMade: c.totalSavesMade || 0,
-        savesTotal: c.totalSavesTotal || 0
+        savesTotal: c.totalSavesTotal || 0,
+        damageTaken: c.totalDamageTaken || 0
       },
 
       nat20: c.totalNat20 || 0,
@@ -2380,6 +2381,7 @@ const fortitude = savesTotal
   <div><b>Total Damage:</b> ${stats.damage}</div>
   <div><b>Total Healing:</b> ${stats.healing}</div>
   <div><b>Total CC:</b> ${stats.cc}</div>
+  <div><b>Damage Taken:</b> ${defense.damageTaken}</div>
 
   <div>
   <b>Accuracy:</b>
@@ -2404,7 +2406,9 @@ const fortitude = savesTotal
   ${savesMade}/${savesTotal}
   (${fortitude}%)
 </div>
-  
+
+  <div><b>Nat 20s:</b> ${stats.nat20}</div>
+  <div><b>Nat 1s:</b> ${stats.nat1}</div>
 
 </div>
 
@@ -2717,9 +2721,99 @@ function renderTopStat(label, total, top) {
     </div>
   `;
 }
+async function loadAllTimeData() {
+  const battles = await loadAllBattles();
+
+  const campaignMap = new Map();
+  battles.forEach(b => {
+    if (!campaignMap.has(b.campaignSlug)) {
+      campaignMap.set(b.campaignSlug, { name: b.campaign, slug: b.campaignSlug, battles: 0 });
+    }
+    campaignMap.get(b.campaignSlug).battles++;
+  });
+  const campaigns = Array.from(campaignMap.values());
+
+  const statsResults = await Promise.all(
+    campaigns.map(c => loadCampaignStats(c.slug))
+  );
+
+  let totalDamage = 0, totalHealing = 0, totalCC = 0;
+  let totalDamageTaken = 0, totalNat20 = 0, totalNat1 = 0;
+  let topDamage = { name: "—", value: 0, image: null };
+  let topHealing = { name: "—", value: 0, image: null };
+  let topCC = { name: "—", value: 0, image: null };
+  let topDamageTaken = { name: "—", value: 0, image: null };
+  let topNat20 = { name: "—", value: 0, image: null };
+  let topNat1 = { name: "—", value: 0, image: null };
+  const classMap = {};
+  const subclassMap = {};
+  const seen = new Set();
+  const characters = [];
+  const portraitMap = {};
+
+  for (const stats of statsResults) {
+    if (!stats?.characters) continue;
+    const campaignName = stats.campaign || "Unknown";
+
+    Object.values(stats.characters).forEach(char => {
+      const name = char.name || "Unknown";
+      const img = char.portrait || null;
+
+      characters.push({ name, campaign: campaignName, image: img });
+      if (char.name && char.portrait) portraitMap[char.name] = char.portrait;
+
+      const dmg = char.totalDamage || 0;
+      const heal = char.totalHealing || 0;
+      const cc = char.totalCC || 0;
+      const dmgTaken = char.totalDamageTaken || 0;
+      const nat20 = char.totalNat20 || 0;
+      const nat1 = char.totalNat1 || 0;
+      totalDamage += dmg; totalHealing += heal; totalCC += cc;
+      totalDamageTaken += dmgTaken; totalNat20 += nat20; totalNat1 += nat1;
+      if (dmg > topDamage.value) topDamage = { name, value: dmg, image: img };
+      if (heal > topHealing.value) topHealing = { name, value: heal, image: img };
+      if (cc > topCC.value) topCC = { name, value: cc, image: img };
+      if (dmgTaken > topDamageTaken.value) topDamageTaken = { name, value: dmgTaken, image: img };
+      if (nat20 > topNat20.value) topNat20 = { name, value: nat20, image: img };
+      if (nat1 > topNat1.value) topNat1 = { name, value: nat1, image: img };
+
+      (char.classes || []).forEach(c => {
+        const cls = (c.class || "").trim().toLowerCase();
+        const sub = (c.subclass || "").trim().toLowerCase();
+        const key = `${name.toLowerCase()}-${cls}`;
+
+        if (cls) {
+          if (!classMap[cls]) classMap[cls] = { count: 0, levels: 0 };
+          if (!seen.has(key)) { classMap[cls].count++; seen.add(key); }
+          classMap[cls].levels += c.level || 0;
+        }
+
+        if (sub && sub !== "null") {
+          const label = `${sub} (${cls})`;
+          const sk = `${name.toLowerCase()}-${label}`;
+          if (!subclassMap[label]) subclassMap[label] = { count: 0, levels: 0 };
+          if (!seen.has(sk)) { subclassMap[label].count++; seen.add(sk); }
+          subclassMap[label].levels += c.level || 0;
+        }
+      });
+    });
+  }
+
+  if (!topDamage.image) topDamage.image = portraitMap[topDamage.name] || null;
+  if (!topHealing.image) topHealing.image = portraitMap[topHealing.name] || null;
+  if (!topCC.image) topCC.image = portraitMap[topCC.name] || null;
+  if (!topDamageTaken.image) topDamageTaken.image = portraitMap[topDamageTaken.name] || null;
+  if (!topNat20.image) topNat20.image = portraitMap[topNat20.name] || null;
+  if (!topNat1.image) topNat1.image = portraitMap[topNat1.name] || null;
+
+  return { campaigns, characters, stats: { totalDamage, totalHealing, totalCC, topDamage, topHealing, topCC, totalDamageTaken, totalNat20, totalNat1, topDamageTaken, topNat20, topNat1 }, classes: { classMap, subclassMap }, battles };
+}
+
 async function renderAllTimeStats() {
 
-  const campaigns = await getAllCampaigns();
+  const data = await loadAllTimeData();
+
+  const { campaigns, characters, stats, classes, battles } = data;
 
 campaigns.sort((a, b) =>
   b.battles - a.battles
@@ -2732,7 +2826,6 @@ document.getElementById("alltime-campaigns").innerHTML =
       <span>${c.battles}</span>
     </div>
   `).join("");
-const characters = await getAllCharactersWithCampaign();
 
 // sort by campaign, then name
 characters.sort((a, b) =>
@@ -2768,31 +2861,14 @@ const charHTML = Object.entries(groupedChars)
   `).join("");
 
 document.getElementById("alltime-characters").innerHTML = charHTML;
-  const stats = await computeAllTimeStats();
-  const classes = await computeClassStats();
-  const battles = await getAllBattlesList();
-
-battles.sort((a, b) =>
-  a.campaign.localeCompare(b.campaign) ||
-  a.name.localeCompare(b.name)
-);
-const portraitMap = await getAllCharacterPortraits();
-
-// attach portraits if missing
-if (!stats.topDamage.image) {
-  stats.topDamage.image = portraitMap[stats.topDamage.name];
-}
-if (!stats.topHealing.image) {
-  stats.topHealing.image = portraitMap[stats.topHealing.name];
-}
-if (!stats.topCC.image) {
-  stats.topCC.image = portraitMap[stats.topCC.name];
-}
   // Window 1
 document.getElementById("alltime-stats").innerHTML = `
   ${renderTopStat("Damage", Math.round(stats.totalDamage), stats.topDamage)}
   ${renderTopStat("Healing", stats.totalHealing, stats.topHealing)}
   ${renderTopStat("CC", stats.totalCC, stats.topCC)}
+  ${renderTopStat("Damage Taken", stats.totalDamageTaken, stats.topDamageTaken)}
+  ${renderTopStat("Nat 20s", stats.totalNat20, stats.topNat20)}
+  ${renderTopStat("Nat 1s", stats.totalNat1, stats.topNat1)}
 `;
 
   // Window 2
