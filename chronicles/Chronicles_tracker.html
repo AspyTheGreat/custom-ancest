@@ -307,13 +307,13 @@ Attacks Taken
 
 <br>
 
-<button onclick="changeCounter('defense','savesSucceeded',-1)">-</button>
-Saves Made
-<button onclick="changeCounter('defense','savesSucceeded',1)">+</button>
-
 <button onclick="changeCounter('defense','savesMade',-1)">-</button>
-Total
+Saves Made
 <button onclick="changeCounter('defense','savesMade',1)">+</button>
+
+<button onclick="changeCounter('defense','savesTotal',-1)">-</button>
+Total
+<button onclick="changeCounter('defense','savesTotal',1)">+</button>
 
 <div id="defenseCounter" class="counter"></div>
 
@@ -1110,8 +1110,8 @@ function getGlobal(index = selectedCharacter) {
       defense: {
         attacksDodged:0,
         attacksTaken:0,
-        savesSucceeded:0,
-        savesMade:0
+        savesMade:0,
+        savesTotal:0
       },
 
       // resources
@@ -1326,8 +1326,8 @@ function createEmptyTurn() {
     defense: {
       attacksDodged:0,
       attacksTaken:0,
-      savesSucceeded:0,
-      savesMade:0
+      savesMade:0,
+      savesTotal:0
     },
 
     spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
@@ -1403,9 +1403,9 @@ characters.push({
     damageTaken:0,
     conditions: [],
     attacksDodged: 0,
-    savesSucceeded: 0,
-    attacksTaken: 0,
     savesMade: 0,
+    attacksTaken: 0,
+    savesTotal: 0,
     nat1:0,
     nat20:0,
     reactions:{attack:0,spell:0,move:0,misc:0,none:0},
@@ -1455,8 +1455,8 @@ function createEmptyGlobal() {
     defense: {
       attacksDodged:0,
       attacksTaken:0,
-      savesSucceeded:0,
-      savesMade:0
+      savesMade:0,
+      savesTotal:0
     },
 
     spellSlots: {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
@@ -1631,8 +1631,8 @@ if (selectedCharacter === currentTurn) {
   "cc",
   "attacksDodgedInput",
   "attacksTakenInput",
-  "savesSucceededInput",
   "savesMadeInput",
+  "savesTotalInput",
   "damageTaken"
   
 ].forEach(id => {
@@ -1694,7 +1694,7 @@ function updateCounterUI() {
     `Forced:${getGlobal(selectedCharacter).saves.forced} / Success:${getGlobal(selectedCharacter).saves.succeeded}`;
 
   document.getElementById("defenseCounter").innerText =
-    `Dodged:${getGlobal(selectedCharacter).defense.attacksDodged}/${getGlobal(selectedCharacter).defense.attacksTaken} | Saves:${getGlobal(selectedCharacter).defense.savesSucceeded}/${getGlobal(selectedCharacter).defense.savesMade}`;
+    `Dodged:${getGlobal(selectedCharacter).defense.attacksDodged}/${getGlobal(selectedCharacter).defense.attacksTaken} | Saves:${getGlobal(selectedCharacter).defense.savesMade}/${getGlobal(selectedCharacter).defense.savesTotal}`;
 }
 
 function updateSpellSlotUI() {
@@ -1805,7 +1805,7 @@ ${summonHTML}
 <b>Incoming</b><br>
 Off-turn reactions: ${reactionSum}<br>
 Dodged: ${c.stats.attacksDodged}/${c.stats.attacksTaken}<br>
-Saves Made: ${c.stats.savesSucceeded}/${c.stats.savesMade}<br>
+Saves Made: ${c.stats.savesMade}/${c.stats.savesTotal}<br>
 Damage Taken: ${c.stats.damageTaken}<br>
 ${conditionHTML}
     ${resourceHTML}
@@ -1879,8 +1879,8 @@ function nextTurn() {
       c.stats.attacksDodged += c._roundTemp.defense.attacksDodged;
       c.stats.attacksTaken += c._roundTemp.defense.attacksTaken;
 
-      c.stats.savesSucceeded += c._roundTemp.defense.savesSucceeded;
       c.stats.savesMade += c._roundTemp.defense.savesMade;
+      c.stats.savesTotal += c._roundTemp.defense.savesTotal;
 
       // ✅ ACTION TOTALS (your fix — keep this)
       for (let k in c._roundTemp.actions) {
@@ -1993,8 +1993,8 @@ if (!c._roundTemp) c._roundTemp = createEmptyTurn();
     c._roundTemp.defense.attacksDodged += g.defense.attacksDodged || 0;
     c._roundTemp.defense.attacksTaken += g.defense.attacksTaken || 0;
 
-    c._roundTemp.defense.savesSucceeded += g.defense.savesSucceeded || 0;
     c._roundTemp.defense.savesMade += g.defense.savesMade || 0;
+    c._roundTemp.defense.savesTotal += g.defense.savesTotal || 0;
 
     // =========================
     // 🔥 SPELL SLOTS
@@ -2137,8 +2137,8 @@ if (currentTurn !== 0) {
     c.stats.attacksDodged += c._roundTemp.defense.attacksDodged;
     c.stats.attacksTaken += c._roundTemp.defense.attacksTaken;
 
-    c.stats.savesSucceeded += c._roundTemp.defense.savesSucceeded;
     c.stats.savesMade += c._roundTemp.defense.savesMade;
+    c.stats.savesTotal += c._roundTemp.defense.savesTotal;
 // =========================
 // 🔥 APPLY ACTION TOTALS (FIX)
 // =========================
@@ -2268,8 +2268,8 @@ finalReport.combatEndState = {
   defense: {
     attacksDodged: c.stats.attacksDodged,
     attacksTaken: c.stats.attacksTaken,
-    savesSucceeded: c.stats.savesSucceeded,
-    savesMade: c.stats.savesMade
+    savesMade: c.stats.savesMade,
+    savesTotal: c.stats.savesTotal
   },
 
   spellSlots: { ...c.stats.spellSlots },
@@ -2890,12 +2890,12 @@ function convertTextToJSON() {
                 ? taken
                 : 0,
 
-            savesSucceeded:
+            savesMade:
               r === roundCount
                 ? saveMade
                 : 0,
 
-            savesMade:
+            savesTotal:
               r === roundCount
                 ? saveTotal
                 : 0
@@ -2977,10 +2977,10 @@ function convertTextToJSON() {
               attacksTaken:
                 taken,
 
-              savesSucceeded:
+              savesMade:
                 saveMade,
 
-              savesMade:
+              savesTotal:
                 saveTotal
             },
 
