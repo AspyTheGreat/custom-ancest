@@ -582,7 +582,7 @@ function parseLevelClass(levelClassStr) {
 
       return {
         class: capitalize(className),
-        subclass: subclassRaw || "null",
+        subclass: subclassRaw || null,
         level
       };
     })
@@ -633,7 +633,7 @@ function formatEntry(classes) {
   return classes
     .map(c =>
       `Level-${c.level} ${
-        c.subclass !== "null" ? c.subclass + " " : ""
+        c.subclass ? c.subclass + " " : ""
       }${c.class}`
     )
     .join(" | ");
