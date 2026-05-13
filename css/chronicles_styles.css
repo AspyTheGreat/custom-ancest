@@ -1436,6 +1436,26 @@ width: 320px;
   border-bottom: 1px solid #444;
   padding-bottom: 4px;
   color: #ccc;
+  cursor: pointer;
+  user-select: none;
+}
+.campaign-section summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+.campaign-section summary::-webkit-details-marker {
+  display: none;
+}
+.campaign-section summary::before {
+  content: "▶ ";
+  font-size: 0.8em;
+  transition: transform 0.2s;
+  display: inline-block;
+  margin-right: 4px;
+}
+.campaign-section[open] summary::before {
+  content: "▼ ";
 }
 /* ========================= */
 /* STAT WINDOWS              */
@@ -1549,6 +1569,15 @@ width: 320px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+}
+.sortable-header:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 .stat-header-row span {

@@ -2751,9 +2751,10 @@ async function loadAllTimeData() {
   const characters = [];
   const portraitMap = {};
 
-  for (const stats of statsResults) {
+  for (let i = 0; i < statsResults.length; i++) {
+    const stats = statsResults[i];
     if (!stats?.characters) continue;
-    const campaignName = stats.campaign || "Unknown";
+    const campaignName = campaigns[i].name || "Unknown";
 
     Object.values(stats.characters).forEach(char => {
       const name = char.name || "Unknown";
@@ -2823,7 +2824,7 @@ document.getElementById("alltime-campaigns").innerHTML =
   campaigns.map(c => `
     <div class="stat-item">
       <span>${c.name}</span>
-      <span>${c.battles}</span>
+      <span>Number of battles: ${c.battles}</span>
     </div>
   `).join("");
 
@@ -2844,8 +2845,8 @@ characters.forEach(char => {
 
 const charHTML = Object.entries(groupedChars)
   .map(([campaign, chars]) => `
-    <div class="campaign-section">
-      <h4 class="campaign-header">${campaign}</h4>
+    <details class="campaign-section">
+      <summary class="campaign-header">${campaign}</summary>
 
       ${chars.map(char => `
         <div class="stat-item stat-character">
@@ -2857,7 +2858,7 @@ const charHTML = Object.entries(groupedChars)
           <span>${char.name}</span>
         </div>
       `).join("")}
-    </div>
+    </details>
   `).join("");
 
 document.getElementById("alltime-characters").innerHTML = charHTML;
@@ -2890,31 +2891,16 @@ document.getElementById("alltime-stats").innerHTML = `
 `)
     .join("");
 
- // Classes
-document.getElementById("alltime-classes").innerHTML =
-  Object.entries(classes.classMap)
-    .sort((a, b) => b[1].levels - a[1].levels)
-    .map(([k, v]) => `
-      <div class="stat-item-3col">
-        <span>${capitalizeWords(k)}</span>
-        <span>${v.count}</span>
-        <span>${v.levels}</span>
-      </div>
-    `)
-    .join("");
+window.__classData = Object.entries(classes.classMap);
+window.__subclassData = Object.entries(classes.subclassMap);
+window.__classSort = { field: 'levels', dir: 'desc' };
+window.__subclassSort = { field: 'levels', dir: 'desc' };
 
-// Subclasses
+document.getElementById("alltime-classes").innerHTML =
+  renderClassRows(window.__classData, 'levels', 'desc');
+
 document.getElementById("alltime-subclasses").innerHTML =
-  Object.entries(classes.subclassMap)
-    .sort((a, b) => b[1].levels - a[1].levels)
-    .map(([k, v]) => `
-      <div class="stat-item-3col">
-        <span>${capitalizeWords(k)}</span>
-        <span>${v.count}</span>
-        <span>${v.levels}</span>
-      </div>
-    `)
-    .join("");
+  renderClassRows(window.__subclassData, 'levels', 'desc');
   // Window 3
   battles.forEach((b, i) => {
   b._index = i;
@@ -2950,15 +2936,15 @@ sortedGroups.forEach(group => {
 
 const battleHTML = sortedGroups
   .map(group => `
-      <div class="campaign-section">
-        <h4 class="campaign-header">${group.name}</h4>
+      <details class="campaign-section">
+        <summary class="campaign-header">${group.name}</summary>
 
         ${group.battles.map(b => `
           <div class="stat-item">
             <span>${b.name}</span>
           </div>
         `).join("")}
-      </div>
+      </details>
     `)
     .join("");
 
@@ -2970,6 +2956,43 @@ document.addEventListener("DOMContentLoaded", () => {
     renderAllTimeStats();
   }
 });
+function renderClassRows(entries, field, dir) {
+  const sorted = [...entries].sort((a, b) => {
+    if (field === 'class' || field === 'subclass') {
+      return dir === 'asc' ? a[0].localeCompare(b[0]) : b[0].localeCompare(a[0]);
+    }
+    return dir === 'desc' ? b[1][field] - a[1][field] : a[1][field] - b[1][field];
+  });
+  return sorted.map(([k, v]) => `
+    <div class="stat-item-3col">
+      <span>${capitalizeWords(k)}</span>
+      <span>${v.count}</span>
+      <span>${v.levels}</span>
+    </div>
+  `).join('');
+}
+function sortClasses(field) {
+  const s = window.__classSort;
+  if (s.field === field) {
+    s.dir = s.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    s.field = field;
+    s.dir = field === 'class' ? 'asc' : 'desc';
+  }
+  document.getElementById('alltime-classes').innerHTML =
+    renderClassRows(window.__classData, s.field, s.dir);
+}
+function sortSubclasses(field) {
+  const s = window.__subclassSort;
+  if (s.field === field) {
+    s.dir = s.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    s.field = field;
+    s.dir = field === 'subclass' ? 'asc' : 'desc';
+  }
+  document.getElementById('alltime-subclasses').innerHTML =
+    renderClassRows(window.__subclassData, s.field, s.dir);
+}
 async function getAllCharactersWithCampaign() {
 
   const battles = await loadAllBattles();
