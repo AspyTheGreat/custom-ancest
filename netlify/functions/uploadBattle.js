@@ -392,7 +392,8 @@ for (const slug in statsData.characters) {
   const history = await rebuildLevelHistory(
     campaignSlug,
     slug,
-    getJsonFile
+    getJsonFile,
+    data
   );
 
   statsData.characters[slug].levelHistory = history;
@@ -501,7 +502,9 @@ function mergeCounts(target, source) {
 async function rebuildLevelHistory(
   campaignSlug,
   characterSlug,
-  getJsonFile
+  getJsonFile,
+  currentData = null,
+  currentBattleId = null
 ) {
   const basePath = `battles/${campaignSlug}`;
 
@@ -553,6 +556,24 @@ const battles = [...index.data].sort(
     if (normalized !== lastNormalized) {
       history.push(cleaned);
       lastNormalized = normalized;
+    }
+  }
+
+  // also include the current upload data (which hasn't been saved yet)
+  if (currentData) {
+    const char = (currentData.characters || []).find(c =>
+      (c.slug || makeSlug(c.name)) === characterSlug
+    );
+    if (char) {
+      const lc = char.levelClass || char.levelclass || null;
+      if (lc) {
+        const cleaned = lc.trim().replace(/\s+/g, " ");
+        const normalized = normalize(cleaned);
+        if (normalized !== lastNormalized) {
+          history.push(cleaned);
+          lastNormalized = normalized;
+        }
+      }
     }
   }
 
@@ -906,12 +927,16 @@ if (newLevelClass) {
 
   parsed.forEach(newClass => {
     const index = c.classes.findIndex(existing =>
-      existing.class === newClass.class &&
-      existing.subclass === newClass.subclass
+      existing.class?.toLowerCase() === newClass.class?.toLowerCase() &&
+      (existing.subclass ?? "")?.toLowerCase() === (newClass.subclass ?? "")?.toLowerCase()
     );
 
     if (index !== -1) {
       c.classes[index].level = newClass.level;
+      c.classes[index].class = newClass.class;
+      c.classes[index].subclass = newClass.subclass;
+      delete c.classes[index].classKey;
+      delete c.classes[index].subclassKey;
     } else {
       c.classes.push(newClass);
     }
