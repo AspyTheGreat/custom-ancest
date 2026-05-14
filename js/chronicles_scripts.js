@@ -2182,12 +2182,22 @@ function renderLevelTimeline(history) {
   `;
 }
 
+function calcLevel(levelClass) {
+  if (!levelClass) return 0;
+  const ms = levelClass.match(/Level-(\d+)/gi);
+  if (!ms) return 0;
+  let total = 0;
+  ms.forEach(m => { total += parseInt(m.match(/\d+/)[0]); });
+  return total;
+}
+
 function buildCampaignCharacters(statsData) {
   const chars = Object.values(statsData.characters);
 
   return chars.map(c => ({
     name: c.name,
     battles: c.battles || 0,
+    level: calcLevel(c.levelClass),
     levelClass: c.levelClass || "", // ✅ ADD THIS
     levelHistory: c.levelHistory || [],
 
@@ -2239,7 +2249,7 @@ characters.forEach(char => {
   char.image = portraitMap[char.name] || null;
 });
 
-characters.sort((a, b) => b.battles - a.battles);
+characters.sort((a, b) => (b.level || 0) - (a.level || 0) || b.battles - a.battles);
 
   container.innerHTML = `
     <div class="backBtn">← Back</div>
