@@ -387,21 +387,6 @@ const statsFile =
       statsData.processedBattles.push(
         battleId
       );
-      // rebuild level history for all characters
-for (const slug in statsData.characters) {
-  const history = await rebuildLevelHistory(
-    campaignSlug,
-    slug,
-    getJsonFile,
-    data
-  );
-
-  statsData.characters[slug].levelHistory = history;
-
-  // ✅ ensure current levelClass = latest entry
-  statsData.characters[slug].levelClass =
-    history.length ? history[history.length - 1] : null;
-}
     }
 
     // =========================
@@ -915,10 +900,8 @@ if (newLevelClass) {
   // ✅ only update if different
   if (normalizedNew !== normalizedOld) {
 
-    // push ONLY the raw string (as you wanted)
-  
+    c.levelHistory.push(newLevelClass.trim());
 
-    // update current
     c.levelClass = newLevelClass.trim();
   }
 
