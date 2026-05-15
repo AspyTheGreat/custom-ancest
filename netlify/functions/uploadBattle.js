@@ -283,16 +283,25 @@ const statsFile =
       "";
 
     const placeholders = [
-      "/assets/previous_battles%20placeholder%201.png",
-      "/assets/previous_battles%20placeholder%202.png",
-      "/assets/previous_battles%20placeholder%203.png",
-      "/assets/previous_battles%20placeholder%204.png"
+      "/assets/previous_battles%20placeholder%201.webp",
+      "/assets/previous_battles%20placeholder%202.webp",
+      "/assets/previous_battles%20placeholder%203.webp",
+      "/assets/previous_battles%20placeholder%204.webp"
     ];
+
+    const recentPlaceholder = (battlesIndex.data || [])
+      .filter(b => b.startImage && b.startImage.startsWith("/assets/previous_battles"))
+      .sort((a, b) => getTime(b.date) - getTime(a.date))
+      [0]?.startImage;
+
+    const availablePlaceholders = recentPlaceholder
+      ? placeholders.filter(p => p !== recentPlaceholder)
+      : placeholders;
 
     const startImage =
       data.images?.start ||
       data.startImage ||
-      placeholders[Math.floor(Math.random() * placeholders.length)];
+      availablePlaceholders[Math.floor(Math.random() * availablePlaceholders.length)];
 
     if (data.archive && !data.archive.thumbnail) {
       data.archive.thumbnail = startImage;
