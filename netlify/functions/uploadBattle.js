@@ -282,10 +282,21 @@ const statsFile =
       data.date ||
       "";
 
+    const placeholders = [
+      "/assets/previous_battles%20placeholder%201.png",
+      "/assets/previous_battles%20placeholder%202.png",
+      "/assets/previous_battles%20placeholder%203.png",
+      "/assets/previous_battles%20placeholder%204.png"
+    ];
+
     const startImage =
       data.images?.start ||
       data.startImage ||
-      null;
+      placeholders[Math.floor(Math.random() * placeholders.length)];
+
+    if (data.archive && !data.archive.thumbnail) {
+      data.archive.thumbnail = startImage;
+    }
 
     const battleName =
       data.displayName ||

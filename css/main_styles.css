@@ -175,6 +175,28 @@ h1 {
   z-index: 1;
 }
 
+.chronicles-home-page .prev-battles-card,
+.chronicles-home-page .stats-card,
+.chronicles-home-page .tracker-card {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.chronicles-home-page .tracker-card {
+  left: 52%;
+  top: 82%;
+}
+
+.chronicles-home-page .prev-battles-card {
+  left: 40%;
+  top: 82%;
+}
+
+.chronicles-home-page .stats-card {
+  left: 64%;
+  top: 82%;
+}
+
 .world-card {
   width: 180px;
   height: 120px;
