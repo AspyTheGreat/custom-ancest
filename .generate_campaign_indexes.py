@@ -1,14 +1,24 @@
 import json
 import pathlib
+import random
 
 # =========================
 # CONFIG
 # =========================
 
 ROOT = pathlib.Path("battles")
+CARDS = pathlib.Path("assets/battle-cards")
 
 if not ROOT.exists():
     raise SystemExit("battles directory not found")
+
+PLACEHOLDERS = [
+    "/assets/battle-cards/previous_battles%20placeholder%201.webp",
+    "/assets/battle-cards/previous_battles%20placeholder%202.webp",
+    "/assets/battle-cards/previous_battles%20placeholder%203.webp",
+    "/assets/battle-cards/previous_battles%20placeholder%204.webp",
+]
+_last_placeholder = None
 
 # =========================
 # HELPERS
@@ -28,15 +38,24 @@ def load_json(path):
 
     try:
 
-        return json.loads(
-            path.read_text(encoding="utf-8")
-        )
+        raw = path.read_bytes()
+        # Strip BOM if present
+        if raw[:3] == b'\xef\xbb\xbf':
+            raw = raw[3:]
+        return json.loads(raw.decode("utf-8"))
 
     except Exception as e:
 
         print(f"ERROR reading {path}: {e}")
 
         return None
+
+def get_next_placeholder():
+    global _last_placeholder
+    available = [p for p in PLACEHOLDERS if p != _last_placeholder] or PLACEHOLDERS
+    chosen = random.choice(available)
+    _last_placeholder = chosen
+    return chosen
 
 def make_campaign_entry(
     data,
@@ -93,6 +112,27 @@ def make_campaign_entry(
         start_image = (
             data.get("startImage")
         )
+
+    if isinstance(start_image, str) and not start_image.strip():
+        start_image = None
+
+    # Remap old placeholder paths to new location in battle-cards
+    if isinstance(start_image, str) and "previous_battles" in start_image and not start_image.startswith("/assets/battle-cards/"):
+        idx = start_image.rsplit("%20", 1)[-1] if "%20" in start_image else start_image.rsplit(" ", 1)[-1]
+        start_image = f"/assets/battle-cards/previous_battles%20placeholder%20{idx}"
+
+    # Skip data URIs in index — use the cached WebP in battle-cards if it exists
+    if start_image and isinstance(start_image, str) and start_image.startswith("data:image"):
+        webp_path = f"/assets/battle-cards/{campaign_slug}-{battle_slug}.webp"
+        webp_file = CARDS / f"{campaign_slug}-{battle_slug}.webp"
+        if webp_file.exists():
+            start_image = webp_path
+        else:
+            start_image = None
+
+    # Assign a random placeholder for battles without any image at all
+    if start_image is None:
+        start_image = get_next_placeholder()
 
     return {
 

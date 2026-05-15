@@ -176,15 +176,14 @@ const grid = document.getElementById("battleGrid");
       // RENDER BATTLES
       // =========================
 
+      const fragment = document.createDocumentFragment();
+
       for (const battle of battles) {
 
         const div = document.createElement("div");
 
         div.className =
           "battle-card clickable";
-
-        const battleUrl =
-          `../battles/${battle.campaignSlug}/${battle.battleSlug}.json`;
 
         const battleImage =
           battle.startImage ||
@@ -200,6 +199,7 @@ const grid = document.getElementById("battleGrid");
               class="battle-card-bg"
               src="${cleanImage}"
               alt=""
+              loading="lazy"
             >
 
             <div class="battle-card-overlay"></div>
@@ -218,8 +218,10 @@ const grid = document.getElementById("battleGrid");
           window.location.hash = `#battle/${battle.campaignSlug}/${battle.battleSlug}`;
         };
 
-        grid.appendChild(div);
+        fragment.appendChild(div);
       }
+
+      grid.appendChild(fragment);
 
       if (!battles.length) {
 
@@ -1117,6 +1119,7 @@ const timesTargeted =
                         characterMap[p.name]?.portrait
                       )}"
                       alt="${p.name}"
+                      loading="lazy"
                     >
                   `
                   : ""
@@ -1468,6 +1471,7 @@ if (hpPercent === 0) {
             class="character-portrait"
             src="${normalizeImageSrc(char.image || char.portrait)}"
             alt="${char.name}"
+            loading="lazy"
           >
         `
         : ""
@@ -2330,6 +2334,7 @@ const fortitude = savesTotal
           class="character-portrait"
           src="${normalizeImageSrc(char.image)}"
           alt="${char.name}"
+          loading="lazy"
         >
       `
       : ""
@@ -2724,7 +2729,7 @@ function renderTopStat(label, total, top) {
     <div class="stat-sub stat-top">
       ${
         top.image
-          ? `<img class="stat-portrait" src="${normalizeImageSrc(top.image)}">`
+          ? `<img class="stat-portrait" src="${normalizeImageSrc(top.image)}" loading="lazy">`
           : ""
       }
       <span>${top.name} (${top.value})</span>
@@ -2862,7 +2867,7 @@ const charHTML = Object.entries(groupedChars)
         <div class="stat-item stat-character">
           ${
             char.image
-              ? `<img class="stat-portrait" src="${normalizeImageSrc(char.image)}">`
+              ? `<img class="stat-portrait" src="${normalizeImageSrc(char.image)}" loading="lazy">`
               : ""
           }
           <span>${char.name}</span>

@@ -220,6 +220,82 @@ if (!json.content) {
     }
 
     // =========================
+    // BINARY FILE UPLOAD (for images)
+    // =========================
+
+    async function putFile(path, buffer, message, sha = null) {
+      const body = {
+        message,
+        content: buffer.toString("base64")
+      };
+      if (sha) body.sha = sha;
+
+      const res = await githubFetch(path, {
+        method: "PUT",
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`GitHub PUT failed (${res.status}) for ${path}: ${text}`);
+      }
+
+      return await res.json();
+    }
+
+    // =========================
+    // PROCESS BATTLE CARD IMAGE
+    // =========================
+
+    async function processAndUploadImage(startImage, slug) {
+      if (!startImage || typeof startImage !== "string" || !startImage.startsWith("data:image")) {
+        return startImage;
+      }
+
+      const matches = startImage.match(/^data:image\/(\w+);base64,(.+)$/);
+      if (!matches) return startImage;
+
+      const base64Data = matches[2];
+      const buffer = Buffer.from(base64Data, "base64");
+
+      let sharp;
+      try {
+        sharp = require("sharp");
+      } catch {
+        console.warn("sharp not available, using original image");
+        return startImage;
+      }
+
+      try {
+        const webpBuffer = await sharp(buffer)
+          .resize(400, undefined, { withoutEnlargement: true })
+          .webp({ quality: 80 })
+          .toBuffer();
+
+        const imagePath = `assets/battle-cards/${slug}.webp`;
+
+        const checkRes = await githubFetch(imagePath);
+        let imageSha = null;
+        if (checkRes.status === 200) {
+          const d = await checkRes.json();
+          imageSha = d.sha;
+        }
+
+        await putFile(
+          imagePath,
+          webpBuffer,
+          `Add battle card image for ${slug}`,
+          imageSha
+        );
+
+        return `/assets/battle-cards/${slug}.webp`;
+      } catch (err) {
+        console.error("Image processing failed:", err);
+        return startImage;
+      }
+    }
+
+    // =========================
     // PATHS
     // =========================
 
@@ -283,14 +359,14 @@ const statsFile =
       "";
 
     const placeholders = [
-      "/assets/previous_battles%20placeholder%201.webp",
-      "/assets/previous_battles%20placeholder%202.webp",
-      "/assets/previous_battles%20placeholder%203.webp",
-      "/assets/previous_battles%20placeholder%204.webp"
+      "/assets/battle-cards/previous_battles%20placeholder%201.webp",
+      "/assets/battle-cards/previous_battles%20placeholder%202.webp",
+      "/assets/battle-cards/previous_battles%20placeholder%203.webp",
+      "/assets/battle-cards/previous_battles%20placeholder%204.webp"
     ];
 
     const recentPlaceholder = (battlesIndex.data || [])
-      .filter(b => b.startImage && b.startImage.startsWith("/assets/previous_battles"))
+      .filter(b => b.startImage && b.startImage.startsWith("/assets/battle-cards/previous_battles"))
       .sort((a, b) => getTime(b.date) - getTime(a.date))
       [0]?.startImage;
 
@@ -302,6 +378,11 @@ const statsFile =
       data.images?.start ||
       data.startImage ||
       availablePlaceholders[Math.floor(Math.random() * availablePlaceholders.length)];
+
+    // Process data URI images → crop/resize to WebP for battle cards
+    const indexStartImage = startImage && startImage.startsWith("data:image")
+      ? await processAndUploadImage(startImage, `${campaignSlug}-${battleSlug}`)
+      : startImage;
 
     if (data.archive && !data.archive.thumbnail) {
       data.archive.thumbnail = startImage;
@@ -340,7 +421,7 @@ const statsFile =
 
       file: finalBattlePath,
 
-      startImage,
+      startImage: indexStartImage,
 
       date: timestamp
     });
@@ -373,7 +454,7 @@ const statsFile =
 
       battleSlug,
 
-      startImage,
+      startImage: indexStartImage,
 
       date: timestamp
     });
