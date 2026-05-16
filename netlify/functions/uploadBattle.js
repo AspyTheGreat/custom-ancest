@@ -260,7 +260,7 @@ if (!json.content) {
 
       let sharp;
       try {
-        sharp = require("sharp");
+        sharp = eval('require("sharp")');
       } catch {
         console.warn("sharp not available, using original image");
         return startImage;
