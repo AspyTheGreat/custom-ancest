@@ -23,7 +23,32 @@
   <script src="../js/chronicles_scripts.js"></script>
   <script>
   document.addEventListener("DOMContentLoaded", () => {
-    loadStatsCampaigns(); // 👈 THIS is your new entry point
+    const hash = window.location.hash.slice(1);
+    if (hash.startsWith("campaign/")) {
+      const parts = hash.split("/");
+      renderCampaignBreakdown(parts[1]);
+      if (parts[2]) {
+        setTimeout(() => {
+          const el = document.getElementById("char-" + parts[2]);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 500);
+      }
+    } else {
+      loadStatsCampaigns();
+    }
+  });
+  window.addEventListener("hashchange", () => {
+    const hash = window.location.hash.slice(1);
+    if (hash.startsWith("campaign/")) {
+      const parts = hash.split("/");
+      renderCampaignBreakdown(parts[1]);
+      if (parts[2]) {
+        setTimeout(() => {
+          const el = document.getElementById("char-" + parts[2]);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 500);
+      }
+    }
   });
 </script>
 </body>

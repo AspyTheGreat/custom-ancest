@@ -10,7 +10,8 @@
         }
 
         body {
-            background-color: #121212;
+            background: linear-gradient(rgba(18,18,18,0.55), rgba(18,18,18,0.55)), url("assets/custom ancestry.webp") no-repeat center center fixed;
+            background-size: cover;
             color: #e0e0e0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -22,7 +23,7 @@
         h1, h2 { color: #689FD9; }
 
         .section {
-            background-color: #1e1e1e;
+            background-color: rgba(55,55,55,0.65);
             padding: 15px;
             margin-bottom: 20px;
             border-radius: 8px;
@@ -33,7 +34,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #242424;
+            background: rgba(60,60,60,0.65);
             padding: 15px;
             border: 2px solid #689FD9;
             border-radius: 10px;
@@ -56,7 +57,7 @@
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #242424;
+            background-color: rgba(60,60,60,0.8);
             min-width: 280px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
             z-index: 10;
@@ -73,13 +74,13 @@
         }
 
         .dropdown-content label:hover {
-            background-color: #333;
+            background-color: rgba(51,51,51,0.85);
         }
 
         .show { display: block; }
 
         select, .my-button {
-            background-color: #242424;
+            background-color: rgba(60,60,60,0.8);
             color: white;
             border: 1px solid #747474;
             padding: 8px;
@@ -111,7 +112,7 @@
     top: 150px; /* sits just below the points box */
 
     width: 260px;
-    background: #1e1e1e;
+    background: rgba(55,55,55,0.65);
     color: white;
     padding: 15px;
 
@@ -138,7 +139,7 @@
     transform: translateY(-50%);
 
     width: 220px;
-    background-color: #2a2a2a;
+    background-color: rgba(42,42,42,0.9);
     color: #ddd;
     padding: 8px;
     border-radius: 6px;
@@ -160,7 +161,7 @@
     max-height: 75vh;
     overflow-y: auto;
 
-    background: #1e1e1e;
+    background: rgba(55,55,55,0.65);
     color: white;
     padding: 15px;
 
@@ -202,7 +203,7 @@
 }
 
 .popup-content {
-    background-color: #1e1e1e;
+    background-color: rgba(50,50,50,0.95);
     border: 2px solid #689FD9;
     border-radius: 12px;
     width: 90%;
@@ -219,7 +220,7 @@
     align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid #333;
-    background-color: #242424;
+    background-color: rgba(60,60,60,0.9);
     border-radius: 10px 10px 0 0;
 }
 
@@ -259,13 +260,13 @@
 }
 
 .popup-body label:hover {
-    background-color: #333;
+    background-color: rgba(51,51,51,0.9);
 }
 
 .popup-footer {
     padding: 15px 20px;
     border-top: 1px solid #333;
-    background-color: #242424;
+    background-color: rgba(60,60,60,0.9);
     border-radius: 0 0 10px 10px;
     display: flex;
     justify-content: space-between;
@@ -281,7 +282,7 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    background-color: #2a2a2a;
+    background-color: rgba(42,42,42,0.85);
     border: 1px solid #555;
     border-radius: 6px;
     color: #e0e0e0;
@@ -305,7 +306,7 @@
     top: 100%;
     width: 100%;
     max-width: 400px;
-    background-color: #2a2a2a;
+    background-color: rgba(42,42,42,0.95);
     color: #ddd;
     padding: 10px;
     border-radius: 6px;
@@ -337,17 +338,38 @@
         </div>
     </div>
 
+    <div id="prereq-warning" style="display: none; color: #ff4444; font-weight: bold; font-size: 14px; text-align: center; margin-top: 8px; margin-bottom: 4px;">This race is not viable</div>
+
 </div>
 
 <div id="description-panel">
     <h3>Feature Descriptions</h3>
     <div id="description-content"></div>
+
+    <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #555;">
+        <div style="font-weight: bold; font-size: 13px; color: #e8c97a; margin-bottom: 6px;">Race Management</div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button onclick="saveRace()" class="my-button" style="width: auto; padding: 6px 10px; font-size: 12px;">
+                Save
+            </button>
+            <button onclick="exportRace()" class="my-button" style="width: auto; padding: 6px 10px; font-size: 12px;">
+                Export
+            </button>
+            <button onclick="loadRacePrompt()" class="my-button" style="width: auto; padding: 6px 10px; font-size: 12px;">
+                Load
+            </button>
+            <button onclick="importRace()" class="my-button" style="width: auto; padding: 6px 10px; font-size: 12px;">
+                Import
+            </button>
+        </div>
+    </div>
 </div>
 
     <!-- ✅ PUT SUMMARY PANEL HERE -->
 <div id="summary-panel">
     <h3>Selected Attributes</h3>
 
+    <div><strong>Primary Race:</strong><ul id="summary-primary-race"></ul></div>
     <div><strong>Creature Type:</strong><ul id="summary-creature-type"></ul></div>
     <div><strong>Size:</strong><ul id="summary-size"></ul></div>
     <div><strong>Speed:</strong><ul id="summary-speed"></ul></div>
@@ -382,10 +404,10 @@
         <option value="0" data-value="0" data-desc="Standard humanoid creature.">
             Humanoid (0)
         </option>
-        <option value="5" data-value="5" data-desc="Must have a primary race with fey ancestry. Fey creatures are magical beings tied to nature and emotion, and are unnafected by effects that only target humanoids, such as the hold person spell.">
+        <option value="5" data-value="5" data-prereq="Elf|Goblin|Fairy|Bugbear" data-desc="Must have a primary race with fey ancestry. Fey creatures are magical beings tied to nature and emotion, and are unnafected by effects that only target humanoids, such as the hold person spell.">
             Fey (5)
         </option>
-        <option value="-20" data-value="-20" data-desc="Must have warforged or autognome as your primary race. Constructs do not need to eat, drink, or breathe, and are unaffected by most healing magic.">
+        <option value="-20" data-value="-20" data-prereq="Autognome|Warforged" data-desc="Must have warforged or autognome as your primary race. Constructs do not need to eat, drink, or breathe, and are unaffected by most healing magic.">
             Construct (-20)
         </option>
     </select>
@@ -411,7 +433,7 @@
     <label>Movement Speed:</label>
 
     <select id="creature-speed" onchange="updateValue(); updateSpeedDesc();">
-        <option data-value="-40" data-desc="Very slow movement. Must have tortle primary race.">
+        <option data-value="-40" data-prereq="Tortle" data-desc="Very slow movement. Must have tortle primary race.">
             20 ft. (-40)
         </option>
         <option data-value="-20" data-desc="Below average movement speed.">
@@ -453,6 +475,65 @@
                 <option data-value="40">+1 All (40)</option>
             </select>
         </div>
+
+        <div class="control-group">
+            <label>Primary Race:</label>
+            <select id="primary-race" onchange="updateValue(); updatePrimaryRaceDesc();">
+                <option value="" data-desc="Primary race works as prerequisites for racial features and feats.">Select a Race</option>
+                <option>Aarakocra</option>
+                <option>Aasimar</option>
+                <option>Autognome</option>
+                <option>Bugbear</option>
+                <option>Centaur</option>
+                <option>Changeling</option>
+                <option>Dhampir</option>
+                <option>Dragonborn</option>
+                <option>Duergar</option>
+                <option>Dwarf</option>
+                <option>Elf</option>
+                <option>Fairy</option>
+                <option>Genasi</option>
+                <option>Giff</option>
+                <option>Githyanki</option>
+                <option>Githzerai</option>
+                <option>Gnome</option>
+                <option>Goblin</option>
+                <option>Goliath</option>
+                <option>Hadozee</option>
+                <option>Half-Elf</option>
+                <option>Half-Leberi</option>
+                <option>Half-Orc</option>
+                <option>Halfling</option>
+                <option>Harengon</option>
+                <option>Hexblood</option>
+                <option>Human</option>
+                <option>Kalashtar</option>
+                <option>Kender</option>
+                <option>Kenku</option>
+                <option>Kobold</option>
+                <option>Leberi</option>
+                <option>Leonin</option>
+                <option>Lizardfolk</option>
+                <option>Loxodon</option>
+                <option>Minotaur</option>
+                <option>Orc</option>
+                <option>Owlin</option>
+                <option>Reborn</option>
+                <option>Satyr</option>
+                <option>Shifter</option>
+                <option>Simic Hybrid</option>
+                <option>Tabaxi</option>
+                <option>Tiefling</option>
+                <option>Tortle</option>
+                <option>Triton</option>
+                <option>Vedalken</option>
+                <option>Verdan</option>
+                <option>Vermkin</option>
+                <option>Warforged</option>
+                <option>Yuan-ti</option>
+            </select>
+            <div id="primary-race-desc" style="font-size: 12px; color: #f8f8f8; margin-top: 5px;"></div>
+        </div>
     </div>
 
     <div class="section">
@@ -476,7 +557,7 @@
 <input type="checkbox" class="prof-checkbox" value="5"
 data-name="Elf: Keen Senses"
 data-desc="Perception proficiency."
-onchange="handleProfChange(this)">
+data-prereq="Elf" onchange="handleProfChange(this)">
 Elf: Keen Senses (5)
 </label>
 
@@ -484,7 +565,7 @@ Elf: Keen Senses (5)
 <input type="checkbox" class="prof-checkbox" value="12"
 data-name="Half-elf: Skill Versatility"
 data-desc="Proficiency in two skills of your choice."
-onchange="handleProfChange(this)">
+data-prereq="Half-Elf" onchange="handleProfChange(this)">
 Half-elf: Skill Versatility (12)
 </label>
 
@@ -492,7 +573,7 @@ Half-elf: Skill Versatility (12)
 <input type="checkbox" class="prof-checkbox" value="6"
 data-name="Human: Skills"
 data-desc="Proficiency in one skill of your choice."
-onchange="handleProfChange(this)">
+data-prereq="Human" onchange="handleProfChange(this)">
 Human: Skills (6)
 </label>
 
@@ -500,7 +581,7 @@ Human: Skills (6)
 <input type="checkbox" class="prof-checkbox" value="10"
 data-name="Tabaxi: Cat's Talent"
 data-desc="Proficiency in Stealth and Perception."
-onchange="handleProfChange(this)">
+data-prereq="Tabaxi" onchange="handleProfChange(this)">
 Tabaxi: Cat's Talent (10)
 </label>
 
@@ -508,7 +589,7 @@ Tabaxi: Cat's Talent (10)
 <input type="checkbox" class="prof-checkbox" value="7"
 data-name="Satyr: Reveler"
 data-desc="Proficiency in Performance, Persuasion and a musical instrument of your choice."
-onchange="handleProfChange(this)">
+data-prereq="Satyr" onchange="handleProfChange(this)">
 Satyr: Reveler (7)
 </label>
 
@@ -516,7 +597,7 @@ Satyr: Reveler (7)
 <input type="checkbox" class="prof-checkbox" value="9"
 data-name="Changeling: Changeling Instincts"
 data-desc="Proficiency in two of: deception, insight, intimidation and persuasion."
-onchange="handleProfChange(this)">
+data-prereq="Changeling" onchange="handleProfChange(this)">
 Changeling: Changeling Instincts (9)
 </label>
 
@@ -524,7 +605,7 @@ Changeling: Changeling Instincts (9)
 <input type="checkbox" class="prof-checkbox" value="3"
 data-name="Half-orc: Menacing"
 data-desc="Intimidation proficiency."
-onchange="handleProfChange(this)">
+data-prereq="Half-Orc" onchange="handleProfChange(this)">
 Half-orc: Menacing (3)
 </label>
 
@@ -532,7 +613,7 @@ Half-orc: Menacing (3)
 <input type="checkbox" class="prof-checkbox" value="7"
 data-name="Changeling: Changeling Instincts"
 data-desc="Proficiency in one skill or tool of your choice, replaceable with another skill or tool when you finish a long rest."
-onchange="handleProfChange(this)">
+data-prereq="Changeling" onchange="handleProfChange(this)">
 Khoravar: Skill versatility (7)
 </label>
 
@@ -540,7 +621,7 @@ Khoravar: Skill versatility (7)
 <input type="checkbox" class="prof-checkbox" value="11"
 data-name="Lizardfolk: Nature's Intuition"
 data-desc="Proficiency in two of: animal handling, medicine, nature, perception, stealth or survival."
-onchange="handleProfChange(this)">
+data-prereq="Lizardfolk" onchange="handleProfChange(this)">
 Lizardfolk: Nature's Intuition (11)
 </label>
 
@@ -548,7 +629,7 @@ Lizardfolk: Nature's Intuition (11)
 <input type="checkbox" class="prof-checkbox" value="5"
 data-name="Tortle: Nature's Intuition"
 data-desc="Proficiency in one of: animal handling, medicine, nature, perception, stealth or survival."
-onchange="handleProfChange(this)">
+data-prereq="Tortle" onchange="handleProfChange(this)">
 Tortle: Nature's Intuition (5)
 </label>
 
@@ -556,7 +637,7 @@ Tortle: Nature's Intuition (5)
 <input type="checkbox" class="prof-checkbox" value="3"
 data-name="Autognome: Specialized Design"
 data-desc="Proficiency in two tools of your choice."
-onchange="handleProfChange(this)">
+data-prereq="Autognome" onchange="handleProfChange(this)">
 Autognome: Specialized Design (3)
 </label>
 
@@ -564,7 +645,7 @@ Autognome: Specialized Design (3)
 <input type="checkbox" class="prof-checkbox" value="1"
 data-name="Dwarf: Tool Proficiency"
 data-desc="Proficiency in one of: Smith's tools, Brewer's supplies or Mason's tools."
-onchange="handleProfChange(this)">
+data-prereq="Dwarf" onchange="handleProfChange(this)">
 Dwarf: Tool Proficiency (1)
 </label>
 
@@ -572,7 +653,7 @@ Dwarf: Tool Proficiency (1)
 <input type="checkbox" class="prof-checkbox" value="1"
 data-name="Vermkin (Dykentail): Housecarving"
 data-desc="Proficiency in one of: Woodcarver's tools or Carpenter's tools."
-onchange="handleProfChange(this)">
+data-prereq="Vermkin" onchange="handleProfChange(this)">
 Vermkin (Dykentail): Housecarving (1)
 </label>
 
@@ -580,7 +661,7 @@ Vermkin (Dykentail): Housecarving (1)
 <input type="checkbox" class="prof-checkbox" value="3"
 data-name="Warforged (Artifex)"
 data-desc="Expertise in one tool of your choice."
-onchange="handleProfChange(this)">
+data-prereq="Warforged" onchange="handleProfChange(this)">
 Warforged (Artifex) (3)
 </label>
 
@@ -588,7 +669,7 @@ Warforged (Artifex) (3)
 <input type="checkbox" class="prof-checkbox" value="8"
 data-name="Githyanki: Astral Knowledge"
 data-desc="Proficiency in one skill and one weapon/tool of your choice. Can be changed at the end of a long rest."
-onchange="handleProfChange(this)">
+data-prereq="Githyanki" onchange="handleProfChange(this)">
 Githyanki: Astral Knowledge (8)
 </label>
 
@@ -596,7 +677,7 @@ Githyanki: Astral Knowledge (8)
 <input type="checkbox" class="prof-checkbox" value="7"
 data-name="Half-leberi: Skilled Artisan"
 data-desc="Proficiency in one skill and one weapon/tool of your choice."
-onchange="handleProfChange(this)">
+data-prereq="Half-Leberi" onchange="handleProfChange(this)">
 Half-leberi: Skilled Artisan (7)
 </label>
 
@@ -612,7 +693,7 @@ Shadar-kai / Astral Elf: Trance Proficiency (3)
 <input type="checkbox" class="prof-checkbox" value="8"
 data-name="Warforged: Specialized Design"
 data-desc="Proficiency in a skill and tool of your choice."
-onchange="handleProfChange(this)">
+data-prereq="Warforged" onchange="handleProfChange(this)">
 Warforged: Specialized Design (8)
 </label>
 
@@ -631,22 +712,22 @@ Warforged: Specialized Design (8)
 </label>
 
 <label>
-    <input type="radio" name="weapon-prof" value="2" data-desc="Proficiency in battleaxes, handaxes, light hammers, and warhammers." onchange="updateValue()">
+    <input type="radio" name="weapon-prof" data-prereq="Dwarf" value="2" data-desc="Proficiency in battleaxes, handaxes, light hammers, and warhammers." onchange="updateValue()">
     Dwarf: Dwarven Combat Training (2)
 </label>
 
 <label>
-    <input type="radio" name="weapon-prof" value="3" data-desc="Proficiency in longswords, shortswords, shortbows, and longbows." onchange="updateValue()">
+    <input type="radio" name="weapon-prof" data-prereq="Elf" value="3" data-desc="Proficiency in longswords, shortswords, shortbows, and longbows." onchange="updateValue()">
     Elf: Weapon Training (3)
 </label>
 
 <label>
-    <input type="radio" name="weapon-prof" value="2" data-desc="Proficiency in spears, tridents, crossbows, and nets." onchange="updateValue()">
+    <input type="radio" name="weapon-prof" data-prereq="Elf" value="2" data-desc="Proficiency in spears, tridents, crossbows, and nets." onchange="updateValue()">
     Sea Elf Training (2)
 </label>
 
 <label>
-    <input type="radio" name="weapon-prof" value="1" data-desc="Proficiency in one martial weapon." onchange="updateValue()">
+    <input type="radio" name="weapon-prof" data-prereq="Warforged" value="1" data-desc="Proficiency in one martial weapon." onchange="updateValue()">
     Warforged: Combat Patterns (1)
 </label>
 
@@ -665,27 +746,27 @@ Warforged: Specialized Design (8)
 
         <label> <input type="radio" name="skill-trait" value="0" checked onchange="updateValue();"> None (0) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="7" data-desc="You have proficiency in Stealth, and can move through and stop in spaces large enough for small creatures without squeezing." onchange="updateValue();"> Bugbear: Sneaky (7) <span class="tooltip-text"></span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Bugbear" value="7" data-desc="You have proficiency in Stealth, and can move through and stop in spaces large enough for small creatures without squeezing." onchange="updateValue();"> Bugbear: Sneaky (7) <span class="tooltip-text"></span> </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="12" data-desc="Gain two proficiencies of your choice." onchange="updateValue();"> Reborn: Ancestral Legacy (12) <span class="tooltip-text"></span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Reborn" value="12" data-desc="Gain two proficiencies of your choice." onchange="updateValue();"> Reborn: Ancestral Legacy (12) <span class="tooltip-text"></span> </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="5" data-desc="You can make Stealth checks with advantage a number of times equal to your proficiency bonus, regaining expended uses when you finish a long rest." onchange="updateValue();"> Deep gnome: Svirfneblin Camouflage (5) <span class="tooltip-text"></span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Gnome" value="5" data-desc="You can make Stealth checks with advantage a number of times equal to your proficiency bonus, regaining expended uses when you finish a long rest." onchange="updateValue();"> Deep gnome: Svirfneblin Camouflage (5) <span class="tooltip-text"></span> </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="5" data-desc="You can make intimidation or persuasion checks with advantage once per short or long rest." onchange="updateValue();"> Draconblood: Chromatic Warding (5) <span class="tooltip-text"></span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Dragonborn" value="5" data-desc="You can make intimidation or persuasion checks with advantage once per short or long rest." onchange="updateValue();"> Draconblood: Chromatic Warding (5) <span class="tooltip-text"></span> </label>
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to investigation and thieves' tools checks." onchange="updateValue();"> Warder's Intuition (6) <span class="tooltip-text"></span> </label>
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to performance and stealth checks." onchange="updateValue();"> Cunning Intuition (6) <span class="tooltip-text"></span> </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="You have advantage on investigation and insight checks." onchange="updateValue();"> Elf(Pallid): Incisive sense (6) <span class="tooltip-text"></span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Elf" value="6" data-desc="You have advantage on investigation and insight checks." onchange="updateValue();"> Elf(Pallid): Incisive sense (6) <span class="tooltip-text"></span> </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="14" data-desc="Advantage on strength checks and saves. Count as one size larger while carrying, pushing, lifting, etc." onchange="updateValue();"> Giff: Hippo build (14) <span class="tooltip-text"></span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Giff" value="14" data-desc="Advantage on strength checks and saves. Count as one size larger while carrying, pushing, lifting, etc." onchange="updateValue();"> Giff: Hippo build (14) <span class="tooltip-text"></span> </label>
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="2" data-desc="Must have a dragonmark spell list. You can add a d4 to history and calligrapher's supplies checks." onchange="updateValue();"> Gifted scribe (2) <span class="tooltip-text"></span> </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="1" data-desc="Add twice your proficiency bonus to history checks related to magic items, alchemical objects or technological devices." onchange="updateValue();"> Gnome(Rock): Artificer's Lore (1) <span class="tooltip-text"></span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Gnome" value="1" data-desc="Add twice your proficiency bonus to history checks related to magic items, alchemical objects or technological devices." onchange="updateValue();"> Gnome(Rock): Artificer's Lore (1) <span class="tooltip-text"></span> </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="4" data-desc="Gain proficiency in athletics, and count as once size larger when lifting, carrying, pushing etc." onchange="updateValue();"> Goliath: Little giant (4) <span class="tooltip-text"></span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Goliath" value="4" data-desc="Gain proficiency in athletics, and count as once size larger when lifting, carrying, pushing etc." onchange="updateValue();"> Goliath: Little giant (4) <span class="tooltip-text"></span> </label>
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="10" data-desc="Must have a dragonmark spell list. You can add a d4 to investigation and insight checks." onchange="updateValue();"> Deductive intuition (10) <span class="tooltip-text"></span> </label>
 
@@ -707,7 +788,7 @@ Warforged: Specialized Design (8)
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="23" data-desc="You gain proficiency in two skills of your choice. You can give yourself advantage on any checks that you are proficient in. You can do so a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue();"> Kenku recall (23) <span class="tooltip-text"></span> </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="3" data-desc="You have advantage on perception, survival and investigation checks that involve smell." onchange="updateValue();"> Loxodon: Keen smell (3) <span class="tooltip-text"></span> </label>
+        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Loxodon" value="3" data-desc="You have advantage on perception, survival and investigation checks that involve smell." onchange="updateValue();"> Loxodon: Keen smell (3) <span class="tooltip-text"></span> </label>
 
         <label class="tooltip"> <input type="radio" name="skill-trait" value="2" data-desc="You always know which direction is north, and you have advantage on survival checks made in order to navigate or track." onchange="updateValue();"> Labyrinthine recall (2) <span class="tooltip-text"></span> </label>
 
@@ -816,17 +897,17 @@ Warforged: Specialized Design (8)
 
     <div id="resistance-dropdown" class="dropdown-content" onclick="event.stopPropagation()">
 
-        <label><input type="checkbox" class="resistance-checkbox" value="31" data-name="Aasimar: Celestial Resistance" data-desc="Cannot pick any other resistance. Resistance to radiant and necrotic damage." onchange="handleResistanceChange(this)"> Aasimar: Celestial Resistance (31)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Aasimar" value="31" data-name="Aasimar: Celestial Resistance" data-desc="Cannot pick any other resistance. Resistance to radiant and necrotic damage." onchange="handleResistanceChange(this)"> Aasimar: Celestial Resistance (31)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="8" data-name="Fey Ancestry" data-desc="Advantage vs charm, magic can't put you to sleep." onchange="handleResistanceChange(this)"> Fey Ancestry (8)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Elf|Goblin|Fairy|Bugbear" value="8" data-name="Fey Ancestry" data-desc="Advantage vs charm, magic can't put you to sleep." onchange="handleResistanceChange(this)"> Fey Ancestry (8)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="26" data-name="Autognome: Mechanical Nature" data-desc="Resistance to poison damage, advantage vs poisoned/paralyzed, no need to eat/drink/breathe." onchange="handleResistanceChange(this)"> Autognome: Mechanical Nature (26)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Autognome" value="26" data-name="Autognome: Mechanical Nature" data-desc="Resistance to poison damage, advantage vs poisoned/paralyzed, no need to eat/drink/breathe." onchange="handleResistanceChange(this)"> Autognome: Mechanical Nature (26)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="18" data-name="Dragonborn: Draconic Resilience" data-desc="Resistance to your draconic damage type." onchange="handleResistanceChange(this)"> Dragonborn: Draconic Resilience (18)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Dragonborn" value="18" data-name="Dragonborn: Draconic Resilience" data-desc="Resistance to your draconic damage type." onchange="handleResistanceChange(this)"> Dragonborn: Draconic Resilience (18)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="14" data-name="Duergar: Psionic Fortitude" data-desc="Advantage vs charmed or stunned." onchange="handleResistanceChange(this)"> Duergar: Psionic Fortitude (14)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Duergar" value="14" data-name="Duergar: Psionic Fortitude" data-desc="Advantage vs charmed or stunned." onchange="handleResistanceChange(this)"> Duergar: Psionic Fortitude (14)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="26" data-name="Halfling: Stout Resilience" data-desc="Advantage vs poison, resistance to poison damage." onchange="handleResistanceChange(this)"> Halfling: Stout Resilience (26)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Halfling" value="26" data-name="Halfling: Stout Resilience" data-desc="Advantage vs poison, resistance to poison damage." onchange="handleResistanceChange(this)"> Halfling: Stout Resilience (26)</label>
 
         <label><input type="checkbox" class="resistance-checkbox" value="18" data-name="Shadar-kai: Necrotic Resistance" data-desc="Resistance to necrotic damage." onchange="handleResistanceChange(this)"> Shadar-kai: Necrotic Resistance (18)</label>
 
@@ -836,25 +917,25 @@ Warforged: Specialized Design (8)
 
         <label><input type="checkbox" class="resistance-checkbox" value="12" data-name="Air Genasi: Lightning Resistance" data-desc="Resistance to lightning damage." onchange="handleResistanceChange(this)"> Air Genasi: Lightning Resistance (12)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="9" data-name="Half-leberi: Sour Blood" data-desc="Advantage vs poison and disease." onchange="handleResistanceChange(this)"> Half-leberi: Sour Blood (9)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Half-Leberi" value="9" data-name="Half-leberi: Sour Blood" data-desc="Advantage vs poison and disease." onchange="handleResistanceChange(this)"> Half-leberi: Sour Blood (9)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="11" data-name="Halfling: Brave" data-desc="Advantage vs frightened." onchange="handleResistanceChange(this)"> Halfling: Brave (11)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Halfling" value="11" data-name="Halfling: Brave" data-desc="Advantage vs frightened." onchange="handleResistanceChange(this)"> Halfling: Brave (11)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="7" data-name="Kalashtar: Mental Discipline" data-desc="Resistance to psychic damage." onchange="handleResistanceChange(this)"> Kalashtar: Mental Discipline (7)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Kalashtar" value="7" data-name="Kalashtar: Mental Discipline" data-desc="Resistance to psychic damage." onchange="handleResistanceChange(this)"> Kalashtar: Mental Discipline (7)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="17" data-name="Kender: Fearless" data-desc="Advantage vs frightened, auto succeed once per rest." onchange="handleResistanceChange(this)"> Kender: Fearless (17)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Kender" value="17" data-name="Kender: Fearless" data-desc="Advantage vs frightened, auto succeed once per rest." onchange="handleResistanceChange(this)"> Kender: Fearless (17)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="18" data-name="Leberi: Pungent Blood" data-desc="Resistance to poison, immunity to disease." onchange="handleResistanceChange(this)"> Leberi: Pungent Blood (18)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Leberi" value="18" data-name="Leberi: Pungent Blood" data-desc="Resistance to poison, immunity to disease." onchange="handleResistanceChange(this)"> Leberi: Pungent Blood (18)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="17" data-name="Loxodon: Serenity" data-desc="Advantage vs charmed and frightened." onchange="handleResistanceChange(this)"> Loxodon: Serenity (17)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Loxodon" value="17" data-name="Loxodon: Serenity" data-desc="Advantage vs charmed and frightened." onchange="handleResistanceChange(this)"> Loxodon: Serenity (17)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="21" data-name="Vermkin: Iron Gut" data-desc="Advantage vs poison/disease, resistance to poison damage." onchange="handleResistanceChange(this)"> Vermkin: Iron Gut (21)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Vermkin" value="21" data-name="Vermkin: Iron Gut" data-desc="Advantage vs poison/disease, resistance to poison damage." onchange="handleResistanceChange(this)"> Vermkin: Iron Gut (21)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="23" data-name="Vermkin: Riverborn" data-desc="Resistance to cold damage, swim speed." onchange="handleResistanceChange(this)"> Vermkin: Riverborn (23)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Vermkin" value="23" data-name="Vermkin: Riverborn" data-desc="Resistance to cold damage, swim speed." onchange="handleResistanceChange(this)"> Vermkin: Riverborn (23)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="12" data-name="Warforged: Steadfast" data-desc="Advantage vs being moved or knocked prone." onchange="handleResistanceChange(this)"> Warforged: Steadfast (12)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Warforged" value="12" data-name="Warforged: Steadfast" data-desc="Advantage vs being moved or knocked prone." onchange="handleResistanceChange(this)"> Warforged: Steadfast (12)</label>
 
-        <label><input type="checkbox" class="resistance-checkbox" value="11" data-name="Warforged: Transformative Subroutine" data-desc="Advantage vs forced form change, can resize." onchange="handleResistanceChange(this)"> Warforged: Transformative Subroutine (11)</label>
+        <label><input type="checkbox" class="resistance-checkbox" data-prereq="Warforged" value="11" data-name="Warforged: Transformative Subroutine" data-desc="Advantage vs forced form change, can resize." onchange="handleResistanceChange(this)"> Warforged: Transformative Subroutine (11)</label>
 
     </div>
 </div>
@@ -871,19 +952,19 @@ Warforged: Specialized Design (8)
         None (0)
     </option>
 
-    <option data-value="15" data-desc="Autognome or Warforged primary race. 13 + dexterity AC.">
+    <option data-value="15" data-prereq="Autognome|Warforged" data-desc="Autognome or Warforged primary race. 13 + dexterity AC.">
         Autognome:armored casing (15)
     </option>
 
-    <option data-value="15" data-desc="Scaly/reptilian primary race. 13 + dexterity AC.">
+    <option data-value="15" data-prereq="Kobold|Lizardfolk|Dragonborn|Yuan-ti" data-desc="Scaly/reptilian primary race. 13 + dexterity AC.">
         Lizardfolk:Natural armor (15)
     </option>
 
-    <option data-value="8" data-desc="Primary race with thick hide. 12 + constitution AC">
+    <option data-value="8" data-prereq="Bugbear|Centaur|Goliath|Orc|Minotaur|Loxodon" data-desc="Primary race with thick hide. 12 + constitution AC">
         Loxodon:natural armor (8)
     </option>
 
-    <option data-value="18" data-desc="Tortle primary race, cannot wear any armor besides shields. 17 AC">
+    <option data-value="18" data-prereq="Tortle" data-desc="Tortle primary race, cannot wear any armor besides shields. 17 AC">
         Tortle:natural armor (18)
     </option>
 
@@ -919,217 +1000,217 @@ Warforged: Specialized Design (8)
                    placeholder="Search traits..." onkeyup="filterRacialTraits()">
             <div id="racial-traits-list">
 
-           <label> <input type="checkbox" value="10" data-desc="As an action, you can touch a creature and roll a number of d4s equal to your proficiency bonus. The creature regains a number of hit points equal to the total rolled. Once you use this trait, you can't use it again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar:healing hands (10) </label>
+           <label> <input type="checkbox" data-prereq="Aasimar" value="10" data-desc="As an action, you can touch a creature and roll a number of d4s equal to your proficiency bonus. The creature regains a number of hit points equal to the total rolled. Once you use this trait, you can't use it again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar:healing hands (10) </label>
 
-<label> <input type="checkbox" value="26" data-desc="Must have aasimar primary race. cannot pick any other celestial revelation. Frighten creatures of your choice within 10 feet of you until the end of your next turn, save DC = 8 + prof + cha. Deal extra necrotic damage equal to prof once per turn with an attack or a spell for 1 minute. Recharge on long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar: Necrotic Shroud (26) </label>
+<label> <input data-exclusive="celestial-revelation" type="checkbox" data-prereq="Aasimar" value="26" data-desc="Must have aasimar primary race. cannot pick any other celestial revelation. Frighten creatures of your choice within 10 feet of you until the end of your next turn, save DC = 8 + prof + cha. Deal extra necrotic damage equal to prof once per turn with an attack or a spell for 1 minute. Recharge on long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar: Necrotic Shroud (26) </label>
 
-<label> <input type="checkbox" value="28" data-desc="Must have aasimar primary race. cannot pick any other celestial revelation. Deal prof radiant damage to creatures of your choice within 10 feet of you. Deal extra radiant damage equal to your prof once per turn for 1 minute. Recharge on long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar: Radiant Consumption (28) </label>
+<label> <input data-exclusive="celestial-revelation" type="checkbox" data-prereq="Aasimar" value="28" data-desc="Must have aasimar primary race. cannot pick any other celestial revelation. Deal prof radiant damage to creatures of your choice within 10 feet of you. Deal extra radiant damage equal to your prof once per turn for 1 minute. Recharge on long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar: Radiant Consumption (28) </label>
 
-<label> <input type="checkbox" value="36" data-desc="Must have aasimar primary race. cannot pick any other celestial revelation. Gain flying speed equal to walking speed for 1 minute and deal extra radiant damage equal to your prof once per turn with attacks and spells during transformation. Recharge on long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar: Radiant Soul (36) </label>
+<label> <input data-exclusive="celestial-revelation" type="checkbox" data-prereq="Aasimar" value="36" data-desc="Must have aasimar primary race. cannot pick any other celestial revelation. Gain flying speed equal to walking speed for 1 minute and deal extra radiant damage equal to your prof once per turn with attacks and spells during transformation. Recharge on long rest." onchange="updateValue(); updateTraitDesc();"> Aasimar: Radiant Soul (36) </label>
 
-<label> <input type="checkbox" value="24" data-desc="Add a d4 to an attack roll, ability check, or saving throw after seeing the roll, PB times per long rest." onchange="updateValue(); updateTraitDesc();"> Autognome: Built for Success (24) </label>
+<label> <input type="checkbox" data-prereq="Autognome" value="24" data-desc="Add a d4 to an attack roll, ability check, or saving throw after seeing the roll, PB times per long rest." onchange="updateValue(); updateTraitDesc();"> Autognome: Built for Success (24) </label>
 
-<label> <input type="checkbox" value="15" data-desc="Must have construct creature type. If the mending spell is cast on you, you can spend a Hit Die to heal. You can also benefit from cure wounds, healing word, mass cure wounds, mass healing word, and spare the dying." onchange="updateValue(); updateTraitDesc();"> Autognome: Healing Machine (15) </label>
+<label> <input type="checkbox" data-prereq="Autognome" value="15" data-desc="Must have construct creature type. If the mending spell is cast on you, you can spend a Hit Die to heal. You can also benefit from cure wounds, healing word, mass cure wounds, mass healing word, and spare the dying." onchange="updateValue(); updateTraitDesc();"> Autognome: Healing Machine (15) </label>
 
-<label> <input type="checkbox" value="4" data-desc="Must have autognome/warforged primary race. When you take a long rest, you remain motionless but conscious instead of sleeping." onchange="updateValue(); updateTraitDesc();"> Autognome/Warforged: Sentry's Rest (4) </label>
+<label> <input type="checkbox" data-prereq="Autognome|Warforged" value="4" data-desc="Must have autognome/warforged primary race. When you take a long rest, you remain motionless but conscious instead of sleeping." onchange="updateValue(); updateTraitDesc();"> Autognome/Warforged: Sentry's Rest (4) </label>
 
-<label> <input type="checkbox" value="20" data-desc="Your melee attacks have 5 feet of additional reach on your turn." onchange="updateValue(); updateTraitDesc();"> Bugbear: Long-Limbed (20) </label>
+<label> <input type="checkbox" data-prereq="Bugbear" value="20" data-desc="Your melee attacks have 5 feet of additional reach on your turn." onchange="updateValue(); updateTraitDesc();"> Bugbear: Long-Limbed (20) </label>
 
-<label> <input type="checkbox" value="35" data-desc="Deal an extra 2d6 damage to creatures that haven't acted yet in combat." onchange="updateValue(); updateTraitDesc();"> Bugbear: Surprise Attack (35) </label>
+<label> <input type="checkbox" data-prereq="Bugbear" value="35" data-desc="Deal an extra 2d6 damage to creatures that haven't acted yet in combat." onchange="updateValue(); updateTraitDesc();"> Bugbear: Surprise Attack (35) </label>
 
-<label> <input type="checkbox" value="4" data-desc="You count as one size larger when determining carrying capacity and push/drag/lift limits." onchange="updateValue(); updateTraitDesc();"> Bugbear/Goliath: Powerful Build (4) </label>
+<label> <input type="checkbox" data-prereq="Bugbear|Goliath" value="4" data-desc="You count as one size larger when determining carrying capacity and push/drag/lift limits." onchange="updateValue(); updateTraitDesc();"> Bugbear/Goliath: Powerful Build (4) </label>
 
-<label> <input type="checkbox" value="13" data-desc="Must have Hooves natural weapon. After moving 30 feet straight, you can make a bonus action hooves attack." onchange="updateValue(); updateTraitDesc();"> Centaur: Charge (13) </label>
+<label> <input type="checkbox" data-prereq="Centaur" value="13" data-desc="Must have Hooves natural weapon. After moving 30 feet straight, you can make a bonus action hooves attack." onchange="updateValue(); updateTraitDesc();"> Centaur: Charge (13) </label>
 
-<label> <input type="checkbox" value="0" data-desc="Must have centaur primary race. You count as one size larger for carrying, and climbing costs extra movement." onchange="updateValue(); updateTraitDesc();"> Centaur: Equine Build (0) </label>
+<label> <input type="checkbox" data-prereq="Centaur" value="0" data-desc="Must have centaur primary race. You count as one size larger for carrying, and climbing costs extra movement." onchange="updateValue(); updateTraitDesc();"> Centaur: Equine Build (0) </label>
 
-<label> <input type="checkbox" value="65" data-desc="Must have changeling primary race. As an action, you can change your appearance and your voice. You determine the specifics of the changes, including your coloration, hair length, and sex. You can also adjust your height and weight, but not so much that your size changes. You can make yourself appear as a member of another race, though none of your game statistics change. You can't duplicate the appearance of a creature you've never seen, and you must adopt a form that has the same basic arrangement of limbs that you have. Your clothing and equipment aren't changed by this trait. While you are transformed, you have advantage on all charisma checks. You stay in the new form until you use an action to revert to your true form or until you die." onchange="updateValue(); updateTraitDesc();"> Changeling: Shapechanger (65) </label>
+<label> <input type="checkbox" data-prereq="Changeling" value="65" data-desc="Must have changeling primary race. As an action, you can change your appearance and your voice. You determine the specifics of the changes, including your coloration, hair length, and sex. You can also adjust your height and weight, but not so much that your size changes. You can make yourself appear as a member of another race, though none of your game statistics change. You can't duplicate the appearance of a creature you've never seen, and you must adopt a form that has the same basic arrangement of limbs that you have. Your clothing and equipment aren't changed by this trait. While you are transformed, you have advantage on all charisma checks. You stay in the new form until you use an action to revert to your true form or until you die." onchange="updateValue(); updateTraitDesc();"> Changeling: Shapechanger (65) </label>
 
-<label> <input type="checkbox" value="7" data-desc="When you roll initiative, you can immediately move up to half your speed, provided you don't have disadvantage on the initiative roll." onchange="updateValue(); updateTraitDesc();"> Changeling (lorwyn): unpredictable movement </label>
+<label> <input type="checkbox" data-prereq="Changeling" value="7" data-desc="When you roll initiative, you can immediately move up to half your speed, provided you don't have disadvantage on the initiative roll." onchange="updateValue(); updateTraitDesc();"> Changeling (lorwyn): unpredictable movement </label>
 
 <label> <input type="checkbox" value="120" data-desc="Gain one feat of your choice for which you qualify." onchange="updateValue(); updateTraitDesc();"> Custom Lineage: Feat (120) </label>
 
-<label> <input type="checkbox" value="10" data-desc="You don’t need to breathe." onchange="updateValue(); updateTraitDesc();"> Dhampir: Deathless Nature (10) </label>
+<label> <input type="checkbox" data-prereq="Dhampir" value="10" data-desc="You don’t need to breathe." onchange="updateValue(); updateTraitDesc();"> Dhampir: Deathless Nature (10) </label>
 
-<label> <input type="checkbox" value="20" data-desc="Climb speed equal to walking speed; at level 3, can climb walls and ceilings hands-free." onchange="updateValue(); updateTraitDesc();"> Dhampir: Spider Climb (20) </label>
+<label> <input type="checkbox" data-prereq="Dhampir" value="20" data-desc="Climb speed equal to walking speed; at level 3, can climb walls and ceilings hands-free." onchange="updateValue(); updateTraitDesc();"> Dhampir: Spider Climb (20) </label>
 
-<label> <input type="checkbox" value="18" data-desc="Natural bite attack (1d4 piercing). Can heal or gain bonuses based on damage dealt." onchange="updateValue(); updateTraitDesc();"> Dhampir: Vampiric Bite (18) </label>
+<label> <input type="checkbox" data-prereq="Dhampir" value="18" data-desc="Natural bite attack (1d4 piercing). Can heal or gain bonuses based on damage dealt." onchange="updateValue(); updateTraitDesc();"> Dhampir: Vampiric Bite (18) </label>
 
-<label> <input type="checkbox" value="25" data-desc="Must have draconic ancestry trait. Can replace an attack with a breath weapon. Exhale a 30-foot line or a 5ft wide 15 ft cone, forcing a dexterity saving throw (DC= 8 + con + prof). deal 1d10 damage of your chosen draconic ancestry on a failed save, or half as much on a successful one. Damage increases to 2d10 at lvl 5, 3d10 at lvl 11 and 4d10 at lvl 17." onchange="updateValue(); updateTraitDesc();"> Dragonborn: Breath Weapon (25) </label>
+<label> <input type="checkbox" data-prereq="Dragonborn" value="25" data-desc="Must have draconic ancestry trait. Can replace an attack with a breath weapon. Exhale a 30-foot line or a 5ft wide 15 ft cone, forcing a dexterity saving throw (DC= 8 + con + prof). deal 1d10 damage of your chosen draconic ancestry on a failed save, or half as much on a successful one. Damage increases to 2d10 at lvl 5, 3d10 at lvl 11 and 4d10 at lvl 17." onchange="updateValue(); updateTraitDesc();"> Dragonborn: Breath Weapon (25) </label>
 
-<label> <input type="checkbox" value="0" data-desc="Must have a reptilian primary race. Choose one of the following draconic ancestry determining your breath weapon and damage resistance: Black (acid), Blue (lightning), Brass (fire), Bronze (lightning), Copper (acid), Gold (fire), Green (poison), Red (fire), Silver (cold), White (cold), Amethyst (force), Crystal (radiant), Emerald (psychic), Sapphire (thunder), Topaz (necrotic)." onchange="updateValue(); updateTraitDesc();"> Dragonborn: Draconic Ancestry (0) </label>
+<label> <input type="checkbox" data-prereq="Kobold|Lizardfolk|Dragonborn|Yuan-ti" value="0" data-desc="Must have a reptilian primary race. Choose one of the following draconic ancestry determining your breath weapon and damage resistance: Black (acid), Blue (lightning), Brass (fire), Bronze (lightning), Copper (acid), Gold (fire), Green (poison), Red (fire), Silver (cold), White (cold), Amethyst (force), Crystal (radiant), Emerald (psychic), Sapphire (thunder), Topaz (necrotic)." onchange="updateValue(); updateTraitDesc();"> Dragonborn: Draconic Ancestry (0) </label>
 
-<label> <input type="checkbox" value="20" data-desc="Must have draconic ancestry trait. Gain flying speed equal to your walking speed at level 5 for 1 minute. You can use this feature once per long rest." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Gem): Gem Flight (20) </label>
+<label> <input type="checkbox" data-prereq="Dragonborn" value="20" data-desc="Must have draconic ancestry trait. Gain flying speed equal to your walking speed at level 5 for 1 minute. You can use this feature once per long rest." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Gem): Gem Flight (20) </label>
 
-<label> <input type="checkbox" value="10" data-desc="Telepathically communicate with creatures within 30 feet. The creature must be able to understand atleast one language to understand you." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Gem): Psionic Mind (10) </label>
+<label> <input type="checkbox" data-prereq="Dragonborn" value="10" data-desc="Telepathically communicate with creatures within 30 feet. The creature must be able to understand atleast one language to understand you." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Gem): Psionic Mind (10) </label>
 
-<label> <input type="checkbox" value="20" data-desc="Must have the breath weapon trait. At 5th level, gain a secondary breath weapon with a 15 foot cone (DC = 8 + con + prof). You can use one of the following breaths when you use this feature:- Enervating breath: creatures in the cone must succeed on a constitution saving throw or become incapacitated until the start of your next turn. Repulsion breath: each creature in the cone must succeed on a strength saving throw or be pushed 20 feet away from you and be knocked prone. Once you use either of these breaths, you cannot do so again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Metallic): Metallic Breath Weapon (20) </label>
+<label> <input type="checkbox" data-prereq="Dragonborn" value="20" data-desc="Must have the breath weapon trait. At 5th level, gain a secondary breath weapon with a 15 foot cone (DC = 8 + con + prof). You can use one of the following breaths when you use this feature:- Enervating breath: creatures in the cone must succeed on a constitution saving throw or become incapacitated until the start of your next turn. Repulsion breath: each creature in the cone must succeed on a strength saving throw or be pushed 20 feet away from you and be knocked prone. Once you use either of these breaths, you cannot do so again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Metallic): Metallic Breath Weapon (20) </label>
 
-<label> <input type="checkbox" value="5" data-desc="When you take damage from a creature within your weapon's reach, you can use your reaction to make a weapon attack against the attacker. Once you use this trait, you cannot do so again until you finish a short or long rest." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Ravenite): Vengeful Assault (5) </label>
+<label> <input type="checkbox" data-prereq="Dragonborn" value="5" data-desc="When you take damage from a creature within your weapon's reach, you can use your reaction to make a weapon attack against the attacker. Once you use this trait, you cannot do so again until you finish a short or long rest." onchange="updateValue(); updateTraitDesc();"> Dragonborn (Ravenite): Vengeful Assault (5) </label>
 
-<label> <input type="checkbox" value="-25" data-desc="Disadvantage on attack rolls and sight-based Perception checks when your target is in direct sunlight." onchange="updateValue(); updateTraitDesc();"> Drow/Duergar: Sunlight Sensitivity (-25) </label>
+<label> <input type="checkbox" data-prereq="Duergar" value="-25" data-desc="Disadvantage on attack rolls and sight-based Perception checks when your target is in direct sunlight." onchange="updateValue(); updateTraitDesc();"> Drow/Duergar: Sunlight Sensitivity (-25) </label>
 
-<label> <input type="checkbox" value="18" data-desc="Gain tremorsense (60 ft) while on stone surfaces as a bonus action for 10 minutes. You can use this feature a number of times equal to your prof bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Dwarf: Stonecunning (18) </label>
+<label> <input type="checkbox" data-prereq="Dwarf" value="18" data-desc="Gain tremorsense (60 ft) while on stone surfaces as a bonus action for 10 minutes. You can use this feature a number of times equal to your prof bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Dwarf: Stonecunning (18) </label>
 
-<label> <input type="checkbox" value="25" data-desc="Your hit point maximum increases by 1 per level." onchange="updateValue(); updateTraitDesc();"> Dwarf (Hill): Dwarven Toughness (25) </label>
+<label> <input type="checkbox" data-prereq="Dwarf" value="25" data-desc="Your hit point maximum increases by 1 per level." onchange="updateValue(); updateTraitDesc();"> Dwarf (Hill): Dwarven Toughness (25) </label>
 
-<label> <input type="checkbox" value="55" data-desc="Teleport up to 30 feet as a bonus action." onchange="updateValue(); updateTraitDesc();"> Elf (Astral): Starlight Step (55) </label>
+<label> <input type="checkbox" data-prereq="Elf" value="55" data-desc="Teleport up to 30 feet as a bonus action." onchange="updateValue(); updateTraitDesc();"> Elf (Astral): Starlight Step (55) </label>
 
-<label> <input type="checkbox" value="7" data-desc="You don’t sleep and complete long rests in 4 hours via trance." onchange="updateValue(); updateTraitDesc();"> Elf: Trance (7) </label>
+<label> <input type="checkbox" data-prereq="Elf" value="7" data-desc="You don’t sleep and complete long rests in 4 hours via trance." onchange="updateValue(); updateTraitDesc();"> Elf: Trance (7) </label>
 
-<label> <input type="checkbox" value="70" data-desc="Elvish primary race. As a bonus action, you can teleport 30 feet to an unoccupied space that you can see. When you reach 3rd level, the teleport gains an additional effect based on your season, if the effect requries a saving throw, the DC is equal to 8 + prof + cha. You can change your season whenever you finish a long rest. Autumn: force up to 2 creatures within 10 feet of your destination to make a wisdom saving throw, being charmed by you for 1 minute or until you or your companions damage it on a failure. Winter: One creature within 5 feet of you before you teleport must make a wisdom saving throw or be frightened until the end of your next turn. Spring: You can touch and teleport a willing creature within 5 feet of you instead of yourself. Summer: Each creature of your choice that you can see within 5 feet of the destination takes fire damage equal to your cha modifier." onchange="updateValue(); updateTraitDesc();"> Eladrin: Fey Step (70) </label>
+<label> <input type="checkbox" data-prereq="Elf" value="70" data-desc="Elvish primary race. As a bonus action, you can teleport 30 feet to an unoccupied space that you can see. When you reach 3rd level, the teleport gains an additional effect based on your season, if the effect requries a saving throw, the DC is equal to 8 + prof + cha. You can change your season whenever you finish a long rest. Autumn: force up to 2 creatures within 10 feet of your destination to make a wisdom saving throw, being charmed by you for 1 minute or until you or your companions damage it on a failure. Winter: One creature within 5 feet of you before you teleport must make a wisdom saving throw or be frightened until the end of your next turn. Spring: You can touch and teleport a willing creature within 5 feet of you instead of yourself. Summer: Each creature of your choice that you can see within 5 feet of the destination takes fire damage equal to your cha modifier." onchange="updateValue(); updateTraitDesc();"> Eladrin: Fey Step (70) </label>
 
-<label> <input type="checkbox" value="2" data-desc="Must have an aquatic primary race. You can communicate simple ideas to any beast that has a swimming speed. It can understand your words, though you cannot understand it back." onchange="updateValue(); updateTraitDesc();"> Elf (sea)/ Triton: Emmisary of the sea (2) </label>
+<label> <input type="checkbox" data-prereq="Elf" value="2" data-desc="Must have an aquatic primary race. You can communicate simple ideas to any beast that has a swimming speed. It can understand your words, though you cannot understand it back." onchange="updateValue(); updateTraitDesc();"> Elf (sea)/ Triton: Emmisary of the sea (2) </label>
 
-<label> <input type="checkbox" value="3" data-desc="You can attempt to hide evne when you are only lightly obsscured by foliage, heavy rain, falling snow, mist, and other natural phenomena." onchange="updateValue(); updateTraitDesc();"> Elf (wood): Mask of the wild (3) </label>
+<label> <input type="checkbox" data-prereq="Elf" value="3" data-desc="You can attempt to hide evne when you are only lightly obsscured by foliage, heavy rain, falling snow, mist, and other natural phenomena." onchange="updateValue(); updateTraitDesc();"> Elf (wood): Mask of the wild (3) </label>
 
 <label> <input type="checkbox" value="35" data-desc="You can turn invisible as a bonus action until your next turn or until you make an attack, damage roll or force a saving throw. You can use this feature a number of times equal to your prof bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Firbolg: Hidden Step (35) </label>
 
 <label> <input type="checkbox" value="4" data-desc="You can communicate with beasts, plants and vegetation. They can understand your words though you cannot understand them in return. You have advantage on all charisma checks make in order to influence them." onchange="updateValue(); updateTraitDesc();"> Firbolg: Speech of beast and leaf (4) </label>
 
-<label> <input type="checkbox" value="12" data-desc="You can hold your breath indefinitely while you are not incapacitated." onchange="updateValue(); updateTraitDesc();"> Genasi (Air): Unending Breath (12) </label>
+<label> <input type="checkbox" data-prereq="Genasi" value="12" data-desc="You can hold your breath indefinitely while you are not incapacitated." onchange="updateValue(); updateTraitDesc();"> Genasi (Air): Unending Breath (12) </label>
 
-<label> <input type="checkbox" value="6" data-desc="You can move across difficult terrain made of earth or stone without expending extra movement." onchange="updateValue(); updateTraitDesc();">  Genasi (Earth): Earth Walk (6) </label>
+<label> <input type="checkbox" data-prereq="Genasi" value="6" data-desc="You can move across difficult terrain made of earth or stone without expending extra movement." onchange="updateValue(); updateTraitDesc();">  Genasi (Earth): Earth Walk (6) </label>
 
-<label> <input type="checkbox" value="8" data-desc="You can breathe both air and water." onchange="updateValue(); updateTraitDesc();"> Genasi / Triton: Amphibious (8) </label>
+<label> <input type="checkbox" data-prereq="Genasi|Triton" value="8" data-desc="You can breathe both air and water." onchange="updateValue(); updateTraitDesc();"> Genasi / Triton: Amphibious (8) </label>
 
-<label> <input type="checkbox" value="18" data-desc="You can choose to deal extra force damage equal to your Prof bonus when you hit a target with a simple or martial weapon. You can use this trait a number of times equal to your prof bonus, no more than once per turn. You regain expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Giff: Astral Spark (18) </label>
+<label> <input type="checkbox" data-prereq="Giff" value="18" data-desc="You can choose to deal extra force damage equal to your Prof bonus when you hit a target with a simple or martial weapon. You can use this trait a number of times equal to your prof bonus, no more than once per turn. You regain expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Giff: Astral Spark (18) </label>
 
-<label> <input type="checkbox" value="35" data-desc="You gain Proficiency with firearms, and ignore the loading property of firearms. In addition, attacking at long range wtih a firearm does not impose disadvantage on your attack roll." onchange="updateValue(); updateTraitDesc();"> Giff: Firearms Mastery (35) </label>
+<label> <input type="checkbox" data-prereq="Giff" value="35" data-desc="You gain Proficiency with firearms, and ignore the loading property of firearms. In addition, attacking at long range wtih a firearm does not impose disadvantage on your attack roll." onchange="updateValue(); updateTraitDesc();"> Giff: Firearms Mastery (35) </label>
 
-<label> <input type="checkbox" value="25" data-desc="Advantage on Intelligence, Wisdom, and Charisma saving throws against spells." onchange="updateValue(); updateTraitDesc();"> Gnome: Gnomish Magic Resistance (25) </label>
+<label> <input type="checkbox" data-prereq="Gnome" value="25" data-desc="Advantage on Intelligence, Wisdom, and Charisma saving throws against spells." onchange="updateValue(); updateTraitDesc();"> Gnome: Gnomish Magic Resistance (25) </label>
 
-<label> <input type="checkbox" value="35" data-desc="Advantage on mental saving throws against magic effects." onchange="updateValue(); updateTraitDesc();"> Gnome (Forest/Rock): Gnome Cunning (35) </label>
+<label> <input type="checkbox" data-prereq="Gnome" value="35" data-desc="Advantage on mental saving throws against magic effects." onchange="updateValue(); updateTraitDesc();"> Gnome (Forest/Rock): Gnome Cunning (35) </label>
 
-<label> <input type="checkbox" value="10" data-desc="You have proficiency with artisan's tools (tinker's tools). Using those tools, you can spend 1 hour and 10 gp worth of materials to construct a Tiny clockwork device (AC 5, 1 hp). The device ceases to function after 24 hours unless you spend 1 hour repairing it. You can have up to three such devices active at a time. When you create a device, choose one of the following options: Clockwork Toy: This toy is a clockwork animal, monster, or person (such as a frog, mouse, bird, dragon, or soldier). When placed on the ground, it moves 5 feet in a random direction on each of your turns and makes noises appropriate to the creature it represents. Fire Starter: The device produces a miniature flame, which you can use to light a candle, torch, or campfire. Using the device requires your action. Music Box: When opened, the music box plays a single song at a moderate volume. It stops when the song ends or when it is closed." onchange="updateValue(); updateTraitDesc();"> Gnome (Rock): Tinker (10) </label>
+<label> <input type="checkbox" data-prereq="Gnome" value="10" data-desc="You have proficiency with artisan's tools (tinker's tools). Using those tools, you can spend 1 hour and 10 gp worth of materials to construct a Tiny clockwork device (AC 5, 1 hp). The device ceases to function after 24 hours unless you spend 1 hour repairing it. You can have up to three such devices active at a time. When you create a device, choose one of the following options: Clockwork Toy: This toy is a clockwork animal, monster, or person (such as a frog, mouse, bird, dragon, or soldier). When placed on the ground, it moves 5 feet in a random direction on each of your turns and makes noises appropriate to the creature it represents. Fire Starter: The device produces a miniature flame, which you can use to light a candle, torch, or campfire. Using the device requires your action. Music Box: When opened, the music box plays a single song at a moderate volume. It stops when the song ends or when it is closed." onchange="updateValue(); updateTraitDesc();"> Gnome (Rock): Tinker (10) </label>
 
-<label> <input type="checkbox" value="37" data-desc="Take the Disengage or Hide action as a bonus action." onchange="updateValue(); updateTraitDesc();"> Goblin: Nimble Escape (37) </label>
+<label> <input type="checkbox" data-prereq="Goblin" value="37" data-desc="Take the Disengage or Hide action as a bonus action." onchange="updateValue(); updateTraitDesc();"> Goblin: Nimble Escape (37) </label>
 
-<label> <input type="checkbox" value="23" data-desc="Must have small creature size. When you damage a creature with an attack or a spell against a creature larger than you, you can choose to deal extra damage equal to your proficiency bonus. You can use this feature a number of times equal to your prof bonus and no more than once per turn, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goblin: Fury of the Small (23) </label>
+<label> <input type="checkbox" data-prereq="Goblin" value="23" data-desc="Must have small creature size. When you damage a creature with an attack or a spell against a creature larger than you, you can choose to deal extra damage equal to your proficiency bonus. You can use this feature a number of times equal to your prof bonus and no more than once per turn, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goblin: Fury of the Small (23) </label>
 
-<label> <input type="checkbox" value="55" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. As a bonus action, you can magically teleport up to 30 feet to an unoccupied space you can see. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Cloud's Jaunt (55) </label>
+<label> <input data-exclusive="giant-ancestry" type="checkbox" data-prereq="Goliath" value="55" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. As a bonus action, you can magically teleport up to 30 feet to an unoccupied space you can see. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Cloud's Jaunt (55) </label>
 
-<label> <input type="checkbox" value="27" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you hit a creature with an attack roll and deal damage, you can deal an additional 1d10 fire damage to that target. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Fire's Burn (27) </label>
+<label> <input data-exclusive="giant-ancestry" type="checkbox" data-prereq="Goliath" value="27" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you hit a creature with an attack roll and deal damage, you can deal an additional 1d10 fire damage to that target. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Fire's Burn (27) </label>
 
-<label> <input type="checkbox" value="26" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you hit a target with an attack roll and deal damage to it, you can also deal 1d6 cold damage to that target and reduce its speed by 10 feet until the start of your next turn. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Frost's Chill (26) </label>
+<label> <input data-exclusive="giant-ancestry" type="checkbox" data-prereq="Goliath" value="26" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you hit a target with an attack roll and deal damage to it, you can also deal 1d6 cold damage to that target and reduce its speed by 10 feet until the start of your next turn. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Frost's Chill (26) </label>
 
-<label> <input type="checkbox" value="32" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you hit a target with an attack roll and deal damage to it, you can give that target the prone condition." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Hill's Tumble (32) </label>
+<label> <input data-exclusive="giant-ancestry" type="checkbox" data-prereq="Goliath" value="32" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you hit a target with an attack roll and deal damage to it, you can give that target the prone condition." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Hill's Tumble (32) </label>
 
-<label> <input type="checkbox" value="19" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you take damage, you can use your reaction to roll 1d12. Add your constitution modifier to the number rolled and reduce the damage by that total." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Stone's Endurance (19) </label>
+<label> <input data-exclusive="giant-ancestry" type="checkbox" data-prereq="Goliath" value="19" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you take damage, you can use your reaction to roll 1d12. Add your constitution modifier to the number rolled and reduce the damage by that total." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Stone's Endurance (19) </label>
 
-<label> <input type="checkbox" value="13" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you take damage from a creature within 60 feet of you, you can take a reaction to deal 1d8 thunder damage to that creature." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Storm's Thunder (13) </label>
+<label> <input data-exclusive="giant-ancestry" type="checkbox" data-prereq="Goliath" value="13" data-desc="Must have goliath primary race, cannot pick any other giant ancestry. When you take damage from a creature within 60 feet of you, you can take a reaction to deal 1d8 thunder damage to that creature." onchange="updateValue(); updateTraitDesc();"> Goliath: Giant's ancestry-Storm's Thunder (13) </label>
 
-<label> <input type="checkbox" value="28" data-desc="Must have primary race with powerful build. At level 5, you can change your size to large as a bonus action if you're in a big enough space. This transformation lasts for 10 minutes or until you end it (no action required). For that duration, you have advantage on Strength checks, and your speed increases by 10 feet. Once you use this trait, you can't use it again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Large Form (28) </label>
+<label> <input type="checkbox" data-prereq="Goliath" value="28" data-desc="Must have primary race with powerful build. At level 5, you can change your size to large as a bonus action if you're in a big enough space. This transformation lasts for 10 minutes or until you end it (no action required). For that duration, you have advantage on Strength checks, and your speed increases by 10 feet. Once you use this trait, you can't use it again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Goliath: Large Form (28) </label>
 
-<label> <input type="checkbox" value="3" data-desc="As a bonus action, you can use your feet to manipulate an object, open or close a door or container, or pick up or set down a Tiny object." onchange="updateValue(); updateTraitDesc();"> Hadozee: Dexterous Feet (3) </label>
+<label> <input type="checkbox" data-prereq="Hadozee" value="3" data-desc="As a bonus action, you can use your feet to manipulate an object, open or close a door or container, or pick up or set down a Tiny object." onchange="updateValue(); updateTraitDesc();"> Hadozee: Dexterous Feet (3) </label>
 
-<label> <input type="checkbox" value="7" data-desc="Must have primary race with wings/psuedo-wings. When you fall at least 10 feet above the ground, you can use your reaction to extend your skin membranes to glide horizontally a number of feet equal to your walking speed, taking no damage from the fall. You determine the direction of the glide." onchange="updateValue(); updateTraitDesc();"> Hadozee: Glide (7) </label>
+<label> <input type="checkbox" data-prereq="Hadozee" value="7" data-desc="Must have primary race with wings/psuedo-wings. When you fall at least 10 feet above the ground, you can use your reaction to extend your skin membranes to glide horizontally a number of feet equal to your walking speed, taking no damage from the fall. You determine the direction of the glide." onchange="updateValue(); updateTraitDesc();"> Hadozee: Glide (7) </label>
 
-<label> <input type="checkbox" value="17" data-desc="When you take damage, you can use your reaction to roll a d6 and add your proficiency bonus, reducing the damage you take by the total (minimum of 0 damage). You can use this feature a number of times equal to your proficiency bonus, regaining all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Hadozee: Hadozee Dodge (17) </label>
+<label> <input type="checkbox" data-prereq="Hadozee" value="17" data-desc="When you take damage, you can use your reaction to roll a d6 and add your proficiency bonus, reducing the damage you take by the total (minimum of 0 damage). You can use this feature a number of times equal to your proficiency bonus, regaining all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Hadozee: Hadozee Dodge (17) </label>
 
-<label> <input type="checkbox" value="35" data-desc="You can attune to one additional magic item, provided at least one of your attuned items is a tattoo." onchange="updateValue(); updateTraitDesc();"> Half-Leberi: Otherworldly Trace (35) </label>
+<label> <input type="checkbox" data-prereq="Half-Leberi" value="35" data-desc="You can attune to one additional magic item, provided at least one of your attuned items is a tattoo." onchange="updateValue(); updateTraitDesc();"> Half-Leberi: Otherworldly Trace (35) </label>
 
-<label> <input type="checkbox" value="50" data-desc="You can reroll natural 1s on d20 rolls. You must use the new roll." onchange="updateValue(); updateTraitDesc();"> Halfling: Lucky (50) </label>
+<label> <input type="checkbox" data-prereq="Halfling" value="50" data-desc="You can reroll natural 1s on d20 rolls. You must use the new roll." onchange="updateValue(); updateTraitDesc();"> Halfling: Lucky (50) </label>
 
-<label> <input type="checkbox" value="8" data-desc="You can speak telepathically to any creature within 30 feet of you, provided you share a language. You can communicate with one creature at a time." onchange="updateValue(); updateTraitDesc();"> Halfling (Ghostwise): Silent Speech (8) </label>
+<label> <input type="checkbox" data-prereq="Halfling" value="8" data-desc="You can speak telepathically to any creature within 30 feet of you, provided you share a language. You can communicate with one creature at a time." onchange="updateValue(); updateTraitDesc();"> Halfling (Ghostwise): Silent Speech (8) </label>
 
-<label> <input type="checkbox" value="5" data-desc="Must have small creature size. You can attempt to hide even when obscured only by a creature at least one size larger than you." onchange="updateValue(); updateTraitDesc();"> Halfling (Lightfoot): Naturally Stealthy (5) </label>
+<label> <input type="checkbox" data-prereq="Halfling" value="5" data-desc="Must have small creature size. You can attempt to hide even when obscured only by a creature at least one size larger than you." onchange="updateValue(); updateTraitDesc();"> Halfling (Lightfoot): Naturally Stealthy (5) </label>
 
-<label> <input type="checkbox" value="7" data-desc="Ability checks made to track you have disadvantage, and you can move across nonmagical plant and undergrowth difficult terrain without extra movement." onchange="updateValue(); updateTraitDesc();"> Halfling (Lotusden): Timberwalk (7) </label>
+<label> <input type="checkbox" data-prereq="Halfling" value="7" data-desc="Ability checks made to track you have disadvantage, and you can move across nonmagical plant and undergrowth difficult terrain without extra movement." onchange="updateValue(); updateTraitDesc();"> Halfling (Lotusden): Timberwalk (7) </label>
 
-<label> <input type="checkbox" value="28" data-desc="Add proficiency bonus to initiative rolls." onchange="updateValue(); updateTraitDesc();"> Harengon: Hare Trigger (28) </label>
+<label> <input type="checkbox" data-prereq="Harengon" value="28" data-desc="Add proficiency bonus to initiative rolls." onchange="updateValue(); updateTraitDesc();"> Harengon: Hare Trigger (28) </label>
 
-<label> <input type="checkbox" value="40" data-desc="As a bonus action, you can jump a number of feet equal to five times your proficiency bonus, without provoking opportunity attacks. You can use this trait only if your speed is greater than 0. You can use it a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Harengon: Rabbit Hop (40) </label>
+<label> <input type="checkbox" data-prereq="Harengon" value="40" data-desc="As a bonus action, you can jump a number of feet equal to five times your proficiency bonus, without provoking opportunity attacks. You can use this trait only if your speed is greater than 0. You can use it a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Harengon: Rabbit Hop (40) </label>
 
-<label> <input type="checkbox" value="8" data-desc="When you fail a Dexterity saving throw, you can use your reaction to roll a d4 and add it to the save, potentially turning it into a success. You can't use this reaction if you're prone or your speed is 0." onchange="updateValue(); updateTraitDesc();"> Harengon: Lucky Footwork (8) </label>
+<label> <input type="checkbox" data-prereq="Harengon" value="8" data-desc="When you fail a Dexterity saving throw, you can use your reaction to roll a d4 and add it to the save, potentially turning it into a success. You can't use this reaction if you're prone or your speed is 0." onchange="updateValue(); updateTraitDesc();"> Harengon: Lucky Footwork (8) </label>
 
-<label> <input type="checkbox" value="26" data-desc="When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You can't use this feature again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Half-Orc: Relentless Endurance (26) </label>
+<label> <input type="checkbox" data-prereq="Half-Orc" value="26" data-desc="When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You can't use this feature again until you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Half-Orc: Relentless Endurance (26) </label>
 
-<label> <input type="checkbox" value="15" data-desc="When you score a critical hit with a melee weapon attack, you can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit." onchange="updateValue(); updateTraitDesc();"> Half-Orc: Savage Attacks (15) </label>
+<label> <input type="checkbox" data-prereq="Half-Orc" value="15" data-desc="When you score a critical hit with a melee weapon attack, you can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit." onchange="updateValue(); updateTraitDesc();"> Half-Orc: Savage Attacks (15) </label>
 
-<label> <input type="checkbox" value="26" data-desc="As a bonus action, you can create a magical token from part of your body (hair, nail, or tooth). While within 10 miles, you can use the token to do one of the following:- Telepathic Message: As an action, you can send a telepathic message to the creature holding or carrying the token, as long as you are within 10 miles of it. The message can contain up to twenty-five words. Remote Viewing: If you are within 10 miles of the token, you can enter a trance as an action. The trance lasts for 1 minute, but it ends early if you dismiss it (no action required) or are incapacitated. During this trance, you can see and hear from the token as if you were located where it is. While you are using your senses at the token's location, you are blinded and deafened in regard to your own surroundings. When the trance ends, the token is harmlessly destroyed. Once you create a token using this feature, you can't do so again until you finish a long rest, at which point your missing part regrows." onchange="updateValue(); updateTraitDesc();"> Hexblood: Eerie Token (26) </label>
+<label> <input type="checkbox" data-prereq="Hexblood" value="26" data-desc="As a bonus action, you can create a magical token from part of your body (hair, nail, or tooth). While within 10 miles, you can use the token to do one of the following:- Telepathic Message: As an action, you can send a telepathic message to the creature holding or carrying the token, as long as you are within 10 miles of it. The message can contain up to twenty-five words. Remote Viewing: If you are within 10 miles of the token, you can enter a trance as an action. The trance lasts for 1 minute, but it ends early if you dismiss it (no action required) or are incapacitated. During this trance, you can see and hear from the token as if you were located where it is. While you are using your senses at the token's location, you are blinded and deafened in regard to your own surroundings. When the trance ends, the token is harmlessly destroyed. Once you create a token using this feature, you can't do so again until you finish a long rest, at which point your missing part regrows." onchange="updateValue(); updateTraitDesc();"> Hexblood: Eerie Token (26) </label>
 
 <label> <input type="checkbox" value="19" data-desc="You can take the Help action as a bonus action a number of times equal to your proficiency bonus per long rest. At 3rd level, choose one of the following additional effects to apply whenever you use this feature:- Hospitality: You and the creature you help each gain a number of temporary hit points equal to 1d6 plus your proficiency bonus. Passage: You and the creature you help each increase your walking speeds by 10 feet until the start of your next turn. Spite: Until the start of your next turn, the first time the creature you help hits a target with an attack roll, that target has disadvantage on the next attack roll it makes within the next minute." onchange="updateValue(); updateTraitDesc();"> Hobgoblin: Fey Gift (19) </label>
 
 <label> <input type="checkbox" value="21" data-desc="When you miss an attack roll or fail an ability check or saving throw, you can gain a bonus equal to the number of allies you can see within 30 feet (maximum +3). Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Hobgoblin: Fortune from the Many (21) </label>
 
-<label> <input type="checkbox" value="12" data-desc="You can speak telepathically to any creature you can see, provided the creature is within a number of feet of you equal to 10 times your level. You don't need to share a language with the creature for it to understand your telepathic utterances, but the creature must be able to understand at least one language.When you're using this trait to speak telepathically to a creature, you can use your action to give that creature the ability to speak telepathically with you for 1 hour or until you end this effect as an action. To use this ability, the creature must be able to see you and must be within this trait's range. You can give this ability to only one creature at a time; giving it to a creature takes it away from another creature who has it." onchange="updateValue(); updateTraitDesc();"> Kalashtar: Mind Link (12) </label>
+<label> <input type="checkbox" data-prereq="Kalashtar" value="12" data-desc="You can speak telepathically to any creature you can see, provided the creature is within a number of feet of you equal to 10 times your level. You don't need to share a language with the creature for it to understand your telepathic utterances, but the creature must be able to understand at least one language.When you're using this trait to speak telepathically to a creature, you can use your action to give that creature the ability to speak telepathically with you for 1 hour or until you end this effect as an action. To use this ability, the creature must be able to see you and must be within this trait's range. You can give this ability to only one creature at a time; giving it to a creature takes it away from another creature who has it." onchange="updateValue(); updateTraitDesc();"> Kalashtar: Mind Link (12) </label>
 
-<label> <input type="checkbox" value="40" data-desc="You have advantage on Wisdom saving throws." onchange="updateValue(); updateTraitDesc();"> Kalashtar: Dual Mind (40) </label>
+<label> <input type="checkbox" data-prereq="Kalashtar" value="40" data-desc="You have advantage on Wisdom saving throws." onchange="updateValue(); updateTraitDesc();"> Kalashtar: Dual Mind (40) </label>
 
-<label> <input type="checkbox" value="3" data-desc="You are immune to magical effects that require you to dream, though not to effects that put you to sleep." onchange="updateValue(); updateTraitDesc();"> Kalashtar: Severed from Dreams (3) </label>
+<label> <input type="checkbox" data-prereq="Kalashtar" value="3" data-desc="You are immune to magical effects that require you to dream, though not to effects that put you to sleep." onchange="updateValue(); updateTraitDesc();"> Kalashtar: Severed from Dreams (3) </label>
 
-<label> <input type="checkbox" value="21" data-desc="As a bonus action, you can force a creature within 60 feet of you to make a Wisdom saving throw (DC= 8 + prof + int/wis/cha, chosen when you pick this feature.) or have disadvantage on attacks against targets other than you until the start of your next turn. You can use this feature a number of times equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Kender: Taunt (21) </label>
+<label> <input type="checkbox" data-prereq="Kender" value="21" data-desc="As a bonus action, you can force a creature within 60 feet of you to make a Wisdom saving throw (DC= 8 + prof + int/wis/cha, chosen when you pick this feature.) or have disadvantage on attacks against targets other than you until the start of your next turn. You can use this feature a number of times equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Kender: Taunt (21) </label>
 
-<label> <input type="checkbox" value="7" data-desc="When you copy writing or craftwork produced by yourself or someone else, you have advantage on any ability checks you make to produce an exact duplicate." onchange="updateValue(); updateTraitDesc();"> Kenku: Expert Duplication (7) </label>
+<label> <input type="checkbox" data-prereq="Kenku" value="7" data-desc="When you copy writing or craftwork produced by yourself or someone else, you have advantage on any ability checks you make to produce an exact duplicate." onchange="updateValue(); updateTraitDesc();"> Kenku: Expert Duplication (7) </label>
 
-<label> <input type="checkbox" value="20" data-desc="You can accurately mimic sounds you have heard, including voices. A creature that hears the sounds you make can tell they are imitations only with a successful Wisdom (Insight) check against a DC of 8 + your proficiency bonus + your Charisma modifier." onchange="updateValue(); updateTraitDesc();"> Kenku: Mimicry (20) </label>
+<label> <input type="checkbox" data-prereq="Kenku" value="20" data-desc="You can accurately mimic sounds you have heard, including voices. A creature that hears the sounds you make can tell they are imitations only with a successful Wisdom (Insight) check against a DC of 8 + your proficiency bonus + your Charisma modifier." onchange="updateValue(); updateTraitDesc();"> Kenku: Mimicry (20) </label>
 
-<label> <input type="checkbox" value="52" data-desc="Must have a bestial primary race. As a bonus action, you let out a cry at your enemies within 10 feet of you. Until the start of your next turn, you and your allies have advantage on attack rolls against any of those enemies who could hear you. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Kobold: Draconic Cry (52) </label>
+<label> <input type="checkbox" data-prereq="Kobold" value="52" data-desc="Must have a bestial primary race. As a bonus action, you let out a cry at your enemies within 10 feet of you. Until the start of your next turn, you and your allies have advantage on attack rolls against any of those enemies who could hear you. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Kobold: Draconic Cry (52) </label>
 
-<label> <input type="checkbox" value="11" data-desc="Must not have the draconic sorcery racial spellcasting. Choose one of the following options: gain proficiency in a chosen skill (Arcana, Investigation, Medicine, Sleight of Hand, or Survival), OR gain advantage on saving throws to avoid or end being frightened." onchange="updateValue(); updateTraitDesc();"> Kobold: Legacy (11) </label>
+<label> <input type="checkbox" data-prereq="Kobold" value="11" data-desc="Must not have the draconic sorcery racial spellcasting. Choose one of the following options: gain proficiency in a chosen skill (Arcana, Investigation, Medicine, Sleight of Hand, or Survival), OR gain advantage on saving throws to avoid or end being frightened." onchange="updateValue(); updateTraitDesc();"> Kobold: Legacy (11) </label>
 
 <label> <input type="checkbox" value="3" data-desc="When you fail a saving throw to avoid or end the unconscious condition, you can succeed instead. Once you use this trait, you cant do so until 1d4 long rests." onchange="updateValue(); updateTraitDesc();"> Khoravar: Lethargy resilience (3) </label>
 
-<label> <input type="checkbox" value="40" data-desc="You lose one or more senses (smell/taste, sight, or hearing) and gain an eldritch invocation with no prerequisites." onchange="updateValue(); updateTraitDesc();"> Leberi: Sensory Sacrifice (40) </label>
+<label> <input type="checkbox" data-prereq="Leberi" value="40" data-desc="You lose one or more senses (smell/taste, sight, or hearing) and gain an eldritch invocation with no prerequisites." onchange="updateValue(); updateTraitDesc();"> Leberi: Sensory Sacrifice (40) </label>
 
-<label> <input type="checkbox" value="8" data-desc="Must have a bestial primary race. As a bonus action, you can let out an especially menacing roar. Creatures of your choice within 10 feet of you that can hear you must succeed on a Wisdom saving throw or become frightened of you until the end of your next turn. The DC of the save equals 8 + your proficiency bonus + your Constitution modifier. Once you use this trait, you can't use it again until you finish a short or long rest." onchange="updateValue(); updateTraitDesc();"> Leonin: Daunting Roar (8) </label>
+<label> <input type="checkbox" data-prereq="Leonin" value="8" data-desc="Must have a bestial primary race. As a bonus action, you can let out an especially menacing roar. Creatures of your choice within 10 feet of you that can hear you must succeed on a Wisdom saving throw or become frightened of you until the end of your next turn. The DC of the save equals 8 + your proficiency bonus + your Constitution modifier. Once you use this trait, you can't use it again until you finish a short or long rest." onchange="updateValue(); updateTraitDesc();"> Leonin: Daunting Roar (8) </label>
 
-<label> <input type="checkbox" value="10" data-desc="You can hold your breath for up to 15 minutes at a time." onchange="updateValue(); updateTraitDesc();"> Lizardfolk: Hold Breath (10) </label>
+<label> <input type="checkbox" data-prereq="Lizardfolk" value="10" data-desc="You can hold your breath for up to 15 minutes at a time." onchange="updateValue(); updateTraitDesc();"> Lizardfolk: Hold Breath (10) </label>
 
-<label> <input type="checkbox" value="14" data-desc="Must have the bite natural weapon. As a bonus action, you can make a special attack with your Bite. If the attack hits, it deals its normal damage, and you gain temporary hit points equal to your proficiency bonus. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Lizardfolk: Hungry Jaws (14) </label>
+<label> <input type="checkbox" data-prereq="Lizardfolk" value="14" data-desc="Must have the bite natural weapon. As a bonus action, you can make a special attack with your Bite. If the attack hits, it deals its normal damage, and you gain temporary hit points equal to your proficiency bonus. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." onchange="updateValue(); updateTraitDesc();"> Lizardfolk: Hungry Jaws (14) </label>
 
-<label> <input type="checkbox" value="25" data-desc="Must have loxodon primary race. You can grasp things with your trunk, and you can use it as a snorkel. It has a reach of 5 feet, and it can lift a number of pounds equal to five times your Strength score. You can use it to do the following simple tasks: lift, drop, hold, push, or pull an object or a creature; open or close a door or a container; grapple someone; or make an unarmed strike. Your DM might allow other simple tasks to be added to that list of options. You can grasp things with your trunk, and you can use it as a snorkel. It has a reach of 5 feet, and it can lift a number of pounds equal to five times your Strength score. You can use it to do the following simple tasks: lift, drop, hold, push, or pull an object or a creature; open or close a door or a container; grapple someone; or make an unarmed strike. Your DM might allow other simple tasks to be added to that list of options." onchange="updateValue(); updateTraitDesc();"> Loxodon: Trunk (25) </label>
+<label> <input type="checkbox" data-prereq="Loxodon" value="25" data-desc="Must have loxodon primary race. You can grasp things with your trunk, and you can use it as a snorkel. It has a reach of 5 feet, and it can lift a number of pounds equal to five times your Strength score. You can use it to do the following simple tasks: lift, drop, hold, push, or pull an object or a creature; open or close a door or a container; grapple someone; or make an unarmed strike. Your DM might allow other simple tasks to be added to that list of options. You can grasp things with your trunk, and you can use it as a snorkel. It has a reach of 5 feet, and it can lift a number of pounds equal to five times your Strength score. You can use it to do the following simple tasks: lift, drop, hold, push, or pull an object or a creature; open or close a door or a container; grapple someone; or make an unarmed strike. Your DM might allow other simple tasks to be added to that list of options." onchange="updateValue(); updateTraitDesc();"> Loxodon: Trunk (25) </label>
 
-<label> <input type="checkbox" value="14" data-desc="Must have horns or ram natural weapon. Immediately after you use the Dash action on your turn and move at least 20 feet, you can make one melee attack with your horns as a bonus action." onchange="updateValue(); updateTraitDesc();"> Minotaur: Goring Rush (14) </label>
+<label> <input type="checkbox" data-prereq="Minotaur" value="14" data-desc="Must have horns or ram natural weapon. Immediately after you use the Dash action on your turn and move at least 20 feet, you can make one melee attack with your horns as a bonus action." onchange="updateValue(); updateTraitDesc();"> Minotaur: Goring Rush (14) </label>
 
-<label> <input type="checkbox" value="26" data-desc="You can take the Dash action as a bonus action, gaining temporary hit points equal to your proficiency bonus. You can use this feature a number of times equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Orc: Adrenaline Rush (26) </label>
+<label> <input type="checkbox" data-prereq="Orc" value="26" data-desc="You can take the Dash action as a bonus action, gaining temporary hit points equal to your proficiency bonus. You can use this feature a number of times equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Orc: Adrenaline Rush (26) </label>
 
-<label> <input type="checkbox" value="58" data-desc="Must have reborn, dhampir or hexblood primary race. Advantage on saving throws against being poisoned and diseases, resistance to poison damage, no need to eat, drink, breathe, or sleep. Can finish a long rest in 4 hours, laying in a motionless, conscious state." onchange="updateValue(); updateTraitDesc();"> Reborn: Deathless Nature (58) </label>
+<label> <input type="checkbox" data-prereq="Reborn|Dhampir|Hexblood" value="58" data-desc="Must have reborn, dhampir or hexblood primary race. Advantage on saving throws against being poisoned and diseases, resistance to poison damage, no need to eat, drink, breathe, or sleep. Can finish a long rest in 4 hours, laying in a motionless, conscious state." onchange="updateValue(); updateTraitDesc();"> Reborn: Deathless Nature (58) </label>
 
-<label> <input type="checkbox" value="2" data-desc="When you make a long or high jump, you can add 1d8 feet to the distance. The extra distance uses your movement speed." onchange="updateValue(); updateTraitDesc();"> Satyr: Mirthful Leaps (2) </label>
+<label> <input type="checkbox" data-prereq="Satyr" value="2" data-desc="When you make a long or high jump, you can add 1d8 feet to the distance. The extra distance uses your movement speed." onchange="updateValue(); updateTraitDesc();"> Satyr: Mirthful Leaps (2) </label>
 
-<label> <input type="checkbox" value="35" data-desc="Advantage on saving throws against spells." onchange="updateValue(); updateTraitDesc();"> Satyr/Yuan-ti: Magic Resistance (35) </label>
+<label> <input type="checkbox" data-prereq="Satyr|Yuan-ti" value="35" data-desc="Advantage on saving throws against spells." onchange="updateValue(); updateTraitDesc();"> Satyr/Yuan-ti: Magic Resistance (35) </label>
 
-<label> <input type="checkbox" value="80" data-desc="Must have elvish primary race. As a bonus action, you can magically teleport up to 30 feet to an unoccupied space you can see. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.Starting at 3rd level, you also gain resistance to all damage when you teleport using this trait. The resistance lasts until the start of your next turn. During that time, you appear ghostly and translucent.." onchange="updateValue(); updateTraitDesc();"> Shadar-kai: Blessing of the Raven Queen (80) </label>
+<label> <input type="checkbox" data-prereq="Elf" value="80" data-desc="Must have elvish primary race. As a bonus action, you can magically teleport up to 30 feet to an unoccupied space you can see. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.Starting at 3rd level, you also gain resistance to all damage when you teleport using this trait. The resistance lasts until the start of your next turn. During that time, you appear ghostly and translucent.." onchange="updateValue(); updateTraitDesc();"> Shadar-kai: Blessing of the Raven Queen (80) </label>
 
-<label> <input type="checkbox" value="37" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x prof and an additional 1d6 + level + Constitution modifier temporary hit points and +1 AC. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Beasthide): Shifting (37) </label>
+<label> <input data-exclusive="shifting" type="checkbox" data-prereq="Shifter" value="37" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x prof and an additional 1d6 + level + Constitution modifier temporary hit points and +1 AC. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Beasthide): Shifting (37) </label>
 
-<label> <input type="checkbox" value="22" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x proftemporary hit points and a natural bite attack dealing 1d6 + Strength modifier piercing damage. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Longtooth): Shifting (22) </label>
+<label> <input data-exclusive="shifting" type="checkbox" data-prereq="Shifter" value="22" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x proftemporary hit points and a natural bite attack dealing 1d6 + Strength modifier piercing damage. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Longtooth): Shifting (22) </label>
 
-<label> <input type="checkbox" value="40" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x proftemporary hit points, +10 movement speed, and the ability to move 10 feet as a reaction without provoking opportunity attacks when a creature ends its turn within 5 feet of you. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Swiftstride): Shifting (40) </label>
+<label> <input data-exclusive="shifting" type="checkbox" data-prereq="Shifter" value="40" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x proftemporary hit points, +10 movement speed, and the ability to move 10 feet as a reaction without provoking opportunity attacks when a creature ends its turn within 5 feet of you. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Swiftstride): Shifting (40) </label>
 
-<label> <input type="checkbox" value="31" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x prof temporary hit points, advantage on Wisdom checks, and preventing creatures within 30 feet from gaining advantage on attacks against you unless you are incapacitated. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Wildhunt): Shifting (31) </label>
+<label> <input data-exclusive="shifting" type="checkbox" data-prereq="Shifter" value="31" data-desc="Must have bestial primary race and no other shifting feature. As a bonus action, you transform for 1 minute, gaining 2x prof temporary hit points, advantage on Wisdom checks, and preventing creatures within 30 feet from gaining advantage on attacks against you unless you are incapacitated. Uses equal to proficiency bonus per long rest." onchange="updateValue(); updateTraitDesc();"> Shifter (Wildhunt): Shifting (31) </label>
 
-<label> <input type="checkbox" value="15" data-desc="You can double your speed for a turn. You must move 0 feet on a later turn before using this feature again." onchange="updateValue(); updateTraitDesc();"> Tabaxi: Feline Agility (15) </label>
+<label> <input type="checkbox" data-prereq="Tabaxi" value="15" data-desc="You can double your speed for a turn. You must move 0 feet on a later turn before using this feature again." onchange="updateValue(); updateTraitDesc();"> Tabaxi: Feline Agility (15) </label>
 
-<label> <input type="checkbox" value="10" data-desc="Must have tortle primary race. You can withdraw into your shell, gaining +4 AC and advantage on Strength and Constitution saves, but your speed becomes 0 and you have other limitations." onchange="updateValue(); updateTraitDesc();"> Tortle: Shell Defense (10) </label>
+<label> <input type="checkbox" data-prereq="Tortle" value="10" data-desc="Must have tortle primary race. You can withdraw into your shell, gaining +4 AC and advantage on Strength and Constitution saves, but your speed becomes 0 and you have other limitations." onchange="updateValue(); updateTraitDesc();"> Tortle: Shell Defense (10) </label>
 
 <label> <input type="checkbox" value="55" data-desc="Gain one Origin feat of your choice for which you qualify." onchange="updateValue(); updateTraitDesc();"> Variant Human: Feat (55) </label>
 
-<label> <input type="checkbox" value="80" data-desc="Advantage on all Intelligence, Wisdom, and Charisma saving throws." onchange="updateValue(); updateTraitDesc();"> Vedalken: Dispassion (80) </label>
+<label> <input type="checkbox" data-prereq="Vedalken" value="80" data-desc="Advantage on all Intelligence, Wisdom, and Charisma saving throws." onchange="updateValue(); updateTraitDesc();"> Vedalken: Dispassion (80) </label>
 
-<label> <input type="checkbox" value="6" data-desc="You can breathe underwater for up to 1 hour per long rest." onchange="updateValue(); updateTraitDesc();"> Vedalken: Partially Amphibious (6) </label>
+<label> <input type="checkbox" data-prereq="Vedalken" value="6" data-desc="You can breathe underwater for up to 1 hour per long rest." onchange="updateValue(); updateTraitDesc();"> Vedalken: Partially Amphibious (6) </label>
 
-<label> <input type="checkbox" value="4" data-desc="When rolling Hit Dice during a short rest, you can reroll 1s or 2s." onchange="updateValue(); updateTraitDesc();"> Verdan: Black Blood Healing (4) </label>
+<label> <input type="checkbox" data-prereq="Verdan" value="4" data-desc="When rolling Hit Dice during a short rest, you can reroll 1s or 2s." onchange="updateValue(); updateTraitDesc();"> Verdan: Black Blood Healing (4) </label>
 
-<label> <input type="checkbox" value="6" data-desc="You can telepathically speak to any creature you can see within 30 feet of you. You don't need to share a language with the creature for it to understand your telepathy, but it must be able to understand at least one language. This process of communication is slow and limited, allowing you to transmit and receive only simple ideas and straightforward concepts." onchange="updateValue(); updateTraitDesc();"> Verdan: Limited Telepathy (6) </label>
+<label> <input type="checkbox" data-prereq="Verdan" value="6" data-desc="You can telepathically speak to any creature you can see within 30 feet of you. You don't need to share a language with the creature for it to understand your telepathy, but it must be able to understand at least one language. This process of communication is slow and limited, allowing you to transmit and receive only simple ideas and straightforward concepts." onchange="updateValue(); updateTraitDesc();"> Verdan: Limited Telepathy (6) </label>
 
-<label> <input type="checkbox" value="63" data-desc="You have advantage on Wisdom and Charisma saving throws." onchange="updateValue(); updateTraitDesc();"> Verdan: Telepathic Insight (63) </label>
+<label> <input type="checkbox" data-prereq="Verdan" value="63" data-desc="You have advantage on Wisdom and Charisma saving throws." onchange="updateValue(); updateTraitDesc();"> Verdan: Telepathic Insight (63) </label>
 
-<label> <input type="checkbox" value="3" data-desc="You can walk on two feet or four without impediment and can move through any creature's space without penalty to your movement." onchange="updateValue(); updateTraitDesc();"> Vermkin: Scurry (3) </label>
+<label> <input type="checkbox" data-prereq="Vermkin" value="3" data-desc="You can walk on two feet or four without impediment and can move through any creature's space without penalty to your movement." onchange="updateValue(); updateTraitDesc();"> Vermkin: Scurry (3) </label>
 
-<label> <input type="checkbox" value="6" data-desc="While you aren't incapacitated, you do not take damage from falling and can move upto 2 feet for every 1 foot that you descend." onchange="updateValue(); updateTraitDesc();"> Vermkin (Dreyfolk): Free Gliders (6) </label>
+<label> <input type="checkbox" data-prereq="Vermkin" value="6" data-desc="While you aren't incapacitated, you do not take damage from falling and can move upto 2 feet for every 1 foot that you descend." onchange="updateValue(); updateTraitDesc();"> Vermkin (Dreyfolk): Free Gliders (6) </label>
 
-<label> <input type="checkbox" value="45" data-desc="You have advantage on attack rolls against a creature if at least one of your allies is within 5 feet of it and not incapacitated." onchange="updateValue(); updateTraitDesc();"> Vermkin (Prickleback): Rat Tactics (45) </label>
+<label> <input type="checkbox" data-prereq="Vermkin" value="45" data-desc="You have advantage on attack rolls against a creature if at least one of your allies is within 5 feet of it and not incapacitated." onchange="updateValue(); updateTraitDesc();"> Vermkin (Prickleback): Rat Tactics (45) </label>
 
-<label> <input type="checkbox" value="16" data-desc="As a reaction to melee attack against you within 5 feet, you may impale the attacker on the needles on your back. The attacker takes damage equal to your Constitution modifier + half your level (rounded down)." onchange="updateValue(); updateTraitDesc();"> Vermkin (Prickleback): Vengeful Prick (16) </label>
+<label> <input type="checkbox" data-prereq="Vermkin" value="16" data-desc="As a reaction to melee attack against you within 5 feet, you may impale the attacker on the needles on your back. The attacker takes damage equal to your Constitution modifier + half your level (rounded down)." onchange="updateValue(); updateTraitDesc();"> Vermkin (Prickleback): Vengeful Prick (16) </label>
 
-<label> <input type="checkbox" value="6" data-desc="When a creature attacks you, you can use a reaction to force the creature to make a Wisdom save (DC = 8 + Proficiency Bonus + Charisma Modifier). If the being is sentient, it may redirect the attack or make it against you with disadvanatage. You regain use of this feature after a short rest." onchange="updateValue(); updateTraitDesc();"> Vermkin (Softfur): Button Eyed (6) </label>
+<label> <input type="checkbox" data-prereq="Vermkin" value="6" data-desc="When a creature attacks you, you can use a reaction to force the creature to make a Wisdom save (DC = 8 + Proficiency Bonus + Charisma Modifier). If the being is sentient, it may redirect the attack or make it against you with disadvanatage. You regain use of this feature after a short rest." onchange="updateValue(); updateTraitDesc();"> Vermkin (Softfur): Button Eyed (6) </label>
 
-<label> <input type="checkbox" value="14" data-desc="Must have autognome/warforged primary race, and not have small size. You have a platform built into your chassis. While large, a small creature can ride on the platform without squeezing. To make a melee attack against a target within 5 feet of you, they must use spears, a similar polearm or weapons with reach." onchange="updateValue(); updateTraitDesc();"> Warforged: Battle Platform (14) </label>
+<label> <input type="checkbox" data-prereq="Autognome|Warforged" value="14" data-desc="Must have autognome/warforged primary race, and not have small size. You have a platform built into your chassis. While large, a small creature can ride on the platform without squeezing. To make a melee attack against a target within 5 feet of you, they must use spears, a similar polearm or weapons with reach." onchange="updateValue(); updateTraitDesc();"> Warforged: Battle Platform (14) </label>
 
-<label> <input type="checkbox" value="22" data-desc="Must have autognome/warforged primary race. You gain +1 AC and can integrate armor into your body over 1 hour. Integrated armor can't be removed against your will." onchange="updateValue(); updateTraitDesc();"> Warforged: Integrated Protection (22) </label>
+<label> <input type="checkbox" data-prereq="Autognome|Warforged" value="22" data-desc="Must have autognome/warforged primary race. You gain +1 AC and can integrate armor into your body over 1 hour. Integrated armor can't be removed against your will." onchange="updateValue(); updateTraitDesc();"> Warforged: Integrated Protection (22) </label>
 
             </div>
         </div>
@@ -1328,6 +1409,12 @@ function updateCreatureTypeDesc() {
     document.getElementById("creature-type-desc").innerText = desc || "";
 }
 
+function updatePrimaryRaceDesc() {
+    const select = document.getElementById("primary-race");
+    const text = select.options[select.selectedIndex]?.text || "";
+    document.getElementById("primary-race-desc").innerText = text ? "Selected: " + text : "";
+}
+
 function updateSpellcastingDesc() {
     const select = document.getElementById("racial-spellcasting");
     const option = select.options[select.selectedIndex];
@@ -1437,58 +1524,121 @@ function updateAllDescriptions() {
         container.appendChild(div);
     }
 
-    // SELECT DROPDOWNS
-    const selects = [
+    function addHeader(text) {
+        const h = document.createElement("div");
+        h.textContent = text;
+        h.style.fontWeight = "bold";
+        h.style.marginTop = "8px";
+        h.style.marginBottom = "4px";
+        h.style.color = "#e8c97a";
+        container.appendChild(h);
+    }
+
+    let hasBasicStats = false;
+    let hasProficiencies = false;
+    let hasMajorFeatures = false;
+    let hasSpellcasting = false;
+
+    // BASIC STATISTICS
+    const basicSelects = [
+        "primary-race",
         "creature-type",
         "creature-speed",
         "creature-natural-armor",
-        "creature-damage-condition-resistance",
+        "creature-damage-condition-resistance"
+    ];
+
+    basicSelects.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const desc = el.options[el.selectedIndex].getAttribute("data-desc");
+        if (desc) {
+            if (!hasBasicStats) {
+                addHeader("Basic Statistics");
+                hasBasicStats = true;
+            }
+            addDesc(desc);
+        }
+    });
+
+    // TRAITS & PROFICIENCIES
+    const prof = document.querySelector('input[name="skill-tool-prof"]:checked');
+    if (prof && prof.getAttribute("data-desc")) {
+        if (!hasProficiencies) {
+            addHeader("Traits & Proficiencies");
+            hasProficiencies = true;
+        }
+        addDesc(prof.getAttribute("data-desc"));
+    }
+
+    const skill = document.querySelector('input[name="skill-trait"]:checked');
+    if (skill && skill.getAttribute("data-desc")) {
+        if (!hasProficiencies) {
+            addHeader("Traits & Proficiencies");
+            hasProficiencies = true;
+        }
+        addDesc(skill.getAttribute("data-desc"));
+    }
+
+    const weaponProf = document.querySelector('#weapon-dropdown input[name="weapon-prof"]:checked');
+    if (weaponProf && weaponProf.dataset.desc) {
+        if (!hasProficiencies) {
+            addHeader("Traits & Proficiencies");
+            hasProficiencies = true;
+        }
+        addDesc(weaponProf.dataset.desc);
+    }
+
+    document.querySelectorAll('.resistance-checkbox:checked').forEach(el => {
+        const desc = el.getAttribute("data-desc");
+        if (desc) {
+            if (!hasProficiencies) {
+                addHeader("Traits & Proficiencies");
+                hasProficiencies = true;
+            }
+            addDesc(desc);
+        }
+    });
+
+    // MAJOR FEATURES
+    document.querySelectorAll('#racial-traits-list input[type="checkbox"]:checked').forEach(el => {
+        const desc = el.getAttribute("data-desc");
+        if (desc) {
+            if (!hasMajorFeatures) {
+                addHeader("Major Features");
+                hasMajorFeatures = true;
+            }
+            addDesc(desc);
+        }
+    });
+
+    const weapon = document.querySelector('#natural-weapons-dropdown input[name="natural-weapon"]:checked');
+    if (weapon && weapon.dataset.desc) {
+        if (!hasProficiencies) {
+            addHeader("Traits & Proficiencies");
+            hasProficiencies = true;
+        }
+        addDesc(weapon.dataset.desc);
+    }
+
+    // SPELLCASTING
+    const spellSelects = [
         "racial-spellcasting",
         "dragonmark-spells"
     ];
 
-    selects.forEach(id => {
+    spellSelects.forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
-
         const desc = el.options[el.selectedIndex].getAttribute("data-desc");
-        addDesc(desc);
+        if (desc) {
+            if (!hasSpellcasting) {
+                addHeader("Spellcasting");
+                hasSpellcasting = true;
+            }
+            addDesc(desc);
+        }
     });
-
-    // CHECKBOXES (generic)
-
-// Racial proficiency (radio)
-const prof = document.querySelector('input[name="skill-tool-prof"]:checked');
-if (prof) addDesc(prof.getAttribute("data-desc"));
-
-    // RADIO: skill traits
-    const skill = document.querySelector('input[name="skill-trait"]:checked');
-    if (skill) addDesc(skill.getAttribute("data-desc"));
-
-// WEAPON PROFICIENCY (FIX)
-const weaponProf = document.querySelector('#weapon-dropdown input[name="weapon-prof"]:checked');
-if (weaponProf && weaponProf.dataset.desc) {
-    addDesc(weaponProf.dataset.desc);
-}
-    // Racial proficiency (radio)
-// ADD THIS inside updateAllDescriptions()
-
-document.querySelectorAll('.resistance-checkbox:checked').forEach(el => {
-    addDesc(el.getAttribute("data-desc"));
-});
-
-// RACIAL TRAITS (FIX)
-document.querySelectorAll('#racial-traits-list input[type="checkbox"]:checked').forEach(el => {
-    addDesc(el.getAttribute("data-desc"));
-});
-
-    // RADIO: natural weapon
-   // RADIO: natural weapon (FIXED)
-const weapon = document.querySelector('#natural-weapons-dropdown input[name="natural-weapon"]:checked');
-
-if (weapon && weapon.dataset.desc) {
-    addDesc(weapon.dataset.desc);
-}
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1498,6 +1648,7 @@ function copySummary() {
     let text = "=== Custom Ancestry Summary ===\n\n";
 
      const sections = [
+    ["Primary Race", "summary-primary-race"],
     ["Creature Type", "summary-creature-type"],
     ["Size", "summary-size"],
     ["Speed", "summary-speed"],
@@ -1602,6 +1753,62 @@ if (selectedWeapon) {
 
             // Color coding for over-spending
             display.style.color = remaining < 0 ? "#ff4444" : "#689FD9";
+
+            validatePrerequisites();
+        }
+
+        function validatePrerequisites() {
+            const primaryRace = document.getElementById("primary-race").value;
+            const warning = document.getElementById("prereq-warning");
+            if (!warning) return;
+
+            let raceConflict = false;
+
+            document.querySelectorAll('input:checked').forEach(el => {
+                const prereq = el.getAttribute("data-prereq");
+                if (!prereq) return;
+                const allowed = prereq.split("|").map(s => s.trim());
+                if (!allowed.includes(primaryRace)) {
+                    raceConflict = true;
+                }
+            });
+
+            if (!raceConflict) {
+                document.querySelectorAll('select').forEach(sel => {
+                    const opt = sel.options[sel.selectedIndex];
+                    if (!opt) return;
+                    const prereq = opt.getAttribute("data-prereq");
+                    if (!prereq) return;
+                    const allowed = prereq.split("|").map(s => s.trim());
+                    if (!allowed.includes(primaryRace)) {
+                        raceConflict = true;
+                    }
+                });
+            }
+
+            const groupCounts = {};
+            document.querySelectorAll('input[data-exclusive]').forEach(el => {
+                if (!el.checked) return;
+                const group = el.getAttribute("data-exclusive");
+                if (!group) return;
+                if (!groupCounts[group]) {
+                    groupCounts[group] = [];
+                }
+                groupCounts[group].push(el);
+            });
+
+            let exclusiveConflict = false;
+            for (const group in groupCounts) {
+                if (groupCounts[group].length >= 2) {
+                    exclusiveConflict = true;
+                }
+            }
+
+            if (raceConflict || exclusiveConflict) {
+                warning.style.display = "block";
+            } else {
+                warning.style.display = "none";
+            }
         }
 
         // Close dropdowns when clicking outside
@@ -1642,6 +1849,7 @@ function updateFullSummary() {
         return el.options[el.selectedIndex].textContent;
     };
 
+    setSingle("summary-primary-race", getText("primary-race"));
     setSingle("summary-creature-type", getText("creature-type"));
     setSingle("summary-size", getText("creature-size"));
     setSingle("summary-speed", getText("creature-speed"));
@@ -1804,6 +2012,169 @@ function initRacialTraitTooltips() {
 
 // Run on DOM load
 document.addEventListener("DOMContentLoaded", initRacialTraitTooltips);
+
+function getRaceState() {
+    const state = {};
+    state.primaryRace = document.getElementById("primary-race").value;
+    const selects = ["creature-type","creature-size","creature-speed","creature-darkvision","creature-abilityscores","creature-natural-armor","racial-spellcasting","dragonmark-spells"];
+    selects.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) state[id] = el.value;
+    });
+    state.racialProficiencies = [];
+    document.querySelectorAll('.prof-checkbox:checked').forEach(el => {
+        state.racialProficiencies.push(el.value);
+    });
+    state.weaponProficiency = "";
+    const wp = document.querySelector('#weapon-dropdown input[name="weapon-prof"]:checked');
+    if (wp) state.weaponProficiency = wp.value;
+    state.skillTrait = "";
+    const st = document.querySelector('input[name="skill-trait"]:checked');
+    if (st) state.skillTrait = st.value;
+    state.resistances = [];
+    document.querySelectorAll('.resistance-checkbox:checked').forEach(el => {
+        state.resistances.push(el.value);
+    });
+    state.racialTraits = [];
+    document.querySelectorAll('#racial-traits-list input[type="checkbox"]:checked').forEach(el => {
+        state.racialTraits.push(el.value);
+    });
+    state.naturalWeapon = "";
+    const nw = document.querySelector('#natural-weapons-dropdown input[name="natural-weapon"]:checked');
+    if (nw) state.naturalWeapon = nw.value;
+    state.movementTypes = [];
+    document.querySelectorAll('#movement-type-dropdown input[type="checkbox"]:checked').forEach(el => {
+        state.movementTypes.push(el.value);
+    });
+    state.languages = [];
+    document.querySelectorAll('.language-checkbox:checked').forEach(el => {
+        state.languages.push(el.value);
+    });
+    return state;
+}
+
+function applyRaceState(state) {
+    if (state.primaryRace) {
+        const sel = document.getElementById("primary-race");
+        for (let i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === state.primaryRace) {
+                sel.selectedIndex = i;
+                break;
+            }
+        }
+    }
+    const selects = ["creature-type","creature-size","creature-speed","creature-darkvision","creature-abilityscores","creature-natural-armor","racial-spellcasting","dragonmark-spells"];
+    selects.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && state[id] !== undefined) el.value = state[id];
+    });
+    document.querySelectorAll('.prof-checkbox').forEach(el => {
+        el.checked = state.racialProficiencies && state.racialProficiencies.includes(el.value);
+    });
+    if (state.weaponProficiency) {
+        const wp = document.querySelector('#weapon-dropdown input[name="weapon-prof"][value="' + state.weaponProficiency + '"]');
+        if (wp) wp.checked = true;
+    }
+    if (state.skillTrait) {
+        const st = document.querySelector('input[name="skill-trait"][value="' + state.skillTrait + '"]');
+        if (st) st.checked = true;
+    }
+    document.querySelectorAll('.resistance-checkbox').forEach(el => {
+        el.checked = state.resistances && state.resistances.includes(el.value);
+    });
+    document.querySelectorAll('#racial-traits-list input[type="checkbox"]').forEach(el => {
+        el.checked = state.racialTraits && state.racialTraits.includes(el.value);
+    });
+    if (state.naturalWeapon) {
+        const nw = document.querySelector('#natural-weapons-dropdown input[name="natural-weapon"][value="' + state.naturalWeapon + '"]');
+        if (nw) nw.checked = true;
+    }
+    document.querySelectorAll('#movement-type-dropdown input[type="checkbox"]').forEach(el => {
+        el.checked = state.movementTypes && state.movementTypes.includes(el.value);
+    });
+    document.querySelectorAll('.language-checkbox').forEach(el => {
+        el.checked = state.languages && state.languages.includes(el.value);
+    });
+    updateValue();
+    updateFullSummary();
+    updateAllDescriptions();
+    updatePrimaryRaceDesc();
+}
+
+function saveRace() {
+    const name = document.getElementById("primary-race").value || "unnamed";
+    const state = getRaceState();
+    localStorage.setItem("custom_ancestry_" + name, JSON.stringify(state));
+    alert("Race '" + name + "' saved!");
+}
+
+function exportRace() {
+    const name = document.getElementById("primary-race").value || "unnamed";
+    const state = getRaceState();
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "custom_ancestry_" + name.replace(/\s+/g, "_") + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function loadRace(name) {
+    const data = localStorage.getItem("custom_ancestry_" + name);
+    if (!data) { alert("No saved race found: " + name); return; }
+    try {
+        const state = JSON.parse(data);
+        applyRaceState(state);
+    } catch(e) {
+        alert("Failed to load saved race.");
+    }
+}
+
+function loadRacePrompt() {
+    const races = listSavedRaces();
+    if (races.length === 0) {
+        alert("No saved races found.");
+        return;
+    }
+    const msg = "Saved races:\n" + races.map((r,i) => (i+1) + ". " + r).join("\n") + "\n\nEnter the race name to load:";
+    const name = prompt(msg);
+    if (name) loadRace(name.trim());
+}
+
+function importRace() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            try {
+                const state = JSON.parse(ev.target.result);
+                applyRaceState(state);
+            } catch(err) {
+                alert("Failed to import race file.");
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+}
+
+function listSavedRaces() {
+    const races = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith("custom_ancestry_")) {
+            races.push(key.slice("custom_ancestry_".length));
+        }
+    }
+    return races;
+}
 
     </script>
 </body>

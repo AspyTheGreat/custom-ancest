@@ -2777,10 +2777,10 @@ function convertTextToJSON() {
           );
 
         const totalDamage =
-          dpr * roundCount;
+          Math.round(dpr * roundCount);
 
         const totalCC =
-          ccpr * roundCount;
+          Math.round(ccpr * roundCount);
 
         const totalHealing =
           getNum(
@@ -2835,7 +2835,7 @@ function convertTextToJSON() {
           roundData.round = r;
 
           roundData.damage =
-            dpr;
+            Math.round(dpr);
 
           roundData.healing =
             r === roundCount
@@ -2843,7 +2843,7 @@ function convertTextToJSON() {
               : 0;
 
           roundData.cc =
-            ccpr;
+            Math.round(ccpr);
 
           roundData.actions =
             { ...actions };

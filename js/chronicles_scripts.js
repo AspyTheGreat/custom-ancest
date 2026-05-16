@@ -1390,8 +1390,9 @@ const color = await getCharacterColorFromPortrait(
       (defense.attacksTaken || 0) +
       (defense.savesTotal || 0);
 
-    const row = document.createElement("div");
-    row.className = "party-row";
+  const row = document.createElement("div");
+  row.className = "party-row";
+  if (char.slug) row.id = `char-${char.slug}`;
 
   const dark1 = darkenColor(color, 0.45);
   const dark2 = darkenColor(color, 0.15);
@@ -2200,6 +2201,7 @@ function buildCampaignCharacters(statsData) {
 
   return chars.map(c => ({
     name: c.name,
+    slug: c.slug,
     battles: c.battles || 0,
     level: calcLevel(c.levelClass),
     levelClass: c.levelClass || "", // ✅ ADD THIS
@@ -2312,6 +2314,7 @@ const fortitude = savesTotal
   : 0;
   const row = document.createElement("div");
   row.className = "party-row";
+  if (char.slug) row.id = `char-${char.slug}`;
 
   const color = await getCharacterColorFromPortrait(
   char,
@@ -2775,7 +2778,7 @@ async function loadAllTimeData() {
       const name = char.name || "Unknown";
       const img = char.portrait || null;
 
-      characters.push({ name, campaign: campaignName, image: img });
+      characters.push({ name, campaign: campaignName, campaignSlug: campaigns[i].slug, slug: char.slug, image: img });
       if (char.name && char.portrait) portraitMap[char.name] = char.portrait;
 
       const dmg = char.totalDamage || 0;
@@ -2864,7 +2867,7 @@ const charHTML = Object.entries(groupedChars)
       <summary class="campaign-header">${campaign}</summary>
 
       ${chars.map(char => `
-        <div class="stat-item stat-character">
+        <div class="stat-item stat-character clickable" onclick="window.location.href='Chronicles_character_stats.html#campaign/${char.campaignSlug}/${char.slug}'">
           ${
             char.image
               ? `<img class="stat-portrait" src="${normalizeImageSrc(char.image)}" loading="lazy">`
@@ -2880,11 +2883,11 @@ document.getElementById("alltime-characters").innerHTML = charHTML;
   // Window 1
 document.getElementById("alltime-stats").innerHTML = `
   ${renderTopStat("Damage", Math.round(stats.totalDamage), stats.topDamage)}
-  ${renderTopStat("Healing", stats.totalHealing, stats.topHealing)}
-  ${renderTopStat("CC", stats.totalCC, stats.topCC)}
-  ${renderTopStat("Damage Taken", stats.totalDamageTaken, stats.topDamageTaken)}
-  ${renderTopStat("Nat 20s", stats.totalNat20, stats.topNat20)}
-  ${renderTopStat("Nat 1s", stats.totalNat1, stats.topNat1)}
+  ${renderTopStat("Healing", Math.round(stats.totalHealing), stats.topHealing)}
+  ${renderTopStat("CC", Math.round(stats.totalCC), stats.topCC)}
+  ${renderTopStat("Damage Taken", Math.round(stats.totalDamageTaken), stats.topDamageTaken)}
+  ${renderTopStat("Nat 20s", Math.round(stats.totalNat20), stats.topNat20)}
+  ${renderTopStat("Nat 1s", Math.round(stats.totalNat1), stats.topNat1)}
 `;
 
   // Window 2
@@ -2955,7 +2958,7 @@ const battleHTML = sortedGroups
         <summary class="campaign-header">${group.name}</summary>
 
         ${group.battles.map(b => `
-          <div class="stat-item">
+          <div class="stat-item clickable" onclick="window.location.href='Chronicles_previous_battles.html#battle/${b.campaignSlug}/${b.battleSlug}'">
             <span>${b.name}</span>
           </div>
         `).join("")}

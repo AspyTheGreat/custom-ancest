@@ -907,13 +907,13 @@ function processBattleStats(
 
     // totals
     c.totalDamage +=
-      s.damage || 0;
+      Math.round(s.damage || 0);
 
     c.totalHealing +=
-      s.healing || 0;
+      Math.round(s.healing || 0);
 
     c.totalCC +=
-      s.cc || 0;
+      Math.round(s.cc || 0);
 
     // attacks
     const attacksMade =
