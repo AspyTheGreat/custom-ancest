@@ -6,6 +6,10 @@ const campaignPortraitCache = {};
 const characterStatsCache = {};
 const DEBUG = true;
 
+const campaignCardImages = {
+  "the-break-of-dawn": "../assets/campaign-cards/break of dawn.webp"
+};
+
 function log(...args) {
   if (DEBUG) console.log("[DEBUG]", ...args);
 }
@@ -86,10 +90,19 @@ const grid = document.getElementById("campaignGrid");
 
         const div = document.createElement("div");
 
-        div.className =
-          "world-card-previous-battles clickable";
+        const campaignImage = campaignCardImages[campaign.slug];
 
-        div.innerHTML = `<span class="battle-card-text">${campaign.name}</span>`;
+        if (campaignImage) {
+          div.className = "campaign-card clickable";
+          div.innerHTML = `
+            <img class="campaign-card-bg" src="${campaignImage}" alt="" loading="lazy">
+            <div class="campaign-card-overlay"></div>
+            <div class="campaign-card-title">${campaign.name}</div>
+          `;
+        } else {
+          div.className = "world-card-previous-battles clickable";
+          div.innerHTML = `<span class="battle-card-text">${campaign.name}</span>`;
+        }
 
         div.onclick = () => {
           window.location.hash = `#battles/${campaign.slug}`;
@@ -2086,14 +2099,23 @@ async function loadStatsCampaigns() {
 
       const div = document.createElement("div");
 
-      div.className =
-        "world-card-previous-battles clickable";
+      const campaignImage = campaignCardImages[campaign.slug];
 
-      div.innerHTML = `
-        <span class="battle-card-text">
-          ${campaign.name}
-        </span>
-      `;
+      if (campaignImage) {
+        div.className = "campaign-card clickable";
+        div.innerHTML = `
+          <img class="campaign-card-bg" src="${campaignImage}" alt="" loading="lazy">
+          <div class="campaign-card-overlay"></div>
+          <div class="campaign-card-title">${campaign.name}</div>
+        `;
+      } else {
+        div.className = "world-card-previous-battles clickable";
+        div.innerHTML = `
+          <span class="battle-card-text">
+            ${campaign.name}
+          </span>
+        `;
+      }
 
       div.onclick = () => {
         renderCampaignBreakdown(campaign.slug);
