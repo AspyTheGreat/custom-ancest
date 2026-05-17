@@ -1707,6 +1707,20 @@ function darkenColor(c, factor, alpha) {
   } else return c;
   return alpha !== undefined ? `rgba(${r},${g},${b},${alpha})` : `rgb(${r},${g},${b})`;
 }
+function brightenColor(c, amount) {
+  let r, g, b;
+  if (c.startsWith("rgb")) {
+    const m = c.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    if (!m) return c;
+    r = parseInt(m[1]); g = parseInt(m[2]); b = parseInt(m[3]);
+  } else if (c.startsWith("#")) {
+    r = parseInt(c.slice(1,3),16); g = parseInt(c.slice(3,5),16); b = parseInt(c.slice(5,7),16);
+  } else return c;
+  r = Math.min(255, Math.round(r + (255 - r) * amount));
+  g = Math.min(255, Math.round(g + (255 - g) * amount));
+  b = Math.min(255, Math.round(b + (255 - b) * amount));
+  return `rgb(${r},${g},${b})`;
+}
 function hexToRGBA(hex, alpha = 1) {
 
   const r = parseInt(hex.slice(1, 3), 16);
@@ -1851,9 +1865,10 @@ luck = Math.max(0, Math.min(10, luck));
   // =========================
 const charIndex = allCharacters.findIndex(c => c.name === char.name);
 
-const fill = color.startsWith("rgb")
-  ? color.replace("rgb", "rgba").replace(")", ", 0.25)")
-  : hexToRGBA(color, 0.25);
+const bright = brightenColor(color, 0.15);
+const fill = bright.startsWith("rgb")
+  ? bright.replace("rgb", "rgba").replace(")", ", 0.45)")
+  : hexToRGBA(bright, 0.45);
 
   new Chart(canvas, {
     type: "radar",
@@ -1876,9 +1891,9 @@ const fill = color.startsWith("rgb")
           ccScore
         ],
 
-        borderColor: color,
+        borderColor: bright,
 backgroundColor: fill,
-pointBackgroundColor: color,
+pointBackgroundColor: bright,
         pointRadius: 4,
         borderWidth: 2
       }]

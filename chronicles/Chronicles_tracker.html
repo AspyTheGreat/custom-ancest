@@ -4,77 +4,244 @@
   <title>D&D Combat Tracker</title>
   <link rel="stylesheet" href="../css/main_styles.css">
   <style>
-    body { font-family: Arial; background: #111; color: #eee; }
-    button, input, textarea, select { margin: 4px; padding: 6px; }
-    .hidden { display: none; }
-    .box { border: 1px solid #444; padding: 10px; margin: 10px 0; line-height: 28px;}
-    .counter { font-size: 14px; color: #aaa; }
-    #exportFileName {
-  width: 200px;
-}
+    :root {
+      --bg: #1a1d23;
+      --surface: #242830;
+      --surface2: #2d313a;
+      --border: #3a3f4a;
+      --accent: #689FD9;
+      --accent-hover: #7fb3e8;
+      --text: #e0e0e0;
+      --text-muted: #9aa0a8;
+      --danger: #e05555;
+      --success: #55b57a;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    #bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: #1a1d23 url("../assets/chronicles_tracker.webp") center/cover no-repeat;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: var(--text);
+      margin: 0 auto;
+      padding: 20px;
+      max-width: 1100px;
+      line-height: 1.5;
+    }
+    h2, h3, h4 { color: var(--accent); margin-top: 0; }
+    button, input, textarea, select {
+      margin: 2px;
+      padding: 7px 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 14px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    button {
+      cursor: pointer;
+      background: var(--surface2);
+      border-color: var(--border);
+      min-width: 32px;
+    }
+    button:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    hr { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+    .hidden { display: none !important; }
+    .box {
+      background: rgba(36, 40, 48, 0.92);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin: 12px 0;
+      line-height: 28px;
+    }
+    .box h3:first-child { margin-top: 0; }
+    .box h3 {
+      margin: -16px -16px 12px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid var(--border);
+      border-radius: var(--radius) var(--radius) 0 0;
+      font-size: 15px;
+      color: var(--accent);
+    }
+    .counter { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    #exportFileName { width: 200px; }
+    .resourceList .resEntry { margin-bottom: 4px; }
+    #templateStatus { margin-top: 6px; font-size: 13px; color: var(--text-muted); }
 
-.resourceList div {
-  margin-bottom: 4px;
-}
+    #characterBar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 150px;
+      flex-direction: column;
+      gap: 8px;
+      padding: 16px;
+      overflow-y: auto;
+      z-index: 50;
+      background: rgba(36, 40, 48, 0.95);
+      backdrop-filter: blur(4px);
+      border-right: 1px solid var(--border);
+      margin: 0;
+      border-radius: 0;
+      display: none;
+    }
+    #characterBar:not(:empty) { display: flex; }
+    .charBtn {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      background: var(--surface2);
+      text-align: center;
+      min-width: 70px;
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .charBtn:hover { border-color: var(--accent); background: rgba(104,159,217,0.12); }
+    .charBtn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(104,159,217,0.35);
+    }
+    .charBtn.turn {
+      border-color: #ffd54f;
+      box-shadow: 0 0 0 2px #ffd54f;
+    }
+    .charBtn.turn.active {
+      box-shadow: 0 0 0 2px #ffd54f, 0 0 12px rgba(104,159,217,0.35);
+    }
+    .charBtn img {
+      display: block;
+      margin: 0 auto 4px;
+      border-radius: 6px;
+    }
+    #liveSummary img {
+      display: block;
+      margin-bottom: 8px;
+      border-radius: 10px;
+    }
 
+    .charBlock {
+      background: rgba(36, 40, 48, 0.92);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .charBlock input { width: auto; }
+    .charBlock .name { width: 200px; }
+    .charBlock .init { width: 70px; }
+    .charBlock .portraitPreview { border-radius: 8px; }
 
-#templateStatus {
-  margin-top: 8px;
-  font-size: 13px;
-}
+    #combat { padding-left: 170px; }
+    #combat .box { background: rgba(36, 40, 48, 0.92); backdrop-filter: blur(4px); }
 
-#characterBar {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
+    .btn-group { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+    .btn-group label { margin-right: 4px; color: var(--text-muted); font-size: 13px; }
 
-.charBtn {
-  padding: 6px 10px;
-  border: 1px solid #555;
-  cursor: pointer;
-  background: #222;
-}
+    #sidePanel {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 300px;
+      height: 100%;
+      background: rgba(36, 40, 48, 0.95);
+      backdrop-filter: blur(4px);
+      border-left: 2px solid var(--border);
+      padding: 16px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    #sidePanel h3 { margin-top: 0; }
 
-.charBtn.active {
-  background: rgb(30, 72, 126);
-  color: #000;
-}
+    #reportOutput {
+      background: #0d0f12;
+      color: #a8d8a8;
+      padding: 14px;
+      border-radius: var(--radius);
+      max-height: 600px;
+      overflow: auto;
+      font-size: 13px;
+    }
 
-.charBtn.turn {
-  outline: 2px solid #ff0;
-}
-.box:last-of-type {
-  margin-bottom: 20px;
-  
-}
-.box button {
-  min-width: 28px;
-}
-
-.charBtn img {
-  display: block;
-  margin: 0 auto 4px;
-}
-
-#liveSummary img {
-  display: block;
-  margin-bottom: 8px;
-}
+    .setup-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .setup-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    #battleHeader {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+    #turnHeader {
+      font-size: 18px;
+    }
+    #initiativeDisplay {
+      font-family: 'Courier New', monospace;
+    }
+    .col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .col-grid > div {
+      min-width: 0;
+    }
   </style>
 </head>
 <body class="battle-report-page">
+<div id="bg"></div>
 
 <h2>Combat Setup</h2>
 
 <div id="setup">
-  <div id="characterInputs"></div>
-  Campaign: <input type="text" id="campaignName" placeholder="Campaign name"><br>
-  <button onclick="addCharacter()">Add Character</button>
-  <br><br>
+  <div class="box">
+    <h3>Campaign</h3>
+    <div class="setup-row">
+      <label>Campaign:</label>
+      <input type="text" id="campaignName" placeholder="Campaign name" style="width:250px;">
+    </div>
+  </div>
 
-  <br><br>
-  <button onclick="startCombat()">Initiate Combat</button>
+  <div class="box">
+    <h3>Characters</h3>
+    <div id="characterInputs"></div>
+    <button onclick="addCharacter()" style="margin-top:8px;">+ Add Character</button>
+  </div>
+
+  <div class="box" style="display:flex;gap:8px;align-items:center;">
+    <button onclick="startCombat()" style="background:var(--accent);color:#fff;border-color:var(--accent);padding:10px 20px;font-size:15px;">Initiate Combat</button>
+  </div>
 <div class="box">
   <h3>Template Manager</h3>
 
@@ -130,98 +297,68 @@
 
 </div>
 
-<div id="battleMeta" class="box">
-  <h3>Battle Info</h3>
+<div id="characterBar"></div>
 
-  
-  
-  Battle: <input type="text" id="battleName" placeholder="Battle name"><br><br>
-  Start Image:
-<input type="file" accept="image/*" onchange="handleBattleImage(this, 'start')"><br>
-<img id="startPreview" style="width:120px;display:none;"><br>
-
-  <button onclick="confirmBattleMeta()">Start Battle</button>
-</div>
-
-<div id="characterBar" class="box"></div>
-
-<h2 id="battleHeader"></h2>
+<h2 id="battleHeader" style="margin-top:20px;"></h2>
 
 <div id="combat" class="hidden">
-  <h3 id="initiativeDisplay"></h3>
-<h2 id="turnHeader"></h2>
-
-<h4>
-  Battle:
+  <div id="initiativeDisplay" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px;font-size:14px;color:var(--text-muted);"></div>
+<div class="box" style="display:flex;align-items:center;gap:8px;">
+  <h2 id="turnHeader" style="margin:0;"></h2>
+  <span style="flex:1;"></span>
+  <label style="color:var(--text-muted);font-size:13px;">Battle:</label>
   <input 
     type="text" 
     id="battleNameLive"
     placeholder="Battle name"
     oninput="updateBattleName(this.value)"
-    style="width:220px;"
+    style="width:200px;"
   >
-</h4>
-
- <div class="box">
-  
-  <b>Actions</b><br>
-
-- <button onclick="changeAction('actions','attack',-1)">-</button>
-Attack
-<button onclick="changeAction('actions','attack',1)">+</button>
-
-- <button onclick="changeAction('actions','spell',-1)">-</button>
-Spell
-<button onclick="changeAction('actions','spell',1)">+</button>
-
-- <button onclick="changeAction('actions','move',-1)">-</button>
-Move
-<button onclick="changeAction('actions','move',1)">+</button>
-
-- <button onclick="changeAction('actions','misc',-1)">-</button>
-Misc
-<button onclick="changeAction('actions','misc',1)">+</button>
-
-- <button onclick="changeAction('actions','none',-1)">-</button>
-none
-<button onclick="changeAction('actions','none',1)">+</button>
-
-<div id="actionCounter" class="counter"></div>
 </div>
 
-  <div class="box">
-    <b>Bonus Actions</b><br>
-
-<button onclick="changeAction('bonusActions','attack',-1)">-</button>
-Attack
-<button onclick="changeAction('bonusActions','attack',1)">+</button>
-
-<button onclick="changeAction('bonusActions','spell',-1)">-</button>
-Spell
-<button onclick="changeAction('bonusActions','spell',1)">+</button>
-
-<button onclick="changeAction('bonusActions','move',-1)">-</button>
-Move
-<button onclick="changeAction('bonusActions','move',1)">+</button>
-
-<button onclick="changeAction('bonusActions','misc',-1)">-</button>
-Misc
-<button onclick="changeAction('bonusActions','misc',1)">+</button>
-
-<button onclick="changeAction('bonusActions','none',-1)">-</button>
-none
-<button onclick="changeAction('bonusActions','none',1)">+</button>
-
-<div id="bonusActionsCounter" class="counter"></div>
+<div id="battleMeta" class="box">
+  <h3>Battle Info</h3>
+  <div class="setup-row">
+    <label>Battle:</label>
+    <input type="text" id="battleName" placeholder="Battle name" style="width:250px;">
   </div>
+  <div class="setup-row">
+    <label>Start Image:</label>
+    <input type="file" accept="image/*" onchange="handleBattleImage(this, 'start')">
+  </div>
+  <img id="startPreview" style="width:120px;display:none;margin-top:6px;">
+</div>
+
+ <div class="box">
+  <div class="col-grid">
+    <div>
+      <h3>Actions</h3>
+      <div class="btn-group"><button onclick="changeAction('actions','attack',-1)">-</button><label>Attack</label><button onclick="changeAction('actions','attack',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeAction('actions','spell',-1)">-</button><label>Spell</label><button onclick="changeAction('actions','spell',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeAction('actions','move',-1)">-</button><label>Move</label><button onclick="changeAction('actions','move',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeAction('actions','misc',-1)">-</button><label>Misc</label><button onclick="changeAction('actions','misc',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeAction('actions','none',-1)">-</button><label>None</label><button onclick="changeAction('actions','none',1)">+</button></div>
+      <div id="actionCounter" class="counter"></div>
+    </div>
+    <div>
+      <h3>Bonus Actions</h3>
+      <div class="btn-group"><button onclick="changeAction('bonusActions','attack',-1)">-</button><label>Attack</label><button onclick="changeAction('bonusActions','attack',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeAction('bonusActions','spell',-1)">-</button><label>Spell</label><button onclick="changeAction('bonusActions','spell',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeAction('bonusActions','move',-1)">-</button><label>Move</label><button onclick="changeAction('bonusActions','move',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeAction('bonusActions','misc',-1)">-</button><label>Misc</label><button onclick="changeAction('bonusActions','misc',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeAction('bonusActions','none',-1)">-</button><label>None</label><button onclick="changeAction('bonusActions','none',1)">+</button></div>
+      <div id="bonusActionsCounter" class="counter"></div>
+    </div>
+  </div>
+</div>
 
     
     <div class="box">
-  <b>Resources</b>
+  <h3>Resources</h3>
   <div id="resourceUI"></div>
 
-  <div class="box">
-  <b>Summons</b><br>
+  <div class="box" style="margin:12px 0 0;">
+  <h3>Summons</h3>
 
   <button onclick="addSummon()">+ Add Summon</button>
 
@@ -230,7 +367,7 @@ none
 </div>
 
 <div class="box">
-  <b>Spell Slots Expended</b><br>
+  <h3>Spell Slots Expended</h3>
 
 <select id="spellLevelSelect">
   <option value="">Select Level</option>
@@ -251,38 +388,55 @@ none
 </div>
 
   <div class="box">
-   <b>Attacks</b><br>
-
-<button onclick="changeCounter('attacks','hit',-1)">-</button>
-Hit
-<button onclick="changeCounter('attacks','hit',1)">+</button>
-
-<button onclick="changeCounter('attacks','total',-1)">-</button>
-Total
-<button onclick="changeCounter('attacks','total',1)">+</button>
-
+   <h3>Offense</h3>
+<div class="btn-group">
+  <button onclick="changeCounter('attacks','hit',-1)">-</button>
+  <label>Hit</label>
+  <button onclick="changeCounter('attacks','hit',1)">+</button>
+</div>
+<div class="btn-group">
+  <button onclick="changeCounter('attacks','total',-1)">-</button>
+  <label>Total</label>
+  <button onclick="changeCounter('attacks','total',1)">+</button>
+</div>
 <div id="attackCounter" class="counter"></div>
 
-
 <b>Saves (Offensive)</b><br>
-
-<button onclick="changeCounter('saves','forced',-1)">-</button>
-Forced
-<button onclick="changeCounter('saves','forced',1)">+</button>
-
-<button onclick="changeCounter('saves','succeeded',-1)">-</button>
-Succeeded
-<button onclick="changeCounter('saves','succeeded',1)">+</button>
-
+<div class="btn-group">
+  <button onclick="changeCounter('saves','forced',-1)">-</button>
+  <label>Forced</label>
+  <button onclick="changeCounter('saves','forced',1)">+</button>
+</div>
+<div class="btn-group">
+  <button onclick="changeCounter('saves','succeeded',-1)">-</button>
+  <label>Succeeded</label>
+  <button onclick="changeCounter('saves','succeeded',1)">+</button>
+</div>
 <div id="saveCounter" class="counter"></div>
 <div class="box">
-  <b>Hit Points</b><br>
+  <h3>Hit Points</h3>
+  <div class="btn-group">
+    <button onclick="changeHP(-1)">-</button>
+    <input id="hpInputmain" type="number" style="width:60px;" onchange="setHP(this.value)">
+    <button onclick="changeHP(1)">+</button>
+    <span style="color:var(--text-muted);margin-left:4px;">/ <span id="hpMax"></span></span>
+  </div>
+</div>
 
-  <button onclick="changeHP(-1)">-</button>
-  <input id="hpInputmain" type="number" style="width:60px;" onchange="setHP(this.value)">
-  <button onclick="changeHP(1)">+</button>
-
-  / <span id="hpMax"></span>
+<div class="box" style="margin-top:0;">
+  <h3>Turn Totals</h3>
+  <div class="btn-group">
+    <label>Damage</label>
+    <input onkeydown="if(event.key==='Enter'){ commitInput('damage', this) }" style="width:70px;">
+  </div>
+  <div class="btn-group">
+    <label>Healing</label>
+    <input onkeydown="if(event.key==='Enter'){ commitInput('healing', this) }" style="width:70px;">
+  </div>
+  <div class="btn-group">
+    <label>CC</label>
+    <input onkeydown="if(event.key==='Enter'){ commitInput('cc', this) }" style="width:70px;">
+  </div>
 </div>
 
     Damage <input onkeydown="if(event.key==='Enter'){ commitInput('damage', this) }">
@@ -293,117 +447,72 @@ CC <input onkeydown="if(event.key==='Enter'){ commitInput('cc', this) }">
   </div>
  
   <div class="box">
-  <b>Off-Turn Events</b><br>
-
-<b>Defense</b><br>
-
-<button onclick="changeCounter('defense','attacksDodged',-1)">-</button>
-Attacks Dodged
-<button onclick="changeCounter('defense','attacksDodged',1)">+</button>
-
-<button onclick="changeCounter('defense','attacksTaken',-1)">-</button>
-Attacks Taken
-<button onclick="changeCounter('defense','attacksTaken',1)">+</button>
-
-<br>
-
-<button onclick="changeCounter('defense','savesMade',-1)">-</button>
-Saves Made
-<button onclick="changeCounter('defense','savesMade',1)">+</button>
-
-<button onclick="changeCounter('defense','savesTotal',-1)">-</button>
-Total
-<button onclick="changeCounter('defense','savesTotal',1)">+</button>
-
-<div id="defenseCounter" class="counter"></div>
-
-<b>Nat 1s</b>
-<button onclick="changeGlobal('nat1',-1)">-</button>
-<button onclick="changeGlobal('nat1',1)">+</button>
-<span id="nat1Counter">0</span>
-
-<br><br>
-
-<b>Nat 20s</b>
-<button onclick="changeGlobal('nat20',-1)">-</button>
-<button onclick="changeGlobal('nat20',1)">+</button>
-<span id="nat20Counter">0</span>
-
-<br> 
-<hr style="border-color:#333;">
-<b>Reactions</b><br>
-
-<button onclick="changeGlobalReaction('attack',-1)">-</button>
-Attack
-<button onclick="changeGlobalReaction('attack',1)">+</button>
-
-<button onclick="changeGlobalReaction('spell',-1)">-</button>
-Spell
-<button onclick="changeGlobalReaction('spell',1)">+</button>
-
-<button onclick="changeGlobalReaction('move',-1)">-</button>
-Move
-<button onclick="changeGlobalReaction('move',1)">+</button>
-
-<button onclick="changeGlobalReaction('misc',-1)">-</button>
-Misc
-<button onclick="changeGlobalReaction('misc',1)">+</button>
-
-<button onclick="changeGlobalReaction('none',-1)">-</button>
-none
-<button onclick="changeGlobalReaction('none',1)">+</button>
-
-<div id="globalReactionCounter" class="counter"></div>
-
-Damage Taken <input onkeydown="if(event.key==='Enter'){ commitInput('damageTaken', this) }">
-Conditions <input id="conditionsInput" type="text" style="width:150px;">
-</div>
-
-  <button onclick="undoTurn()">Undo</button>
- <button onclick="commitTurn()">Commit Turn</button>
-<button onclick="nextTurn()">Next Turn</button>
-  <button onclick="saveBattleState()">Save Battle</button>
-<input type="file" id="loadBattleFile" accept=".json">
-<button onclick="loadBattleState()">Load Battle</button>
-<button onclick="endCombat()">End Combat</button>
-</div>
+  <h3>Off-Turn Events</h3>
+  <div class="col-grid">
+    <div>
+      <b>Defense</b><br>
+      <div class="btn-group"><button onclick="changeCounter('defense','attacksDodged',-1)">-</button><label>Attacks Dodged</label><button onclick="changeCounter('defense','attacksDodged',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeCounter('defense','attacksTaken',-1)">-</button><label>Attacks Taken</label><button onclick="changeCounter('defense','attacksTaken',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeCounter('defense','savesMade',-1)">-</button><label>Saves Made</label><button onclick="changeCounter('defense','savesMade',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeCounter('defense','savesTotal',-1)">-</button><label>Total</label><button onclick="changeCounter('defense','savesTotal',1)">+</button></div>
+      <div id="defenseCounter" class="counter"></div>
+      <div style="margin-top:8px;">
+        <b>Nat 1s</b>
+        <button onclick="changeGlobal('nat1',-1)">-</button>
+        <span id="nat1Counter">0</span>
+        <button onclick="changeGlobal('nat1',1)">+</button>
+        &nbsp;&nbsp;&nbsp;
+        <b>Nat 20s</b>
+        <button onclick="changeGlobal('nat20',-1)">-</button>
+        <span id="nat20Counter">0</span>
+        <button onclick="changeGlobal('nat20',1)">+</button>
+      </div>
+      <div style="margin-top:8px;">
+        <div class="btn-group"><label>Damage Taken</label><input onkeydown="if(event.key==='Enter'){ commitInput('damageTaken', this) }" style="width:70px;"></div>
+        <div class="btn-group"><label>Conditions</label><input id="conditionsInput" type="text" style="width:140px;"></div>
+      </div>
+    </div>
+    <div>
+      <b>Reactions</b><br>
+      <div class="btn-group"><button onclick="changeGlobalReaction('attack',-1)">-</button><label>Attack</label><button onclick="changeGlobalReaction('attack',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeGlobalReaction('spell',-1)">-</button><label>Spell</label><button onclick="changeGlobalReaction('spell',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeGlobalReaction('move',-1)">-</button><label>Move</label><button onclick="changeGlobalReaction('move',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeGlobalReaction('misc',-1)">-</button><label>Misc</label><button onclick="changeGlobalReaction('misc',1)">+</button></div>
+      <div class="btn-group"><button onclick="changeGlobalReaction('none',-1)">-</button><label>None</label><button onclick="changeGlobalReaction('none',1)">+</button></div>
+      <div id="globalReactionCounter" class="counter"></div>
+    </div>
   </div>
+</div>
 
-  
+<div class="box" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+  <button onclick="undoTurn()" style="background:var(--surface);">Undo</button>
+  <button onclick="commitTurn()" style="background:var(--accent);color:#fff;border-color:var(--accent);">Commit Turn</button>
+  <button onclick="nextTurn()" style="background:var(--success);color:#fff;border-color:var(--success);">Next Turn</button>
+  <span style="flex:1;"></span>
+  <button onclick="saveBattleState()">Save Battle</button>
+  <input type="file" id="loadBattleFile" accept=".json" style="max-width:140px;">
+  <button onclick="loadBattleState()">Load</button>
+  <button onclick="endCombat()" style="color:var(--danger);">End Combat</button>
+</div>
 
 <div class="box">
-  <b>End of Battle Image</b><br>
-
+  <h3>End of Battle Image</h3>
   <input type="file" accept="image/*" onchange="handleBattleImage(this, 'end')"><br>
   <img id="endPreview" style="width:120px;display:none;"><br>
 </div>
+</div>
+
 <div id="report" class="hidden">
   <h2>Combat Report</h2>
 
-  <pre id="reportOutput" style="
-    background:#000;
-    color:#0f0;
-    padding:10px;
-    max-height:600px;
-    overflow:auto;
-  "></pre>
+  <pre id="reportOutput"></pre>
 
   <br>
 <button onclick="uploadBattle()">Upload to Website</button>
   <button onclick="downloadReportJSON()">Download JSON</button>
 </div>
 
-<div id="sidePanel" class="hidden" style="
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 300px;
-  height: 100%;
-  background: #1a1a1a;
-  border-left: 2px solid #444;
-  padding: 10px;
-  overflow-y: auto;
-">
+<div id="sidePanel" class="hidden">
   <h3>Current Character</h3>
   <div id="liveSummary"></div>
 </div>
@@ -427,24 +536,37 @@ function addCharacter() {
   div.classList.add("charBlock");
 
   div.innerHTML = `
-  Name: <input class="name" value="">
-  Initiative: <input class="init" type="number" value="0"><br>
-
- Max HP: <input type="number" class="maxHP" value="0" style="width:70px;">
-  Current HP: <input type="number" class="currentHP" value="0" style="width:70px;"><br>
-
-  Portrait: 
-  <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
-  <img class="portraitPreview" style="width:60px;height:60px;border-radius:6px;display:none;"><br>
+  <div class="setup-row">
+    <label>Name:</label>
+    <input class="name" value="">
+    <label>Initiative:</label>
+    <input class="init" type="number" value="0">
+  </div>
+  <div class="setup-row">
+    <label>Max HP:</label>
+    <input type="number" class="maxHP" value="0" style="width:70px;">
+    <label>Current HP:</label>
+    <input type="number" class="currentHP" value="0" style="width:70px;">
+  </div>
+  <div class="setup-row">
+    <label>Portrait:</label>
+    <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)">
+  </div>
+  <img class="portraitPreview" style="width:60px;height:60px;object-fit:cover;border-radius:6px;display:none;">
   <input type="hidden" class="portraitData">
 
-  Level/Class: <input type="text" class="levelClass" value=""><br>
+  <div class="setup-row">
+    <label>Level/Class:</label>
+    <input type="text" class="levelClass" value="">
+  </div>
 
-  <div class="box">
-    <b>Add Resource</b><br>
-    <input type="text" class="resNameInput" placeholder="Resource name">
-    <input type="number" class="resMaxInput" placeholder="Max" style="width:60px;">
-    <button onclick="addResourceInline(this)">Add</button>
+  <div class="box" style="margin:10px 0;">
+    <h3 style="margin:0 0 8px;">Add Resource</h3>
+    <div class="setup-row">
+      <input type="text" class="resNameInput" placeholder="Resource name">
+      <input type="number" class="resMaxInput" placeholder="Max" style="width:60px;">
+      <button onclick="addResourceInline(this)">Add</button>
+    </div>
   </div>
 
   <div class="resourceList"></div>
@@ -707,7 +829,7 @@ const currentHP = +block.querySelector(".currentHP")?.value || maxHP;
 
     let resources = [];
 
-    block.querySelectorAll(".resourceList div").forEach(r => {
+    block.querySelectorAll(".resourceList .resEntry").forEach(r => {
       resources.push({
         name: r.querySelector(".resName")?.value || "",
         max: +r.querySelector(".resMax")?.value || 0
@@ -725,7 +847,6 @@ const currentHP = +block.querySelector(".currentHP")?.value || maxHP;
 });
   });
 
-  // ✅ clean single call (not inside loop)
   downloadJSON(data, filename, status);
 }
 
@@ -774,7 +895,7 @@ const currentHP = +block.querySelector(".currentHP")?.value || maxHP;
 
     let resources = [];
 
-    block.querySelectorAll(".resourceList div").forEach(r => {
+    block.querySelectorAll(".resourceList .resEntry").forEach(r => {
       resources.push({
         name: r.querySelector(".resName")?.value || "",
         max: +r.querySelector(".resMax")?.value || 0
@@ -1170,14 +1291,21 @@ function addResourceInline(btn) {
   const container = block.querySelector(".resourceList");
 
   const div = document.createElement("div");
-  div.style.marginBottom = "4px";
+  div.className = "resEntry";
 
   div.innerHTML = `
-    ${name}: 
-    <input type="number" class="resCurrent" value="${max}" style="width:50px;">
-    / ${max}
-    <button onclick="this.parentElement.remove()">X</button>
-
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="min-width:60px;">${name}:</span>
+        <input type="number" class="resCurrent" value="${max}" style="width:50px;">
+        <span style="color:var(--text-muted);font-size:12px;">/ ${max}</span>
+      </div>
+      <div style="display:flex;gap:4px;">
+        <button type="button" onclick="const i=this.parentElement.parentElement.parentElement.querySelector('.resCurrent');i.value=Math.max(0,+i.value-1)" style="min-width:26px;padding:2px 6px;">-</button>
+        <button type="button" onclick="const i=this.parentElement.parentElement.parentElement.querySelector('.resCurrent');i.value=+i.value+1" style="min-width:26px;padding:2px 6px;">+</button>
+        <button type="button" onclick="this.parentElement.parentElement.parentElement.remove()" style="min-width:26px;padding:2px 6px;color:var(--danger);">X</button>
+      </div>
+    </div>
     <input type="hidden" class="resName" value="${name}">
     <input type="hidden" class="resMax" value="${max}">
   `;
@@ -1204,13 +1332,19 @@ function renderResources() {
     div.style.marginBottom = "6px";
 
     div.innerHTML = `
-      <b>${key}</b><br>
-      <button onclick="changeResource('${key}', -1)">-</button>
-      <input type="number" value="${r.current}" 
-        onchange="setResource('${key}', this.value)" 
-        style="width:50px;">
-      / ${r.max}
-      <button onclick="changeResource('${key}', 1)">+</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <b style="min-width:60px;">${key}:</b>
+          <input type="number" value="${r.current}" 
+            onchange="setResource('${key}', this.value)" 
+            style="width:50px;">
+          <span style="color:var(--text-muted);font-size:12px;">/ ${r.max}</span>
+        </div>
+        <div style="display:flex;gap:4px;">
+          <button onclick="changeResource('${key}', -1)" style="min-width:26px;padding:2px 6px;">-</button>
+          <button onclick="changeResource('${key}', 1)" style="min-width:26px;padding:2px 6px;">+</button>
+        </div>
+      </div>
     `;
 
     container.appendChild(div);
@@ -1243,22 +1377,37 @@ characterData.forEach(c => {
     div.classList.add("charBlock");
 
     div.innerHTML = `
-      Name: <input class="name" value="${c.name || ""}">
-      Initiative: <input class="init" type="number" value="${c.initiative || 0}"><br>
-Max HP: <input type="number" class="maxHP" value="${c.maxHP || 0}" style="width:70px;">
-Current HP: <input type="number" class="currentHP" value="${c.currentHP || c.maxHP || 0}" style="width:70px;"><br>
-      Portrait:
-      <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)"><br>
-      <img class="portraitPreview" style="width:60px;height:60px;border-radius:6px;display:${c.portrait ? 'block' : 'none'};" src="${c.portrait || ""}"><br>
+      <div class="setup-row">
+        <label>Name:</label>
+        <input class="name" value="${c.name || ""}">
+        <label>Initiative:</label>
+        <input class="init" type="number" value="${c.initiative || 0}">
+      </div>
+      <div class="setup-row">
+        <label>Max HP:</label>
+        <input type="number" class="maxHP" value="${c.maxHP || 0}" style="width:70px;">
+        <label>Current HP:</label>
+        <input type="number" class="currentHP" value="${c.currentHP || c.maxHP || 0}" style="width:70px;">
+      </div>
+      <div class="setup-row">
+        <label>Portrait:</label>
+        <input type="file" class="portraitInput" accept="image/*" onchange="handlePortraitUpload(this)">
+      </div>
+      <img class="portraitPreview" style="width:60px;height:60px;object-fit:cover;border-radius:6px;display:${c.portrait ? 'block' : 'none'};" src="${c.portrait || ""}">
       <input type="hidden" class="portraitData" value="${c.portrait || ""}">
 
-      Level/Class: <input type="text" class="levelClass" value="${c.levelClass || ""}"><br>
+      <div class="setup-row">
+        <label>Level/Class:</label>
+        <input type="text" class="levelClass" value="${c.levelClass || ""}">
+      </div>
 
-      <div class="box">
-        <b>Add Resource</b><br>
-        <input type="text" class="resNameInput" placeholder="Resource name">
-        <input type="number" class="resMaxInput" placeholder="Max" style="width:60px;">
-        <button onclick="addResourceInline(this)">Add</button>
+      <div class="box" style="margin:10px 0;">
+        <h3 style="margin:0 0 8px;">Add Resource</h3>
+        <div class="setup-row">
+          <input type="text" class="resNameInput" placeholder="Resource name">
+          <input type="number" class="resMaxInput" placeholder="Max" style="width:60px;">
+          <button onclick="addResourceInline(this)">Add</button>
+        </div>
       </div>
 
       <div class="resourceList"></div>
@@ -1270,12 +1419,20 @@ Current HP: <input type="number" class="currentHP" value="${c.currentHP || c.max
     if (c.resources) {
       c.resources.forEach(r => {
         const resDiv = document.createElement("div");
+        resDiv.className = "resEntry";
         resDiv.innerHTML = `
-          ${r.name}: 
-          <input type="number" class="resCurrent" value="${r.max}" style="width:50px;">
-          / ${r.max}
-          <button onclick="this.parentElement.remove()">X</button>
-
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="min-width:60px;">${r.name}:</span>
+              <input type="number" class="resCurrent" value="${r.max}" style="width:50px;">
+              <span style="color:var(--text-muted);font-size:12px;">/ ${r.max}</span>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <button type="button" onclick="const i=this.parentElement.parentElement.parentElement.querySelector('.resCurrent');i.value=Math.max(0,+i.value-1)" style="min-width:26px;padding:2px 6px;">-</button>
+              <button type="button" onclick="const i=this.parentElement.parentElement.parentElement.querySelector('.resCurrent');i.value=+i.value+1" style="min-width:26px;padding:2px 6px;">+</button>
+              <button type="button" onclick="this.parentElement.parentElement.parentElement.remove()" style="min-width:26px;padding:2px 6px;color:var(--danger);">X</button>
+            </div>
+          </div>
           <input type="hidden" class="resName" value="${r.name}">
           <input type="hidden" class="resMax" value="${r.max}">
         `;
@@ -1361,7 +1518,7 @@ document.getElementById("battleHeader").innerText =
 const maxHP = +blocks[i].querySelector(".maxHP")?.value || 0;
 const currentHP = +blocks[i].querySelector(".currentHP")?.value || maxHP;
 
-    blocks[i].querySelectorAll(".resourceList div").forEach(r => {
+    blocks[i].querySelectorAll(".resourceList .resEntry").forEach(r => {
       const resName = r.querySelector(".resName").value;
       const max = +r.querySelector(".resMax").value;
 
@@ -2408,6 +2565,7 @@ finalReport.roundsDetailed = characters.map(c => ({
   // =========================
   // 🔹 DISPLAY
   // =========================
+  document.getElementById("characterBar").innerHTML = "";
   document.getElementById("combat").classList.add("hidden");
   document.getElementById("report").classList.remove("hidden");
 localStorage.removeItem("dnd_autosave");

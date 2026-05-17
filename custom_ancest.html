@@ -348,6 +348,9 @@
 
     <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #555;">
         <div style="font-weight: bold; font-size: 13px; color: #e8c97a; margin-bottom: 6px;">Race Management</div>
+        <div style="margin-bottom: 8px;">
+            <input type="text" id="race-name" placeholder="Race name..." style="width: 100%; padding: 6px 8px; background: rgba(42,42,42,0.85); border: 1px solid #555; border-radius: 4px; color: #e0e0e0; font-size: 12px; box-sizing: border-box;">
+        </div>
         <div style="display: flex; gap: 6px; flex-wrap: wrap;">
             <button onclick="saveRace()" class="my-button" style="width: auto; padding: 6px 10px; font-size: 12px;">
                 Save
@@ -2015,6 +2018,7 @@ document.addEventListener("DOMContentLoaded", initRacialTraitTooltips);
 
 function getRaceState() {
     const state = {};
+    state.raceName = document.getElementById("race-name").value.trim();
     state.primaryRace = document.getElementById("primary-race").value;
     const selects = ["creature-type","creature-size","creature-speed","creature-darkvision","creature-abilityscores","creature-natural-armor","racial-spellcasting","dragonmark-spells"];
     selects.forEach(id => {
@@ -2054,6 +2058,9 @@ function getRaceState() {
 }
 
 function applyRaceState(state) {
+    if (state.raceName) {
+        document.getElementById("race-name").value = state.raceName;
+    }
     if (state.primaryRace) {
         const sel = document.getElementById("primary-race");
         for (let i = 0; i < sel.options.length; i++) {
@@ -2102,14 +2109,14 @@ function applyRaceState(state) {
 }
 
 function saveRace() {
-    const name = document.getElementById("primary-race").value || "unnamed";
+    const name = document.getElementById("race-name").value.trim() || document.getElementById("primary-race").value || "unnamed";
     const state = getRaceState();
     localStorage.setItem("custom_ancestry_" + name, JSON.stringify(state));
     alert("Race '" + name + "' saved!");
 }
 
 function exportRace() {
-    const name = document.getElementById("primary-race").value || "unnamed";
+    const name = document.getElementById("race-name").value.trim() || document.getElementById("primary-race").value || "unnamed";
     const state = getRaceState();
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
