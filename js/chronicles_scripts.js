@@ -7,7 +7,8 @@ const characterStatsCache = {};
 const DEBUG = true;
 
 const campaignCardImages = {
-  "the-break-of-dawn": "../assets/campaign-cards/break of dawn.webp"
+  "the-break-of-dawn": "../assets/campaign-cards/break of dawn.webp",
+  "the-boros-legionaire": "../assets/campaign-cards/boros legionaire.webp"
 };
 
 function log(...args) {
