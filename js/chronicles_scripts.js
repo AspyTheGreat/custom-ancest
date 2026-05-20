@@ -8,7 +8,8 @@ const DEBUG = true;
 
 const campaignCardImages = {
   "the-break-of-dawn": "../assets/campaign-cards/break of dawn.webp",
-  "the-boros-legionaire": "../assets/campaign-cards/boros legionaire.webp"
+  "the-boros-legionaire": "../assets/campaign-cards/boros legionaire.webp",
+  "the-dawn-cataclysm": "../assets/campaign-cards/the dawn cataclysm.webp"
 };
 
 function log(...args) {
