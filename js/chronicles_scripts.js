@@ -72,9 +72,11 @@ async function loadCampaigns() {
 
       const campaigns = Object.values(campaignMap);
 
-      campaigns.sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
+      campaigns.sort((a, b) => {
+        const aDate = Math.max(...a.battles.map(bb => new Date(bb.date||0).getTime()));
+        const bDate = Math.max(...b.battles.map(bb => new Date(bb.date||0).getTime()));
+        return bDate - aDate;
+      });
 
       container.innerHTML = `
   <h3>Campaigns</h3>
@@ -2078,15 +2080,18 @@ async function loadStatsCampaigns() {
       if (!campaignMap[b.campaignSlug]) {
         campaignMap[b.campaignSlug] = {
           name: b.campaign,
-          slug: b.campaignSlug
+          slug: b.campaignSlug,
+          latestDate: b.date
         };
+      } else if (b.date > campaignMap[b.campaignSlug].latestDate) {
+        campaignMap[b.campaignSlug].latestDate = b.date;
       }
     });
 
     const campaigns = Object.values(campaignMap);
 
     campaigns.sort((a, b) =>
-      a.name.localeCompare(b.name)
+      new Date(b.latestDate||0).getTime() - new Date(a.latestDate||0).getTime()
     );
 
     container.innerHTML = `
@@ -2783,7 +2788,9 @@ async function loadAllTimeData() {
   const campaignMap = new Map();
   battles.forEach(b => {
     if (!campaignMap.has(b.campaignSlug)) {
-      campaignMap.set(b.campaignSlug, { name: b.campaign, slug: b.campaignSlug, battles: 0 });
+      campaignMap.set(b.campaignSlug, { name: b.campaign, slug: b.campaignSlug, battles: 0, latestDate: b.date });
+    } else if (b.date > campaignMap.get(b.campaignSlug).latestDate) {
+      campaignMap.get(b.campaignSlug).latestDate = b.date;
     }
     campaignMap.get(b.campaignSlug).battles++;
   });
@@ -2873,7 +2880,7 @@ async function renderAllTimeStats() {
   const { campaigns, characters, stats, classes, battles } = data;
 
 campaigns.sort((a, b) =>
-  b.battles - a.battles
+  new Date(b.latestDate||0).getTime() - new Date(a.latestDate||0).getTime()
 );
 
 document.getElementById("alltime-campaigns").innerHTML =
@@ -2986,7 +2993,7 @@ const sortedGroups = Object.values(groupedBattles).sort(
 
 sortedGroups.forEach(group => {
   group.battles.sort((a, b) =>
-    a.name.localeCompare(b.name)
+    new Date(b.date||0).getTime() - new Date(a.date||0).getTime()
   );
 });
 

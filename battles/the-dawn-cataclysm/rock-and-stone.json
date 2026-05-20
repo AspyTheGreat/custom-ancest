@@ -1,793 +1,781 @@
-﻿{
-    "campaign":  "The Dawn Cataclysm",
-    "campaignSlug":  "the-dawn-cataclysm",
-    "battle":  "Rock and Stone!!!",
-    "battleSlug":  "rock-and-stone",
-    "players":  [
-                    {
-                        "name":  "Nova Loraphine"
-                    },
-                    {
-                        "name":  "Rosalin Zofia"
-                    },
-                    {
-                        "name":  "Bonaluria Elphyra"
-                    },
-                    {
-                        "name":  "Vincenzo Dalleoni"
-                    },
-                    {
-                        "name":  "Shan Yiren"
-                    },
-                    {
-                        "name":  "Yukran"
-                    }
-                ],
-    "partyLevel":  21,
-    "roundCount":  5,
-    "date":  "2026-05-15T23:40:00.000Z",
-    "name":  "Rock and Stone!!!",
-    "displayName":  "Rock and Stone!!!",
-    "timestamp":  "2026-05-15T23:40:00.000Z",
-    "characters":  [
-                       {
-                           "name":  "Nova Loraphine",
-                           "slug":  "nova-loraphine",
-                           "levelClass":  "Level-20 Champion Fighter, Level-1 Rogue",
-                           "initiative":  44.24,
-                           "portrait":  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCACAAIADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDxmiiigAoorU07Qp7wCWU+TCehI5b6CnGLk7ITaSuzLAycCr1vo1/cAFbcqp6M/wAv8663T9HtrcgQRAN/fbljXqVpoWl6bEi2cSvcAAyTyfM3Tse3PpWkoKHxEwbqP3TxhPAWsf2fLfyx+XbQoXeQqcAfjjP4VqaD8L5/EGmPf2usWwWN9kkZjYuh9x9Oa9k1Oy/tjw7f2qHmSFlx1PHI/PFcr4Kt0s/FM9vbEyWtxY5kK8qxBBU/qRUWcotpbG3s7dTiLv4U3tuB5eqQSk9vLZT+tYk/grUYlZldGCnBODiva9UvLOxvoZpDtSCaNpYyegyDz+HNM12DT7VYriGF4muWYPExH3R/EPbPenBXjdozknfQ8En0TULcEtAXUd0O6qBBBwRgjsa9hu7WzkzuQrITgMOMVzep6PbTOyTxq5BwHHDfnVqClsZubjucFRWtqOgT2gMkGZoh1wPmX6isms5RcXZmikmroKKKKkYUUVu+H9LEhF7OuVU/u1Pc+tVGLk7ImUlFXZNo+hBAtzeJluqRnt7n/CuhMTqwDKVyARkdQaj3DdtB561dknD2yM33oxtB9R1FdWkfdicrvLVkltHjpXe20uyFXwSs0YZTngg1xltHHJZx3Ebc/dkXPQ+v0NdV4ekiu4RYSvtkTJhJPUHkr+fNYzV1c0oT5Z2fU3NPuUilJZwhI6scL1/nXD+JNYk8PeO9QfSdlsDbr57iPKLIwyzYH8WNvbr2NegRaXAUcXESSxshDxuAVYdwc8V4be380N3fPos8kMKyymLcAxaPJ45z270UU5Sdux11LvRHYeHCms3t3pN80zTX8XnNNIuSsoOFIPUggjP0xUwtvs8ccUu8mMbGL53HHWsfwfr14muWjXNsk15Dbyi3mUYVvl53gdMZzx16e9dRoVtfa9pEWqandG4uZ8vI20KB6AAdgMVpU5opp7GKhPk1MWWLzbgDnZnqO1Z19byxsJHX5JDlHHKsPY/0rptRhW0EiBQNw2qe59T9O1ZFrdi1Z4ZYxPayn97E3Q+49D70qaTMZOLfKzFNs62v2liApbAHr71z2saGswa4tFxJ1aMdG+nvXda1pnlWKS2jGWz/AIT3X6/jmudV/nKHqOnvWjV/dkDhKnqcCRg4NFdB4h0sDN9Avf8AeqP51z9ckouLszeMlJXRYsbRr28jgXjceT6Dua7RjHaW3yrtSNcAD9BWL4XtQI5bphyTsX+Z/pV/VZcLHFnqdxroprkhzGE3zT5SwjBpFkB4defrjmnrLvGM/dNZ32ryYwAwY46D1H/1v5VLbSFHZW+8Ru/H/OKyUi2jatLhYVbccL3rYtHLWyXULnhsMOhRu3/665QOSQSc1dXUls7OSMzxRtOpiAlfaDnvn2q7mUo3OvfxVqWt2F3pttZPfrEMTPA+HkTHzKO2c/TPI+vAeItd017EW2l2cyrMwFxLIgUpj+BRzg5659OK6G11LSNB8PLBZ6fP/bRy0N9brgD2DDPmKRkEcg1x1+lzdO902zZcNvfBBy4HPT680e05U4rS500+zOj0C80uzsrrUW1ICJbR1zj5w5IAUL1LHt24JzxWx8P/ABki+G/7IMQF1aM2zfwGjJyD7kE4P1FcTY+Eby7iE6Wkksb8KYzlWP1rY8I2tzpmrzWl8BGsy/ZmyeVzhgT6HgY9c0N3tz7FuMuXRnS3l21xK0ksnqWY9hWPHe+fLICoUZyoHYelLfO4fym4ZSQw9xWZHJslz71dzz4x01Os0/WRCqW8yp9lZmD/AC9z/EfXjAx6VmeI9EbTrgyRKRETxnqhH8J/Wq0UzIu5GIZXDKR2NdJpsjappM0FzvkKDazkEkqehz6g/wBK6Ka9pHlZ6VC1SHI/kceyB0KOuVYYIPcGuI1GzNjeyQc7QcqfUHpXfXkTW948DDBQAfXA61z3ia0Mlul0o5iO1z7Hp+v86wqxvG73RyRTp1HFl7R4vJ0q3XuV3H8eap37eZeP/skKK1oF2QRoP4UA/SsWY7rmU+rn+dKrpFImnrJsGTMwP+1T03GRcsTz3q7a6VPeP8kkCEnIEkmCfwqW60LUbBRJLBujByXjO4D646VjyS3sdDi7XsQxnjFRaqiSaeoZCzeYMYPOO9Wra1klUynbHCvWVzhR+NUry7snlK2zG7dRgEfLGvuT3/D86tRutSYQbdyWDXINFtoBBokD7WLP9ouHIkPsqEAfWl0y/Oq6n50lpCbmYLHFDGCkaKOg65x365J61z2oOS3Ll3P3j2+gHYUWdw8LBkdgR3XqKScIzTmtDWyTPoA6NZWXhVZryxhgYASG4sScqwORuHUjj3x7day7fTdL8e2UepafYpZ6rb53gEiJ1B4VyOufUcg8/XzlL7xPeWmdNur0wx8naxGzP9arjX9dtX8yS+aDK/KYsKj+p+Xgk9Se9OTpt7aen/BJVrmtfTyfaZBJAkEisVZUJIBHHeqO7BB9Kkab7VEl1yfM+9k9G7/41Ee9VJWdjCa5ZNF2Btpx681t6FcT/bY4hNthJO9Xl2rjoTycZrBj++PYYqeIhpgrPsBOC2M496unLlka0p8rNjxLa4kS4GNw+ViO/oa5y9h+0WM8OMl42A+uMj9QK63VdklmuHRxJDkyRnKOQOo7jkcg1zUY3SKv94gV1V4q9+48YkqikiKBt9vE/wDeQH9Krw6ZJ57SyQyOpYsMcD86bo8vnaVbt3C7T+HFaH26SCPZy2OmegFc9lJJszoJc7TJFisIYy89qqqvJZ3JrLv/ABnLGpt9Ji8pBx5jkn8hVLWL6e6YRFuB2HSszyQPvc+wqJ1GtInW5diSM3mtXSrc3LyBSpKk8Bc4OB0GBVi/tYtK3W8coeSM4JHQ+/4jFS6JGFuXmYfJEu5ucDj1Pp/OqFwxuppJMAKzE5rFSa+ZClqyi+ZHLHvVrTbSSeU4U7T7UJArtsYsMjjb1J/wresXOkon2iFpYyufMjUEg9u/zD34/HFQ7N2YpXtoMhGpRxy6at9LFaTLmREON+OzHqR7Vi3PnW0LQhiYQwIB7E9cV2uk31oL9Lm5hiuLeRclVfOE6ckdDn9aydXm06XOyIRwGMZXdyegJHqc88U3FcvMmRG9ytoWuQ6eCtxbLNC4wysOo9K6uGLQdb04Gy1GDTbhQGNvcPhZWPXBPTHAGT69K4GE+SzKuXiPGG7itC3trObK7Dz82AxGKuU5SSXY0m7rU6GSxubd2Bi3lTz5Tqw+uc4x7021jV7mMXDGNHPJjw5/Dsa5240ny0MlvIwU/eUnoK67wistr5kK7FZ0PG1Tn2yRkZA7fyzV0lzSSZEKcZWszS1VBDbbnjVQiiKOGNt3lA5I3N6nk+59K5+M7ZFb0INdh4l1m0n0lIbaKOIsm0BFx8hIPI9eP/1Vw19N9nsbibOCkbEfXGB+pFddVtbixitUUTH8L3IKS2rHkHev8j/StyUwqu6Zto6bj2riLG6ayvI5152nkeo7iu1YR3dtwQ0ci5B/lXNRleNuxlL3KikZF15MlwfJcuoHLEY5qsw3NtHQVM0ZhZoyMFTzSRpwaxe9zpb6kjRMNICqI8POFkOTuHHy8dOeah8knAxgCo5kuElCKxzv3Be3TjPp35q0VZIS8xDFR0HTP9alCbsVowDcMEw3bPatSTT723txdQxTRsAGZifvDqPl7jrWdp4X7bH5nK7sketenmH+0NPW6hTzGjj2yxqOSg5BA7kc8elaRcHLllsbwjdHlrX8izvLDEsBcfMkPRj7gn/9VRC4lll3sqyNjEe4fc+grQ1axFtevhDLE/KmM9QehB9O1VrGLdch2ACx8nHTjtUzpRi9SbO9gijefrlmX5TntjtWhbwCLOOSRyai02QTSXA7+ZurRjiJNStjCbd7AgJUVqaZaTXFwBHGzDHLD+D0bPbBqC3gxjIyB1rZnhtbO0IjM2X+Zg+F2j0OOuK68PScpc3YqlTu79jJvZfMdcgb8ZYjua5rxNdmO3jtVPMh3OPYdP1/lW5LIPmkc4HJJPYVw+o3hvr2Sc/dJwo9B2pYias7dTnT9pUcitW74e1QRkWU7YVj+7Y9j6VhUVxxk4u6NZRUlZnc3NpHP8zHawH3gM/p3qssGwYjDL/tsBuP0HRf1P0qlo+uhwtteNhuiSHv7H/Gt0oGrpfvLmiZRk4e6zOWBVPCgc5/Gql7IM7QcKnJPvWjdyLCCin5scn0rnLyfzWKL90dfc1klZXN4rqxtvdkXuTwp4UelejeDrx9Uniso7x7Q7lYTKuWGDyAPp/k15cwxg/jXTeGNSNreQTIcbGB/wAaiNufXqU5NR0NTxOrad4gutNuYQYpWPMZx5bZ+8voD1K1g3DrZWmwEbiPmx/Kur+JZjn8QLdRMrLPErHac4OOR9RXn97IZZiM5ycmnUbb5Rxm+U0NCkK3kJPSbcjfnkV11vblmwBkk4ArkNOAjS2k/uzA/rXpEFnHZqLi8fygOUT+I/hWtOm5MXJzNC6ZA9uWmZFKMhG1h1Hr7YI4NZmq3qXE7JBkRZzyck/j3/rTtT1d7wtHFlIieeeW+tclrGurCGt7Rg0nRpB0X6e9dk6sacOWO35mdWpdezp7dWQ+IdUBzYwN/wBdWH/oP+Nc/QTk5NFeZKTk7sIxUVZBRRRUlBWpp2u3FkBHL++hHYnlfoay6Kak4u6E0nozrTNY6vERBOI5WHQ8N+Xf8KybrTLm0B3xll/vryP/AK1ZHSrlvq9/bABLhio/hf5h+ta+0UviJSlHZkb9Cfwq3peUcMJUGTwD2Pv/AJ7UyTVVuP8Aj4sbdz/eUFD+hqJbyFM+Xbsueo8zP9Kzlboyr33R1euy6dN4d0+Wyuk88IY7iJiS3mA/f+pBH147iuUdFW7ZGJULwx6kHvTvt8R27rc5BzxJjJ/KpF1cRNuhsrdX/vuC5/U07pu7DbY6HR5mtLaN9OtFEueLm6AZl56qvQfXk+9WtR1qOLL3lzukI5Gcs34VyE+sX9wCHuGCnsnyj9KpEknJrV1rKyFLmno3oa2o6/PdgxQAwxHrg/M31NZNFFYyk5O7GopKyCiiipGf/9k=",
-                           "stats":  {
-                                         "hp":  {
-                                                    "current":  71,
-                                                    "max":  257
-                                                },
-                                         "damage":  2118,
-                                         "healing":  0,
-                                         "cc":  0,
-                                         "conditions":  [
-
-                                                        ],
-                                         "actions":  {
-                                                         "attack":  6,
-                                                         "spell":  0,
-                                                         "move":  0,
-                                                         "misc":  0,
-                                                         "none":  0
-                                                     },
-                                         "bonusActions":  {
-                                                              "attack":  0,
-                                                              "spell":  0,
-                                                              "move":  0,
-                                                              "misc":  1,
-                                                              "none":  0
-                                                          },
-                                         "reactions":  {
-                                                           "attack":  0,
-                                                           "spell":  0,
-                                                           "move":  0,
-                                                           "misc":  0,
-                                                           "none":  0
-                                                       },
-                                         "damageTaken":  186,
-                                         "healingReceived":  0,
-                                         "nat20":  2,
-                                         "nat1":  0,
-                                         "attacks":  {
-                                                         "total":  42,
-                                                         "hit":  39
-                                                     },
-                                         "saves":  {
-                                                       "forced":  0,
-                                                       "succeeded":  0
-                                                   },
-                                         "defense":  {
-                                                         "attacksTaken":  5,
-                                                         "attacksDodged":  1,
-                                                         "savesMade":  3,
-                                                         "savesSucceeded":  2
-                                                     }
-                                     },
-                           "rounds":  [
-                                          {
-                                              "round":  1,
-                                              "damage":  423.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  2,
-                                              "damage":  423.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  3,
-                                              "damage":  423.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  4,
-                                              "damage":  423.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  5,
-                                              "damage":  423.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          }
-                                      ]
-                       },
-                       {
-                           "name":  "Bonaluria Elphyra",
-                           "slug":  "bonaluria-elphyra",
-                           "levelClass":  "Level-20 School of Scribes Wizard, Level-1 Tempest Domain Cleric",
-                           "initiative":  25.2,
-                           "portrait":  "data:image/jpeg;base64,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",
-                           "stats":  {
-                                         "hp":  {
-                                                    "current":  63,
-                                                    "max":  194
-                                                },
-                                         "damage":  398,
-                                         "healing":  0,
-                                         "cc":  3,
-                                         "conditions":  [
-
-                                                        ],
-                                         "actions":  {
-                                                         "attack":  0,
-                                                         "spell":  5,
-                                                         "move":  0,
-                                                         "misc":  0,
-                                                         "none":  0
-                                                     },
-                                         "bonusActions":  {
-                                                              "attack":  0,
-                                                              "spell":  0,
-                                                              "move":  1,
-                                                              "misc":  1,
-                                                              "none":  0
-                                                          },
-                                         "reactions":  {
-                                                           "attack":  0,
-                                                           "spell":  1,
-                                                           "move":  0,
-                                                           "misc":  0,
-                                                           "none":  0
-                                                       },
-                                         "damageTaken":  131,
-                                         "healingReceived":  0,
-                                         "nat20":  0,
-                                         "nat1":  0,
-                                         "attacks":  {
-                                                         "total":  0,
-                                                         "hit":  0
-                                                     },
-                                         "saves":  {
-                                                       "forced":  7,
-                                                       "succeeded":  0
-                                                   },
-                                         "defense":  {
-                                                         "attacksTaken":  2,
-                                                         "attacksDodged":  1,
-                                                         "savesMade":  3,
-                                                         "savesSucceeded":  1
-                                                     },
-                                         "spellSlotsExpended":  {
-                                                                    "4":  2,
-                                                                    "5":  2,
-                                                                    "9":  1
-                                                                }
-                                     },
-                           "rounds":  [
-                                          {
-                                              "round":  1,
-                                              "damage":  79.6,
-                                              "healing":  0,
-                                              "cc":  0.6
-                                          },
-                                          {
-                                              "round":  2,
-                                              "damage":  79.6,
-                                              "healing":  0,
-                                              "cc":  0.6
-                                          },
-                                          {
-                                              "round":  3,
-                                              "damage":  79.6,
-                                              "healing":  0,
-                                              "cc":  0.6
-                                          },
-                                          {
-                                              "round":  4,
-                                              "damage":  79.6,
-                                              "healing":  0,
-                                              "cc":  0.6
-                                          },
-                                          {
-                                              "round":  5,
-                                              "damage":  79.6,
-                                              "healing":  0,
-                                              "cc":  0.6
-                                          }
-                                      ]
-                       },
-                       {
-                           "name":  "Rosalin Zofia",
-                           "slug":  "rosalin-zofia",
-                           "levelClass":  "Level-20 Arcane Soul Sorcerer, Level-1 Druid",
-                           "initiative":  26.2,
-                           "portrait":  "data:image/jpeg;base64,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",
-                           "stats":  {
-                                         "hp":  {
-                                                    "current":  134,
-                                                    "max":  159
-                                                },
-                                         "damage":  73,
-                                         "healing":  0,
-                                         "cc":  6,
-                                         "conditions":  [
-
-                                                        ],
-                                         "actions":  {
-                                                         "attack":  0,
-                                                         "spell":  4,
-                                                         "move":  0,
-                                                         "misc":  1,
-                                                         "none":  0
-                                                     },
-                                         "bonusActions":  {
-                                                              "attack":  4,
-                                                              "spell":  0,
-                                                              "move":  0,
-                                                              "misc":  1,
-                                                              "none":  0
-                                                          },
-                                         "reactions":  {
-                                                           "attack":  0,
-                                                           "spell":  4,
-                                                           "move":  0,
-                                                           "misc":  1,
-                                                           "none":  0
-                                                       },
-                                         "damageTaken":  25,
-                                         "healingReceived":  0,
-                                         "nat20":  0,
-                                         "nat1":  2,
-                                         "attacks":  {
-                                                         "total":  4,
-                                                         "hit":  3
-                                                     },
-                                         "saves":  {
-                                                       "forced":  2,
-                                                       "succeeded":  2
-                                                   },
-                                         "defense":  {
-                                                         "attacksTaken":  0,
-                                                         "attacksDodged":  0,
-                                                         "savesMade":  5,
-                                                         "savesSucceeded":  2
-                                                     }
-                                     },
-                           "rounds":  [
-                                          {
-                                              "round":  1,
-                                              "damage":  14.6,
-                                              "healing":  0,
-                                              "cc":  1.2
-                                          },
-                                          {
-                                              "round":  2,
-                                              "damage":  14.6,
-                                              "healing":  0,
-                                              "cc":  1.2
-                                          },
-                                          {
-                                              "round":  3,
-                                              "damage":  14.6,
-                                              "healing":  0,
-                                              "cc":  1.2
-                                          },
-                                          {
-                                              "round":  4,
-                                              "damage":  14.6,
-                                              "healing":  0,
-                                              "cc":  1.2
-                                          },
-                                          {
-                                              "round":  5,
-                                              "damage":  14.6,
-                                              "healing":  0,
-                                              "cc":  1.2
-                                          }
-                                      ]
-                       },
-                       {
-                           "name":  "Vincenzo Dalleoni",
-                           "slug":  "vincenzo-dalleoni",
-                           "levelClass":  "Level-20 Battlesmith Specialist Artificer, Level-1 Fighter",
-                           "initiative":  24,
-                           "portrait":  "data:image/jpeg;base64,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",
-                           "stats":  {
-                                         "hp":  {
-                                                    "current":  32,
-                                                    "max":  216
-                                                },
-                                         "damage":  813,
-                                         "healing":  0,
-                                         "cc":  0,
-                                         "conditions":  [
-
-                                                        ],
-                                         "actions":  {
-                                                         "attack":  4,
-                                                         "spell":  1,
-                                                         "move":  0,
-                                                         "misc":  0,
-                                                         "none":  0
-                                                     },
-                                         "bonusActions":  {
-                                                              "attack":  0,
-                                                              "spell":  1,
-                                                              "move":  0,
-                                                              "misc":  0,
-                                                              "none":  0
-                                                          },
-                                         "reactions":  {
-                                                           "attack":  0,
-                                                           "spell":  0,
-                                                           "move":  0,
-                                                           "misc":  1,
-                                                           "none":  0
-                                                       },
-                                         "damageTaken":  184,
-                                         "healingReceived":  0,
-                                         "nat20":  3,
-                                         "nat1":  0,
-                                         "attacks":  {
-                                                         "total":  14,
-                                                         "hit":  13
-                                                     },
-                                         "saves":  {
-                                                       "forced":  0,
-                                                       "succeeded":  0
-                                                   },
-                                         "defense":  {
-                                                         "attacksTaken":  1,
-                                                         "attacksDodged":  1,
-                                                         "savesMade":  8,
-                                                         "savesSucceeded":  7
-                                                     }
-                                     },
-                           "rounds":  [
-                                          {
-                                              "round":  1,
-                                              "damage":  162.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  2,
-                                              "damage":  162.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  3,
-                                              "damage":  162.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  4,
-                                              "damage":  162.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  5,
-                                              "damage":  162.6,
-                                              "healing":  0,
-                                              "cc":  0
-                                          }
-                                      ]
-                       },
-                       {
-                           "name":  "Yukran",
-                           "slug":  "yukran",
-                           "levelClass":  "Level-8 Oathbreaker Paladin, Level-8 Hexblade Patron Warlock, Level-5 College of Whispers Bard",
-                           "initiative":  18.2,
-                           "portrait":  "data:image/jpeg;base64,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",
-                           "stats":  {
-                                         "hp":  {
-                                                    "current":  34,
-                                                    "max":  250
-                                                },
-                                         "damage":  193,
-                                         "healing":  136,
-                                         "cc":  0,
-                                         "conditions":  [
-
-                                                        ],
-                                         "actions":  {
-                                                         "attack":  1,
-                                                         "spell":  1,
-                                                         "move":  0,
-                                                         "misc":  1,
-                                                         "none":  0
-                                                     },
-                                         "bonusActions":  {
-                                                              "attack":  0,
-                                                              "spell":  0,
-                                                              "move":  0,
-                                                              "misc":  1,
-                                                              "none":  0
-                                                          },
-                                         "reactions":  {
-                                                           "attack":  0,
-                                                           "spell":  1,
-                                                           "move":  0,
-                                                           "misc":  0,
-                                                           "none":  0
-                                                       },
-                                         "damageTaken":  216,
-                                         "healingReceived":  136,
-                                         "nat20":  0,
-                                         "nat1":  1,
-                                         "attacks":  {
-                                                         "total":  2,
-                                                         "hit":  1
-                                                     },
-                                         "saves":  {
-                                                       "forced":  0,
-                                                       "succeeded":  0
-                                                   },
-                                         "defense":  {
-                                                         "attacksTaken":  9,
-                                                         "attacksDodged":  5,
-                                                         "savesMade":  10,
-                                                         "savesSucceeded":  4
-                                                     }
-                                     },
-                           "rounds":  [
-                                          {
-                                              "round":  1,
-                                              "damage":  38.6,
-                                              "healing":  27.2,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  2,
-                                              "damage":  38.6,
-                                              "healing":  27.2,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  3,
-                                              "damage":  38.6,
-                                              "healing":  27.2,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  4,
-                                              "damage":  38.6,
-                                              "healing":  27.2,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  5,
-                                              "damage":  38.6,
-                                              "healing":  27.2,
-                                              "cc":  0
-                                          }
-                                      ]
-                       },
-                       {
-                           "name":  "Shan Yiren",
-                           "slug":  "shan-yiren",
-                           "levelClass":  "Level-20 Circle of the Moon Druid, Level-1 Life Domain Cleric",
-                           "initiative":  22,
-                           "portrait":  "data:image/jpeg;base64,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",
-                           "stats":  {
-                                         "hp":  {
-                                                    "current":  216,
-                                                    "max":  216
-                                                },
-                                         "damage":  162,
-                                         "healing":  176,
-                                         "cc":  0,
-                                         "conditions":  [
-
-                                                        ],
-                                         "actions":  {
-                                                         "attack":  3,
-                                                         "spell":  2,
-                                                         "move":  0,
-                                                         "misc":  0,
-                                                         "none":  0
-                                                     },
-                                         "bonusActions":  {
-                                                              "attack":  0,
-                                                              "spell":  0,
-                                                              "move":  0,
-                                                              "misc":  0,
-                                                              "none":  0
-                                                          },
-                                         "reactions":  {
-                                                           "attack":  0,
-                                                           "spell":  0,
-                                                           "move":  0,
-                                                           "misc":  0,
-                                                           "none":  0
-                                                       },
-                                         "damageTaken":  0,
-                                         "healingReceived":  176,
-                                         "nat20":  1,
-                                         "nat1":  0,
-                                         "attacks":  {
-                                                         "total":  9,
-                                                         "hit":  5
-                                                     },
-                                         "saves":  {
-                                                       "forced":  1,
-                                                       "succeeded":  1
-                                                   },
-                                         "defense":  {
-                                                         "attacksTaken":  6,
-                                                         "attacksDodged":  1,
-                                                         "savesMade":  7,
-                                                         "savesSucceeded":  3
-                                                     }
-                                     },
-                           "rounds":  [
-                                          {
-                                              "round":  1,
-                                              "damage":  32.4,
-                                              "healing":  35.2,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  2,
-                                              "damage":  32.4,
-                                              "healing":  35.2,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  3,
-                                              "damage":  32.4,
-                                              "healing":  35.2,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  4,
-                                              "damage":  32.4,
-                                              "healing":  35.2,
-                                              "cc":  0
-                                          },
-                                          {
-                                              "round":  5,
-                                              "damage":  32.4,
-                                              "healing":  35.2,
-                                              "cc":  0
-                                          }
-                                      ]
-                       }
-                   ],
-    "roundSummaries":  [
-                           {
-                               "round":  1,
-                               "players":  [
-                                               {
-                                                   "name":  "Nova Loraphine",
-                                                   "damage":  423.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Bonaluria Elphyra",
-                                                   "damage":  79.6,
-                                                   "healing":  0,
-                                                   "cc":  0.6
-                                               },
-                                               {
-                                                   "name":  "Rosalin Zofia",
-                                                   "damage":  14.6,
-                                                   "healing":  0,
-                                                   "cc":  1.2
-                                               },
-                                               {
-                                                   "name":  "Vincenzo Dalleoni",
-                                                   "damage":  162.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Yukran",
-                                                   "damage":  38.6,
-                                                   "healing":  27.2,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Shan Yiren",
-                                                   "damage":  32.4,
-                                                   "healing":  35.2,
-                                                   "cc":  0
-                                               }
-                                           ]
-                           },
-                           {
-                               "round":  2,
-                               "players":  [
-                                               {
-                                                   "name":  "Nova Loraphine",
-                                                   "damage":  423.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Bonaluria Elphyra",
-                                                   "damage":  79.6,
-                                                   "healing":  0,
-                                                   "cc":  0.6
-                                               },
-                                               {
-                                                   "name":  "Rosalin Zofia",
-                                                   "damage":  14.6,
-                                                   "healing":  0,
-                                                   "cc":  1.2
-                                               },
-                                               {
-                                                   "name":  "Vincenzo Dalleoni",
-                                                   "damage":  162.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Yukran",
-                                                   "damage":  38.6,
-                                                   "healing":  27.2,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Shan Yiren",
-                                                   "damage":  32.4,
-                                                   "healing":  35.2,
-                                                   "cc":  0
-                                               }
-                                           ]
-                           },
-                           {
-                               "round":  3,
-                               "players":  [
-                                               {
-                                                   "name":  "Nova Loraphine",
-                                                   "damage":  423.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Bonaluria Elphyra",
-                                                   "damage":  79.6,
-                                                   "healing":  0,
-                                                   "cc":  0.6
-                                               },
-                                               {
-                                                   "name":  "Rosalin Zofia",
-                                                   "damage":  14.6,
-                                                   "healing":  0,
-                                                   "cc":  1.2
-                                               },
-                                               {
-                                                   "name":  "Vincenzo Dalleoni",
-                                                   "damage":  162.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Yukran",
-                                                   "damage":  38.6,
-                                                   "healing":  27.2,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Shan Yiren",
-                                                   "damage":  32.4,
-                                                   "healing":  35.2,
-                                                   "cc":  0
-                                               }
-                                           ]
-                           },
-                           {
-                               "round":  4,
-                               "players":  [
-                                               {
-                                                   "name":  "Nova Loraphine",
-                                                   "damage":  423.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Bonaluria Elphyra",
-                                                   "damage":  79.6,
-                                                   "healing":  0,
-                                                   "cc":  0.6
-                                               },
-                                               {
-                                                   "name":  "Rosalin Zofia",
-                                                   "damage":  14.6,
-                                                   "healing":  0,
-                                                   "cc":  1.2
-                                               },
-                                               {
-                                                   "name":  "Vincenzo Dalleoni",
-                                                   "damage":  162.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Yukran",
-                                                   "damage":  38.6,
-                                                   "healing":  27.2,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Shan Yiren",
-                                                   "damage":  32.4,
-                                                   "healing":  35.2,
-                                                   "cc":  0
-                                               }
-                                           ]
-                           },
-                           {
-                               "round":  5,
-                               "players":  [
-                                               {
-                                                   "name":  "Nova Loraphine",
-                                                   "damage":  423.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Bonaluria Elphyra",
-                                                   "damage":  79.6,
-                                                   "healing":  0,
-                                                   "cc":  0.6
-                                               },
-                                               {
-                                                   "name":  "Rosalin Zofia",
-                                                   "damage":  14.6,
-                                                   "healing":  0,
-                                                   "cc":  1.2
-                                               },
-                                               {
-                                                   "name":  "Vincenzo Dalleoni",
-                                                   "damage":  162.6,
-                                                   "healing":  0,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Yukran",
-                                                   "damage":  38.6,
-                                                   "healing":  27.2,
-                                                   "cc":  0
-                                               },
-                                               {
-                                                   "name":  "Shan Yiren",
-                                                   "damage":  32.4,
-                                                   "healing":  35.2,
-                                                   "cc":  0
-                                               }
-                                           ]
-                           }
-                       ],
-    "partyTotals":  {
-                        "damage":  3757,
-                        "healing":  312,
-                        "cc":  9
-                    },
-    "campaignName":  "The Dawn Cataclysm",
-    "startImage":  "/assets/previous_battles%20placeholder%202.webp"
+{
+    "campaign": "The Dawn Cataclysm",
+    "campaignSlug": "the-dawn-cataclysm",
+    "battle": "Rock and Stone!!!",
+    "battleSlug": "rock-and-stone",
+    "players": [
+        {
+            "name": "Nova Loraphine"
+        },
+        {
+            "name": "Rosalin Zofia"
+        },
+        {
+            "name": "Bonaluria Elphyra"
+        },
+        {
+            "name": "Vincenzo Dalleoni"
+        },
+        {
+            "name": "Shan Yiren"
+        },
+        {
+            "name": "Yukran"
+        }
+    ],
+    "partyLevel": 21,
+    "roundCount": 5,
+    "date": "2026-05-15T23:40:00.000Z",
+    "name": "Rock and Stone!!!",
+    "displayName": "Rock and Stone!!!",
+    "timestamp": "2023-11-05T00:00:00.000Z",
+    "characters": [
+        {
+            "name": "Nova Loraphine",
+            "slug": "nova-loraphine",
+            "levelClass": "Level-20 Champion Fighter, Level-1 Rogue",
+            "initiative": 44.24,
+            "portrait": "data:image/jpeg;base64,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",
+            "stats": {
+                "hp": {
+                    "current": 71,
+                    "max": 257
+                },
+                "damage": 2118,
+                "healing": 0,
+                "cc": 0,
+                "conditions": [],
+                "actions": {
+                    "attack": 6,
+                    "spell": 0,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "bonusActions": {
+                    "attack": 0,
+                    "spell": 0,
+                    "move": 0,
+                    "misc": 1,
+                    "none": 0
+                },
+                "reactions": {
+                    "attack": 0,
+                    "spell": 0,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "damageTaken": 186,
+                "healingReceived": 0,
+                "nat20": 2,
+                "nat1": 0,
+                "attacks": {
+                    "total": 42,
+                    "hit": 39
+                },
+                "saves": {
+                    "forced": 0,
+                    "succeeded": 0
+                },
+                "defense": {
+                    "attacksTaken": 5,
+                    "attacksDodged": 1,
+                    "savesMade": 3,
+                    "savesSucceeded": 2
+                }
+            },
+            "rounds": [
+                {
+                    "round": 1,
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "round": 2,
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "round": 3,
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "round": 4,
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "round": 5,
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                }
+            ]
+        },
+        {
+            "name": "Bonaluria Elphyra",
+            "slug": "bonaluria-elphyra",
+            "levelClass": "Level-20 School of Scribes Wizard, Level-1 Tempest Domain Cleric",
+            "initiative": 25.2,
+            "portrait": "data:image/jpeg;base64,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",
+            "stats": {
+                "hp": {
+                    "current": 63,
+                    "max": 194
+                },
+                "damage": 398,
+                "healing": 0,
+                "cc": 3,
+                "conditions": [],
+                "actions": {
+                    "attack": 0,
+                    "spell": 5,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "bonusActions": {
+                    "attack": 0,
+                    "spell": 0,
+                    "move": 1,
+                    "misc": 1,
+                    "none": 0
+                },
+                "reactions": {
+                    "attack": 0,
+                    "spell": 1,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "damageTaken": 131,
+                "healingReceived": 0,
+                "nat20": 0,
+                "nat1": 0,
+                "attacks": {
+                    "total": 0,
+                    "hit": 0
+                },
+                "saves": {
+                    "forced": 7,
+                    "succeeded": 0
+                },
+                "defense": {
+                    "attacksTaken": 2,
+                    "attacksDodged": 1,
+                    "savesMade": 3,
+                    "savesSucceeded": 1
+                },
+                "spellSlotsExpended": {
+                    "4": 2,
+                    "5": 2,
+                    "9": 1
+                }
+            },
+            "rounds": [
+                {
+                    "round": 1,
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                },
+                {
+                    "round": 2,
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                },
+                {
+                    "round": 3,
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                },
+                {
+                    "round": 4,
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                },
+                {
+                    "round": 5,
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                }
+            ]
+        },
+        {
+            "name": "Rosalin Zofia",
+            "slug": "rosalin-zofia",
+            "levelClass": "Level-20 Arcane Soul Sorcerer, Level-1 Druid",
+            "initiative": 26.2,
+            "portrait": "data:image/jpeg;base64,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",
+            "stats": {
+                "hp": {
+                    "current": 134,
+                    "max": 159
+                },
+                "damage": 73,
+                "healing": 0,
+                "cc": 6,
+                "conditions": [],
+                "actions": {
+                    "attack": 0,
+                    "spell": 4,
+                    "move": 0,
+                    "misc": 1,
+                    "none": 0
+                },
+                "bonusActions": {
+                    "attack": 4,
+                    "spell": 0,
+                    "move": 0,
+                    "misc": 1,
+                    "none": 0
+                },
+                "reactions": {
+                    "attack": 0,
+                    "spell": 4,
+                    "move": 0,
+                    "misc": 1,
+                    "none": 0
+                },
+                "damageTaken": 25,
+                "healingReceived": 0,
+                "nat20": 0,
+                "nat1": 2,
+                "attacks": {
+                    "total": 4,
+                    "hit": 3
+                },
+                "saves": {
+                    "forced": 2,
+                    "succeeded": 2
+                },
+                "defense": {
+                    "attacksTaken": 0,
+                    "attacksDodged": 0,
+                    "savesMade": 5,
+                    "savesSucceeded": 2
+                }
+            },
+            "rounds": [
+                {
+                    "round": 1,
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                },
+                {
+                    "round": 2,
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                },
+                {
+                    "round": 3,
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                },
+                {
+                    "round": 4,
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                },
+                {
+                    "round": 5,
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                }
+            ]
+        },
+        {
+            "name": "Vincenzo Dalleoni",
+            "slug": "vincenzo-dalleoni",
+            "levelClass": "Level-20 Battlesmith Specialist Artificer, Level-1 Fighter",
+            "initiative": 24,
+            "portrait": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCACAAIADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDxmiiigAop0cbyyLHGpZmOAB3rodP0OKACS6Alk7J/Cv8AjWc6kYLU0hTlN6GPaaXdXmGjj2p/fbgf/XrXt/D1tHzPI0p9F+Uf41qy+YkTFIy7KvyoO/tVO7nmk09prfMDwkPIswKkAdsd81yurOe2h1KlCG+pLHY2cJAS2iB7ZGSfzqYMiyCIFVcruCgY49a5+fUbjUru1FqjJKnYdNx6n6YqzJaapJqf2vMKFMYO75cen+fWpdJ/aZSqL7KNfejyNHlWZQCykZxnpUMllZTlg9vExBwcDBH5VnR2OrW1zLdqYpJHByu7r9B7U23kutOsZrp5IpBOcoS2Tv78ev8AhR7P+Vhz/wAyJbjw9bvzBI0R9G+Yf41kXel3VnlpI9yf315H/wBatO01qOHTN07GWfe2F7nvk+3NbEDGaCOQDh0DEfUVftKlP4tiPZ06nw7nE0V0eoaHFPmS1Aik7p/C3+Fc9JG8UjRyKVZTgg9q6YVIzWhzTpyg9RtFFFaGYU6ON5pFjjUszHAA702uj0PTxBCLqQfvJB8oP8K//XrOpNQjc0pwc5WLOm6alhF0DTMPmf09hVwSwidLdpMTOCVUg8j61Qv7q3e1miS7WOdOQNxUhh2qDRpVvXWWZ3kntxwXccZ9Bjn8a4nFyTnI7lKMWoRLOrGdrmSGNyu+2XbzxneM/oasQ2cn2L7JfXD3QLAkMTgY7Z61Ydl+8+OOmaoXGqOl0kEUOd3RnOM/SlFyklGJbUYvmZZtrKCyQrCuAWJ6ZP0zVi2MaSB5AGwPlU+vrWX9ul2qr4Lj+JRupJLp96EKwCHPAzu/LpTdKUtxRqwjsbks6TQtlEUjoVrLn06K6jliZyqySLJ8oHynHOPrUKXsrbmbDIOAWOMnP8qniuS1w9oT8/lb9+O5OOlSoShsVKcam5W1DQI7iW3WySOJORI2eQO3Hc1No8U1vdXlrJOZREqKpPGBjpjtVSy1K9N41uYpJ0QZLOoRwP5VrQzxzL5kZ5OCQRhh9aqbmo8stTOCg5c0dBvnRtdS2yq5kiALNjjn0qpqWmx38XZZlHyt6+xqDXb66h/cptZJVPIQ7l/HNLp99ZpBb2kcjPKRztU/ePJ5oUJRSmglKLk4M5uSN4ZGjkUqynBB7U2uj1zTxPCbqMfvIx82P4l/+tXOV205qcbnDUg4SsW9LtPtl8kbD5B8z/QV1F1Oba3aYRGQJ1VTjA9azvD0Hl2bzkcyNgfQf/Xp+r3V9ZgPEEMDDBJTJB9DXLUfPU5Tpprkp8xk3kq6jd+fDbSYwPMA5z710MMFvbjfFCIyVAOBz9Kz9Itp7YM0gQJIAwx1Bq3JdIsmG4UcZ96dR392OyKpqy5pbssb88nr6elZc9ws85RygAbhcck1dk5Xnvx9ayLtDHKTEgjXoPU0UkrjrN2J4z5SlkChmJ6jj64/Cj7QUcBi2TwSew/+vTtNubceY09vJOhQqyoeQeMHPbpV1tNjntXYkPOANojjIwewzwDx1OPetW0nqYxi5LQzHlGBJsDMx+Q56Dt+NaEatHunwZJ5FUbcgFR+NSX+kNb6ShmRY5iyBQvXBGTn8xQIGa36uBjb5gOD+dZTmmtDaEHFtMlt2njhYSCMy84YcbvTPvRawG3gCs26Q/M792Y9ajtoo4YtkYOAcksckmpFkOc9R7Vk+pqulyXfznjNc6ouNHuTdSW6PvJCnPA/Ktm6vIocM7hRnA45NVdUs/tUav54jEYJ+bpV03bR7Mzqq+q3RftJZZ7ZJZo1QuM7R6e9cxqlp9jvnjUfIfmT6GtjRXvrrdNNcs0S8BDglj/hSeIbffaJOB80bYP0P/16qm+SpymdRc9PmL9hF5Vhbx45CAn6nmsTVYLgXqwveGRJDgBn+79RXQMimMxtwu3BwccfWuXmtLY6kIILnzI2PLentnvSou8mx1laKRtQI9vaiNn3sgxmqV1HK7xPEc7G5Unr71eI2xBcnjAyTUDo8YDMMA9KIuzuXKN1YSW6EA2Abjjp2AqpPIkx3Nh/TA6UXMbxTNvUjf0PYj2NVQr9MgAdhW8IpanPObvY39Gjhutyj5XbCbAeeByfpXZ6bpa3uoQJI+UiQjgdR715xbebFKpjIR+q5HGewP1rrD4ga4QWVpvspZU2SSyAIFB6hT/WuerBt6HXSqJR1NrU7Sz1O4nG8tGWLxSK/JCD5tvouRXK3EBi2Bpm3yRiRVbggH1FbGn7TaRpAi4VXtlkJP7xd2Tj0UDknuDis7U5vtF2zyMfKibykbjkDq2frz+Nc6fv8kehvy+5zy6mf5nY4wOlMluFhQseWIIRc/ePYU54mjDKwyynkj9DWXe213cXG5F+VBhfmH510xim9TlnJpaDLtxfWYucYkjO1x7VesmW+0zypCemxj9On9KjED7J0ECoHTqDyzUulQy28UiyptJbI59q0k1y6dDKKfPr13KdnbWy6m8ct2ESM8HOC/tntXQX0Ym0+dBggxkjHPTkfyrnWgtLbU9lyzmHqdo557GulhMMluBblTEVIXb0rOs9VIqitHEdJ5bwkyhTGVy27piuWnSwfUFW3Z0gz8zMePw9q6Sxk86wgfrlAD+HFc/q8tu93ththEFPzNt2l/wp0LqTQV7OKZrZBiBUgjAwc5pjzK7A4Vgg5HUH04qKN4JrXyrZvlIKgdxTIrN4IUkVfvDOetNRXUpzb0RZuixtgWYDJ+ZSOv4/41RhGxGIAXPp2/zzUkzyzSKuAWPOAant4Qlsk8oyhkAw3AODzn8TVrRGT1ZXfaCCwyByRXT+Hrsxs4+xrPE3W4BXMY9Gz0rIv4JrhFuIleWKJQHkAAC+wHXH1qzZ2UDxG7u5US2Az8py7Y7Y/qfWuWvyzhqduG5oTdiXUZFu55JrSF4oCfKPOBITyeB24Gce1Nnglit85VlRQCF6Y7g/rz60NDPqEqmKJtkOSIkGfLB/r05NQs1xAzIxbJPKOMEHHGaIR5UkTVlzNsdaqp83fn5CEVh16Z/rQLOa5fZawNLL12IOo7n2qO1DTSXBt+Vx5gDLwvyjJI/zmuw8LWstpZNcMhlkujlW7hRxk/jk8e1aPTUyvskcWEIYhvl29c9R+FKwC4xnPowrqPFekoCNRtEYsuTc5H5Mf5flXKys0oYs+CRjd6VC1LurGIxitdUY3Mf2hc5Iz6108ciNCJIwVTbkArtwPpXOaY1xBfF4rc3K52sdufxB7Gt++l8qwnkOQfLOM+p4/rWlbVpGNF2TZQ8PXG+zeAnmNsj6H/69WdUinu7doY42KjByMEsfSuf0u7+x3ySMfkb5X+hrrGBZCoIG4YzRVXJU5gpPnp8plWMIhhUEbcdQOp+tTJMluiRTEvGjg5HXbnp+VI1sto4T7QzDGdvAI/GqzQz3MjBTuRP4n45rTSZFpQC3hWW7acFhHG3yA9/rWhM5+wW2zG4Sd+3JqvFthhC54B6+tNglDO0EpKoTvB9O9ElccHqydJrizAnRnWQfOhPIbJwfr9faicPLbzXBJUBw4jXgfX39vSoxKxXhPmQbt4Y42njp7Hr6VYsJhNCsMrBpGBAB7+qn+n/16z5epq5dEaOj6pZ2sk6Xoc2t0AwKkgHjGDiq+r3lrd3pnteIUTGT29B71lHNrJOsU7BQMhWXKn2IPQ1DmS5VjJLtCjIAXAP5UKmubmF7R2sXre9kh0+d49pL/ugMYyMjH416Po0bQaZDFIQZURQ+Og9q8m+0G3jVCCR5oc49q9C8Oa4l6WSSVcuqFDnG7GQfx6UVY6XREJXdmdFqFvHd2rWknKzDaR7V5J4kh/s+SWwmYiaNhgAcMOx+mK9dMiGQStIoGPlycZ965Tx3pNnqENrPI5jnDFFYDllxn9P61nTkoy1Lkm4tI43R7W+tOWMZt5BnG/P4ijxDP5dmkAPMjZP0H/16v2dr9jt/J85pFU5BYY2iuZ1S7+2XzyKfkX5U+grWmuepzdiKj5KfL3KldHoeoCeEWsh/eRj5Sf4l/wDrVzlOjkeKRZI2KspyCO1dNSCnGxzU5uErnX3EUAR55VLFRnk/lVBXaGyLSHywzHG/irWm6lHfxdlmUfMnr7im6lp7ai8QMojjjyTxkkmuOEnCXLI7JrnjeJmRanbgyM+4kH5OOoqwjpLcQS8qrgHkc4zWXdWTJfzW9sjyCM/U4A6mlsZnZ/LZiQF+XJ6V0uKfvI51Nr3WaiSmCUOnzKGOAfTpj8uKkE8KRtgHYeUz1U/3T/Q1XON7Efdbn86aRubaDjdxU2Lu9y5JGt1CX80iV/vFx99gOxFVorlVgZABtbHXqKY14UjKbMkH5SDVcoFGM4I6kUKL6jcl9kdI6CMliCB61dhuEtXhSPDmVDyD37GskzFt0KoGZuMnt9K07CwMQWRlZVYfez1+tVJJbmad3odDpjxtmS7niZ8DmRGk/HA/rUmpzme6IafzxGcK2MAcfwjsKrp5UcToI8FiCCD0qhqWpJYRdmmYfKnp7muNtzlZHWkoK7K2uagIITaxn95IPmx/Cv8A9eucp0kjzSNJIxZmOST3ptd9OChGxwVJucrhRRRWhmOjkeKRZI2KspyCO1dDp+uRTgR3REcnZ/4W/wAK5yis504zWppCpKD0O22KFcKqjzAckd896zV0pLOwfyx5s/BLY9+gFY1pql1Z4WOTcn9x+R/9ate38Q2z8TxtEfVfmH+Ncrp1Ibao6lUpz30Ytxavb28cjAs5+VlUdPSmvazQyKvlks6/L7H0+uK0I76zmxsuYm7gE4P61MMOQQQ2ORg1HtJLdF8kXszC+wyG8Fq/BPVh0x61LFp7S3Mtu7FRGM7sflWwwUOHbaGAxuJ7VDJfWcOTJcxA98HJ/Sn7WT2F7OK3KWn6SkUcy3UQZvMG09wB3B/GtNUVIwij5AO/pWVceIbaMYgjaU+rfKP8ayLvVLq8yskm1P7i8D/69V7OpUd5aE+0p01aOpsahrkUAMdqRJJ3f+Ff8a56SR5pGkkYszHJJ702iuqFOMFocs6kpvUKKKK0Mz//2Q==",
+            "stats": {
+                "hp": {
+                    "current": 32,
+                    "max": 216
+                },
+                "damage": 813,
+                "healing": 0,
+                "cc": 0,
+                "conditions": [],
+                "actions": {
+                    "attack": 4,
+                    "spell": 1,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "bonusActions": {
+                    "attack": 0,
+                    "spell": 1,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "reactions": {
+                    "attack": 0,
+                    "spell": 0,
+                    "move": 0,
+                    "misc": 1,
+                    "none": 0
+                },
+                "damageTaken": 184,
+                "healingReceived": 0,
+                "nat20": 3,
+                "nat1": 0,
+                "attacks": {
+                    "total": 14,
+                    "hit": 13
+                },
+                "saves": {
+                    "forced": 0,
+                    "succeeded": 0
+                },
+                "defense": {
+                    "attacksTaken": 1,
+                    "attacksDodged": 1,
+                    "savesMade": 8,
+                    "savesSucceeded": 7
+                }
+            },
+            "rounds": [
+                {
+                    "round": 1,
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "round": 2,
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "round": 3,
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "round": 4,
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "round": 5,
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                }
+            ]
+        },
+        {
+            "name": "Yukran",
+            "slug": "yukran",
+            "levelClass": "Level-8 Oathbreaker Paladin, Level-8 Hexblade Patron Warlock, Level-5 College of Whispers Bard",
+            "initiative": 18.2,
+            "portrait": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCACAAIADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDxmiiigAoq9ouiah4g1KPT9Mtmnnk7Doo7knsB6mvePB/ww0bwnCt/qRivdQQbmnlH7qH/AHQfT+8efpWVWtCkryGlc8s8M/CzxJ4jVJ2gGn2bcie6BUsP9lep/Qe9el6R8FvDOnoH1KS41KQctvfyo/yXn8zV3XPiPBAzQ6TELhxwZ5MhB9B1P6CuKudX1vxBKVea4ugT9xOEH4DiuKVatU+H3UaqmluehRxeBNA+SKDSYGH9yNXf88E1IfHXhyEbYrh8f9M4GA/lXlmqaTqWlWYlkWKFmVnCnJO0f/rFYtvPf3OlyagxKKjHbEi8uo5PJrL2Epq7m/vNo00+h7NL408LXiETyI2e01qSP5Gsu50TwJr5YLZaczMM5g/cv/47iuc0zwfLq2jW2pWd7hLiPeEkQEr2wcfSq934U1qzJbyknA7xtg1j7JxfuVGn6ji6fVDNa+E1i5d9G1CSFhz5VyNy/TcOR+Rrz7V/D+p6HLsv7VkUnCyL8yN9GHFd1Dqt/psgj82aE94ps4P5/wBK2F1W3v4Tb3sSgONrIRuR/wA61jiq9F/vPeX4nXHB0ay9x2f4HjdFdh4i8HojNc6OCy9Wt+pH+76/SuPIIOCMEV6dKtCrHmizza1CpRlyzQUUUVqYhV/RNFvvEGrQaZp8XmTzNgeijuxPYAcmqHWvof4Z+EIfCPh06jfqsd/dx+ZOz8eTH1Ce3qff6VjWqqlDmY0rs09A0DRfh14cb513YBubph88zegHp6L/APXNcL4i8V33iO58lQ6WxP7q2T+L3b1P6CoPGnit9ZvNwDC1jO22i/vH+8fc/oKTwVbg/aribDzFlGfQYPArz4xk71am5vbl0Lul+FxJtl1E7u4iHQfX1rr7G2ht1CRRqijsBVSM1egbpWNSTYFXxXZG40B5kiR3tT5uWbaQgHz4P0/lXnLrczxyCR1jjCHMUYyQSCOT6dOmK6Lx/wCL/s8cvh60jR5J4sTyPyEBGdoH94j16V5vp+pXyKttcSypbFNpwgLEc8Z/HFddCjP2fMzoo11H3GeqfDbxFFqOiDTrhoYbq3dlSLzBvdTluF68Z7V1sor58uLlmvDcQj7OQUVfLJyuOnPrXb6H8RL+G5EWtyC5tdqoZljCyK3944+97iitg5/HD7jlc1zNXudvqGm2l/EY7iBHB9RXG6p4dudNDSWWbi37wseV/wB013Uxx0OR2Iqo5B4NcsHpZ7GkZSg7xdmcJa3qzWwQvggYyRgqR2rmPEWmC6drqCLbMP8AWBej+/1/nXV+MbMafcW+oWiDc7MJY+zgD+dZqlb6ySWE9eg6c+hpKLoSVSOzPYhUjjaTpy+Jf1dHn1Faes2Yil+0RjCufmAHQ1mV7MJKcbo8GpTdOTiztPhV4aXxD4uikuE32mnj7RKD0Yg/Iv4n9Aa9R+JOv+RBHo8L4eYeZcH0TsPxPP4VV+DumJpngtr9xtk1CVpST/zzT5R+oY/jXDeJtUfV9Wubok5uZSF9kHA/QCvMqy9tieTpH8zSnGy5mZysbmUzt90cRg9h6113g/8A1N3/ALy/yNcsqhVAHQV1HhD/AFN3/vL/ACNdVVWhYV7s6dGwalnu2tLG4uljMrQxNIEHVsDOKrg4qHVbhrfQb+ZQSUt3PAz2xXC43YzyHzTOWaV/MVm3eYOcEnPPf8aczFCPMjJc8ZTo3vmobi6slDeUsqSRqFhdDwAOuR3zUY1DCYEGW9M/L9a92M01qc8o2ehPIyIm8gALxkdvYe/vTIFknA80BU5wOn44qnK8kz+ZJIxYDjHAH0qxaMC6IbmYSM+3bj5QPzoc0Cg2e26Vdi88PadcgY8y2TjGOQMH9RTy3NY/hNmXwnaoz7mR5Aec7fnPH5EVqZrxHG0ml3Og53xlzBaf77fyFclaS/Yr3yiQLe6IDZ6K3Y/0rrPGH+ptf99v5CuSuYhNAyH04rrhBTpcrKp1JUpqcd0GvaftYk58ubqOwNcdIhjkZG6qcV3UlyuoaCPMkUTIOQf7y/4/1rjr8AzCRejCpwcpJOEuh25lCLtUhs9T6Aml/sD4dR2qcNBp6Rf8CZRn9WNeTHDXY7hF4/GvS/HU2zQriNT/AMtVX8A3/wBavM4eZZD9B+lcmC96c592zGtDkppE9dP4Q/1N1/vL/I1zFdN4R/1N1/vL/I131fgZyI6PNZfioSN4VvUjlMRcKpYHHBYAitImsbxbcGDSYADt33A+YgYGFJ71yR+JFLU8yutKEEKuJcscArjqfaq8tvNbsBLC6ZUEZXFbF7I99dxwRxoz7eGVOWOOvbimvqwdlDqybU25HzgfXv1r0k3YHCN2YoOWx71ZiFwwW3hOA53E4xgj1PWtB7u8Y74oreVSPvxD+nb6VWinkjuPPkUM6kllIxVLUiyVtTvfAV/I9jdaXcnM0LmdGH8StgH8iP1rp81yHg9nj1ySNo1iD2zL8qkbiCCO57ZNddnmvNqq02aNWZz3i/8A1Fr/AL7fyFcxXT+Lv9Ra/wC+38hXMV00vgRDK9tMIPtVux+UsHAx19f5Vz1/GFDAY+V+BXQRqTqbKqgs0Xc47isjWVC3VyAoA3cAHpSjpWfmd8/ewcW+l0eteK5vtfh+aQYIby5QfY4Of1rz6HiaQfQ11mm3K6r4IthkszWvlH/eTK/0FchE2JwT/EMVw4P3Ks4PuzXFRvQhNdkWq6Xwkf3N1/vL/I1zVdJ4UOIbr/eX+Rrvq/AzyzoSa5Dx5eyxzWVvt/dBWlBI4LZx+YH5Zrqy1ZXiPTrTUtPH2k7ZYyfJcYJ3Htg9R6/nXNTaU02NXvoeZTOxcmM7N5OduencU2dTbxgx4yOuR19qtRRLHHeeaQrJgDJz8wboP1qKbayYPINemncLaXI7ctOhZ/kPQbeMU5VdpGR5NzE5yT/U0QqY2KnnPOaWb7+3O3OCTT2ZL+G7Oi8FXkf/AAklqFUKGhkTPIydvH8q9DzzXD+A9NjmebU5GyYG2RJ05K8sR9DgfjXZhq86vb2mg731MTxb/qLX/fb+Qrma6TxWcw23+838hXN9K2pfAgKqMf7UyOyY/WsTVJd89w3Ul63LfaVubhieWwPoBXM3TZ5/vHNOCvVbO2o+XCxXe7Ox8Aaofs1zppb5lbzowfQ8MP5H86h1a3FpqEgRcAtvT6H/ACa5bTL+TTNQhu4usbcj+8O4/EV2uqTwahapPA5bgOpx1B7VyV6bpYhVFs9/U6sJONfCui947ejKqMHQMOhrpPCxxDc/7y/yNcjbTAMUIIB6ZrrPDJxFc/7y/wAjXTUd4XPJlFxdmbjuFBZjhVGSfSuduZrjUrzEeTn5VjB4Uf4+p/wq9rdwYrZY1JG45bB7Z4H5/wAqgtVNjp0l4U3SMpcgtgqnXqfz/L0rniupvTapw9o93scHO7vduzgcueBwO2fftV2W3S8ijJXy2JOWUc4AzWcRIGCv95eeDnI9fxyK0LSbUnWKKJZFhH/LVQ2MAdK9KWiTRhTd21IpwqJLjbvCAnG4ipblI1jhAUEY3Mx6knpSQhlvQqsQfMxuHXrS3zTvclZZC3lMF5XBJx/+um/iRO0GdN4EuCkl7B/CVR/xBI/rXV7+a4vwaHF7cuMhBEATjgnPAzXWB64a6/eMiL0MzxO2Ybb/AHm/lXM3UnlwnHLNwo9TXReIm/cwEnozfyrlfNaa481QpWPpu6fWtIPlhc3pQdSSihL6T7JpwgDYLDHHU/3jXNztmTGenFXdRuzPMXz8q8ICazq1ow5Vd7l4qqpytHZaBWto+qtAv2SRv3ZOYyT90/4GsmitJwU1ZnPSqSpTUonUSxEksjj3GOc10Xhe9RRNBI4DsQVPrXD2epNsEM8hAH3W/oavxTYlDIzBhyDmuJwlH3WelP2eIjeOjO21vcXQgZBXjA5PXIHqec1JqM9rJp88ZmUrLEVAVhkAjGfb8aw7TxArxi3vY/MXPXuPf2rTt0sJz5iOZTncA75wfp3/ABqLWOaaUYqNRPT8Ti75fKu3QKR5agcjG5do5/HrT7IM06yNMAkYJWPzDn14UfXrXYanpVtqkf7wbZlUhJR1HsfUe1cfBF9nnljkjZbiFSjrkYA9c/jXZGopRsc8ZXncrpKzSGRWbdnO7OTnPr61NaQfbb5InkaNpZdqnaCNx6559K6PXbC2mWEpF/pkzLHGUOMgdSR6AVQ1Cyh0yRAjOTCUnBxu3MDz3GORT9qpJW3Jjq2jqLG1h060W2gztHJY9WPcmpy4UZJwBWbJrFpHbpMZAd6hgAc9awb7Wp75zFGfKj9ScD8a5OVvVlQpym7JFnX9RS9kS3ikwiE7mHOfpXO6hKgAt43Dqg5YDgVJe6mWzDEyFQOXVcc+3tWNLJuJC5x/Ot6cG7XOmco0o8kdX1Y2R9zewptFFdJxN3CiiigQVPBdvF8rZZemM9KgopNJ7lRk4u6NNL0HGzLezVeTVIwmEDxsOnoK57pT1mde+frWTopnVHFSSszq4tUvHh2R3m3cPvZBIqmLe5VmWKQbn/iK8n8awxcf7H5VIl4wOd7jjsTUqnJbMpVaL+ydJ9t1GPZM1wm5Y9ikoOF9uarXF39pkEt1cMx+4QTgY+grCa5zn5mP1phn9B+NNU31ZPtKMXeMTX+3RQEpFF5ifwg9BVCe7Zzh8AA5CjoKqGVyMZwPam1caaRE8RKSsOeQufQelNoorQ5m7hRRRQB//9k=",
+            "stats": {
+                "hp": {
+                    "current": 34,
+                    "max": 250
+                },
+                "damage": 193,
+                "healing": 136,
+                "cc": 0,
+                "conditions": [],
+                "actions": {
+                    "attack": 1,
+                    "spell": 1,
+                    "move": 0,
+                    "misc": 1,
+                    "none": 0
+                },
+                "bonusActions": {
+                    "attack": 0,
+                    "spell": 0,
+                    "move": 0,
+                    "misc": 1,
+                    "none": 0
+                },
+                "reactions": {
+                    "attack": 0,
+                    "spell": 1,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "damageTaken": 216,
+                "healingReceived": 136,
+                "nat20": 0,
+                "nat1": 1,
+                "attacks": {
+                    "total": 2,
+                    "hit": 1
+                },
+                "saves": {
+                    "forced": 0,
+                    "succeeded": 0
+                },
+                "defense": {
+                    "attacksTaken": 9,
+                    "attacksDodged": 5,
+                    "savesMade": 10,
+                    "savesSucceeded": 4
+                }
+            },
+            "rounds": [
+                {
+                    "round": 1,
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                },
+                {
+                    "round": 2,
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                },
+                {
+                    "round": 3,
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                },
+                {
+                    "round": 4,
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                },
+                {
+                    "round": 5,
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                }
+            ]
+        },
+        {
+            "name": "Shan Yiren",
+            "slug": "shan-yiren",
+            "levelClass": "Level-20 Circle of the Moon Druid, Level-1 Life Domain Cleric",
+            "initiative": 22,
+            "portrait": "data:image/jpeg;base64,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",
+            "stats": {
+                "hp": {
+                    "current": 216,
+                    "max": 216
+                },
+                "damage": 162,
+                "healing": 176,
+                "cc": 0,
+                "conditions": [],
+                "actions": {
+                    "attack": 3,
+                    "spell": 2,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "bonusActions": {
+                    "attack": 0,
+                    "spell": 0,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "reactions": {
+                    "attack": 0,
+                    "spell": 0,
+                    "move": 0,
+                    "misc": 0,
+                    "none": 0
+                },
+                "damageTaken": 0,
+                "healingReceived": 176,
+                "nat20": 1,
+                "nat1": 0,
+                "attacks": {
+                    "total": 9,
+                    "hit": 5
+                },
+                "saves": {
+                    "forced": 1,
+                    "succeeded": 1
+                },
+                "defense": {
+                    "attacksTaken": 6,
+                    "attacksDodged": 1,
+                    "savesMade": 7,
+                    "savesSucceeded": 3
+                }
+            },
+            "rounds": [
+                {
+                    "round": 1,
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                },
+                {
+                    "round": 2,
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                },
+                {
+                    "round": 3,
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                },
+                {
+                    "round": 4,
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                },
+                {
+                    "round": 5,
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                }
+            ]
+        }
+    ],
+    "roundSummaries": [
+        {
+            "round": 1,
+            "players": [
+                {
+                    "name": "Nova Loraphine",
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Bonaluria Elphyra",
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                },
+                {
+                    "name": "Rosalin Zofia",
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                },
+                {
+                    "name": "Vincenzo Dalleoni",
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Yukran",
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                },
+                {
+                    "name": "Shan Yiren",
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                }
+            ]
+        },
+        {
+            "round": 2,
+            "players": [
+                {
+                    "name": "Nova Loraphine",
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Bonaluria Elphyra",
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                },
+                {
+                    "name": "Rosalin Zofia",
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                },
+                {
+                    "name": "Vincenzo Dalleoni",
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Yukran",
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                },
+                {
+                    "name": "Shan Yiren",
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                }
+            ]
+        },
+        {
+            "round": 3,
+            "players": [
+                {
+                    "name": "Nova Loraphine",
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Bonaluria Elphyra",
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                },
+                {
+                    "name": "Rosalin Zofia",
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                },
+                {
+                    "name": "Vincenzo Dalleoni",
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Yukran",
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                },
+                {
+                    "name": "Shan Yiren",
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                }
+            ]
+        },
+        {
+            "round": 4,
+            "players": [
+                {
+                    "name": "Nova Loraphine",
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Bonaluria Elphyra",
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                },
+                {
+                    "name": "Rosalin Zofia",
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                },
+                {
+                    "name": "Vincenzo Dalleoni",
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Yukran",
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                },
+                {
+                    "name": "Shan Yiren",
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                }
+            ]
+        },
+        {
+            "round": 5,
+            "players": [
+                {
+                    "name": "Nova Loraphine",
+                    "damage": 423.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Bonaluria Elphyra",
+                    "damage": 79.6,
+                    "healing": 0,
+                    "cc": 0.6
+                },
+                {
+                    "name": "Rosalin Zofia",
+                    "damage": 14.6,
+                    "healing": 0,
+                    "cc": 1.2
+                },
+                {
+                    "name": "Vincenzo Dalleoni",
+                    "damage": 162.6,
+                    "healing": 0,
+                    "cc": 0
+                },
+                {
+                    "name": "Yukran",
+                    "damage": 38.6,
+                    "healing": 27.2,
+                    "cc": 0
+                },
+                {
+                    "name": "Shan Yiren",
+                    "damage": 32.4,
+                    "healing": 35.2,
+                    "cc": 0
+                }
+            ]
+        }
+    ],
+    "partyTotals": {
+        "damage": 3757,
+        "healing": 312,
+        "cc": 9
+    },
+    "campaignName": "The Dawn Cataclysm",
+    "startImage": "/assets/previous_battles%20placeholder%202.webp"
 }
