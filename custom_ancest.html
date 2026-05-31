@@ -9,6 +9,15 @@
             scroll-behavior: smooth;
         }
 
+        .back {
+            padding: 8px 16px;
+            border: 1px solid #888;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
         body {
             background: linear-gradient(rgba(18,18,18,0.55), rgba(18,18,18,0.55)), url("assets/custom ancestry.webp") no-repeat center center fixed;
             background-size: cover;
@@ -394,6 +403,7 @@
 </button>
 </div>
 
+    <div class="back" onclick="window.history.back()">← Back</div>
     <h1>Custom Ancestry Builder</h1>
     <p>Spend 120 trait points to shape your unique history.</p>
     
