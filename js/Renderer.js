@@ -43,7 +43,7 @@ function renderCharacter(character) {
           <p>
            <strong>Skills:</strong><br>
 
-            ${character.skills.join(", ")}
+            ${character.skills.map(s => s.proficiency === "expertise" ? s.name + " (E)" : s.name).join(", ")}
           </p>
 
         </div>

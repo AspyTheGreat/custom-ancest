@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -117,19 +117,44 @@
 
   <!-- LEFT (30%) -->
   <div class="side-panel">
-    <div class="side-tile">Campaign Synopsis</div>
-    <div class="side-tile">Characters</div>
-    <div class="side-tile">NPC's Encountered</div>
-    <div class="side-tile">Discoveries</div>
-    <div class="side-tile">Player Notes</div>
+    <div class="side-tile" onclick="loadSection('synopsis')">Campaign Synopsis</div>
+    <div class="side-tile" onclick="loadSection('characters')">Characters</div>
+    <div class="side-tile" onclick="loadSection('npcs')">NPC's Encountered</div>
+    <div class="side-tile" onclick="loadSection('discoveries')">Discoveries</div>
+    <div class="side-tile" onclick="loadSection('notes')">Player Notes</div>
+    <img src="../../assets/combat icon.webp" class="battle-tile" onclick="goToBattle()">
   </div>
 
   <!-- RIGHT (70%) -->
-  <div class="content-panel">
-    <p>Content will go here.</p>
+  <div class="content-panel" id="content-panel">
+    <div id="characters-container"></div>
   </div>
 
 </div>
 
+<script>
+function goToBattle() {
+  window.location.href = "../../chronicles/Chronicles_previous_battles.html#battles/the-dawn-cataclysm";
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/parser.js"></script>
+<script src="../../js/renderer.js"></script>
+<script src="../../Shared/campaign-utils.js"></script>
+<script>
+const files = [
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Bonaluria 'Arcanum Chronicler' Elphyra.json"
+];
+
+const characterImages = {};
+
+const campaignData = {
+  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+};
+</script>
 </body>
 </html>

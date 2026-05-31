@@ -58,31 +58,38 @@ function parseCharacter(data) {
   "Stealth",
   "Survival"
 
-].filter(skill => {
+].map(skill => {
 
   const formatted =
     skill
       .toLowerCase()
       .replace(/ /g, "_");
 
-  const attr =
+  const typeAttr =
+    getAttr(
+      attribs,
+      formatted + "_type"
+    );
+
+  if (typeAttr) {
+    const typeVal = typeAttr.current ?? "0";
+    if (typeVal === "1") return { name: skill, proficiency: "proficient" };
+    if (typeVal === "2") return { name: skill, proficiency: "expertise" };
+    return null;
+  }
+
+  const profAttr =
     getAttr(
       attribs,
       formatted + "_prof"
     );
 
-  return attr?.current == "1";
-})
-.filter(skill => {
+  if (profAttr && profAttr.current && profAttr.current !== "0") {
+    return { name: skill, proficiency: "proficient" };
+  }
 
-  const attr =
-    getAttr(
-      attribs,
-      skill.toLowerCase() + "_prof"
-    );
-
-  return attr?.current == "1";
-}),
+  return null;
+}).filter(Boolean),
 
     stats: {
 
