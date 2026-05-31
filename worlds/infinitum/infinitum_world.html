@@ -1,4 +1,4 @@
-<html lang="en">
+﻿<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../css/main_styles.css">
     <link rel="stylesheet" href="infi_styles.css">
     <link rel="stylesheet" href="../../Shared/Timeline.css">
+    <link rel="stylesheet" href="../../Shared/Lore.css">
 
 
 </head>
@@ -17,6 +18,8 @@
 <body>
      <div id="timelinePanel" class="timeline-panel hidden"></div>
 <div id="timelineOverlay" class="timeline-overlay hidden"></div>
+    <div id="lorePanel" class="lore-panel hidden"></div>
+    <div id="loreOverlay" class="lore-overlay hidden"></div>
     <div id="worldDetail" class="detail">
 
         <div class="world-header">
@@ -24,7 +27,7 @@
             <h2 id="worldTitle">Infinitum</h2>
 
             <div class="top-tabs">
-                <div class="tab">Lore</div>
+                <div class="tab" onclick="openLore('Infinitum')">Lore</div>
                 <div class="tab" onclick="openTimeline('Infinitum')">Timeline</div>
             </div>
         </div>
@@ -157,4 +160,5 @@
 
     <script src="infi_scripts.js"></script>
     <script src="../../Shared/timeline.js"></script>
+    <script src="../../Shared/lore.js"></script>
 </body>

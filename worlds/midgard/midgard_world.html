@@ -1,4 +1,4 @@
-<html lang="en">
+﻿<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -9,12 +9,15 @@
     <link rel="icon" type="image/png" href="assets/favicon.ico">
     <link rel="stylesheet" href="../../css/main_styles.css">
     <link rel="stylesheet" href="../../Shared/Timeline.css">
+    <link rel="stylesheet" href="../../Shared/Lore.css">
 
 </head>
 
 <body>
       <div id="timelinePanel" class="timeline-panel hidden"></div>
 <div id="timelineOverlay" class="timeline-overlay hidden"></div>
+    <div id="lorePanel" class="lore-panel hidden"></div>
+    <div id="loreOverlay" class="lore-overlay hidden"></div>
     <div id="worldDetail" class="detail">
 
         <div class="world-header">
@@ -22,7 +25,7 @@
             <h2 id="worldTitle">Midgard / Ravenfall</h2>
 
             <div class="top-tabs">
-                <div class="tab">Lore</div>
+                <div class="tab" onclick="openLore('Midgard / Ravenfall')">Lore</div>
                 <div class="tab" onclick="openTimeline('Ravenfall')">Timeline</div>
             </div>
         </div>
@@ -44,4 +47,5 @@
 
     <script src="../../js/main_scripts.js"></script>
     <script src="../../Shared/timeline.js"></script>
+    <script src="../../Shared/lore.js"></script>
 </body>

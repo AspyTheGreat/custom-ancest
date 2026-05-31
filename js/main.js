@@ -236,7 +236,7 @@ card.style.setProperty(
 card.style.animation =
   "pulseGlow 2s infinite";
 
-/* KING YNA STYLE GRADIENT */
+/* GRADIENT BACKGROUND */
 card.style.background =
 `
 linear-gradient(
@@ -248,34 +248,17 @@ linear-gradient(
 `;
 
     card.style.setProperty(
-  "--theme-color",
-  rgb
+  "--glow-from",
+  primaryRGB
 );
 
-card.style.animation =
-  "pulseGlow 2s infinite";  
+card.style.setProperty(
+  "--glow-to",
+  `rgba(${primary[0]}, ${primary[1]}, ${primary[2]}, 0.3)`
+);
 
-    /* GLOW */
-    card.style.boxShadow =
-     `
-       0 0 10px rgba(
-    ${primary[0]},
-    ${primary[1]},
-    ${primary[2]},
-      0.8
-      ),
-
-0 0 25px rgba(
-  ${primary[0]},
-  ${primary[1]},
-  ${primary[2]},
-  0.45
-)
-`;
-
-    /* DARK CARD BACKGROUND */
-    card.style.background =
-      "rgba(15,15,20,0.96)";
+    card.style.animation =
+  "pulseGlow 2s infinite";
 
     
   }

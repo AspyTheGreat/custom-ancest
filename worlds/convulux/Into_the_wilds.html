@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -49,7 +49,7 @@
 .campaign-image img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* or contain (see below) */
+  object-fit: contain;
   display: block;
 }
 
@@ -94,54 +94,6 @@
   min-height: 900px;
 }
 
-.character-img {
-  width: 100%;
-  max-height: 800px;
-  object-fit: contain;
-  display: block;
-  border-radius: 8px;
-}
-/*     SHEETS MOVEMENT     */
-.sheet-carousel {
-  position: relative;
-  width: 100%;
-  height: 800px;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.sheet {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.sheet.active {
-  opacity: 1;
-}
-
-.sheet img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-.sheet-controls {
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.sheet-controls button {
-  padding: 8px 14px;
-  border: 1px solid #6a5acd;
-  background: transparent;
-  color: white;
-  cursor: pointer;
-  border-radius: 6px;
-}
 </style>
 </head>
 
@@ -164,65 +116,54 @@
   <!-- LEFT (30%) -->
   <div class="side-panel">
   <div class="side-tile" onclick="loadSection('synopsis')">Campaign Synopsis</div>
-  <div class="side-tile" onclick="loadSection('characterSheet')">Character Sheet</div>
+  <div class="side-tile" onclick="loadSection('characters')">Characters</div>
   <div class="side-tile" onclick="loadSection('npcs')">NPC's Encountered</div>
   <div class="side-tile" onclick="loadSection('discoveries')">Discoveries</div>
   <div class="side-tile" onclick="loadSection('notes')">Player Notes</div>
+    <img src="../../assets/combat icon.webp" class="battle-tile" onclick="goToBattle()">
 </div>
 
   <!-- RIGHT (70%) -->
   <div class="content-panel" id="content-panel">
-    <p>Content will go here.</p>
+    <div id="characters-container"></div>
   </div>
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/parser.js"></script>
+<script src="../../js/renderer.js"></script>
+<script src="../../Shared/campaign-utils.js"></script>
 <script>
+const files = [
+  "../../Character Sheets/Convulux/Into The Wilds/Rahman Boutella.json",
+  "../../Character Sheets/Convulux/Into The Wilds/Grux Tratoa.json",
+  "../../Character Sheets/Convulux/Into The Wilds/Eternal Ranger Hollowgrave.json",
+  "../../Character Sheets/Convulux/Into The Wilds/Midlir Folsvader.json",
+  "../../Character Sheets/Convulux/Into The Wilds/Renny (Reynryl Hosken).json",
+  "../../Character Sheets/Convulux/Into The Wilds/Shi Tian.json",
+  "../../Character Sheets/Convulux/Into The Wilds/Yisheng Mao.json"
+];
+
+const characterImages = {
+  "Rahman Boutella": "../../assets/Character_images/Into_The_wilds/Rahman.webp",
+  "Grux Tratoa": "../../assets/Character_images/Into_The_wilds/Grux.webp",
+  "Eternal Ranger Hollowgrave": "../../assets/Character_images/Into_The_wilds/Hollowgrave.webp",
+  "Midlir Folsvader": "../../assets/Character_images/Into_The_wilds/Midlir.webp",
+  "Renny (Reynryl Hosken)": "../../assets/Character_images/Into_The_wilds/Renny.webp",
+  "Shi Tian": "../../assets/Character_images/Into_The_wilds/Shi.webp",
+  "Yisheng Mao": "../../assets/Character_images/Into_The_wilds/Yisheng.webp"
+};
+
 const campaignData = {
   synopsis: `
     <h2>Campaign Synopsis</h2>
     <p>This is a cursed expedition into the wilds where reality begins to break down.</p>
   `,
-  characterSheet: `
-  <h2>Character Sheets</h2>
-
-  <div class="sheet-carousel">
-
-    <div class="sheet active">
-      <img src="../../assets/Rahman.jpg">
-    </div>
-
-    <div class="sheet">
-      <img src="../../assets/Grux.jpg">
-    </div>
-
-    <div class="sheet">
-      <img src="../../assets/Hollowgrave.jpg">
-    </div>
-
-    <div class="sheet">
-      <img src="../../assets/Midlir.jpg">
-    </div>
-
-    <div class="sheet">
-      <img src="../../assets/Renny.jpg">
-    </div>
-
-    <div class="sheet">
-      <img src="../../assets/Shi.jpg">
-    </div>
-
-    <div class="sheet">
-      <img src="../../assets/Yisheng.jpg">
-    </div>
-
-  </div>
-
-  <div class="sheet-controls">
-    <button onclick="changeSheet(-1)">←</button>
-    <button onclick="changeSheet(1)">→</button>
-  </div>
-`,
+  characters: `
+    <h2>Characters</h2>
+    <div id="characters-container"></div>
+  `,
   npcs: `
     <h2>NPCs Encountered</h2>
     <p>A dying ranger, a broken oracle, and something that pretends to be human.</p>
@@ -239,43 +180,9 @@ const campaignData = {
 </script>
 
 <script>
-function loadSection(section) {
-  const panel = document.getElementById("content-panel");
-
-  if (campaignData[section]) {
-    panel.innerHTML = campaignData[section];
-  } else {
-    panel.innerHTML = "<p>Section not found.</p>";
-  }
+function goToBattle() {
+  window.location.href = "../../chronicles/Chronicles_previous_battles.html#battles/into-the-wilds";
 }
-
-let currentSheetIndex = 0;
-
-function updateSheets() {
-  const sheets = document.querySelectorAll(".sheet");
-
-  sheets.forEach((s, i) => {
-    s.classList.toggle("active", i === currentSheetIndex);
-  });
-}
-
-function changeSheet(direction) {
-  const sheets = document.querySelectorAll(".sheet");
-
-  currentSheetIndex += direction;
-
-  if (currentSheetIndex < 0) {
-    currentSheetIndex = sheets.length - 1;
-  }
-
-  if (currentSheetIndex >= sheets.length) {
-    currentSheetIndex = 0;
-  }
-
-  updateSheets();
-}
-
 </script>
-
 </body>
 </html>

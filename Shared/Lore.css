@@ -1,0 +1,52 @@
+.lore-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+
+.lore-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 560px;
+  height: 100%;
+  background: #0f0f1a;
+  border-left: 2px solid #6a5acd;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.lore-panel h2 {
+  text-align: center;
+}
+
+.lore-panel.open {
+  transform: translateX(0%);
+}
+
+.hidden {
+  display: none;
+}
+
+.lore-section {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.lore-section h3 {
+  color: #b8a9e8;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #6a5acd;
+}
+
+.lore-section p {
+  text-align: center;
+}
