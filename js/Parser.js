@@ -37,6 +37,8 @@ function parseCharacter(data) {
       max: max(attribs, "hp")
     },
 
+    items: extractItems(attribs),
+
     skills: [
 
   "Acrobatics",
@@ -133,4 +135,36 @@ function parseCharacter(data) {
   };
   
   
+}
+
+function extractItems(attribs) {
+  if (!attribs || !attribs.length) return [];
+  const seen = new Set();
+  const items = [];
+  for (const attr of attribs) {
+    if (!attr || !attr.name) continue;
+    if (attr.name.includes("_itemname") && attr.name.startsWith("repeating_inventory_")) {
+      const name = (attr.current || "").trim();
+      if (name && !seen.has(name)) {
+        seen.add(name);
+        items.push({ name, lookupName: cleanItemName(name), suffixRarity: extractSuffixRarity(name) });
+      }
+    }
+  }
+  return items;
+}
+
+function cleanItemName(raw) {
+  return raw.replace(/\s*\((R|U|VR|L|A|C)\)\s*/g, "").replace(/[-]+\s*$/, "").trim();
+}
+
+function extractSuffixRarity(raw) {
+  const map = { "(r)": "rare", "(u)": "uncommon", "(vr)": "very rare", "(l)": "legendary", "(a)": null };
+  const matches = raw.match(/\(([^)]+)\)/g);
+  if (!matches) return null;
+  for (const m of matches) {
+    const r = map[m.toLowerCase()];
+    if (r) return r;
+  }
+  return null;
 }

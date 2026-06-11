@@ -4,12 +4,35 @@ function renderCharacter(character) {
 
   <div class="character-card" id="character-card">
 
-    <!-- LEFT IMAGE -->
-    <div class="image-block">
+    <!-- LEFT COLUMN -->
+    <div class="card-left">
 
-      <img
-        id="character-portrait"
-        src="${character.image}" alt="${character.name}">
+      <div class="image-block">
+
+        <img
+          id="character-portrait"
+          src="${character.image}" alt="${character.name}">
+
+      </div>
+
+      <div class="items-box">
+        <h3 class="items-title">ITEMS</h3>
+        <div class="items-list">
+          ${character.items
+            .sort((a, b) => {
+              const order = ["artifact", "divine arm", "legendary", "very rare", "rare", "uncommon", "common", "mundane"];
+              const ai = order.indexOf(a.rarity);
+              const bi = order.indexOf(b.rarity);
+              return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+            })
+            .slice(0, 8)
+            .map(item => {
+              const color = getRarityColor(item.rarity || "mundane");
+              const bold = item.rarity === "divine arm" ? "font-weight:bold;" : "";
+              return `<div class="item-entry" style="${bold}color:${color}">${item.name}</div>`;
+            }).join("")}
+        </div>
+      </div>
 
     </div>
 

@@ -215,3 +215,43 @@ async function getCharacterPalette(character, fallbackIndex = 0) {
     img.src = normalizeImageSrc(portrait);
   });
 }
+
+class ColorThief {
+  getPalette(img, colorCount) {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const size = 50;
+    canvas.width = size;
+    canvas.height = size;
+    ctx.drawImage(img, 0, 0, size, size);
+    const data = ctx.getImageData(0, 0, size, size).data;
+
+    const buckets = {};
+    for (let i = 0; i < data.length; i += 4) {
+      if (data[i + 3] < 128) continue;
+      const [qr, qg, qb] = quantizeColor(data[i], data[i + 1], data[i + 2], 32);
+      const key = `${qr},${qg},${qb}`;
+      if (!buckets[key]) buckets[key] = { r: 0, g: 0, b: 0, count: 0 };
+      buckets[key].r += data[i];
+      buckets[key].g += data[i + 1];
+      buckets[key].b += data[i + 2];
+      buckets[key].count++;
+    }
+
+    const sorted = Object.values(buckets)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, colorCount);
+
+    if (!sorted.length) {
+      return Array.from({ length: colorCount }, () => [0, 0, 0]);
+    }
+
+    return sorted.map(b => {
+      let r = Math.round(b.r / b.count);
+      let g = Math.round(b.g / b.count);
+      let bv = Math.round(b.b / b.count);
+      [r, g, bv] = boostBrightness(r, g, bv, 0.6);
+      return [r, g, bv];
+    });
+  }
+}
