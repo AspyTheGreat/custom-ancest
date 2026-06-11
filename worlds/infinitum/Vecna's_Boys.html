@@ -137,19 +137,32 @@ function goToBattle() {
   window.location.href = "../../chronicles/Chronicles_previous_battles.html#battles/the-second-blood-war";
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/colourthief.js"></script>
+    <script src="../../js/items_rarity_data.js"></script>
 <script src="../../js/parser.js"></script>
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Infinitum/Vecna's Boys - Quenching the Wish/Corbin Olamendi.json",
+  "../../Character Sheets/Infinitum/Vecna's Boys - Quenching the Wish/Berne.json",
+  "../../Character Sheets/Infinitum/Vecna's Boys - Quenching the Wish/Belmen Giedenlor.json",
+  "../../Character Sheets/Infinitum/Vecna's Boys - Quenching the Wish/Aparhan Skymaker .json"
+];
+
+const characterImages = {
+  "Corbin Olamendi": "../../assets/Character_images/The_Vecnas_Boys_quenching_the_wish/Corbin.webp",
+  "Berne": "../../assets/Character_images/The_Vecnas_Boys_quenching_the_wish/berne.webp",
+  "Belmen Giedenlor": "../../assets/Character_images/The_Vecnas_Boys_quenching_the_wish/Belmen.webp",
+  "Aparhan Skymaker ": "../../assets/Character_images/The_Vecnas_Boys_quenching_the_wish/Aparhan.webp"
+};
+
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+  synopsis: `<h2>Campaign Synopsis</h2><p>Vecna's most trusted agents embark on a mission to quench a wish that could reshape reality. The line between servant and master blurs as they delve into the secrets of the Whispered One's grand design.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Agents of Vecna, rival cults, and the forces that oppose them.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>The nature of Vecna's ultimate wish.</p>`,
+  notes: `<h2>Player Notes</h2><p>Serving the Whispered One's will.</p>`
 };
 </script>
 </body>

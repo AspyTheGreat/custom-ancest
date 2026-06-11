@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Campaign Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.cdnfonts.com/css/forgore" rel="stylesheet">
+<link rel="stylesheet" href="../../css/main_styles.css">
+
+<style>
+
+.campaign-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 20px 0;
+}
+
+.campaign-title {
+  font-size: 2.5rem;
+  letter-spacing: 3px;
+}
+
+.back {
+  position: absolute;
+  left: 20px;
+  cursor: pointer;
+  padding: 8px 14px;
+  border: 1px solid #888;
+  border-radius: 6px;
+}
+
+.campaign-image {
+  width: 120%;
+  max-width: 1200px;
+  height: 600px;
+  margin: 20px auto;
+  border: 1px solid #6a5acd;
+  border-radius: 10px;
+  background: rgba(106, 90, 205, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.campaign-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.campaign-body {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  width: 90%;
+  max-width: 1200px;
+  margin: 30px auto;
+  gap: 20px;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.side-tile {
+  padding: 14px;
+  border: 1px solid #6a5acd;
+  border-radius: 8px;
+  background: rgba(106, 90, 205, 0.15);
+  cursor: pointer;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.side-tile:hover {
+  background: #6a5acd;
+  color: #0b0b0f;
+}
+
+.content-panel {
+  border: 1px solid #6a5acd;
+  border-radius: 10px;
+  padding: 20px;
+  background: rgba(106, 90, 205, 0.1);
+  min-height: 900px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="campaign-header">
+  <div class="back" onclick="window.history.back()">← Back</div>
+  <div class="campaign-title">THE FORGOTTEN HOLD</div>
+</div>
+
+<div class="campaign-image">
+  <img src="../../assets/sample.jpg" alt="Campaign Image">
+</div>
+
+<div class="campaign-body">
+
+  <div class="side-panel">
+    <div class="side-tile" onclick="loadSection('synopsis')">Campaign Synopsis</div>
+    <div class="side-tile" onclick="loadSection('characters')">Characters</div>
+    <div class="side-tile" onclick="loadSection('npcs')">NPC's Encountered</div>
+    <div class="side-tile" onclick="loadSection('discoveries')">Discoveries</div>
+    <div class="side-tile" onclick="loadSection('notes')">Player Notes</div>
+    <img src="../../assets/combat icon.webp" class="battle-tile" onclick="goToBattle()">
+  </div>
+
+  <div class="content-panel" id="content-panel">
+    <div id="characters-container"></div>
+  </div>
+
+</div>
+
+<script>
+function goToBattle() {
+  alert("Battle mode coming soon!");
+}
+</script>
+<script src="../../js/colourthief.js"></script>
+<script src="../../js/items_rarity_data.js"></script>
+<script src="../../js/parser.js"></script>
+<script src="../../js/renderer.js"></script>
+<script src="../../Shared/campaign-utils.js"></script>
+<script>
+const files = [
+  "../../Character Sheets/Nat 1 Travellers/The Forgotten Hold/Iston Goldpetal.json",
+  "../../Character Sheets/Nat 1 Travellers/The Forgotten Hold/Leonardo Tori toise.json",
+  "../../Character Sheets/Nat 1 Travellers/The Forgotten Hold/Odor Valle.json",
+  "../../Character Sheets/Nat 1 Travellers/The Forgotten Hold/Sven Mirthbrow .json",
+  "../../Character Sheets/Nat 1 Travellers/The Forgotten Hold/Vienna Martel.json"
+];
+
+const characterImages = {
+  "Iston Goldpetal": "../../assets/Character_images/The_forgotten_hold/iston.webp",
+  "Leonardo Tori toise": "../../assets/Character_images/The_forgotten_hold/leo.webp",
+  "Odor Valle": "../../assets/Character_images/The_forgotten_hold/odor.webp",
+  "Sven Mirthbrow ": "../../assets/Character_images/The_forgotten_hold/sven.webp.png",
+  "Vienna Martel": "../../assets/Character_images/The_forgotten_hold/vienna.webp"
+};
+
+const campaignData = {
+  synopsis: `<h2>Campaign Synopsis</h2><p>A forgotten stronghold buried beneath the ages, holding secrets that could reshape the world. A party of adventurers delves into its depths, uncovering ancient magic, lost civilizations, and the truth of why it was abandoned.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>The lost history of the Hold.</p>`,
+  notes: `<h2>Player Notes</h2><p>Delving into the depths.</p>`
+};
+</script>
+</body>
+</html>

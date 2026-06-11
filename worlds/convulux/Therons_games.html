@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -31,6 +31,17 @@
   padding: 8px 14px;
   border: 1px solid #888;
   border-radius: 6px;
+}
+
+/* ================= SYNOPSIS ================= */
+.synopsis-text {
+  font-family: 'Forgore', serif;
+  font-size: 22px;
+  line-height: 1.6;
+}
+.synopsis-text .first-word {
+  font-size: 1.8em;
+  display: inline-block;
 }
 
 /* ================= IMAGE ================= */
@@ -137,7 +148,8 @@ function goToBattle() {
   alert("Battle mode coming soon!");
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/colourthief.js"></script>
+    <script src="../../js/items_rarity_data.js"></script>
 <script src="../../js/parser.js"></script>
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
@@ -157,7 +169,7 @@ const characterImages = {
 };
 
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><div class="synopsis-text"><p><span class="first-word">Every</span> year, when the stars align and the boundaries between worlds grow thin, the eccentric archmage Theron descends upon the Material Plane to host a grand tournament unlike any other. Known simply as Theron's Games, the event draws adventurers, mercenaries, dreamers, and glory-seekers from across the realm, all competing for fame, fortune, and the chance to claim one of Theron's legendary prizes.</p><p>Among the competitors stood a little-known guild called the Low Eagles. Struggling to maintain their place among the great guilds of the region, they placed their hopes upon a small band of adventurers tasked with bringing victory home. What began as a simple competition soon became a journey through trials that tested far more than martial prowess.</p><p>The first challenge saw the heroes competing in the famed Syssiphus Challenge, a perilous race where colossal stone payloads had to be pushed across an ever-changing course filled with hazards and rival teams. Through determination, clever tactics, and no small amount of courage, the party overcame every obstacle placed before them.</p><p>Their victory granted passage into a vast enchanted labyrinth hidden within Theron's domain. Within its winding passages lurked ancient spirits, wandering wraiths, and forgotten dangers left behind by previous challengers. Pressing onward through spectral battles and deadly traps, the adventurers eventually reached the heart of the maze.</p><p>There, within a chamber bathed in golden light, rested the legendary All-That-Can-Be-Done-Under-The-Sun Robot-an extraordinary construct said to possess countless practical marvels. Yet the treasure was not unguarded. A mighty Solar Dragon stood watch over the relic, and the final trial unfolded within a magical arena whose shifting portals constantly transformed the battlefield.</p><p>Against overwhelming odds, the heroes triumphed. The dragon fell, the construct was claimed, and the champions returned home bearing both riches and renown. Their success transformed the fortunes of their guild forever. No longer would they be known as the Low Eagles. From that day onward, they soared beneath a new banner-the High Eagles-whose legend would spread far beyond the tournament grounds of Theron.</p></div>`,
   characters: `<h2>Characters</h2><div id="characters-container"></div>`,
   npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
   discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,

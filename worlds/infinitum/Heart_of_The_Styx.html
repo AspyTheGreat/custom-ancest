@@ -137,19 +137,34 @@ function goToBattle() {
   window.location.href = "../../chronicles/Chronicles_previous_battles.html#battle/the-second-blood-war/essence-of-the-styx";
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/colourthief.js"></script>
+    <script src="../../js/items_rarity_data.js"></script>
 <script src="../../js/parser.js"></script>
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Infinitum/Heart of the Styx/Lu Hua.json",
+  "../../Character Sheets/Infinitum/Heart of the Styx/Leona Roseberg.json",
+  "../../Character Sheets/Infinitum/Heart of the Styx/Corbin Olamendi.json",
+  "../../Character Sheets/Infinitum/Heart of the Styx/Belmen Giedenlor.json",
+  "../../Character Sheets/Infinitum/Heart of the Styx/Aparhan Skymaker .json"
+];
+
+const characterImages = {
+  "Lu Hua": "../../assets/Character_images/Heart_of_the_styx/Luhua.webp",
+  "Leona Roseberg": "../../assets/Character_images/Heart_of_the_styx/Leona.webp",
+  "Corbin Olamendi": "../../assets/Character_images/Heart_of_the_styx/Corbin.webp",
+  "Belmen Giedenlor": "../../assets/Character_images/Heart_of_the_styx/Belmen.webp",
+  "Aparhan Skymaker ": "../../assets/Character_images/Heart_of_the_styx/Aparhan.webp"
+};
+
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+  synopsis: `<h2>Campaign Synopsis</h2><p>A voyage into the heart of the Styx — the legendary river that flows through the planes. The party must navigate treacherous waters, both literal and political, as they seek the source of a corruption spreading from the river's core.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Planar travelers, river guardians, and stygian entities.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>The secrets held within the Styx's depths.</p>`,
+  notes: `<h2>Player Notes</h2><p>Navigating the river of fate.</p>`
 };
 </script>
 </body>

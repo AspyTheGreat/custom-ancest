@@ -137,19 +137,28 @@ function goToBattle() {
   alert("Battle mode coming soon!");
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/colourthief.js"></script>
+    <script src="../../js/items_rarity_data.js"></script>
 <script src="../../js/parser.js"></script>
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
+const files = [
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/L-10 R-Class.json",
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Eren Blastkowitz.json",
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Arlavor Cravoril.json",
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Anex the Fierce .json",
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Agreaul Tovag.json"
+];
+
 const characterImages = {};
+
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+  synopsis: `<h2>Campaign Synopsis</h2><p>A conundrum across the planes — when a catastrophic planeshift goes wrong, a group of strangers from different worlds must work together to survive in an unfamiliar reality. Alliances form as they seek a way home.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Planar travelers, natives of strange worlds, and beings between realms.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>The truth behind the failed planeshift.</p>`,
+  notes: `<h2>Player Notes</h2><p>Lost between worlds.</p>`
 };
 </script>
 </body>

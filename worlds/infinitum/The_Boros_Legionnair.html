@@ -137,19 +137,34 @@ function goToBattle() {
   window.location.href = "../../chronicles/Chronicles_previous_battles.html#battles/the-boros-legionaire";
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/colourthief.js"></script>
+    <script src="../../js/items_rarity_data.js"></script>
 <script src="../../js/parser.js"></script>
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/PyroPurr Miao.json",
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/Mawl Rippenterra.json",
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/Leila T'Amaso.json",
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/Lark , The Lone Mark .json",
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/Bucky the Quick.json"
+];
+
+const characterImages = {
+  "PyroPurr Miao": "../../assets/Character_images/The_Boros_legionnaire/Pyropur.webp",
+  "Mawl Rippenterra": "../../assets/Character_images/The_Boros_legionnaire/Mawl.webp",
+  "Leila T'Amaso": "../../assets/Character_images/The_Boros_legionnaire/Leila.png",
+  "Lark , The Lone Mark ": "../../assets/Character_images/The_Boros_legionnaire/Lark.webp",
+  "Bucky the Quick": "../../assets/Character_images/The_Boros_legionnaire/Bucky.webp"
+};
+
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+  synopsis: `<h2>Campaign Synopsis</h2><p>In the sprawling city of Ravnica, the Boros Legion faces its greatest challenge yet. A crack team of legionnaires must navigate political intrigue, street warfare, and ancient conspiracies that threaten to tear the guild apart from within.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Guild leaders, informants, and enemies of the Legion.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Secrets buried within the Legion's own ranks.</p>`,
+  notes: `<h2>Player Notes</h2><p>The Legion's march through war and corruption.</p>`
 };
 </script>
 </body>

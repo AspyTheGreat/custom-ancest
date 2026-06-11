@@ -137,19 +137,34 @@ function goToBattle() {
   window.location.href = "../../chronicles/Chronicles_previous_battles.html#battle/the-second-blood-war/serpent-of-the-styx";
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/colourthief.js"></script>
+    <script src="../../js/items_rarity_data.js"></script>
 <script src="../../js/parser.js"></script>
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Lu Hua.json",
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Leona Roseberg.json",
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Corbin Olamendi.json",
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Belmen Giedenlor.json",
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Aparhan Skymaker .json"
+];
+
+const characterImages = {
+  "Lu Hua": "../../assets/Character_images/At_Hells_gate_the_styxian_serpent/Luhua.webp",
+  "Leona Roseberg": "../../assets/Character_images/At_Hells_gate_the_styxian_serpent/Leona.webp",
+  "Corbin Olamendi": "../../assets/Character_images/At_Hells_gate_the_styxian_serpent/Corbin.webp",
+  "Belmen Giedenlor": "../../assets/Character_images/At_Hells_gate_the_styxian_serpent/Belmen.webp",
+  "Aparhan Skymaker ": "../../assets/Character_images/At_Hells_gate_the_styxian_serpent/Aparhan.webp"
+};
+
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+  synopsis: `<h2>Campaign Synopsis</h2><p>The Styxian Serpent awakens at Hell's Gate. The party must descend into the infernal depths to confront a primordial evil that threatens to consume the lower planes. Alliances will be tested and sacrifices must be made.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Devils, damned souls, and infernal powers.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>The true nature of the Styxian Serpent.</p>`,
+  notes: `<h2>Player Notes</h2><p>Descent into the inferno.</p>`
 };
 </script>
 </body>

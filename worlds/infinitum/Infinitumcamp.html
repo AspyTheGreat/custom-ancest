@@ -132,25 +132,146 @@
 
 </div>
 
-<script>
-function goToBattle() {
-  alert("Battle mode coming soon!");
-}
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/colourthief.js"></script>
+    <script src="../../js/items_rarity_data.js"></script>
 <script src="../../js/parser.js"></script>
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
-const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+const files = [
+  "../../Character Sheets/Infinitum/Ascension of Vecna 1- The Gith in the Sun/Zensha .json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 1- The Gith in the Sun/Worolyn Bahmexath.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 1- The Gith in the Sun/Procnias Laniidae (Jai).json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 1- The Gith in the Sun/Dzimitry Viktoer.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 1- The Gith in the Sun/Arlon Savel.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Lu Hua.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Leona Roseberg.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/King.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Corbin Olamendi.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Belmen Giedenlor.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Aparhan Skymaker .json",
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Lu Hua.json",
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Leona Roseberg.json",
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Corbin Olamendi.json",
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Belmen Giedenlor.json",
+  "../../Character Sheets/Infinitum/At Hell's Gate - The Styxian Serpent/Aparhan Skymaker .json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Yukran.json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Vincenzo Dalleoni.json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Shan Yiren.json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Rosalin Zofia(Akadi).json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Nova Loraphine.json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Bonaluria 'Arcanum Chronicler' Elphyra.json",
+  "../../Character Sheets/Infinitum/Heart of the Styx/Lu Hua.json",
+  "../../Character Sheets/Infinitum/Heart of the Styx/Leona Roseberg.json",
+  "../../Character Sheets/Infinitum/Heart of the Styx/Corbin Olamendi.json",
+  "../../Character Sheets/Infinitum/Heart of the Styx/Belmen Giedenlor.json",
+  "../../Character Sheets/Infinitum/Heart of the Styx/Aparhan Skymaker .json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Ryul Eilcan.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Robynne.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Quafolia _Folly_ Schtroumpfette.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Jonas Jones.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Hoid.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Cazrus Hon (Cazrus the springwalker).json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Breirnvern .json",
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/PyroPurr Miao.json",
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/Mawl Rippenterra.json",
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/Leila T'Amaso.json",
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/Lark , The Lone Mark .json",
+  "../../Character Sheets/Infinitum/The Boros Legionnaire/Bucky the Quick.json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Zariel Inkblight.json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Syllen elderstar.json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Loremaster Mossgrove.json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Falkas (Ben Dover).json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Cain.json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Anne 'Bounty' Merahayes.json",
+  "../../Character Sheets/Infinitum/The Lost Pearl of Luscany/Yidra.json",
+  "../../Character Sheets/Infinitum/The Lost Pearl of Luscany/Umbra Cavendish.json",
+  "../../Character Sheets/Infinitum/The Lost Pearl of Luscany/Mu Yingyue (Vishnu).json",
+  "../../Character Sheets/Infinitum/The Lost Pearl of Luscany/Kusuda Rikumichi.json",
+  "../../Character Sheets/Infinitum/The Lost Pearl of Luscany/FLAG MK-1.json",
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/L-10 R-Class.json",
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Eren Blastkowitz.json",
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Arlavor Cravoril.json",
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Anex the Fierce .json",
+  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Agreaul Tovag.json",
+  "../../Character Sheets/Infinitum/Vecna's Boys - Quenching the Wish/Corbin Olamendi.json",
+  "../../Character Sheets/Infinitum/Vecna's Boys - Quenching the Wish/Berne.json",
+  "../../Character Sheets/Infinitum/Vecna's Boys - Quenching the Wish/Belmen Giedenlor.json",
+  "../../Character Sheets/Infinitum/Vecna's Boys - Quenching the Wish/Aparhan Skymaker .json"
+];
+
+const characterImages = {
+  "Arlon Savel": "../../assets/Character_images/Ascension_of_Vecna 1_gith_in_the_sun/Arlon.webp",
+  "Dzimitry Viktoer": "../../assets/Character_images/Ascension_of_Vecna 1_gith_in_the_sun/Dzimitry.webp",
+  "Zensha ": "../../assets/Character_images/Ascension_of_Vecna 1_gith_in_the_sun/zensha.webp",
+  "Lu Hua": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Luhua.webp",
+  "Leona Roseberg": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Leona.webp",
+  "King": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/King.webp",
+  "Corbin Olamendi": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Corbin.webp",
+  "Belmen Giedenlor": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Belmen.webp",
+  "Aparhan Skymaker ": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Aparhan.webp",
+  "Yukran": "../../assets/Character_images/The_Dawn_Cataclysm/yukran.webp",
+  "Vincenzo Dalleoni": "../../assets/Character_images/The_Dawn_Cataclysm/Vince.webp",
+  "Shan Yiren": "../../assets/Character_images/The_Dawn_Cataclysm/Shan.webp",
+  "Rosalin Zofia(Akadi)": "../../assets/Character_images/The_Dawn_Cataclysm/Rosalin.webp",
+  "Nova Loraphine": "../../assets/Character_images/The_Dawn_Cataclysm/Nova.webp",
+  "Bonaluria 'Arcanum Chronicler' Elphyra": "../../assets/Character_images/The_Dawn_Cataclysm/Bonaluria.webp",
+  "Zariel Inkblight": "../../assets/Character_images/The_break_of_dawn/Zariel.webp",
+  "Syllen elderstar": "../../assets/Character_images/The_break_of_dawn/Syllen.webp",
+  "Loremaster Mossgrove": "../../assets/Character_images/The_break_of_dawn/Mossgrove.webp",
+  "Falkas (Ben Dover)": "../../assets/Character_images/The_break_of_dawn/Falkas.webp",
+  "Cain": "../../assets/Character_images/The_break_of_dawn/Cain.webp",
+  "Anne 'Bounty' Merahayes": "../../assets/Character_images/The_break_of_dawn/Ann.webp",
+  "PyroPurr Miao": "../../assets/Character_images/The_Boros_legionnaire/Pyropur.webp",
+  "Mawl Rippenterra": "../../assets/Character_images/The_Boros_legionnaire/Mawl.webp",
+  "Leila T'Amaso": "../../assets/Character_images/The_Boros_legionnaire/Leila.png",
+  "Lark , The Lone Mark ": "../../assets/Character_images/The_Boros_legionnaire/Lark.webp",
+  "Bucky the Quick": "../../assets/Character_images/The_Boros_legionnaire/Bucky.webp",
+  "Berne": "../../assets/Character_images/The_Vecnas_Boys_quenching_the_wish/berne.webp"
 };
+
+const campaignData = {
+  synopsis: `
+    <h2>Campaign Synopsis</h2>
+    <p>A sprawling multi-arc saga set across the Infinitum — a vast interconnected narrative spanning Vecna's schemes, planar heists, apotheosis rituals, and the unravelling of reality itself. Follow multiple parties of adventurers as they cross paths across time and space.</p>
+    <h3>Sub-Campaigns</h3>
+    <ul>
+      <li><strong>Ascension of Vecna 1:</strong> The Gith in the Sun</li>
+      <li><strong>Ascension of Vecna 2:</strong> The Rites of Apotheosis</li>
+      <li><strong>At Hell's Gate:</strong> The Styxian Serpent</li>
+      <li><strong>Dawn Cataclysm</strong></li>
+      <li><strong>Heart of the Styx</strong></li>
+      <li><strong>Redo of Wizard</strong></li>
+      <li><strong>The Boros Legionnaire</strong></li>
+      <li><strong>The Break of Dawn</strong></li>
+      <li><strong>The Lost Pearl of Luscany</strong></li>
+      <li><strong>The Plane Shift Conundrum</strong></li>
+      <li><strong>Vecna's Boys:</strong> Quenching the Wish</li>
+    </ul>
+  `,
+  characters: `
+    <h2>Characters</h2>
+    <div id="characters-container"></div>
+  `,
+  npcs: `
+    <h2>NPCs Encountered</h2>
+    <p>A vast web of allies, rivals, and enigmatic figures spanning the Infinitum campaigns.</p>
+  `,
+  discoveries: `
+    <h2>Discoveries</h2>
+    <p>Ancient artifacts, planar secrets, and the truth behind Vecna's grand design.</p>
+  `,
+  notes: `
+    <h2>Player Notes</h2>
+    <p>The threads of fate weave tighter with every campaign.</p>
+  `
+};
+</script>
+
+<script>
+function goToBattle() {
+  window.location.href = "../../chronicles/Chronicles_previous_battles.html#battles/infinitumcamp";
+}
 </script>
 </body>
 </html>

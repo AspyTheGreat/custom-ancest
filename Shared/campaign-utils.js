@@ -1,5 +1,51 @@
 let characters = [];
 let currentCharacterIndex = 0;
+let itemRarityMap = null;
+
+function loadItemRarityMap() {
+  if (itemRarityMap) return;
+  itemRarityMap = ITEM_RARITY_MAP || {};
+}
+
+function normalizeRarity(r) {
+  r = (r || "").toLowerCase();
+  if (r === "divine arm") return "divine arm";
+  if (r === "legendary") return "legendary";
+  if (r === "artifact") return "artifact";
+  if (r === "very rare") return "very rare";
+  if (r === "rare") return "rare";
+  if (r === "uncommon") return "uncommon";
+  if (r === "common") return "common";
+  return "mundane";
+}
+
+function lookupItemRarity(name) {
+  const key = name.toLowerCase().trim();
+  let r = itemRarityMap?.[key];
+  if (r) return normalizeRarity(r);
+  const words = key.split(" ");
+  if (words.length > 1) {
+    r = itemRarityMap?.[words.slice(0, -1).join(" ")];
+    if (r) return normalizeRarity(r);
+    r = itemRarityMap?.[key + " (*)"];
+    if (r) return normalizeRarity(r);
+  }
+  return "mundane";
+}
+
+function getRarityColor(rarity) {
+  const colors = {
+    "divine arm": "#ffd700",
+    "artifact": "#ff3b00",
+    "legendary": "#1e90ff",
+    "very rare": "#ff8c00",
+    "rare": "#b388ff",
+    "uncommon": "#a09890",
+    "common": "#a0a0a0",
+    "mundane": "#666666"
+  };
+  return colors[rarity] || colors.mundane;
+}
 
 function loadSection(section) {
   const panel = document.getElementById("content-panel");
@@ -20,11 +66,28 @@ async function loadCharacters() {
       const response = await fetch(file);
       const data = await response.json();
       const character = parseCharacter(data);
+      character.items = character.items.map(item => {
+        let r = lookupItemRarity(item.lookupName || item.name);
+        if (r === "mundane" && item.suffixRarity) r = item.suffixRarity;
+        return { ...item, rarity: r };
+      });
       characters.push(character);
     } catch (e) {
       console.warn("Could not load character:", file);
     }
   }
+  renderCurrentCharacter();
+}
+
+loadItemRarityMap();
+if (characters.length) {
+    characters.forEach(c => {
+      c.items = c.items.map(item => {
+        let r = lookupItemRarity(item.lookupName || item.name);
+        if (r === "mundane" && item.suffixRarity) r = item.suffixRarity;
+        return { ...item, rarity: r };
+      });
+    });
   renderCurrentCharacter();
 }
 

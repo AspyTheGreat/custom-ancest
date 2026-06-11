@@ -137,19 +137,36 @@ function goToBattle() {
   window.location.href = "../../chronicles/Chronicles_previous_battles.html#battles/the-break-of-dawn";
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="../../js/colourthief.js"></script>
+    <script src="../../js/items_rarity_data.js"></script>
 <script src="../../js/parser.js"></script>
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Infinitum/The Break of Dawn/Zariel Inkblight.json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Syllen elderstar.json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Loremaster Mossgrove.json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Falkas (Ben Dover).json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Cain.json",
+  "../../Character Sheets/Infinitum/The Break of Dawn/Anne 'Bounty' Merahayes.json"
+];
+
+const characterImages = {
+  "Zariel Inkblight": "../../assets/Character_images/The_break_of_dawn/Zariel.webp",
+  "Syllen elderstar": "../../assets/Character_images/The_break_of_dawn/Syllen.webp",
+  "Loremaster Mossgrove": "../../assets/Character_images/The_break_of_dawn/Mossgrove.webp",
+  "Falkas (Ben Dover)": "../../assets/Character_images/The_break_of_dawn/Falkas.webp",
+  "Cain": "../../assets/Character_images/The_break_of_dawn/Cain.webp",
+  "Anne 'Bounty' Merahayes": "../../assets/Character_images/The_break_of_dawn/Ann.webp"
+};
+
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+  synopsis: `<h2>Campaign Synopsis</h2><p>The dawn breaks over a world on the brink. A band of unlikely heroes must rise to meet a celestial threat that could unravel the very fabric of reality. Shadows lengthen as ancient powers stir, and the line between light and darkness blurs with every passing moment.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Gods, celestial beings, and those caught between them.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Hidden truths about the Dawn and the forces that shaped it.</p>`,
+  notes: `<h2>Player Notes</h2><p>The party's journey through the breaking dawn.</p>`
 };
 </script>
 </body>
