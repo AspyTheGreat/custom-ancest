@@ -143,14 +143,30 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Lu Hua.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Leona Roseberg.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/King.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Corbin Olamendi.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Belmen Giedenlor.json",
+  "../../Character Sheets/Infinitum/Ascension of Vecna 2- The Rites of Apotheosis/Aparhan Skymaker .json"
+];
+
+const characterImages = {
+  "Lu Hua": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Luhua.webp",
+  "Leona Roseberg": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Leona.webp",
+  "King": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/King.webp",
+  "Corbin Olamendi": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Corbin.webp",
+  "Belmen Giedenlor": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Belmen.webp",
+  "Aparhan Skymaker ": "../../assets/Character_images/Ascension_of_Vecna 2_rites_of_apotheosis/Aparhan.webp"
+};
+
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+  synopsis: `<h2>Campaign Synopsis</h2><p>The Rites of Apotheosis — Vecna's final gambit to ascend to true godhood. A new party is drawn into the conspiracy as ancient rituals, planar sacrifices, and the theft of divine essence push reality to its breaking point.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Gods, planar beings, and those caught in Vecna's ascent.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>The true cost of apotheosis.</p>`,
+  notes: `<h2>Player Notes</h2><p>Witnessing the birth of a god.</p>`
 };
 </script>
 </body>

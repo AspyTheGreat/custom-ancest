@@ -144,17 +144,29 @@ function goToBattle() {
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
 const files = [
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Yukran.json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Vincenzo Dalleoni.json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Shan Yiren.json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Rosalin Zofia(Akadi).json",
+  "../../Character Sheets/Infinitum/Dawn Cataclysm/Nova Loraphine.json",
   "../../Character Sheets/Infinitum/Dawn Cataclysm/Bonaluria 'Arcanum Chronicler' Elphyra.json"
 ];
 
-const characterImages = {};
+const characterImages = {
+  "Yukran": "../../assets/Character_images/The_Dawn_Cataclysm/yukran.webp",
+  "Vincenzo Dalleoni": "../../assets/Character_images/The_Dawn_Cataclysm/Vince.webp",
+  "Shan Yiren": "../../assets/Character_images/The_Dawn_Cataclysm/Shan.webp",
+  "Rosalin Zofia(Akadi)": "../../assets/Character_images/The_Dawn_Cataclysm/Rosalin.webp",
+  "Nova Loraphine": "../../assets/Character_images/The_Dawn_Cataclysm/Nova.webp",
+  "Bonaluria 'Arcanum Chronicler' Elphyra": "../../assets/Character_images/The_Dawn_Cataclysm/Bonaluria.webp"
+};
 
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><p>The Dawn Cataclysm — a world-shattering event that forever changed the fabric of reality. Follow the survivors as they piece together what happened and confront the forces that brought about the end of an era.</p>`,
   characters: `<h2>Characters</h2><div id="characters-container"></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+  npcs: `<h2>NPCs Encountered</h2><p>Survivors, cataclysm-born entities, and echoes of the old world.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>The true cause of the cataclysm.</p>`,
+  notes: `<h2>Player Notes</h2><p>Life after the end of the world.</p>`
 };
 </script>
 </body>

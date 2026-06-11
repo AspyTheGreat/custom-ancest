@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +10,6 @@
 
 <style>
 
-/* ================= HEADER ================= */
 .campaign-header {
   display: flex;
   align-items: center;
@@ -33,7 +32,6 @@
   border-radius: 6px;
 }
 
-/* ================= IMAGE ================= */
 .campaign-image {
   width: 120%;
   max-width: 1200px;
@@ -42,7 +40,6 @@
   border: 1px solid #6a5acd;
   border-radius: 10px;
   background: rgba(106, 90, 205, 0.1);
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,7 +52,6 @@
   object-fit: cover;
 }
 
-/* ================= MAIN SPLIT ================= */
 .campaign-body {
   display: grid;
   grid-template-columns: 20% 80%;
@@ -65,7 +61,6 @@
   gap: 20px;
 }
 
-/* LEFT SIDE */
 .side-panel {
   display: flex;
   flex-direction: column;
@@ -87,7 +82,6 @@
   color: #0b0b0f;
 }
 
-/* RIGHT SIDE */
 .content-panel {
   border: 1px solid #6a5acd;
   border-radius: 10px;
@@ -101,21 +95,17 @@
 
 <body>
 
-<!-- ================= HEADER ================= -->
 <div class="campaign-header">
   <div class="back" onclick="window.history.back()">← Back</div>
-  <div class="campaign-title">THE PLANESHIFT CONUNDRUM</div>
+  <div class="campaign-title">THE BOILING ISLE</div>
 </div>
 
-<!-- ================= IMAGE ================= -->
 <div class="campaign-image">
   <img src="../../assets/sample.jpg" alt="Campaign Image">
 </div>
 
-<!-- ================= BODY ================= -->
 <div class="campaign-body">
 
-  <!-- LEFT (30%) -->
   <div class="side-panel">
     <div class="side-tile" onclick="loadSection('synopsis')">Campaign Synopsis</div>
     <div class="side-tile" onclick="loadSection('characters')">Characters</div>
@@ -125,7 +115,6 @@
     <img src="../../assets/combat icon.webp" class="battle-tile" onclick="goToBattle()">
   </div>
 
-  <!-- RIGHT (70%) -->
   <div class="content-panel" id="content-panel">
     <div id="characters-container"></div>
   </div>
@@ -138,27 +127,21 @@ function goToBattle() {
 }
 </script>
 <script src="../../js/colourthief.js"></script>
-    <script src="../../js/items_rarity_data.js"></script>
+<script src="../../js/items_rarity_data.js"></script>
 <script src="../../js/parser.js"></script>
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [
-  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/L-10 R-Class.json",
-  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Eren Blastkowitz.json",
-  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Arlavor Cravoril.json",
-  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Anex the Fierce .json",
-  "../../Character Sheets/Infinitum/The Plane Shift Conundrum/Agreaul Tovag.json"
-];
+const files = [];
 
 const characterImages = {};
 
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>A conundrum across the planes — when a catastrophic planeshift goes wrong, a group of strangers from different worlds must work together to survive in an unfamiliar reality. Alliances form as they seek a way home.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>Planar travelers, natives of strange worlds, and beings between realms.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>The truth behind the failed planeshift.</p>`,
-  notes: `<h2>Player Notes</h2><p>Lost between worlds.</p>`
+  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
 };
 </script>
 </body>

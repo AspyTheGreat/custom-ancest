@@ -143,14 +143,24 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
+const files = [
+  "../../Character Sheets/Infinitum/Redo of Wizard/Ryul Eilcan.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Robynne.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Quafolia _Folly_ Schtroumpfette.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Jonas Jones.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Hoid.json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Cazrus Hon (Cazrus the springwalker).json",
+  "../../Character Sheets/Infinitum/Redo of Wizard/Breirnvern .json"
+];
+
 const characterImages = {};
+
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
-  notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
+  synopsis: `<h2>Campaign Synopsis</h2><p>A wizard's journey rewritten — when a powerful mage gets a second chance at their story, the ripple effects cascade across the multiverse. Old wrongs, new alliances, and the price of rewriting fate itself.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Mages, magical creatures, and echoes of rewritten timelines.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>The consequences of rewriting history.</p>`,
+  notes: `<h2>Player Notes</h2><p>A second chance comes at a cost.</p>`
 };
 </script>
 </body>
