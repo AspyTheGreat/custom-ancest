@@ -16,6 +16,7 @@ const timelineData = {
   ],
   Tolivric: [
     { name: "Jorrid", url: "Jorrid.html" },
+    { name: "Jorrid 2", url: "Jorrid_2.html" },
     { name: "On Rails", url: "On_rails.html" },
     { name: "Coast is Clear", url: "Coast_Is_Clear.html" },
     { name: "Foray of Fable", url: "Foray_of_Fable.html" },
