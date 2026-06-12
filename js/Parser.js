@@ -17,13 +17,15 @@ function max(attribs, name) {
 
 function parseCharacter(data) {
 
-  const attribs = data.character.attribs;
+  const character = data.character || {};
+  const attribs = character.attribs || data.attributes;
+  const charName = data.name || character.name;
 
   return {
 
-    name: data.character.name,
+    name: charName,
 
-    image: characterImages[data.character.name] || data.character.avatar,
+    image: characterImages[charName] || character.avatar || data.avatar,
 
     class:
       current(attribs, "class_display") ||

@@ -143,13 +143,33 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Tolivric/Paths Less traveled/Yuan.json",
+  "../../Character Sheets/Tolivric/Paths Less traveled/Xistao.json",
+  "../../Character Sheets/Tolivric/Paths Less traveled/Tian.json",
+  "../../Character Sheets/Tolivric/Paths Less traveled/Tanyth.json",
+  "../../Character Sheets/Tolivric/Paths Less traveled/Sarxetro.json",
+  "../../Character Sheets/Tolivric/Paths Less traveled/Rexia.json",
+  "../../Character Sheets/Tolivric/Paths Less traveled/Mozgus.json",
+  "../../Character Sheets/Tolivric/Paths Less traveled/Lucien.json",
+  "../../Character Sheets/Tolivric/Paths Less traveled/Fishel.json"
+];
+const characterImages = {
+  "Yuan Lanxie": "../../assets/Character_images/Paths_less_travelled/Yuan.png",
+  "Xistao Eaussor": "../../assets/Character_images/Paths_less_travelled/Xistao.png",
+  "Tian Chuanze": "../../assets/Character_images/Paths_less_travelled/Tian.webp",
+  "Tanyth Rubenera": "../../assets/Character_images/Paths_less_travelled/Tanyth.jpg",
+  "Sarxetro Lornus": "../../assets/Character_images/Paths_less_travelled/Sarxetro.png",
+  "Rexia Lifon": "../../assets/Character_images/Paths_less_travelled/Rexia.webp",
+  "Mozgus Blackrain": "../../assets/Character_images/Paths_less_travelled/Mozgus.png",
+  "Lucien Darkcrest": "../../assets/Character_images/Paths_less_travelled/Lucien.png",
+  "Fishel Iven": "../../assets/Character_images/Paths_less_travelled/Fishel.png"
+};
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><p>Content coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Content coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Content coming soon.</p>`,
   notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
 };
 </script>

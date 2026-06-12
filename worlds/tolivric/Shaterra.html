@@ -143,13 +143,27 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Tolivric/Sha'terra - The 11th Wave/Zelathaara.json",
+  "../../Character Sheets/Tolivric/Sha'terra - The 11th Wave/Voral.json",
+  "../../Character Sheets/Tolivric/Sha'terra - The 11th Wave/Tian wei.json",
+  "../../Character Sheets/Tolivric/Sha'terra - The 11th Wave/Mavi.json",
+  "../../Character Sheets/Tolivric/Sha'terra - The 11th Wave/Khou.json",
+  "../../Character Sheets/Tolivric/Sha'terra - The 11th Wave/Aspy.json"
+];
+const characterImages = {
+  "Zelathaara": "../../assets/Character_images/Shaterra_the_11th_wave/Zelathara.png",
+  "Voral Trunnathel": "../../assets/Character_images/Shaterra_the_11th_wave/Voral.png",
+  "悟 Tian Wei": "../../assets/Character_images/Shaterra_the_11th_wave/Tian.jpg",
+  "Mavi": "../../assets/Character_images/Shaterra_the_11th_wave/Mavi.png",
+  "Khou": "../../assets/Character_images/Shaterra_the_11th_wave/Khou.png",
+  "Aspy": "../../assets/Character_images/Shaterra_the_11th_wave/Aspy.webm"
+};
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><p>Content coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Content coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Content coming soon.</p>`,
   notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
 };
 </script>

@@ -143,13 +143,29 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Tolivric/Coast is Clear/Toriel.json",
+  "../../Character Sheets/Tolivric/Coast is Clear/Thorkell.json",
+  "../../Character Sheets/Tolivric/Coast is Clear/Simone.json",
+  "../../Character Sheets/Tolivric/Coast is Clear/Ramsin.json",
+  "../../Character Sheets/Tolivric/Coast is Clear/Noah.json",
+  "../../Character Sheets/Tolivric/Coast is Clear/Chu.json",
+  "../../Character Sheets/Tolivric/Coast is Clear/Beatrice.json"
+];
+const characterImages = {
+  "Toriel": "../../assets/Character_images/Coast_is_clear/Toriel.png",
+  "Thorkell the tall": "../../assets/Character_images/Coast_is_clear/Thorkell.png",
+  "Simoné Semolina": "../../assets/Character_images/Coast_is_clear/Simone.png",
+  "Ramsin Elanor": "../../assets/Character_images/Coast_is_clear/Ramsin.png",
+  "Noah Blicknall": "../../assets/Character_images/Coast_is_clear/Noah.png",
+  "Chu Xua": "../../assets/Character_images/Coast_is_clear/Chu.jpg",
+  "Beatrice Khelor": "../../assets/Character_images/Coast_is_clear/Beatrice.jpg"
+};
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><p>Content coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Content coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Content coming soon.</p>`,
   notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
 };
 </script>

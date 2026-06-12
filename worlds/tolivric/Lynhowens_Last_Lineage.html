@@ -143,13 +143,24 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Tolivric/Lynhowen's Last Lineage/Sigmund.json",
+  "../../Character Sheets/Tolivric/Lynhowen's Last Lineage/Shar.json",
+  "../../Character Sheets/Tolivric/Lynhowen's Last Lineage/Nonluke.json",
+  "../../Character Sheets/Tolivric/Lynhowen's Last Lineage/Camore.json",
+  "../../Character Sheets/Tolivric/Lynhowen's Last Lineage/Ada.json"
+];
+const characterImages = {
+  "Sigmund Shadowhand": "../../assets/Character_images/Lynhowens_last_lineage/Sigmund.png",
+  "Shar": "../../assets/Character_images/Lynhowens_last_lineage/Shar.png",
+  "Nonluke Whithide": "../../assets/Character_images/Lynhowens_last_lineage/Nonluke.png",
+  "Camore Treysy": "../../assets/Character_images/Lynhowens_last_lineage/Camore.png"
+};
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><p>Content coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Content coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Content coming soon.</p>`,
   notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
 };
 </script>

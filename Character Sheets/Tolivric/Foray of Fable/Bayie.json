@@ -1,0 +1,2764 @@
+{
+    "name": "Bayie (bae) Alsuwuf",
+    "bio": "",
+    "gmnotes": "",
+    "avatar": "https://s3.amazonaws.com/files.d20.io/images/286750625/0weOP4mvZv4GMhKdOd5Jug/med.png?1653497892",
+    "inplayerjournals": [
+        "-N2w7JYq1RTwHiBOLUQa",
+        "-N35TgjIymbim38_hJsK"
+    ],
+    "controlledby": [
+        "-N2w7JYq1RTwHiBOLUQa",
+        "-N35TgjIymbim38_hJsK"
+    ],
+    "defaulttoken": "",
+    "tags": "[]",
+    "archived": false,
+    "attrorder": "",
+    "abilorder": "",
+    "mancerdata": "{}",
+    "expansion": null,
+    "expansioninitials": "",
+    "expansionid": null,
+    "charactersheetname": "ogl5e",
+    "id": "-N2oUBRY6gFljp0auir3",
+    "attributes": [
+        {
+            "name": "hitdieroll",
+            "current": "8",
+            "max": "",
+            "id": "-N2oUHC3r5QMELoLYBJ5"
+        },
+        {
+            "name": "showleveler",
+            "current": 0,
+            "max": "",
+            "id": "-N2oUHC5a1_oKABJItr6"
+        },
+        {
+            "name": "invalidXP",
+            "current": 0,
+            "max": "",
+            "id": "-N2oUHC6oZsKEzj5Vem5"
+        },
+        {
+            "name": "version",
+            "current": 4.21,
+            "max": "",
+            "id": "-N2oUHCO7t2boZKzPXQO"
+        },
+        {
+            "name": "appliedUpdates",
+            "current": "upgrade_to_4_2_1,fix_spell_attacks,fix_pc_skill_and_saving_rolls,fix_pc_saving_rolls,fix_pc_skill_and_saving_rolls_with_expertise,fix_pc_skill_and_saving_rolls_with_reliable_talent,enable_powerful_build_on_existing_characters,fix_pc_global_critical_damage_rolls,fix_pc_global_critical_stacked_damage_rolls,fix_pc_skill_rolls_tooltips,fix_pc_global_statical_critical_damage,fix_spell_school_ouput,fix_pc_global_multiple_statical_critical_damage,fix_spell_savedc_output,fix_spellpoints,fix_advantage_query,fix_attacks_spelllink,fix_pc_skills_when_jack_and_odd_prof,fix_armor_stealth_penalty,fix_pc_printedskills",
+            "max": "",
+            "id": "-N2oUHCP6AB7E_H1VVLt"
+        },
+        {
+            "name": "strength_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{strength-save-u}}} {{mod=@{strength_save_bonus}}} {{r1=[[@{d20}+@{strength_save_bonus}@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{strength_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCUN8dE_JtH5Wj9"
+        },
+        {
+            "name": "dexterity_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{dexterity-save-u}}} {{mod=@{dexterity_save_bonus}}} {{r1=[[@{d20}+@{dexterity_save_bonus}@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{dexterity_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCVOFjzPNjzmEga"
+        },
+        {
+            "name": "constitution_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{constitution-save-u}}} {{mod=@{constitution_save_bonus}}} {{r1=[[@{d20}+@{constitution_save_bonus}@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{constitution_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCVOFjzPNjzmEgb"
+        },
+        {
+            "name": "intelligence_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{intelligence-save-u}}} {{mod=@{intelligence_save_bonus}}} {{r1=[[@{d20}+@{intelligence_save_bonus}@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{intelligence_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCWfVmLbDHZMwGf"
+        },
+        {
+            "name": "wisdom_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{wisdom-save-u}}} {{mod=@{wisdom_save_bonus}}} {{r1=[[@{d20}+@{wisdom_save_bonus}@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{wisdom_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCWfVmLbDHZMwGg"
+        },
+        {
+            "name": "charisma_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{charisma-save-u}}} {{mod=@{charisma_save_bonus}}} {{r1=[[@{d20}+@{charisma_save_bonus}@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{charisma_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCXvzBn8PF6cUm4"
+        },
+        {
+            "name": "honor_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{honor-save-u}}} {{mod=@{honor_save_bonus}}} {{r1=[[@{d20}+@{honor_save_bonus}@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{honor_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCYMATSqcGVTdej"
+        },
+        {
+            "name": "sanity_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{sanity-save-u}}} {{mod=@{sanity_save_bonus}}} {{r1=[[@{d20}+@{sanity_save_bonus}@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{sanity_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCYMATSqcGVTdek"
+        },
+        {
+            "name": "athletics_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{athletics-u}}} {{mod=@{athletics_bonus}}} {{r1=[[@{d20}+@{athletics_bonus}[Mods]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{athletics_bonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCYMATSqcGVTdel"
+        },
+        {
+            "name": "acrobatics_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{acrobatics-u}}} {{mod=@{acrobatics_bonus}}} {{r1=[[@{d20}+2[dexterity]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+2[dexterity]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCZofTDLlTPx_w0"
+        },
+        {
+            "name": "sleight_of_hand_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{sleight_of_hand-u}}} {{mod=@{sleight_of_hand_bonus}}} {{r1=[[@{d20}+2[dexterity]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+2[dexterity]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCZofTDLlTPx_w1"
+        },
+        {
+            "name": "stealth_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{stealth-u}}} {{mod=@{stealth_bonus}}} {{r1=[[@{d20}+2[dexterity]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+2[dexterity]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHC_S4j91_jZPe-C"
+        },
+        {
+            "name": "arcana_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{arcana-u}}} {{mod=@{arcana_bonus}}} {{r1=[[@{d20}+@{arcana_bonus}[Mods]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{arcana_bonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHC_S4j91_jZPe-D"
+        },
+        {
+            "name": "history_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{history-u}}} {{mod=@{history_bonus}}} {{r1=[[@{d20}+@{history_bonus}[Mods]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{history_bonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCa1EZQMrvbEbop"
+        },
+        {
+            "name": "investigation_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{investigation-u}}} {{mod=@{investigation_bonus}}} {{r1=[[@{d20}+@{investigation_bonus}[Mods]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{investigation_bonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCa1EZQMrvbEboq"
+        },
+        {
+            "name": "nature_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{nature-u}}} {{mod=@{nature_bonus}}} {{r1=[[@{d20}+4[Proficiency]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+4[Proficiency]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCa1EZQMrvbEbor"
+        },
+        {
+            "name": "religion_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{religion-u}}} {{mod=@{religion_bonus}}} {{r1=[[@{d20}+@{religion_bonus}[Mods]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{religion_bonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCbJGlYikMuXPCq"
+        },
+        {
+            "name": "animal_handling_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{animal_handling-u}}} {{mod=@{animal_handling_bonus}}} {{r1=[[@{d20}+4[Proficiency]+5[wisdom]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+4[Proficiency]+5[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCbJGlYikMuXPCr"
+        },
+        {
+            "name": "insight_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{insight-u}}} {{mod=@{insight_bonus}}} {{r1=[[@{d20}+4[Proficiency]+5[wisdom]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+4[Proficiency]+5[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCcDt5uFbhvw_5Q"
+        },
+        {
+            "name": "medicine_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{medicine-u}}} {{mod=@{medicine_bonus}}} {{r1=[[@{d20}+5[wisdom]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+5[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCcDt5uFbhvw_5R"
+        },
+        {
+            "name": "perception_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{perception-u}}} {{mod=@{perception_bonus}}} {{r1=[[@{d20}+4[Proficiency]+5[wisdom]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+4[Proficiency]+5[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCdDSk9UgCr6loM"
+        },
+        {
+            "name": "survival_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{survival-u}}} {{mod=@{survival_bonus}}} {{r1=[[@{d20}+5[wisdom]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+5[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCdDSk9UgCr6loN"
+        },
+        {
+            "name": "deception_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{deception-u}}} {{mod=@{deception_bonus}}} {{r1=[[@{d20}+@{deception_bonus}[Mods]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{deception_bonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCdDSk9UgCr6loO"
+        },
+        {
+            "name": "intimidation_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{intimidation-u}}} {{mod=@{intimidation_bonus}}} {{r1=[[@{d20}+@{intimidation_bonus}[Mods]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{intimidation_bonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCes_bZavx_x8_w"
+        },
+        {
+            "name": "performance_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{performance-u}}} {{mod=@{performance_bonus}}} {{r1=[[@{d20}+@{performance_bonus}[Mods]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{performance_bonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCes_bZavx_x8_x"
+        },
+        {
+            "name": "persuasion_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{persuasion-u}}} {{mod=@{persuasion_bonus}}} {{r1=[[@{d20}+4[Proficiency]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+4[Proficiency]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2oUHCfLuJ8KX0T6Hzl"
+        },
+        {
+            "name": "global_damage_mod_roll",
+            "current": "",
+            "max": "",
+            "id": "-N2oUHCwukfo5hiEi3k8"
+        },
+        {
+            "name": "global_damage_mod_crit",
+            "current": "",
+            "max": "",
+            "id": "-N2oUHCwukfo5hiEi3k9"
+        },
+        {
+            "name": "global_damage_mod_type",
+            "current": "",
+            "max": "",
+            "id": "-N2oUHCwukfo5hiEi3kA"
+        },
+        {
+            "name": "queryadvantage",
+            "current": "{{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}",
+            "max": "",
+            "id": "-N2oUHD6AvM6zoY7Na0n"
+        },
+        {
+            "name": "stealth_bonus",
+            "current": 2,
+            "max": "",
+            "id": "-N2oUHDBGri1Q_sin2Gy"
+        },
+        {
+            "name": "mancer_confirm_flag",
+            "current": "",
+            "max": "",
+            "id": "-N2oUHDEAoG2IIZwe80i"
+        },
+        {
+            "name": "mancer_cancel",
+            "current": "on",
+            "max": "",
+            "id": "-N2w7Qo-eOtrLW7i0oPG"
+        },
+        {
+            "name": "l1mancer_status",
+            "current": "completed",
+            "max": "",
+            "id": "-N2w7QpmIHqa91t2_1b0"
+        },
+        {
+            "name": "tab",
+            "current": "core",
+            "max": "",
+            "id": "-N2w7bLjfs-6ZVgYkXaO"
+        },
+        {
+            "name": "allies_and_organizations",
+            "current": "4d6kh3 (1, 1, 4, 6) = 11\n4d6kh3 (5, 1, 4, 2) = 11\n4d6kh3 (3, 2, 5, 6) = 14\n4d6kh3 (2, 6, 1, 3) = 11\n4d6kh3 (6, 6, 5, 4) = 17\n4d6kh3 (6, 2, 6, 3) = 15",
+            "max": "",
+            "id": "-N2w7dR46x6ZQ6IrgQdp"
+        },
+        {
+            "name": "wisdom_base",
+            "current": "20",
+            "max": "",
+            "id": "-N2w7fl6lyDgkxhP13xj"
+        },
+        {
+            "name": "wisdom_flag",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7fmuDYu5uRZcLXks"
+        },
+        {
+            "name": "wisdom",
+            "current": 20,
+            "max": "",
+            "id": "-N2w7fmxDhwJRPLknta8"
+        },
+        {
+            "name": "wisdom_mod",
+            "current": 5,
+            "max": "",
+            "id": "-N2w7fn-qIQ1YCtiE8EJ"
+        },
+        {
+            "name": "npc_wis_negative",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7foqz6r4Xdr6YGTm"
+        },
+        {
+            "name": "spell_attack_bonus",
+            "current": 11,
+            "max": "",
+            "id": "-N2w7fovwKzRGA5O6kz0"
+        },
+        {
+            "name": "spell_save_dc",
+            "current": 19,
+            "max": "",
+            "id": "-N2w7foxW3DICBS6SMsx"
+        },
+        {
+            "name": "wisdom_save_bonus",
+            "current": 9,
+            "max": "",
+            "id": "-N2w7fp1cGnCco4x6XYE"
+        },
+        {
+            "name": "animal_handling_bonus",
+            "current": 9,
+            "max": "",
+            "id": "-N2w7fp5XTMdlLFHGhGi"
+        },
+        {
+            "name": "insight_bonus",
+            "current": 9,
+            "max": "",
+            "id": "-N2w7fp78CHCwhasZfWu"
+        },
+        {
+            "name": "medicine_bonus",
+            "current": 5,
+            "max": "",
+            "id": "-N2w7fp9UD2os_4a6EIP"
+        },
+        {
+            "name": "perception_bonus",
+            "current": 9,
+            "max": "",
+            "id": "-N2w7fpAflpwn6MDE0B1"
+        },
+        {
+            "name": "survival_bonus",
+            "current": 5,
+            "max": "",
+            "id": "-N2w7fpCQ-tsus_923kn"
+        },
+        {
+            "name": "passive_wisdom",
+            "current": 19,
+            "max": "",
+            "id": "-N2w7fpIASYLEAtVY4R9"
+        },
+        {
+            "name": "constitution_base",
+            "current": "16",
+            "max": "",
+            "id": "-N2w7imwCIPglWQLdQsG"
+        },
+        {
+            "name": "constitution_flag",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7iog9SZ5pKYZnmUn"
+        },
+        {
+            "name": "constitution",
+            "current": 16,
+            "max": "",
+            "id": "-N2w7ioj6U9bFobt9cxp"
+        },
+        {
+            "name": "constitution_mod",
+            "current": 3,
+            "max": "",
+            "id": "-N2w7iolCbrOigNCjqUu"
+        },
+        {
+            "name": "npc_con_negative",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7iqdbRzKEqbSRKNz"
+        },
+        {
+            "name": "constitution_save_bonus",
+            "current": 3,
+            "max": "",
+            "id": "-N2w7iqor0ITOijhfae0"
+        },
+        {
+            "name": "charisma_base",
+            "current": "11",
+            "max": "",
+            "id": "-N2w7jawx_4UhtHV7gK9"
+        },
+        {
+            "name": "charisma_flag",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7jcx-k-s1FvzW38L"
+        },
+        {
+            "name": "charisma",
+            "current": 11,
+            "max": "",
+            "id": "-N2w7jd-5Bp4JmzMUH1G"
+        },
+        {
+            "name": "charisma_mod",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7jd3kXYOVmyPWXmW"
+        },
+        {
+            "name": "npc_cha_negative",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7jewW-IO2Pbdpjo2"
+        },
+        {
+            "name": "charisma_save_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7jezI8yQbNF0Afup"
+        },
+        {
+            "name": "deception_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7jf1AUYKO38_yDNi"
+        },
+        {
+            "name": "intimidation_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7jf3o0_VoVKabqqt"
+        },
+        {
+            "name": "performance_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7jf6vw0hDm5Zypi_"
+        },
+        {
+            "name": "persuasion_bonus",
+            "current": 4,
+            "max": "",
+            "id": "-N2w7jf8j_NUeq9DWP0z"
+        },
+        {
+            "name": "intelligence_base",
+            "current": "11",
+            "max": "",
+            "id": "-N2w7kJ_8BWrUK3Sl6ow"
+        },
+        {
+            "name": "intelligence_flag",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7kLK0_aUE3WDU1yz"
+        },
+        {
+            "name": "intelligence",
+            "current": 11,
+            "max": "",
+            "id": "-N2w7kLMhFsa4TTR5nGg"
+        },
+        {
+            "name": "intelligence_mod",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7kLOas5bWKBecMWq"
+        },
+        {
+            "name": "npc_int_negative",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7kNDI_19zY3PorW4"
+        },
+        {
+            "name": "intelligence_save_bonus",
+            "current": 4,
+            "max": "",
+            "id": "-N2w7kNIBObNhP_WhIdE"
+        },
+        {
+            "name": "arcana_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7kNLW_tuniGLQD8z"
+        },
+        {
+            "name": "history_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7kNO92QPqL6ty2vw"
+        },
+        {
+            "name": "investigation_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7kNQAwThYISr621o"
+        },
+        {
+            "name": "nature_bonus",
+            "current": 4,
+            "max": "",
+            "id": "-N2w7kNR_fXixJrysBvP"
+        },
+        {
+            "name": "religion_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7kNUC_kVYTb1dW8p"
+        },
+        {
+            "name": "strength_base",
+            "current": "11",
+            "max": "",
+            "id": "-N2w7l6JrcGT-w_gQsaG"
+        },
+        {
+            "name": "strength_flag",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7l85BRpcKuRuHajJ"
+        },
+        {
+            "name": "strength",
+            "current": 11,
+            "max": "",
+            "id": "-N2w7l878PR--cB8i6aj"
+        },
+        {
+            "name": "strength_mod",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7l88gXu1PeiVZ973"
+        },
+        {
+            "name": "npc_str_negative",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7l9z8Kfhj-xRl4eh"
+        },
+        {
+            "name": "weighttotal",
+            "current": 7.12,
+            "max": "",
+            "id": "-N2w7lA4QYQ-6DEhDI_C"
+        },
+        {
+            "name": "encumberance",
+            "current": " ",
+            "max": "",
+            "id": "-N2w7lA6iGLXD4Fqueln"
+        },
+        {
+            "name": "strength_save_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7lA8n6Zao4GYgijj"
+        },
+        {
+            "name": "athletics_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7lAB-3CWKN2JHhTo"
+        },
+        {
+            "name": "dexterity_base",
+            "current": "14",
+            "max": "",
+            "id": "-N2w7lu_KL-k5Yg3tsEi"
+        },
+        {
+            "name": "dexterity_flag",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7lwNBaGGnRseCzt-"
+        },
+        {
+            "name": "dexterity",
+            "current": 14,
+            "max": "",
+            "id": "-N2w7lwP-Xxymn19ekVa"
+        },
+        {
+            "name": "dexterity_mod",
+            "current": 2,
+            "max": "",
+            "id": "-N2w7lwR1g7T4DWUymeL"
+        },
+        {
+            "name": "npc_dex_negative",
+            "current": 0,
+            "max": "",
+            "id": "-N2w7lyITsKppU_frtjw"
+        },
+        {
+            "name": "initiative_bonus",
+            "current": 2.14,
+            "max": "",
+            "id": "-N2w7lyOjVdC6EMjPIXk"
+        },
+        {
+            "name": "dexterity_save_bonus",
+            "current": 2,
+            "max": "",
+            "id": "-N2w7lyQI2sm9hutZtoT"
+        },
+        {
+            "name": "acrobatics_bonus",
+            "current": 2,
+            "max": "",
+            "id": "-N2w7lySxFoqjboA-LwR"
+        },
+        {
+            "name": "sleight_of_hand_bonus",
+            "current": 2,
+            "max": "",
+            "id": "-N2w7lyUDRVU4ZBFcGJj"
+        },
+        {
+            "name": "armorwarningflag",
+            "current": "hide",
+            "max": "",
+            "id": "-N2w7lyb6EDkLIKomcp2"
+        },
+        {
+            "name": "customacwarningflag",
+            "current": "hide",
+            "max": "",
+            "id": "-N2w7lydbdEV9ygw16h6"
+        },
+        {
+            "name": "ac",
+            "current": "18",
+            "max": "",
+            "id": "-N2w7lyfqTrnSy5-4bZJ"
+        },
+        {
+            "name": "repeating_traits_-N2wDpxZJMNVEhwFz8wO_name",
+            "current": "Darkvision 60ft",
+            "max": "",
+            "id": "-N2wDsKYMrcC9tZMXtsY"
+        },
+        {
+            "name": "repeating_traits_-N2wDpxZJMNVEhwFz8wO_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wDsyFCDKH-DTHbNRU"
+        },
+        {
+            "name": "repeating_traits_-N2wDvLh4aHRSZG1h1AE_name",
+            "current": "Fire Resistance",
+            "max": "",
+            "id": "-N2wDwKB9PxFpNkFh09q"
+        },
+        {
+            "name": "repeating_traits_-N2wDvLh4aHRSZG1h1AE_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wDwkRjpry1REJInHJ"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wDyOAbKxXKq23Rimm_name",
+            "current": "Common, Infernal, druidic",
+            "max": "",
+            "id": "-N2wE013kaPx3OPxI2l6"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wDyOAbKxXKq23Rimm_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wE0GaSBtl0nxtmueu"
+        },
+        {
+            "name": "character_appearance",
+            "current": "Large Horns\nGoatlike Legs\nGrey Skin\nSix fingers on each hand\n\n\nDescription: \n\nThe first thing you see is two large drooping horns that extend from the top of this goat person's head. Fur an off white grey, eyes that look like constantly spinning torrents and short hair thats just enough to cover his head. He has a backpack which is basically a water capsule and inside it, you see a sea horse. ",
+            "max": "",
+            "id": "-N2wENlokOz8xtLFUM4O"
+        },
+        {
+            "name": "height",
+            "current": "5\"9'",
+            "max": "",
+            "id": "-N2wEWGjWMAScjHJwS5L"
+        },
+        {
+            "name": "weight",
+            "current": "194lbs",
+            "max": "",
+            "id": "-N2wEX7yRmXMPi0yh4pO"
+        },
+        {
+            "name": "age",
+            "current": "65",
+            "max": "",
+            "id": "-N2wEYBch7UkMd2VNN2x"
+        },
+        {
+            "name": "size",
+            "current": "Medium",
+            "max": "",
+            "id": "-N2wEZAFcziCt-ZVqPUw"
+        },
+        {
+            "name": "eyes",
+            "current": "Grey",
+            "max": "",
+            "id": "-N2wE_0E9DNELuYftysn"
+        },
+        {
+            "name": "skin",
+            "current": "Grey",
+            "max": "",
+            "id": "-N2wE_uU441GzzziFecP"
+        },
+        {
+            "name": "hair",
+            "current": "Grey",
+            "max": "",
+            "id": "-N2wEanrhhBab4KriOcv"
+        },
+        {
+            "name": "class",
+            "current": "Druid",
+            "max": "",
+            "id": "-N2wEccRDyr2BCEiGYaN"
+        },
+        {
+            "name": "hitdie_final",
+            "current": "@{hitdietype}",
+            "max": "",
+            "id": "-N2wEceRZ6tE5_r-yq0-"
+        },
+        {
+            "name": "level",
+            "current": 10,
+            "max": "",
+            "id": "-N2wEceUKjkVTjCZreh-"
+        },
+        {
+            "name": "caster_level",
+            "current": 10,
+            "max": "",
+            "id": "-N2wEceWXT8MMGvWP96F"
+        },
+        {
+            "name": "class_display",
+            "current": "Sheperd Druid 10",
+            "max": "",
+            "id": "-N2wEceXsG6aJ_s7FDlJ"
+        },
+        {
+            "name": "hit_dice",
+            "current": 10,
+            "max": 10,
+            "id": "-N2wEceZXfx5USEpQdWe"
+        },
+        {
+            "name": "pb",
+            "current": "4",
+            "max": "",
+            "id": "-N2wEcefwDPq3M-phiGe"
+        },
+        {
+            "name": "jack",
+            "current": 2,
+            "max": "",
+            "id": "-N2wEceiEb7C1syDTDAw"
+        },
+        {
+            "name": "pbd_safe",
+            "current": "",
+            "max": "",
+            "id": "-N2wEcekt6aFrL9fq2Kx"
+        },
+        {
+            "name": "lvl1_slots_total",
+            "current": 4,
+            "max": "",
+            "id": "-N2wEceoa0yE43lllxJY"
+        },
+        {
+            "name": "lvl2_slots_total",
+            "current": 3,
+            "max": "",
+            "id": "-N2wEceqlF7Whn0hHMFC"
+        },
+        {
+            "name": "lvl3_slots_total",
+            "current": 3,
+            "max": "",
+            "id": "-N2wEceshjgtjAnGFB5v"
+        },
+        {
+            "name": "lvl4_slots_total",
+            "current": 3,
+            "max": "",
+            "id": "-N2wEceuZnFMCT3J8hnX"
+        },
+        {
+            "name": "lvl5_slots_total",
+            "current": 2,
+            "max": "",
+            "id": "-N2wEcevhhqtxtBZuWBo"
+        },
+        {
+            "name": "lvl6_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcexzQBI3bvpZkgj"
+        },
+        {
+            "name": "lvl7_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEceyBmvb2jSMmcY6"
+        },
+        {
+            "name": "lvl8_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcf0Vy5cUiHD3Jcw"
+        },
+        {
+            "name": "lvl9_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcf14G6LFA43GCat"
+        },
+        {
+            "name": "jack_bonus",
+            "current": "",
+            "max": "",
+            "id": "-N2wEcfB9C1en4u5r5ul"
+        },
+        {
+            "name": "jack_attr",
+            "current": "",
+            "max": "",
+            "id": "-N2wEcfCG799HECi8R07"
+        },
+        {
+            "name": "honor_save_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcfNqdNID7wgnm-w"
+        },
+        {
+            "name": "sanity_save_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcfPJGMdFeU4TjLW"
+        },
+        {
+            "name": "death_save_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcfRJ9LkZPfyoD3p"
+        },
+        {
+            "name": "death_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{death-save-u}}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{death_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2wEcfk0fW444Ho-BeT"
+        },
+        {
+            "name": "hero_points",
+            "current": 10,
+            "max": "",
+            "id": "-N2wEchnUVAxIRBPeSv5"
+        },
+        {
+            "name": "hitdietype",
+            "current": "8",
+            "max": "",
+            "id": "-N2wEcwobEDg1wvOYzqb"
+        },
+        {
+            "name": "spellcasting_ability",
+            "current": "@{wisdom_mod}+",
+            "max": "",
+            "id": "-N2wEcwrrRqedJ45cLwE"
+        },
+        {
+            "name": "strength_save_prof",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcws8h9vddBiw_5n"
+        },
+        {
+            "name": "dexterity_save_prof",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcwvpuxIkW-qhiG7"
+        },
+        {
+            "name": "constitution_save_prof",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcwxUecSZKWP-seb"
+        },
+        {
+            "name": "intelligence_save_prof",
+            "current": "(@{pb})",
+            "max": "",
+            "id": "-N2wEcwzoykByltK7AVB"
+        },
+        {
+            "name": "wisdom_save_prof",
+            "current": "(@{pb})",
+            "max": "",
+            "id": "-N2wEcx0s93rmaDJmQsv"
+        },
+        {
+            "name": "charisma_save_prof",
+            "current": 0,
+            "max": "",
+            "id": "-N2wEcx1_vc-5okqQXPt"
+        },
+        {
+            "name": "spell_attack_mod",
+            "current": 2,
+            "max": "",
+            "id": "-N2wEcxIUApKjSBtmvY5"
+        },
+        {
+            "name": "subclass",
+            "current": "Sheperd",
+            "max": "",
+            "id": "-N2wEeFougSZjqltRRvV"
+        },
+        {
+            "name": "race",
+            "current": "Tiefling",
+            "max": "",
+            "id": "-N2wEfm7rHdiH4gC1eQT"
+        },
+        {
+            "name": "race_display",
+            "current": "Winged Tiefling",
+            "max": "",
+            "id": "-N2wEfnvz1pJFdaXFpAP"
+        },
+        {
+            "name": "subrace",
+            "current": "Winged Tiefling",
+            "max": "",
+            "id": "-N2wEhEBC5E75TU9Xvbm"
+        },
+        {
+            "name": "base_level",
+            "current": "10",
+            "max": "",
+            "id": "-N2wEkBlaQkq8z-vYV7R"
+        },
+        {
+            "name": "options-class-selection",
+            "current": "0",
+            "max": "",
+            "id": "-N2wEkeOKHnbeiTs9s_u"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wF-Y79s5-StNag3f2_name",
+            "current": "Sylvan",
+            "max": "",
+            "id": "-N2wF1MOaZo4hhzEtIlh"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wF-Y79s5-StNag3f2_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wF1NqXGDWpn12c5ZA"
+        },
+        {
+            "name": "repeating_traits_-N2wF4fS6Qa4qs-fBVcm_name",
+            "current": "Ritual casting prepared spells",
+            "max": "",
+            "id": "-N2wF6kiKojSwTN02Ssj"
+        },
+        {
+            "name": "repeating_traits_-N2wF4fS6Qa4qs-fBVcm_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wF76cpIurAfdLq6zu"
+        },
+        {
+            "name": "repeating_traits_-N2wFLKcBDBw4RV14DRG_description",
+            "current": "You gain the ability to summon a spirit that assumes an animal form: as an action, you can expend a use of your Wild Shape feature to cast the find familiar spell, without material components.\n\nWhen you cast the spell in this way, the familiar is a fey instead of a beast, and the familiar disappears after a number of hours equal to half your druid level.",
+            "max": "",
+            "id": "-N2wFLnHKDNDJhSL2Zw7"
+        },
+        {
+            "name": "repeating_traits_-N2wFLKcBDBw4RV14DRG_name",
+            "current": "Wild Companion",
+            "max": "",
+            "id": "-N2wFQwGaXjULPc2uOyd"
+        },
+        {
+            "name": "repeating_traits_-N2wFLKcBDBw4RV14DRG_source",
+            "current": "Class",
+            "max": "",
+            "id": "-N2wFR80x2es3ekV5XEP"
+        },
+        {
+            "name": "repeating_traits_-N2wFLKcBDBw4RV14DRG_source_type",
+            "current": "Druid lvl 2",
+            "max": "",
+            "id": "-N2wFSLl28LDckJOmIRQ"
+        },
+        {
+            "name": "repeating_traits_-N2wFLKcBDBw4RV14DRG_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wFSN3lT6LptTzN9f5"
+        },
+        {
+            "name": "class_resource",
+            "current": "4",
+            "max": "4/sr",
+            "id": "-N2wFUUJgZSZFIJNSd3s"
+        },
+        {
+            "name": "class_resource_name",
+            "current": "Beast Shapes",
+            "max": "",
+            "id": "-N2wFcNFrIWq3KH3leWa"
+        },
+        {
+            "name": "other_resource_name",
+            "current": "Telekinetic reprisal",
+            "max": "",
+            "id": "-N2wFjL6mHXkmBm3dXda"
+        },
+        {
+            "name": "other_resource",
+            "current": "3",
+            "max": "4/lr",
+            "id": "-N2wFjtYOr7j5FUmaz6j"
+        },
+        {
+            "name": "repeating_traits_-N2wFLKcBDBw4RV14DRG_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-N2wG31u_9mvQQvD3I-G"
+        },
+        {
+            "name": "repeating_traits_-N2wG3IW3Cuqt4cdHUhf_name",
+            "current": "24/7 Talk to Beasts",
+            "max": "",
+            "id": "-N2wG5UGdwDfcbTwvodF"
+        },
+        {
+            "name": "repeating_traits_-N2wG3IW3Cuqt4cdHUhf_source_type",
+            "current": "Shepherd druid lvl 2",
+            "max": "",
+            "id": "-N2wG8-SRIHgNWHHlnDk"
+        },
+        {
+            "name": "repeating_traits_-N2wG3IW3Cuqt4cdHUhf_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wGBLg2xA86uyrYVFP"
+        },
+        {
+            "name": "repeating_traits_-N2wG3IW3Cuqt4cdHUhf_source",
+            "current": "Class",
+            "max": "",
+            "id": "-N2wGSE31SONUZ6sdsQq"
+        },
+        {
+            "name": "repeating_resource_-N2wGX23EDRwjwUGUivo_resource_left_name",
+            "current": "Spirit Totem",
+            "max": "",
+            "id": "-N2wGYp7M2YGuie3xZ56"
+        },
+        {
+            "name": "repeating_resource_-N2wGX23EDRwjwUGUivo_resource_left",
+            "current": "0",
+            "max": "1/sr",
+            "id": "-N2wGZQ4RdK8ciW8ZUT2"
+        },
+        {
+            "name": "repeating_traits_-N2wGlhf9Uk8XsZZ-P5T_description",
+            "current": "Starting at 2nd level, you can call forth nature spirits to influence the world around you. As a bonus action, you can magically summon an incorporeal spirit to a point you can see within 60 feet of you. The spirit creates an aura in a 30-foot radius around that point. It counts as neither a creature nor an object, though it has the spectral appearance of the creature it represents.\n\nAs a bonus action, you can move the spirit up to 60 feet to a point you can see.\n\nThe spirit persists for 1 minute or until you're incapacitated. Once you use this feature, you can't use it again until you finish a short or long rest.\n\nThe effect of the spirit's aura depends on the type of spirit you summon from the options below.",
+            "max": "",
+            "id": "-N2wGm-f0RCCfTgW660L"
+        },
+        {
+            "name": "repeating_traits_-N2wGlhf9Uk8XsZZ-P5T_source",
+            "current": "Class",
+            "max": "",
+            "id": "-N2wGmBW2kTwy5cXPIfg"
+        },
+        {
+            "name": "repeating_traits_-N2wGlhf9Uk8XsZZ-P5T_source_type",
+            "current": "Shepherd druid lvl 2",
+            "max": "",
+            "id": "-N2wGoXJGBF6oHporla0"
+        },
+        {
+            "name": "repeating_traits_-N2wGlhf9Uk8XsZZ-P5T_name",
+            "current": "Spirit Totem",
+            "max": "",
+            "id": "-N2wGzgXk8qg7pcNJKpS"
+        },
+        {
+            "name": "repeating_traits_-N2wGlhf9Uk8XsZZ-P5T_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wH16Tafq1t5K_wqAD"
+        },
+        {
+            "name": "repeating_traits_-N2wGlhf9Uk8XsZZ-P5T_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-N2wH1tmXx7O_7U_qrN1"
+        },
+        {
+            "name": "repeating_tool_-N2wH2CWSXkAMhTSoweZ_toolname",
+            "current": "Knitter's Tools",
+            "max": "",
+            "id": "-N2wH3OuOJ2OaM9nj3sw"
+        },
+        {
+            "name": "repeating_tool_-N2wH2CWSXkAMhTSoweZ_toolattr",
+            "current": "DEXTERITY",
+            "max": "",
+            "id": "-N2wH3RDpBZBFuetszqU"
+        },
+        {
+            "name": "repeating_tool_-N2wH2CWSXkAMhTSoweZ_toolbonus",
+            "current": 10,
+            "max": "",
+            "id": "-N2wH3RGTljaIgNt09Cl"
+        },
+        {
+            "name": "repeating_tool_-N2wH2CWSXkAMhTSoweZ_toolbonus_display",
+            "current": 10,
+            "max": "",
+            "id": "-N2wH3RIgknZhTFitP9y"
+        },
+        {
+            "name": "repeating_tool_-N2wH2CWSXkAMhTSoweZ_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{always=1}} {{r2=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-N2wH3RV4-OSTmTpL-lX"
+        },
+        {
+            "name": "repeating_tool_-N2wH2CWSXkAMhTSoweZ_toolattr_base",
+            "current": "@{dexterity_mod}",
+            "max": "",
+            "id": "-N2wH4BmMXiTzzJBkJby"
+        },
+        {
+            "name": "repeating_traits_-N2wHHQTC0ocBKmk6riU_description",
+            "current": "The bear spirit grants you and your allies its might and endurance. Each creature of your choice in the aura when the spirit appears gains temporary hit points equal to 5 + your druid level. In addition, you and your allies gain advantage on Strength checks and Strength saving throws while in the aura.",
+            "max": "",
+            "id": "-N2wHHj30oJa6_aBYOk4"
+        },
+        {
+            "name": "repeating_traits_-N2wHHQTC0ocBKmk6riU_name",
+            "current": "Bear Spirit",
+            "max": "",
+            "id": "-N2wHIrEwtuuc7MdPJZL"
+        },
+        {
+            "name": "repeating_traits_-N2wHHQTC0ocBKmk6riU_source",
+            "current": "Class",
+            "max": "",
+            "id": "-N2wHJcK3vpPE-HHspn3"
+        },
+        {
+            "name": "repeating_traits_-N2wHHQTC0ocBKmk6riU_source_type",
+            "current": "Shepherd druid lvl 2",
+            "max": "",
+            "id": "-N2wHLFz9tUQdZC6sCTO"
+        },
+        {
+            "name": "repeating_traits_-N2wHHQTC0ocBKmk6riU_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wHLHRYstEVU88LUKd"
+        },
+        {
+            "name": "repeating_traits_-N2wHHQTC0ocBKmk6riU_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-N2wHMgJhmddZWJjE1jl"
+        },
+        {
+            "name": "repeating_traits_-N2wHMsZ6VRvJRtDd1Fl_description",
+            "current": "The hawk spirit is a consummate hunter, aiding you and your allies with its keen sight. When a creature makes an attack roll against a target in the spirit's aura, you can use your reaction to grant advantage to that attack roll. In addition, you and your allies have advantage on Wisdom (Perception) checks while in the aura.",
+            "max": "",
+            "id": "-N2wHOyR22OHI5RjSwW7"
+        },
+        {
+            "name": "repeating_traits_-N2wHMsZ6VRvJRtDd1Fl_source_type",
+            "current": "Shepherd druid lvl 2",
+            "max": "",
+            "id": "-N2wHQpa9OfhzJG2OPfU"
+        },
+        {
+            "name": "repeating_traits_-N2wHMsZ6VRvJRtDd1Fl_name",
+            "current": "Hawk Spirit",
+            "max": "",
+            "id": "-N2wHRyQtMExDaS__B5X"
+        },
+        {
+            "name": "repeating_traits_-N2wHMsZ6VRvJRtDd1Fl_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wHSRxyJL1welAV45X"
+        },
+        {
+            "name": "repeating_tool_-N2wH2CWSXkAMhTSoweZ_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wHShgxWySMn_H_ncZ"
+        },
+        {
+            "name": "repeating_tool_-N2wH2CWSXkAMhTSoweZ_toolbonus_base",
+            "current": "(@{pb}*2)",
+            "max": "",
+            "id": "-N2wHTfqdve6tAij636q"
+        },
+        {
+            "name": "repeating_traits_-N2wHMsZ6VRvJRtDd1Fl_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-N2wHWiZjP7BcGHUin6d"
+        },
+        {
+            "name": "repeating_traits_-N2wHWtcZ5hplXEa-ENA_description",
+            "current": "The unicorn spirit lends its protection to those nearby. You and your allies gain advantage on all ability checks made to detect creatures in the spirit's aura. In addition, if you cast a spell using a spell slot that restores hit points to any creature inside or outside the aura, each creature of your choice in the aura also regains hit points equal to your druid level.",
+            "max": "",
+            "id": "-N2wHXQ4Kv9SdBNIBoQI"
+        },
+        {
+            "name": "repeating_traits_-N2wHWtcZ5hplXEa-ENA_source_type",
+            "current": "Shepherd druid lvl 2",
+            "max": "",
+            "id": "-N2wHZOygR62XZd7k0La"
+        },
+        {
+            "name": "repeating_traits_-N2wHWtcZ5hplXEa-ENA_name",
+            "current": "Unicorn Spirit",
+            "max": "",
+            "id": "-N2wHaOUHz6iu45u9CSp"
+        },
+        {
+            "name": "repeating_traits_-N2wHWtcZ5hplXEa-ENA_source",
+            "current": "Class",
+            "max": "",
+            "id": "-N2wHaZnu6jZAraLgWLH"
+        },
+        {
+            "name": "repeating_traits_-N2wHWtcZ5hplXEa-ENA_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wHajRhpBGp5GngTO1"
+        },
+        {
+            "name": "repeating_traits_-N2wHMsZ6VRvJRtDd1Fl_source",
+            "current": "Class",
+            "max": "",
+            "id": "-N2wHbIDMFC5XYK5QaKt"
+        },
+        {
+            "name": "repeating_traits_-N2wHWtcZ5hplXEa-ENA_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-N2wHcJvM5atvqIMw1aO"
+        },
+        {
+            "name": "repeating_traits_-N2wHfWKumQ6Jfw6LzJA_name",
+            "current": "Gift of the Gem Dragon. DC = Spell DC",
+            "max": "",
+            "id": "-N2wHgR5Gj3lGPZ61PFs"
+        },
+        {
+            "name": "repeating_traits_-N2wHfWKumQ6Jfw6LzJA_source",
+            "current": "Feat",
+            "max": "",
+            "id": "-N2wHgdgYJgLBXsXm4ZW"
+        },
+        {
+            "name": "repeating_traits_-N2wHfWKumQ6Jfw6LzJA_source_type",
+            "current": "Level 4",
+            "max": "",
+            "id": "-N2wHi1_Wj2RrOcOz8Nt"
+        },
+        {
+            "name": "repeating_traits_-N2wHfWKumQ6Jfw6LzJA_description",
+            "current": "When you take damage from a creature that is within 10 feet of you, you can use your reaction to emanate telekinetic energy. The creature that dealt damage to you must make a Strength saving throw (DC equals 8 + your proficiency bonus + the ability modifier of the score increased by this feat). On a failed save, the creature takes 2d8 force damage and is pushed up to 10 feet away from you. On a successful save, the creature takes half as much damage and isn't pushed. You can use this reaction a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.",
+            "max": "",
+            "id": "-N2wHjDCMqxBNNle-wdd"
+        },
+        {
+            "name": "repeating_traits_-N2wHfWKumQ6Jfw6LzJA_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wHjESGguFLd5FF9bX"
+        },
+        {
+            "name": "repeating_traits_-N2wHfWKumQ6Jfw6LzJA_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-N2wHjXYtxc-lOFoKTpE"
+        },
+        {
+            "name": "repeating_traits_-N2wI7RMh9DBfvZGkAeo_name",
+            "current": "Mighty Summoner",
+            "max": "",
+            "id": "-N2wI7t64UH3Ym31FkO4"
+        },
+        {
+            "name": "repeating_traits_-N2wI7RMh9DBfvZGkAeo_source",
+            "current": "Class",
+            "max": "",
+            "id": "-N2wI83KKw0HksaHQhhl"
+        },
+        {
+            "name": "repeating_traits_-N2wI7RMh9DBfvZGkAeo_source_type",
+            "current": "Shepherd druid lvl 6",
+            "max": "",
+            "id": "-N2wIAnnq5yL0EcXLk_D"
+        },
+        {
+            "name": "repeating_traits_-N2wI7RMh9DBfvZGkAeo_description",
+            "current": "Starting at 6th level, beasts and fey that you conjure are more resilient than normal. Any beast or fey summoned or created by a spell that you cast gains the following benefits:\n\n-The creature appears with more hit points than normal: 2 extra hit points per Hit Die it has.\n-The damage from its natural weapons is considered magical for the purpose of overcoming immunity and resistance to nonmagical attacks and damage.",
+            "max": "",
+            "id": "-N2wIDPyOZHOQdqepysV"
+        },
+        {
+            "name": "repeating_traits_-N2wI7RMh9DBfvZGkAeo_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wIDRMPKiNx9uJoLbE"
+        },
+        {
+            "name": "repeating_traits_-N2wI7RMh9DBfvZGkAeo_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-N2wIGEJj65eKwVOrjDp"
+        },
+        {
+            "name": "insight_prof",
+            "current": "(@{pb}*@{insight_type})",
+            "max": "",
+            "id": "-N2wJy8vfrUMGcAvxk7h"
+        },
+        {
+            "name": "persuasion_prof",
+            "current": "(@{pb}*@{persuasion_type})",
+            "max": "",
+            "id": "-N2wJybUM9_Xtp4-AB5Z"
+        },
+        {
+            "name": "personality_traits",
+            "current": "I like to talk at length about my profession.",
+            "max": "",
+            "id": "-N2wK5CtJh-JMs7ydcad"
+        },
+        {
+            "name": "options-flag-personality",
+            "current": "0",
+            "max": "",
+            "id": "-N2wK5E8SviGn57INZC7"
+        },
+        {
+            "name": "ideals",
+            "current": "Generosity. My talents were given to me so that I could use them to benefit the world.",
+            "max": "",
+            "id": "-N2wKA7mxsQQd3fQdwI0"
+        },
+        {
+            "name": "options-flag-ideals",
+            "current": "0",
+            "max": "",
+            "id": "-N2wKAMu1DV-0H5lBRiy"
+        },
+        {
+            "name": "bonds",
+            "current": "I will get revenge on the evil forces that destroyed my place of business and ruined my livelihood.",
+            "max": "",
+            "id": "-N2wKJy28Pu7SuOYHnb7"
+        },
+        {
+            "name": "options-flag-bonds",
+            "current": "0",
+            "max": "",
+            "id": "-N2wKJz1b1O6kcXl3R-b"
+        },
+        {
+            "name": "flaws",
+            "current": "I'm horribly jealous of anyone who can outshine my handiwork. Everywhere I go, I'm surrounded by rivals.",
+            "max": "",
+            "id": "-N2wKU19VZV_hii4f_4a"
+        },
+        {
+            "name": "options-flag-flaws",
+            "current": "0",
+            "max": "",
+            "id": "-N2wKU2GwU9ZPnMOqDbO"
+        },
+        {
+            "name": "hp",
+            "current": "70",
+            "max": "79",
+            "id": "-N2wKmS41ZlWAuGGqTRm"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wKt7quiDzJM1DqT3D_prof_type",
+            "current": "ARMOR",
+            "max": "",
+            "id": "-N2wKtW1vB5bb31enq3r"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wKt7quiDzJM1DqT3D_name",
+            "current": " light armor, medium armor, shields",
+            "max": "",
+            "id": "-N2wKtv2_2sgQYcNKVCE"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wKt7quiDzJM1DqT3D_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wKtwibD3qUJoxSNtN"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wKwiCQrL7FH2HzPI0_prof_type",
+            "current": "WEAPON",
+            "max": "",
+            "id": "-N2wKx7f1h7EPfFg4FfW"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wKwiCQrL7FH2HzPI0_name",
+            "current": "clubs, daggers, darts, javelins, maces, quarterstaffs, scimitars, sickles, slings, spears",
+            "max": "",
+            "id": "-N2wKxiIYiNAjhlC-C-x"
+        },
+        {
+            "name": "repeating_proficiencies_-N2wKwiCQrL7FH2HzPI0_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N2wKxjRY2hrNTQA7J5n"
+        },
+        {
+            "name": "animal_handling_prof",
+            "current": "(@{pb}*@{animal_handling_type})",
+            "max": "",
+            "id": "-N2wL3CIFQq2EiE8hVi9"
+        },
+        {
+            "name": "nature_prof",
+            "current": "(@{pb}*@{nature_type})",
+            "max": "",
+            "id": "-N2wL6386X7i4bD3k9_F"
+        },
+        {
+            "name": "gp",
+            "current": "274",
+            "max": "",
+            "id": "-N2wLI8Bdo-8R4Yx9WBb"
+        },
+        {
+            "name": "repeating_inventory_-N2wN2P9VNM5zToaBioo_itemname",
+            "current": "Knitter's Tools",
+            "max": "",
+            "id": "-N2wN3YcgvpoWv8NImMN"
+        },
+        {
+            "name": "speed",
+            "current": "30ft",
+            "max": "",
+            "id": "-N2wN9wNEy20Ywf3gwET"
+        },
+        {
+            "name": "repeating_inventory_-N2wOaoCVqctzDy6RmIt_itemname",
+            "current": "Cart with 2 horses",
+            "max": "",
+            "id": "-N2wOcORNVEAEOVH9mOs"
+        },
+        {
+            "name": "repeating_inventory_-N2wP9LBcavlkyQH-R5Z_itemname",
+            "current": "Herbalism Kit",
+            "max": "",
+            "id": "-N2wPBQFWhvXmx21lWMh"
+        },
+        {
+            "name": "repeating_inventory_-N2wPBezwmZMB62DILYA_itemname",
+            "current": "Healer's kit",
+            "max": "",
+            "id": "-N2wPDClzKf2H6lGl4iD"
+        },
+        {
+            "name": "repeating_inventory_-N2wPW07Gnhr6MJf78in_itemname",
+            "current": "Shield",
+            "max": "",
+            "id": "-N2wPWnw_D6v1H5xvWKD"
+        },
+        {
+            "name": "repeating_inventory_-N2wPYF-n7GMIs68FiML_itemname",
+            "current": "Quarterstaff",
+            "max": "",
+            "id": "-N2wPZGCpEy5bfpt_fZC"
+        },
+        {
+            "name": "repeating_spell-cantrip_-N35Joi4mkAn3lGlLTSV_spellname",
+            "current": "Shape Water",
+            "max": "",
+            "id": "-N35JpKPshiMVDlYCbsu"
+        },
+        {
+            "name": "wtype",
+            "current": "@{whispertoggle}",
+            "max": "",
+            "id": "-N35Jq8enQPqdEjMq6zj"
+        },
+        {
+            "name": "whispertoggle",
+            "current": "",
+            "max": "",
+            "id": "-N35JqXURjVROELdeCGV"
+        },
+        {
+            "name": "repeating_spell-cantrip_-N35Joi4mkAn3lGlLTSV_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35Jrb1dS5cUxeFzekK"
+        },
+        {
+            "name": "repeating_spell-cantrip_-N35Joi4mkAn3lGlLTSV_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35JrtmDJDXehgBEAwN"
+        },
+        {
+            "name": "repeating_spell-cantrip_-N35Jtj0uyrEjrGR51Rn_spellname",
+            "current": "Mold Earth",
+            "max": "",
+            "id": "-N35JuVnfSvAvIRQhgbo"
+        },
+        {
+            "name": "repeating_spell-cantrip_-N35Jtj0uyrEjrGR51Rn_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35JuWycChGNUsJr66M"
+        },
+        {
+            "name": "repeating_spell-cantrip_-N35Jtj0uyrEjrGR51Rn_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35JucZ78jXO0uTiBg8"
+        },
+        {
+            "name": "repeating_spell-cantrip_-N35Jz4dUprMLDMJdE59_spellname",
+            "current": "Gust",
+            "max": "",
+            "id": "-N35Jzgo2wbUO19dCQlU"
+        },
+        {
+            "name": "repeating_spell-cantrip_-N35Jz4dUprMLDMJdE59_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35JzhxV0u9BT1N7Naf"
+        },
+        {
+            "name": "repeating_spell-cantrip_-N35Jz4dUprMLDMJdE59_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35JzoWWq5r16-0w9ou"
+        },
+        {
+            "name": "repeating_spell-1_-N35K34fdjrr6brlu7eR_spellname",
+            "current": "Cure Wounds",
+            "max": "",
+            "id": "-N35K4MBFAaE2SJLISAb"
+        },
+        {
+            "name": "repeating_spell-1_-N35K34fdjrr6brlu7eR_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35K4MqyXiimHDZPTAJ"
+        },
+        {
+            "name": "repeating_spell-1_-N35K34fdjrr6brlu7eR_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35K4ePrjPWzRS823QD"
+        },
+        {
+            "name": "repeating_spell-1_-N35K6D8tT7OFE5cfz9X_spellname",
+            "current": "Detect Magic",
+            "max": "",
+            "id": "-N35K6_PAQdhq0AI-zMw"
+        },
+        {
+            "name": "repeating_spell-1_-N35K6D8tT7OFE5cfz9X_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35K6aYDFikvpP_HsJq"
+        },
+        {
+            "name": "repeating_spell-1_-N35K8qXk0TYrMJGy6t2_spellname",
+            "current": "Goodberry",
+            "max": "",
+            "id": "-N35K9Cf0Ep0aGhuhypk"
+        },
+        {
+            "name": "repeating_spell-1_-N35K8qXk0TYrMJGy6t2_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35K9DfDdcIbMj3REfX"
+        },
+        {
+            "name": "repeating_spell-2_-N35KFNJGattsZbT6THv_spellname",
+            "current": "Augury",
+            "max": "",
+            "id": "-N35KFZuk3PYd7J2W7Rs"
+        },
+        {
+            "name": "repeating_spell-2_-N35KFNJGattsZbT6THv_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35KFqgN_sQU8iG7TLj"
+        },
+        {
+            "name": "repeating_spell-2_-N35KKmmhQiZQ9yCgJeA_spellname",
+            "current": "Enhance Ability",
+            "max": "",
+            "id": "-N35KL9Ih0SSV8RWNl0D"
+        },
+        {
+            "name": "repeating_spell-2_-N35KKmmhQiZQ9yCgJeA_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35KLAJJdk9OkkqxlOJ"
+        },
+        {
+            "name": "repeating_spell-2_-N35KNwHzJ-RY3qfZNf1_spellname",
+            "current": "Healing Spirit",
+            "max": "",
+            "id": "-N35KOFwBXptjLEJs9Cd"
+        },
+        {
+            "name": "repeating_spell-2_-N35KNwHzJ-RY3qfZNf1_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35KOGwfLxAoAQFcknm"
+        },
+        {
+            "name": "repeating_spell-2_-N35KQ7BaxzwpRtI38hS_spellname",
+            "current": "Lesser Restoration",
+            "max": "",
+            "id": "-N35KQUfuakxqr6fRgra"
+        },
+        {
+            "name": "repeating_spell-2_-N35KQ7BaxzwpRtI38hS_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35KQVxyKjaDg_fEE9C"
+        },
+        {
+            "name": "repeating_spell-3_-N35KWz1g9L2oPMiqcPD_spellname",
+            "current": "Tidal Wave",
+            "max": "",
+            "id": "-N35KXJBLCSecELB60ds"
+        },
+        {
+            "name": "repeating_spell-3_-N35KWz1g9L2oPMiqcPD_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35KXKJ8UF7ep0P8H-4"
+        },
+        {
+            "name": "repeating_spell-4_-N35Ki62Cod8ykSbCpLE_spellname",
+            "current": "Polymorph",
+            "max": "",
+            "id": "-N35KiRYfnKODDQQ31Mb"
+        },
+        {
+            "name": "repeating_spell-4_-N35Ki62Cod8ykSbCpLE_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35KiSo-TdrE9xYyFNA"
+        },
+        {
+            "name": "repeating_spell-4_-N35KucYTdhIas10YWDS_spellname",
+            "current": "Giant Insect",
+            "max": "",
+            "id": "-N35KvTYc8qQoQBnaYVE"
+        },
+        {
+            "name": "repeating_spell-4_-N35KucYTdhIas10YWDS_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35KvUh3RbsCm5fT7ic"
+        },
+        {
+            "name": "repeating_spell-3_-N35LTxSEVhouqOGp7Rk_spellname",
+            "current": "Conjure Animals",
+            "max": "",
+            "id": "-N35LUP2ZIlRliQ4JNHR"
+        },
+        {
+            "name": "repeating_spell-3_-N35LTxSEVhouqOGp7Rk_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35LUPxSyslUgcIZNBb"
+        },
+        {
+            "name": "repeating_spell-3_-N35Lo4ZxhhE9EXvDKil_spellname",
+            "current": "Call Lightning",
+            "max": "",
+            "id": "-N35LoaQUrc_w5kxLigD"
+        },
+        {
+            "name": "repeating_spell-3_-N35Lo4ZxhhE9EXvDKil_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35Lob_SGglsmi9-T5b"
+        },
+        {
+            "name": "repeating_spell-1_-N35K34fdjrr6brlu7eR_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-N35Md_1e5xCrB3nb_GR"
+        },
+        {
+            "name": "repeating_spell-1_-N35K6D8tT7OFE5cfz9X_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-N35Mdp0pq6uzi9RvHiJ"
+        },
+        {
+            "name": "repeating_spell-1_-N35K8qXk0TYrMJGy6t2_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-N35MdvX4unCKrRy5U_z"
+        },
+        {
+            "name": "repeating_spell-2_-N35KFNJGattsZbT6THv_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-N35Me5R6kD_sOYYj6ol"
+        },
+        {
+            "name": "repeating_spell-2_-N35KKmmhQiZQ9yCgJeA_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-N35MeBBUvy9ZZEsyd97"
+        },
+        {
+            "name": "repeating_spell-2_-N35KNwHzJ-RY3qfZNf1_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-N35MeHbCvw5VXOayt1e"
+        },
+        {
+            "name": "repeating_spell-2_-N35KQ7BaxzwpRtI38hS_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-N35MeMl9J-AMC38k75B"
+        },
+        {
+            "name": "repeating_spell-3_-N35KWz1g9L2oPMiqcPD_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-N35Me_aCNV568KGrPTE"
+        },
+        {
+            "name": "repeating_spell-3_-N35LTxSEVhouqOGp7Rk_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-N35MeeKvRiMJxkuv-qR"
+        },
+        {
+            "name": "repeating_spell-3_-N35Lo4ZxhhE9EXvDKil_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-N35Meme8cnBBplnfI4f"
+        },
+        {
+            "name": "repeating_spell-4_-N35Ki62Cod8ykSbCpLE_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-N35Mez0pUqNGkux0H6w"
+        },
+        {
+            "name": "repeating_spell-4_-N35KucYTdhIas10YWDS_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-N35Mf4CXN7UsOtkSMz6"
+        },
+        {
+            "name": "lvl1_slots_expended",
+            "current": "4",
+            "max": "",
+            "id": "-N35Mg-m3duGM-VN7egb"
+        },
+        {
+            "name": "lvl2_slots_expended",
+            "current": "2",
+            "max": "",
+            "id": "-N35MgVnhysjTxoxgwP3"
+        },
+        {
+            "name": "lvl4_slots_expended",
+            "current": "1",
+            "max": "",
+            "id": "-N35MgjfDICBfGbxj78x"
+        },
+        {
+            "name": "lvl3_slots_expended",
+            "current": "1",
+            "max": "",
+            "id": "-N35Mh627IuZ3EquPo5W"
+        },
+        {
+            "name": "repeating_inventory_-N35Ox9MjAe33WPVduh4_itemname",
+            "current": "Talking Doll (A)",
+            "max": "",
+            "id": "-N35OyTB0xAi55b6Kq1x"
+        },
+        {
+            "name": "treasure",
+            "current": "Talking Doll Lines\n\nWhen,\nWalks past it - Intruder Alert\nWhen someone picks it up - Hello Im Bayie Alim\nThe hands are pulled - You people suck, please leave.\nWhen attacked - Murderer!\nWhen its spoken to - Speak when you are spoken to scrub\nWhen one of the strings next to it moves - Thief in the SHOP `",
+            "max": "",
+            "id": "-N35P0xSzd04DVYUdwvc"
+        },
+        {
+            "name": "repeating_inventory_-N35UZGhHK75P9ix0fpq_itemname",
+            "current": "Breastplate",
+            "max": "",
+            "id": "-N35Ual5I7xmQQ90SoCG"
+        },
+        {
+            "name": "repeating_inventory_-N35W1Yf9Q3zF5bax5Eg_itemname",
+            "current": "Explorer's Pack",
+            "max": "",
+            "id": "-N35W3O4cKMDAGaK25Jh"
+        },
+        {
+            "name": "repeating_inventory_-N35WDJ7twxIXVzpDs3Z_itemcount",
+            "current": "10",
+            "max": "",
+            "id": "-N35WDuWtRZsm8b9DoRV"
+        },
+        {
+            "name": "repeating_inventory_-N35WDJ7twxIXVzpDs3Z_itemname",
+            "current": "Locks",
+            "max": "",
+            "id": "-N35WEjaZxTbNi6KSmLM"
+        },
+        {
+            "name": "repeating_inventory_-N35WLPM0eS2BR81vkGP_itemcount",
+            "current": "8",
+            "max": "",
+            "id": "-N35WLva_MLY74nnKRCZ"
+        },
+        {
+            "name": "repeating_inventory_-N35WLPM0eS2BR81vkGP_itemname",
+            "current": "Zabou Mushrooms",
+            "max": "",
+            "id": "-N35WN7bgDhzjvIoiKvc"
+        },
+        {
+            "name": "repeating_inventory_-N35WRD7S6vXngWGlmQy_itemname",
+            "current": "Steel Mirror",
+            "max": "",
+            "id": "-N35WSWVgW1LFVnAykEH"
+        },
+        {
+            "name": "repeating_inventory_-N35Waj7lyvrMxqdoLtR_itemname",
+            "current": "Rain Catcher",
+            "max": "",
+            "id": "-N35WbjrR-P9KJO1wXBS"
+        },
+        {
+            "name": "repeating_inventory_-N35WfPfeTBC93YrZtej_itemcount",
+            "current": "3",
+            "max": "",
+            "id": "-N35WgHFJ7ldWT543fmM"
+        },
+        {
+            "name": "repeating_inventory_-N35WfPfeTBC93YrZtej_itemname",
+            "current": "Manacles",
+            "max": "",
+            "id": "-N35WhPLojtda3N2_hme"
+        },
+        {
+            "name": "repeating_inventory_-N35XnQ9o4r4WkZrOHZo_itemname",
+            "current": "climber's kit",
+            "max": "",
+            "id": "-N35Xzrn9qV_cPP1COEf"
+        },
+        {
+            "name": "repeating_inventory_-N35bF1LYtERpZr4862H_itemname",
+            "current": "Magnifying Glass",
+            "max": "",
+            "id": "-N35bG_Nzq-3lx6q03U_"
+        },
+        {
+            "name": "repeating_inventory_-N35bZduZi7UqTuOCL08_itemcount",
+            "current": "3",
+            "max": "",
+            "id": "-N35b_IrSX-3xYS37OYL"
+        },
+        {
+            "name": "repeating_inventory_-N35bZduZi7UqTuOCL08_itemname",
+            "current": "Wildroot (Antidote)",
+            "max": "",
+            "id": "-N35baCEySGFiQcdKfvb"
+        },
+        {
+            "name": "repeating_inventory_-N35c7gzeZXkFUNVinK9_itemcount",
+            "current": "30",
+            "max": "",
+            "id": "-N35c8gjcNjJo6Rjrepg"
+        },
+        {
+            "name": "repeating_inventory_-N35c7gzeZXkFUNVinK9_itemname",
+            "current": "Menga root ounces",
+            "max": "",
+            "id": "-N35cAI2_GuuzhtGnm8M"
+        },
+        {
+            "name": "repeating_inventory_-N35c7gzeZXkFUNVinK9_inventorysubflag",
+            "current": "0",
+            "max": "",
+            "id": "-N35cLJfE51fW8hjaNJh"
+        },
+        {
+            "name": "repeating_inventory_-N35c7gzeZXkFUNVinK9_itemcontent",
+            "current": "The dried leaves of a menga bush can be ground, dissolved in a liquid, heated, and ingested. A creature that ingests 1 ounce of menga leaves in this fashion regains 1 hit point. A creature that ingests more than 5 ounces of menga leaves in a 24-hour period gains no additional benefit and must succeed on a DC 11 Constitution saving throw or fall unconscious for 1 hour. The unconscious creature awakens if it takes at least 5 damage on one turn.",
+            "max": "",
+            "id": "-N35cM5bUa1rjAhkoMk_"
+        },
+        {
+            "name": "repeating_traits_-N2wG3IW3Cuqt4cdHUhf_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-N35ddxUNjTCmvw4g1US"
+        },
+        {
+            "name": "additional_feature_and_traits",
+            "current": "",
+            "max": "",
+            "id": "-N35eG9iRCt7M5FeEfer"
+        },
+        {
+            "name": "perception_prof",
+            "current": "(@{pb}*@{perception_type})",
+            "max": "",
+            "id": "-N35hok_0Hif-Ek9DNsG"
+        },
+        {
+            "name": "init_tiebreaker",
+            "current": "@{dexterity}/100",
+            "max": "",
+            "id": "-N36-eUBhBuz7OR5GQIh"
+        },
+        {
+            "name": "sp",
+            "current": "0",
+            "max": "",
+            "id": "-N3_XadNE2s-vpuTrFZl"
+        },
+        {
+            "name": "cp",
+            "current": "52",
+            "max": "",
+            "id": "-N3_Xax-OAPnUGSinS2r"
+        },
+        {
+            "name": "pp",
+            "current": "30",
+            "max": "",
+            "id": "-N3_XwSVQ-hfO_L0vq2E"
+        },
+        {
+            "name": "character_backstory",
+            "current": "Mission - Find out what is happening at ",
+            "max": "",
+            "id": "-N3_aGq9N7hCTPXxqDVO"
+        },
+        {
+            "name": "repeating_traits_-N2wDvLh4aHRSZG1h1AE_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-N3kEaHXDsckJ4IeplGg"
+        },
+        {
+            "name": "repeating_inventory_-N35WRD7S6vXngWGlmQy_itemcount",
+            "current": "2",
+            "max": "",
+            "id": "-N3kN0_ah1kXpfh7BJPN"
+        },
+        {
+            "name": "repeating_spell-3_-N3kcypFsd-C0XPAEiSh_spellname",
+            "current": "Wind Wall",
+            "max": "",
+            "id": "-N3kd-Qhe4LBkoVLHpON"
+        },
+        {
+            "name": "repeating_spell-3_-N3kcypFsd-C0XPAEiSh_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N3kd-SBsvlLWX2TdfYn"
+        },
+        {
+            "name": "repeating_spell-3_-N3kcypFsd-C0XPAEiSh_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N3kd05-RzLCbgGJHkNd"
+        },
+        {
+            "name": "repeating_spell-3_-N3kcypFsd-C0XPAEiSh_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-N3kd0fUNcXZ1R-UA0wx"
+        },
+        {
+            "name": "hp_temp",
+            "current": "0",
+            "max": "",
+            "id": "-N3kfNR0Qs-gTSBi_edH"
+        },
+        {
+            "name": "repeating_spell-2_-N3kmW4gO8LTfPE40cHO_spellname",
+            "current": "MoonBeam",
+            "max": "",
+            "id": "-N3kmXUfOVwELtKuaX6x"
+        },
+        {
+            "name": "repeating_spell-2_-N3kmW4gO8LTfPE40cHO_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N3kmXVI4zOMyPRKVvKP"
+        },
+        {
+            "name": "repeating_spell-2_-N3kmW4gO8LTfPE40cHO_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N3kmXksYkGbf7aWHm6L"
+        },
+        {
+            "name": "repeating_spell-2_-N3kmW4gO8LTfPE40cHO_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-N3kmYRKvkVPmCsFXbgG"
+        },
+        {
+            "name": "repeating_spell-2_-N3oyJ9wsrk2tY05IQOc_spellname",
+            "current": "Pass without trace",
+            "max": "",
+            "id": "-N3oyKvW_WrZOz76R9vb"
+        },
+        {
+            "name": "repeating_spell-2_-N3oyJ9wsrk2tY05IQOc_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N3oyKwXPYmp6goMsqtT"
+        },
+        {
+            "name": "repeating_spell-2_-N3oyJ9wsrk2tY05IQOc_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N3oyL308wRkq5D1T1ZJ"
+        },
+        {
+            "name": "repeating_spell-2_-N3oyJ9wsrk2tY05IQOc_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-N3oyLDu-2ZkzelDmDI_"
+        },
+        {
+            "name": "ep",
+            "current": "",
+            "max": "",
+            "id": "-N3p-xCRHpIU5IhFGH2l"
+        },
+        {
+            "name": "use_per_class_hit_dice",
+            "current": "1",
+            "max": "",
+            "id": "-N4OeWTJRc5fU_A7K8Nm"
+        },
+        {
+            "name": "repeating_hd_-N4OeWW55piQT9DsQKbh_type",
+            "current": "8",
+            "max": "",
+            "id": "-N4OeWW7eFSCuDqnX0-H"
+        },
+        {
+            "name": "repeating_hd_-N4OeWW55piQT9DsQKbh_size",
+            "current": 10,
+            "max": "",
+            "id": "-N4OeWW8p9MWuhdgpGcu"
+        },
+        {
+            "name": "repeating_hd_-N4OeWW55piQT9DsQKbh_available",
+            "current": "10",
+            "max": "",
+            "id": "-N4OeWW9w8K99e0lnL4t"
+        },
+        {
+            "name": "current_d4",
+            "current": 0,
+            "max": 0,
+            "id": "-N4OeXui4bAP2zu8Pqb4"
+        },
+        {
+            "name": "current_d6",
+            "current": 0,
+            "max": 0,
+            "id": "-N4OeXujO0klX_HGGur4"
+        },
+        {
+            "name": "current_d8",
+            "current": 0,
+            "max": 0,
+            "id": "-N4OeXuk9MX2XNR29mqD"
+        },
+        {
+            "name": "current_d10",
+            "current": 0,
+            "max": 0,
+            "id": "-N4OeXulLinZk8gJqxb8"
+        },
+        {
+            "name": "current_d12",
+            "current": 0,
+            "max": 0,
+            "id": "-N4OeXumk-AudwH7kkMb"
+        },
+        {
+            "name": "show_hit_dice_roll",
+            "current": "[[0]]",
+            "max": "",
+            "id": "-N4OeXup57FHI2ak8mmg"
+        },
+        {
+            "name": "show_hit_dice",
+            "current": "",
+            "max": "",
+            "id": "-N4OeXup57FHI2ak8mmh"
+        },
+        {
+            "name": "hit_dice_rolled",
+            "current": "1",
+            "max": "",
+            "id": "-N4Oe_HvWXThXGb96lco"
+        },
+        {
+            "name": "repeating_hd_-N4OeWW55piQT9DsQKbh_consumed",
+            "current": "1",
+            "max": "",
+            "id": "-N4OeerrcksMZOT6Or8_"
+        },
+        {
+            "name": "repeating_traits_-N9r5aOGjX9cnQwUeibu_name",
+            "current": "Warcaster",
+            "max": "",
+            "id": "-N9r5bXwTBNojSCCIk-l"
+        },
+        {
+            "name": "repeating_traits_-N9r5aOGjX9cnQwUeibu_source",
+            "current": "Feat",
+            "max": "",
+            "id": "-N9r5bom6dGu-PeZ8nE7"
+        },
+        {
+            "name": "repeating_traits_-N9r5aOGjX9cnQwUeibu_source_type",
+            "current": "Druid lvl 8",
+            "max": "",
+            "id": "-N9r5eiw7dLrvI1dnl3l"
+        },
+        {
+            "name": "repeating_traits_-N9r5aOGjX9cnQwUeibu_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N9r5ekUSgRdW38estaI"
+        },
+        {
+            "name": "repeating_spell-4_-N9rDpgZounZRlYR86yP_spellname",
+            "current": "Conjure woodland beings",
+            "max": "",
+            "id": "-N9rDs8IxsN6cACPQ51C"
+        },
+        {
+            "name": "repeating_spell-4_-N9rDpgZounZRlYR86yP_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N9rDs9RvIJjO-3q773n"
+        },
+        {
+            "name": "repeating_spell-4_-N9rDpgZounZRlYR86yP_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-N9rog_iElDWN_lXwUXe"
+        },
+        {
+            "name": "repeating_spell-4_-N9rDpgZounZRlYR86yP_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-N9rogqLYzfy40w6O9I-"
+        },
+        {
+            "name": "repeating_spell-4_-NA0nkTk9NREMC6TsBeA_spellname",
+            "current": "Blight",
+            "max": "",
+            "id": "-NA0nlSbgxDUKj3rEhdV"
+        },
+        {
+            "name": "repeating_spell-4_-NA0nkTk9NREMC6TsBeA_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NA0nlTpG_ZHlO1Y4pwE"
+        },
+        {
+            "name": "repeating_spell-4_-NA0nkTk9NREMC6TsBeA_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-NA0nli7ldrckJATJOAf"
+        },
+        {
+            "name": "repeating_spell-4_-NA0nkTk9NREMC6TsBeA_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NA0nnScmoyHVL2-Lwtn"
+        },
+        {
+            "name": "repeating_traits_-N9r5aOGjX9cnQwUeibu_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-NA0rAVz_6GDgCHtjoqo"
+        },
+        {
+            "name": "repeating_spell-1_-NA1ByeeNwa6QzyjPZpt_spellname",
+            "current": "Healing word",
+            "max": "",
+            "id": "-NA1Bzy5Nx_uzpunFDjB"
+        },
+        {
+            "name": "repeating_spell-1_-NA1ByeeNwa6QzyjPZpt_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NA1Bzz6rFZzggCFaUVC"
+        },
+        {
+            "name": "repeating_spell-1_-NA1ByeeNwa6QzyjPZpt_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-NA1C-HQJzOJqQmKg1OZ"
+        },
+        {
+            "name": "repeating_traits_-N2wF4fS6Qa4qs-fBVcm_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-NA1G2tJlxSkl6gvgAyS"
+        },
+        {
+            "name": "repeating_spell-1_-NA1IVD2sam-Fs-pQVQj_spellname",
+            "current": "Ice Knife",
+            "max": "",
+            "id": "-NA1IWVhJI21JQUcgx-X"
+        },
+        {
+            "name": "repeating_spell-1_-NA1IVD2sam-Fs-pQVQj_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NA1IWWg9rGo4S6it0P3"
+        },
+        {
+            "name": "repeating_spell-1_-NA1IVD2sam-Fs-pQVQj_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-NA1IWj9V7Z71rkcSyZI"
+        },
+        {
+            "name": "lvl5_slots_expended",
+            "current": "0",
+            "max": "",
+            "id": "-NCBUVPmLEASSRsqMm4-"
+        },
+        {
+            "name": "spell_dc_mod",
+            "current": "2",
+            "max": "",
+            "id": "-NCGl_6cD9NhvLz_PNLE"
+        },
+        {
+            "name": "globalmagicmod",
+            "current": "2",
+            "max": "",
+            "id": "-NCGl_UNmePP1ckXNRnf"
+        },
+        {
+            "name": "repeating_spell-5_-NCqGFB7s1onHFnKYsDd_spellname",
+            "current": "Commune with nature",
+            "max": "",
+            "id": "-NCqGHCOqwz8nn2Ew5ec"
+        },
+        {
+            "name": "repeating_spell-5_-NCqGFB7s1onHFnKYsDd_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NCqGHDDw4cGiIj__eLB"
+        },
+        {
+            "name": "repeating_spell-5_-NCqGFB7s1onHFnKYsDd_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NCqGHRP5vgl68L404de"
+        },
+        {
+            "name": "kingmaker_tab",
+            "current": "nav-tabs-kingmaker--settings",
+            "max": "",
+            "id": "-NF552hh8DhMMA1Bgx3k"
+        },
+        {
+            "name": "kingdom_culture_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-culture-action}",
+            "max": "",
+            "id": "-NF552hjDBEAGYexAm8T"
+        },
+        {
+            "name": "kingdom_economy_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-economy-action}",
+            "max": "",
+            "id": "-NF552hlfEeF5hFMoUba"
+        },
+        {
+            "name": "kingdom_loyalty_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-loyalty-action}",
+            "max": "",
+            "id": "-NF552hmbfWswpVqyvTG"
+        },
+        {
+            "name": "kingdom_stability_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-stability-action}",
+            "max": "",
+            "id": "-NF552hmbfWswpVqyvTH"
+        },
+        {
+            "name": "kingdom_agriculture_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-agriculture-action}",
+            "max": "",
+            "id": "-NF552hnn05geRNAWqr-"
+        },
+        {
+            "name": "kingdom_arts_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-arts-action}",
+            "max": "",
+            "id": "-NF552hoMBbwYT61305m"
+        },
+        {
+            "name": "kingdom_boating_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-boating-action}",
+            "max": "",
+            "id": "-NF552hptAOoD3Wm1nlV"
+        },
+        {
+            "name": "kingdom_defense_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-defense-action}",
+            "max": "",
+            "id": "-NF552hr60DFrZCbl61R"
+        },
+        {
+            "name": "kingdom_engineering_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-engineering-action}",
+            "max": "",
+            "id": "-NF552hsr3_4QUEXGNYt"
+        },
+        {
+            "name": "kingdom_exploration_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-exploration-action}",
+            "max": "",
+            "id": "-NF552htjrT8AFpbfZnb"
+        },
+        {
+            "name": "kingdom_folklore_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-folklore-action}",
+            "max": "",
+            "id": "-NF552hue0COKirovdz0"
+        },
+        {
+            "name": "kingdom_industry_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-industry-action}",
+            "max": "",
+            "id": "-NF552hvpxPaXA9gXHYc"
+        },
+        {
+            "name": "kingdom_intrigue_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-intrigue-action}",
+            "max": "",
+            "id": "-NF552hwptB_mpq-LnS0"
+        },
+        {
+            "name": "kingdom_magic_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-magic-action}",
+            "max": "",
+            "id": "-NF552hxWggoc5qQQC8l"
+        },
+        {
+            "name": "kingdom_politics_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-politics-action}",
+            "max": "",
+            "id": "-NF552hxWggoc5qQQC8m"
+        },
+        {
+            "name": "kingdom_scholarship_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-scholarship-action}",
+            "max": "",
+            "id": "-NF552hy29MbtgFR4AvD"
+        },
+        {
+            "name": "kingdom_statecraft_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-statecraft-action}",
+            "max": "",
+            "id": "-NF552hzx-GraeuRZbp-"
+        },
+        {
+            "name": "kingdom_trade_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-trade-action}",
+            "max": "",
+            "id": "-NF552i-66mAvryKO7PS"
+        },
+        {
+            "name": "kingdom_warfare_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-warfare-action}",
+            "max": "",
+            "id": "-NF552i0uNQDrpfSapO0"
+        },
+        {
+            "name": "kingdom_wilderness_action",
+            "current": "%{Bayie (bae) Alsuwuf|kingdom-wilderness-action}",
+            "max": "",
+            "id": "-NF552i1bXXKHSlQGfJx"
+        },
+        {
+            "name": "army_scouting_action",
+            "current": "%{Bayie (bae) Alsuwuf|army-scouting-action}",
+            "max": "",
+            "id": "-NF552i2XzXCv2RiRBCO"
+        },
+        {
+            "name": "army_maneuver_action",
+            "current": "%{Bayie (bae) Alsuwuf|army-maneuver-action}",
+            "max": "",
+            "id": "-NF552i2XzXCv2RiRBCP"
+        },
+        {
+            "name": "army_morale_action",
+            "current": "%{Bayie (bae) Alsuwuf|army-morale-action}",
+            "max": "",
+            "id": "-NF552i3_YDVlQOZK3PI"
+        },
+        {
+            "name": "army_ranged_action",
+            "current": "%{Bayie (bae) Alsuwuf|army-ranged-action}",
+            "max": "",
+            "id": "-NF552i4lADYqUWVi_dm"
+        },
+        {
+            "name": "sheet_version",
+            "current": 1,
+            "max": "",
+            "id": "-NF552i4lADYqUWVi_dn"
+        },
+        {
+            "name": "repeating_spell-5_-NCqGFB7s1onHFnKYsDd_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-NF556g-i5HAaix6Fb_-"
+        },
+        {
+            "name": "repeating_spell-5_-NF564HlyHK39kwW26v-_spellname",
+            "current": "Awaken",
+            "max": "",
+            "id": "-NF565FxzLPcLD-8HT2d"
+        },
+        {
+            "name": "repeating_spell-5_-NF564HlyHK39kwW26v-_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NF565HP8SWkUKf_1RTM"
+        },
+        {
+            "name": "repeating_spell-5_-NF564HlyHK39kwW26v-_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-NF565VZiYv9r4WtEvQb"
+        },
+        {
+            "name": "repeating_spell-5_-NFUyNGOJJfwZXw0lc7F_spellname",
+            "current": "Wrath of Nature",
+            "max": "",
+            "id": "-NFUyPgOMY_8jDfQSBx9"
+        },
+        {
+            "name": "repeating_spell-5_-NFUyNGOJJfwZXw0lc7F_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NFUyPhr1A_FpVNsT4QI"
+        },
+        {
+            "name": "repeating_spell-5_-NFUyNGOJJfwZXw0lc7F_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-NFUyQCAyrS4jeMaapg2"
+        },
+        {
+            "name": "global_save_mod_flag",
+            "current": "1",
+            "max": "",
+            "id": "-NGmFENLwIN9LbcpIs5S"
+        },
+        {
+            "name": "repeating_savemod_-NGmFEPHcfom8fVgfDZI_global_save_roll",
+            "current": "2",
+            "max": "",
+            "id": "-NGmFEPI0hWJiYvshpfG"
+        },
+        {
+            "name": "repeating_savemod_-NGmFEPHcfom8fVgfDZI_global_save_name",
+            "current": "Staff bonus",
+            "max": "",
+            "id": "-NGmFEPLMg2McAIE8Srx"
+        },
+        {
+            "name": "repeating_savemod_-NGmFEPHcfom8fVgfDZI_global_save_active_flag",
+            "current": "1",
+            "max": "",
+            "id": "-NGmFEPNyItWhlCQeGh5"
+        },
+        {
+            "name": "global_save_mod",
+            "current": "[[2[Staff bonus]]]",
+            "max": "",
+            "id": "-NGmFERf4eB2Em74EDcd"
+        },
+        {
+            "name": "repeating_savemod_-NGmFEPHcfom8fVgfDZI_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NGmFHkdS_LvsB_gmQK7"
+        },
+        {
+            "name": "repeating_traits_-NIIsh22Q2CUwnHY0Un1_description",
+            "current": "Beginning at 10th level, your Spirit Totem safeguards the beasts and fey that you call forth with your magic. When a beast or fey that you summoned or created with a spell ends its turn in your Spirit Totem aura, that creature regains a number of hit points equal to half your druid level.",
+            "max": "",
+            "id": "-NIIsiCjPvqdbwPXKvil"
+        },
+        {
+            "name": "repeating_traits_-NIIsh22Q2CUwnHY0Un1_source",
+            "current": "Class",
+            "max": "",
+            "id": "-NIIsieQD4ysHZJ6n0_H"
+        },
+        {
+            "name": "repeating_traits_-NIIsh22Q2CUwnHY0Un1_source_type",
+            "current": "Druid shep lvl 10",
+            "max": "",
+            "id": "-NIIskG65IJyBVtmQNjI"
+        },
+        {
+            "name": "repeating_traits_-NIIsh22Q2CUwnHY0Un1_name",
+            "current": "Guardian Spirit",
+            "max": "",
+            "id": "-NIIsmXMHj9TScV33O31"
+        },
+        {
+            "name": "repeating_traits_-NIIsh22Q2CUwnHY0Un1_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIIsmZH2OBAR6tU6ZE4"
+        },
+        {
+            "name": "repeating_traits_-NIIsh22Q2CUwnHY0Un1_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-NIIsmnCfkOpEdPaLXfe"
+        },
+        {
+            "name": "repeating_inventory_-NIItXRMCQtGk9coAaoF_itemname",
+            "current": "Staff of exodus",
+            "max": "",
+            "id": "-NIIti1A_-bBvNYmTPS3"
+        },
+        {
+            "name": "repeating_spell-5_-NIIxJXufVwTbRnliXQg_spellname",
+            "current": "Summon Draconic spirit",
+            "max": "",
+            "id": "-NIIxN3aRcbj8rrHEF9r"
+        },
+        {
+            "name": "repeating_spell-5_-NIIxJXufVwTbRnliXQg_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIIxN4IJi67RJnx9UTJ"
+        },
+        {
+            "name": "repeating_spell-5_-NIIxJXufVwTbRnliXQg_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIIxNF5fOOeLI_rJ-Vb"
+        },
+        {
+            "name": "repeating_spell-5_-NIIxNU6a4UHEZ72QtCS_spellname",
+            "current": "Conjure Elemental",
+            "max": "",
+            "id": "-NIIxWmEwvxOIahnzAUL"
+        },
+        {
+            "name": "repeating_spell-5_-NIIxNU6a4UHEZ72QtCS_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIIxWnanfQfdDQEjQGA"
+        },
+        {
+            "name": "repeating_spell-5_-NIIxNU6a4UHEZ72QtCS_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIIxXPbeS-Jw7P7ZJfg"
+        },
+        {
+            "name": "repeating_spell-5_-NIIxJXufVwTbRnliXQg_spellprepared",
+            "current": "0",
+            "max": "",
+            "id": "-NIIxbKJsC0XyK942LO-"
+        },
+        {
+            "name": "repeating_spell-5_-NIJOYmi9VkoacZ1A2Nc_spellname",
+            "current": "wall of stone",
+            "max": "",
+            "id": "-NIJOZpM067YBzf40qsU"
+        },
+        {
+            "name": "repeating_spell-5_-NIJOYmi9VkoacZ1A2Nc_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIJO_ESaQZ0igvqg6x_"
+        },
+        {
+            "name": "repeating_spell-5_-NIJOYmi9VkoacZ1A2Nc_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-NIJO_SGjJhok_6SrfEE"
+        },
+        {
+            "name": "repeating_spell-3_-NIJSTEqk7v4lzptO5Qu_spellname",
+            "current": "Dispel Magic",
+            "max": "",
+            "id": "-NIJSW8N5vaZgLObuwyZ"
+        },
+        {
+            "name": "repeating_spell-3_-NIJSTEqk7v4lzptO5Qu_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIJSWAsHukud-98_o8N"
+        },
+        {
+            "name": "repeating_spell-3_-NIJSTEqk7v4lzptO5Qu_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIJSWN_pX6n2hbeociy"
+        },
+        {
+            "name": "repeating_spell-3_-NIJSTEqk7v4lzptO5Qu_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-NIJSWg6MNaaJgS-R976"
+        },
+        {
+            "name": "repeating_spell-5_-NIIxNU6a4UHEZ72QtCS_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-NIT67qwpC6lp0GnGr4u"
+        },
+        {
+            "name": "repeating_spell-5_-NIU9jrAI8Ju5swTvG6L_spellname",
+            "current": "Reincarnate",
+            "max": "",
+            "id": "-NIU9lF8ptx7NIUQsUHl"
+        },
+        {
+            "name": "repeating_spell-5_-NIU9jrAI8Ju5swTvG6L_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIU9nRuzrQ9OjDsGQxr"
+        },
+        {
+            "name": "repeating_spell-5_-NIU9jrAI8Ju5swTvG6L_spellprepared",
+            "current": "1",
+            "max": "",
+            "id": "-NIU9ny_Eb0ZAy8ooE2s"
+        },
+        {
+            "name": "repeating_spell-5_-NIU9jrAI8Ju5swTvG6L_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIU9oqOwQN7M_39UM3I"
+        },
+        {
+            "name": "repeating_spell-5_-NIUA0Re0o-whFn1MZy4_spellname",
+            "current": "Tree Stride",
+            "max": "",
+            "id": "-NIUA20sgOj7LvEJd4ju"
+        },
+        {
+            "name": "repeating_spell-5_-NIUA0Re0o-whFn1MZy4_details-flag",
+            "current": "0",
+            "max": "",
+            "id": "-NIUA22L8vcEtS7-_S-R"
+        },
+        {
+            "name": "filter_traits_by",
+            "current": "",
+            "max": "",
+            "id": "-Nn_UEQdhoOFlstxykVB"
+        },
+        {
+            "name": "other_tool",
+            "current": "Knitter's Tools⁺",
+            "max": "",
+            "id": "-Nn_UERVHJTk7qLyAZPa"
+        },
+        {
+            "name": "other_languages",
+            "current": "Common, Infernal, druidic, Sylvan",
+            "max": "",
+            "id": "-Nn_UERWoVbXZQ1qSIap"
+        },
+        {
+            "name": "other_armor",
+            "current": " light armor, medium armor, shields",
+            "max": "",
+            "id": "-Nn_UERWoVbXZQ1qSIaq"
+        },
+        {
+            "name": "other_weapon",
+            "current": "clubs, daggers, darts, javelins, maces, quarterstaffs, scimitars, sickles, slings, spears",
+            "max": "",
+            "id": "-Nn_UERXVFwMuvLwo_Eg"
+        },
+        {
+            "name": "other_other",
+            "current": "",
+            "max": "",
+            "id": "-Nn_UERYZkW_MVRkqBbB"
+        }
+    ],
+    "abilities": []
+}
