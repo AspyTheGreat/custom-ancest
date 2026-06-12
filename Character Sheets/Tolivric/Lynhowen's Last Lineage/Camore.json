@@ -1,0 +1,2537 @@
+{
+    "name": "Camore Treysy",
+    "bio": "",
+    "gmnotes": "",
+    "avatar": "",
+    "inplayerjournals": [
+        "-OKpHlp8Jeri3Ha7SFR7"
+    ],
+    "controlledby": [
+        "-OKpHlp8Jeri3Ha7SFR7"
+    ],
+    "tags": "",
+    "archived": false,
+    "attrorder": "",
+    "abilorder": "",
+    "mancerdata": "{\"l1-welcome\":{\"values\":{}}}",
+    "expansion": null,
+    "expansioninitials": "",
+    "expansionid": null,
+    "account_id": 8060361,
+    "character": {
+        "id": "-456131940_11445214",
+        "name": "Epra Vachoph",
+        "tags": "[]"
+    },
+    "charactersheetname": "ogl5e",
+    "createdBy": "-OKpHlp8Jeri3Ha7SFR7",
+    "id": "-456131940_11445214",
+    "mancerget": "{\"l1-welcome\":{}}",
+    "mancerstep": "l1-welcome",
+    "ownedBy": "-OKpHlp8Jeri3Ha7SFR7",
+    "vault_character_id": 11445214,
+    "attributes": [
+        {
+            "name": "kingdom_culture_action",
+            "current": "%{Camore Treysy|kingdom-culture-action}",
+            "max": "",
+            "id": "-OKpLnP8HeB66liFWxYb"
+        },
+        {
+            "name": "kingdom_economy_action",
+            "current": "%{Camore Treysy|kingdom-economy-action}",
+            "max": "",
+            "id": "-OKpLnP9bZeAIHvmlR_I"
+        },
+        {
+            "name": "kingdom_loyalty_action",
+            "current": "%{Camore Treysy|kingdom-loyalty-action}",
+            "max": "",
+            "id": "-OKpLnP9bZeAIHvmlR_J"
+        },
+        {
+            "name": "kingdom_stability_action",
+            "current": "%{Camore Treysy|kingdom-stability-action}",
+            "max": "",
+            "id": "-OKpLnP9bZeAIHvmlR_K"
+        },
+        {
+            "name": "kingdom_agriculture_action",
+            "current": "%{Camore Treysy|kingdom-agriculture-action}",
+            "max": "",
+            "id": "-OKpLnP9bZeAIHvmlR_L"
+        },
+        {
+            "name": "kingdom_arts_action",
+            "current": "%{Camore Treysy|kingdom-arts-action}",
+            "max": "",
+            "id": "-OKpLnPAPfSiv5Q7-Xf1"
+        },
+        {
+            "name": "kingdom_boating_action",
+            "current": "%{Camore Treysy|kingdom-boating-action}",
+            "max": "",
+            "id": "-OKpLnPBpq9LNCQKpnNf"
+        },
+        {
+            "name": "kingdom_defense_action",
+            "current": "%{Camore Treysy|kingdom-defense-action}",
+            "max": "",
+            "id": "-OKpLnPBpq9LNCQKpnNg"
+        },
+        {
+            "name": "kingdom_engineering_action",
+            "current": "%{Camore Treysy|kingdom-engineering-action}",
+            "max": "",
+            "id": "-OKpLnPBpq9LNCQKpnNh"
+        },
+        {
+            "name": "kingdom_exploration_action",
+            "current": "%{Camore Treysy|kingdom-exploration-action}",
+            "max": "",
+            "id": "-OKpLnPBpq9LNCQKpnNi"
+        },
+        {
+            "name": "kingdom_folklore_action",
+            "current": "%{Camore Treysy|kingdom-folklore-action}",
+            "max": "",
+            "id": "-OKpLnPC1tCgjbuyNlQH"
+        },
+        {
+            "name": "kingdom_industry_action",
+            "current": "%{Camore Treysy|kingdom-industry-action}",
+            "max": "",
+            "id": "-OKpLnPC1tCgjbuyNlQI"
+        },
+        {
+            "name": "kingdom_intrigue_action",
+            "current": "%{Camore Treysy|kingdom-intrigue-action}",
+            "max": "",
+            "id": "-OKpLnPC1tCgjbuyNlQJ"
+        },
+        {
+            "name": "kingdom_magic_action",
+            "current": "%{Camore Treysy|kingdom-magic-action}",
+            "max": "",
+            "id": "-OKpLnPC1tCgjbuyNlQK"
+        },
+        {
+            "name": "kingdom_politics_action",
+            "current": "%{Camore Treysy|kingdom-politics-action}",
+            "max": "",
+            "id": "-OKpLnPDt5SB2WEdAS3e"
+        },
+        {
+            "name": "kingdom_scholarship_action",
+            "current": "%{Camore Treysy|kingdom-scholarship-action}",
+            "max": "",
+            "id": "-OKpLnPDt5SB2WEdAS3f"
+        },
+        {
+            "name": "kingdom_statecraft_action",
+            "current": "%{Camore Treysy|kingdom-statecraft-action}",
+            "max": "",
+            "id": "-OKpLnPDt5SB2WEdAS3g"
+        },
+        {
+            "name": "kingdom_trade_action",
+            "current": "%{Camore Treysy|kingdom-trade-action}",
+            "max": "",
+            "id": "-OKpLnPDt5SB2WEdAS3h"
+        },
+        {
+            "name": "kingdom_warfare_action",
+            "current": "%{Camore Treysy|kingdom-warfare-action}",
+            "max": "",
+            "id": "-OKpLnPEU0S1vrgOL2TB"
+        },
+        {
+            "name": "kingdom_wilderness_action",
+            "current": "%{Camore Treysy|kingdom-wilderness-action}",
+            "max": "",
+            "id": "-OKpLnPEU0S1vrgOL2TC"
+        },
+        {
+            "name": "army_scouting_action",
+            "current": "%{Camore Treysy|army-scouting-action}",
+            "max": "",
+            "id": "-OKpLnPEU0S1vrgOL2TD"
+        },
+        {
+            "name": "army_maneuver_action",
+            "current": "%{Camore Treysy|army-maneuver-action}",
+            "max": "",
+            "id": "-OKpLnPEU0S1vrgOL2TE"
+        },
+        {
+            "name": "army_morale_action",
+            "current": "%{Camore Treysy|army-morale-action}",
+            "max": "",
+            "id": "-OKpLnPFDw3L2K_gnqV3"
+        },
+        {
+            "name": "army_ranged_action",
+            "current": "%{Camore Treysy|army-ranged-action}",
+            "max": "",
+            "id": "-OKpLnPFDw3L2K_gnqV4"
+        },
+        {
+            "name": "filter_traits_by",
+            "current": "",
+            "max": "",
+            "id": "-OKpLnbSTUyxaQEBL5Dz"
+        },
+        {
+            "name": "hitdieroll",
+            "current": "4",
+            "max": "",
+            "id": "-OKpLnbYg289sy2UO5f-"
+        },
+        {
+            "name": "showleveler",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLnbYg289sy2UO5f0"
+        },
+        {
+            "name": "invalidXP",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLnbYg289sy2UO5f1"
+        },
+        {
+            "name": "version",
+            "current": 4.21,
+            "max": "",
+            "id": "-OKpLnc5KJAXBmy2Rxnl"
+        },
+        {
+            "name": "kingmaker_tab",
+            "current": "nav-tabs-kingmaker--settings",
+            "max": "",
+            "id": "-OKpLnc6T_nNuf6PYoYi"
+        },
+        {
+            "name": "sheet_version",
+            "current": 1,
+            "max": "",
+            "id": "-OKpLnc6T_nNuf6PYoYj"
+        },
+        {
+            "name": "appliedUpdates",
+            "current": "upgrade_to_4_2_1,fix_spell_attacks,fix_pc_skill_and_saving_rolls,fix_pc_saving_rolls,fix_pc_skill_and_saving_rolls_with_expertise,fix_pc_skill_and_saving_rolls_with_reliable_talent,enable_powerful_build_on_existing_characters,fix_pc_global_critical_damage_rolls,fix_pc_global_critical_stacked_damage_rolls,fix_pc_skill_rolls_tooltips,fix_pc_global_statical_critical_damage,fix_spell_school_ouput,fix_pc_global_multiple_statical_critical_damage,fix_spell_savedc_output,fix_spellpoints,fix_advantage_query,fix_attacks_spelllink,fix_pc_skills_when_jack_and_odd_prof,fix_armor_stealth_penalty,fix_pc_printedskills",
+            "max": "",
+            "id": "-OKpLnc6T_nNuf6PYoYk"
+        },
+        {
+            "name": "strength_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{strength-save-u}}} {{mod=@{strength_save_bonus}}} {{r1=[[@{d20}+@{strength_save_bonus}@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{strength_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncBDt8p6oAGfuRJ"
+        },
+        {
+            "name": "dexterity_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{dexterity-save-u}}} {{mod=@{dexterity_save_bonus}}} {{r1=[[@{d20}+@{dexterity_save_bonus}@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{dexterity_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncBDt8p6oAGfuRK"
+        },
+        {
+            "name": "constitution_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{constitution-save-u}}} {{mod=@{constitution_save_bonus}}} {{r1=[[@{d20}+@{constitution_save_bonus}@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{constitution_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncBDt8p6oAGfuRL"
+        },
+        {
+            "name": "intelligence_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{intelligence-save-u}}} {{mod=@{intelligence_save_bonus}}} {{r1=[[@{d20}+@{intelligence_save_bonus}@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{intelligence_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncBDt8p6oAGfuRM"
+        },
+        {
+            "name": "wisdom_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{wisdom-save-u}}} {{mod=@{wisdom_save_bonus}}} {{r1=[[@{d20}+@{wisdom_save_bonus}@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{wisdom_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncCtH2jW1Ute0-S"
+        },
+        {
+            "name": "charisma_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{charisma-save-u}}} {{mod=@{charisma_save_bonus}}} {{r1=[[@{d20}+@{charisma_save_bonus}@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{charisma_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncCtH2jW1Ute0-T"
+        },
+        {
+            "name": "honor_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{honor-save-u}}} {{mod=@{honor_save_bonus}}} {{r1=[[@{d20}+@{honor_save_bonus}@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{honor_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncCtH2jW1Ute0-U"
+        },
+        {
+            "name": "sanity_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{sanity-save-u}}} {{mod=@{sanity_save_bonus}}} {{r1=[[@{d20}+@{sanity_save_bonus}@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{sanity_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncDgWNOWZP1qA9V"
+        },
+        {
+            "name": "athletics_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{athletics-u}}} {{mod=@{athletics_bonus}}} {{r1=[[@{d20}+4[Proficiency]+3[strength]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[Proficiency]+3[strength]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncuHDzX30fbA0XX"
+        },
+        {
+            "name": "acrobatics_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{acrobatics-u}}} {{mod=@{acrobatics_bonus}}} {{r1=[[@{d20}+4[Proficiency]+5[dexterity]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[Proficiency]+5[dexterity]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncuHDzX30fbA0XY"
+        },
+        {
+            "name": "sleight_of_hand_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{sleight_of_hand-u}}} {{mod=@{sleight_of_hand_bonus}}} {{r1=[[@{d20}+5[dexterity]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+5[dexterity]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncvSFmOV0RZaNkL"
+        },
+        {
+            "name": "stealth_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{stealth-u}}} {{mod=@{stealth_bonus}}} {{r1=[[@{d20}+4[Proficiency]+5[dexterity]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[Proficiency]+5[dexterity]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncvSFmOV0RZaNkM"
+        },
+        {
+            "name": "arcana_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{arcana-u}}} {{mod=@{arcana_bonus}}} {{r1=[[@{d20}+4[intelligence]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[intelligence]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncwG7dtqAJqmxGh"
+        },
+        {
+            "name": "history_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{history-u}}} {{mod=@{history_bonus}}} {{r1=[[@{d20}+4[intelligence]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[intelligence]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncwG7dtqAJqmxGi"
+        },
+        {
+            "name": "investigation_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{investigation-u}}} {{mod=@{investigation_bonus}}} {{r1=[[@{d20}+4[Proficiency]+4[intelligence]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[Proficiency]+4[intelligence]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncwG7dtqAJqmxGj"
+        },
+        {
+            "name": "nature_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{nature-u}}} {{mod=@{nature_bonus}}} {{r1=[[@{d20}+4[intelligence]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[intelligence]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncxWeLHW7QXoZMt"
+        },
+        {
+            "name": "religion_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{religion-u}}} {{mod=@{religion_bonus}}} {{r1=[[@{d20}+4[Proficiency]+4[intelligence]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[Proficiency]+4[intelligence]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncxWeLHW7QXoZMu"
+        },
+        {
+            "name": "animal_handling_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{animal_handling-u}}} {{mod=@{animal_handling_bonus}}} {{r1=[[@{d20}+2[wisdom]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+2[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncxWeLHW7QXoZMv"
+        },
+        {
+            "name": "insight_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{insight-u}}} {{mod=@{insight_bonus}}} {{r1=[[@{d20}+4[Proficiency]+2[wisdom]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[Proficiency]+2[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncyIfNGsrCNqI0m"
+        },
+        {
+            "name": "medicine_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{medicine-u}}} {{mod=@{medicine_bonus}}} {{r1=[[@{d20}+2[wisdom]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+2[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncyIfNGsrCNqI0n"
+        },
+        {
+            "name": "perception_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{perception-u}}} {{mod=@{perception_bonus}}} {{r1=[[@{d20}+4[Proficiency]+2[wisdom]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[Proficiency]+2[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncyIfNGsrCNqI0o"
+        },
+        {
+            "name": "survival_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{survival-u}}} {{mod=@{survival_bonus}}} {{r1=[[@{d20}+4[Proficiency]+2[wisdom]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[Proficiency]+2[wisdom]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLncyIfNGsrCNqI0p"
+        },
+        {
+            "name": "deception_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{deception-u}}} {{mod=@{deception_bonus}}} {{r1=[[@{d20}+4[Proficiency]+1[charisma]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+4[Proficiency]+1[charisma]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLnczRniaNyXmtPAy"
+        },
+        {
+            "name": "intimidation_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{intimidation-u}}} {{mod=@{intimidation_bonus}}} {{r1=[[@{d20}+1[charisma]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+1[charisma]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLnczRniaNyXmtPAz"
+        },
+        {
+            "name": "performance_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{performance-u}}} {{mod=@{performance_bonus}}} {{r1=[[@{d20}+1[charisma]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+1[charisma]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLnczRniaNyXmtPB-"
+        },
+        {
+            "name": "persuasion_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{persuasion-u}}} {{mod=@{persuasion_bonus}}} {{r1=[[@{d20}+1[charisma]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+1[charisma]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLnczRniaNyXmtPB0"
+        },
+        {
+            "name": "global_damage_mod_roll",
+            "current": "",
+            "max": "",
+            "id": "-OKpLndu9I_PPXMaLjQW"
+        },
+        {
+            "name": "global_damage_mod_crit",
+            "current": "",
+            "max": "",
+            "id": "-OKpLndu9I_PPXMaLjQX"
+        },
+        {
+            "name": "global_damage_mod_type",
+            "current": "",
+            "max": "",
+            "id": "-OKpLndvaIKct3YF-jFA"
+        },
+        {
+            "name": "queryadvantage",
+            "current": "{{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}",
+            "max": "",
+            "id": "-OKpLneN8D6JG134bCnf"
+        },
+        {
+            "name": "stealth_bonus",
+            "current": 9,
+            "max": "",
+            "id": "-OKpLneQAbcwPHZfJ4y4"
+        },
+        {
+            "name": "other_tool",
+            "current": "Carpenter's Tools, Hand Crossbows, Light Armor, Long Swords, Mason's Tools, Rapiers, Shortswords, Simple Weapons, Thieves' Tools⁺",
+            "max": "",
+            "id": "-OKpLneSU0H_MliQnOk0"
+        },
+        {
+            "name": "other_languages",
+            "current": "Common, Elvish, Gith",
+            "max": "",
+            "id": "-OKpLneTtvAEgOAYfJ1y"
+        },
+        {
+            "name": "other_armor",
+            "current": "",
+            "max": "",
+            "id": "-OKpLneTtvAEgOAYfJ1z"
+        },
+        {
+            "name": "other_weapon",
+            "current": "",
+            "max": "",
+            "id": "-OKpLneTtvAEgOAYfJ2-"
+        },
+        {
+            "name": "other_other",
+            "current": "",
+            "max": "",
+            "id": "-OKpLneTtvAEgOAYfJ20"
+        },
+        {
+            "name": "mancer_confirm_flag",
+            "current": "",
+            "max": "",
+            "id": "-OKpLneUtUOduSPQsWbq"
+        },
+        {
+            "name": "mancer_cancel",
+            "current": "on",
+            "max": "",
+            "id": "-OKpLosZPYcMuUpLntQ8"
+        },
+        {
+            "name": "l1mancer_status",
+            "current": "completed",
+            "max": "",
+            "id": "-OKpLouQ7EjPsNYJlGHw"
+        },
+        {
+            "name": "base_level",
+            "current": "12",
+            "max": "",
+            "id": "-OKpLpPInTFDTFM7-X27"
+        },
+        {
+            "name": "hitdie_final",
+            "current": "@{hitdietype}",
+            "max": "",
+            "id": "-OKpLpR9Aoc1i9QBmQkE"
+        },
+        {
+            "name": "level",
+            "current": 12,
+            "max": "",
+            "id": "-OKpLpRAA8qBLoJtvAId"
+        },
+        {
+            "name": "caster_level",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRBYpn5H7sHy8ko"
+        },
+        {
+            "name": "class_display",
+            "current": "Phantom Rogue 12",
+            "max": "",
+            "id": "-OKpLpRBYpn5H7sHy8kp"
+        },
+        {
+            "name": "hit_dice",
+            "current": "13",
+            "max": 12,
+            "id": "-OKpLpRCFoHBTEr1wf05"
+        },
+        {
+            "name": "pb",
+            "current": "4",
+            "max": "",
+            "id": "-OKpLpRCFoHBTEr1wf06"
+        },
+        {
+            "name": "jack",
+            "current": 2,
+            "max": "",
+            "id": "-OKpLpRDjLNhVnPo-nMJ"
+        },
+        {
+            "name": "pbd_safe",
+            "current": "",
+            "max": "",
+            "id": "-OKpLpRDjLNhVnPo-nMK"
+        },
+        {
+            "name": "lvl1_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRFF6kS_jUvpjUq"
+        },
+        {
+            "name": "lvl2_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRFF6kS_jUvpjUr"
+        },
+        {
+            "name": "lvl3_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRGHB1q5XE_-HEA"
+        },
+        {
+            "name": "lvl4_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRGHB1q5XE_-HEB"
+        },
+        {
+            "name": "lvl5_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRGHB1q5XE_-HEC"
+        },
+        {
+            "name": "lvl6_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRHeay_ADsD7LXG"
+        },
+        {
+            "name": "lvl7_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRHeay_ADsD7LXH"
+        },
+        {
+            "name": "lvl8_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRImcH_KJ8rHSQK"
+        },
+        {
+            "name": "lvl9_slots_total",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRJr-yDXGKibGAE"
+        },
+        {
+            "name": "spell_attack_bonus",
+            "current": "0",
+            "max": "",
+            "id": "-OKpLpRKnNf_KAIf0j0t"
+        },
+        {
+            "name": "spell_save_dc",
+            "current": "0",
+            "max": "",
+            "id": "-OKpLpRL9UqBHc5A2ptN"
+        },
+        {
+            "name": "jack_bonus",
+            "current": "",
+            "max": "",
+            "id": "-OKpLpRXdcthl4l7ODi5"
+        },
+        {
+            "name": "jack_attr",
+            "current": "",
+            "max": "",
+            "id": "-OKpLpRYHEvp68S_Ggbb"
+        },
+        {
+            "name": "initiative_bonus",
+            "current": 5,
+            "max": "",
+            "id": "-OKpLpR_fkq3jPPGs6tm"
+        },
+        {
+            "name": "strength_save_bonus",
+            "current": 3,
+            "max": "",
+            "id": "-OKpLpR_fkq3jPPGs6tn"
+        },
+        {
+            "name": "dexterity_save_bonus",
+            "current": 9,
+            "max": "",
+            "id": "-OKpLpR_fkq3jPPGs6to"
+        },
+        {
+            "name": "constitution_save_bonus",
+            "current": 3,
+            "max": "",
+            "id": "-OKpLpR_fkq3jPPGs6tp"
+        },
+        {
+            "name": "intelligence_save_bonus",
+            "current": 8,
+            "max": "",
+            "id": "-OKpLpRaxIQTgt5ffLxi"
+        },
+        {
+            "name": "wisdom_save_bonus",
+            "current": 2,
+            "max": "",
+            "id": "-OKpLpRbRabGpb8D08M1"
+        },
+        {
+            "name": "charisma_save_bonus",
+            "current": 1,
+            "max": "",
+            "id": "-OKpLpRbRabGpb8D08M2"
+        },
+        {
+            "name": "honor_save_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRcZ6imKlqwfHO3"
+        },
+        {
+            "name": "sanity_save_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRcZ6imKlqwfHO4"
+        },
+        {
+            "name": "death_save_bonus",
+            "current": 0,
+            "max": "",
+            "id": "-OKpLpRdDx8e81r-Fp9-"
+        },
+        {
+            "name": "athletics_bonus",
+            "current": 7,
+            "max": "",
+            "id": "-OKpLpReabQ4AMMSW43R"
+        },
+        {
+            "name": "acrobatics_bonus",
+            "current": 9,
+            "max": "",
+            "id": "-OKpLpReabQ4AMMSW43S"
+        },
+        {
+            "name": "sleight_of_hand_bonus",
+            "current": 5,
+            "max": "",
+            "id": "-OKpLpRfne4W-4waa6EH"
+        },
+        {
+            "name": "arcana_bonus",
+            "current": 4,
+            "max": "",
+            "id": "-OKpLpRgpfSFUd9LyEzJ"
+        },
+        {
+            "name": "history_bonus",
+            "current": 4,
+            "max": "",
+            "id": "-OKpLpRhNiMLFMb5XTN5"
+        },
+        {
+            "name": "investigation_bonus",
+            "current": 8,
+            "max": "",
+            "id": "-OKpLpRhNiMLFMb5XTN6"
+        },
+        {
+            "name": "nature_bonus",
+            "current": 4,
+            "max": "",
+            "id": "-OKpLpRhNiMLFMb5XTN7"
+        },
+        {
+            "name": "religion_bonus",
+            "current": 8,
+            "max": "",
+            "id": "-OKpLpRiSbovoY_myfiG"
+        },
+        {
+            "name": "animal_handling_bonus",
+            "current": 2,
+            "max": "",
+            "id": "-OKpLpRk7rrH3gqbzfHR"
+        },
+        {
+            "name": "insight_bonus",
+            "current": 6,
+            "max": "",
+            "id": "-OKpLpRlxROUHRRWQ1UX"
+        },
+        {
+            "name": "medicine_bonus",
+            "current": 2,
+            "max": "",
+            "id": "-OKpLpRlxROUHRRWQ1UY"
+        },
+        {
+            "name": "perception_bonus",
+            "current": 6,
+            "max": "",
+            "id": "-OKpLpRlxROUHRRWQ1UZ"
+        },
+        {
+            "name": "survival_bonus",
+            "current": 6,
+            "max": "",
+            "id": "-OKpLpRmudyVMb5Os3ZY"
+        },
+        {
+            "name": "deception_bonus",
+            "current": 5,
+            "max": "",
+            "id": "-OKpLpRmudyVMb5Os3ZZ"
+        },
+        {
+            "name": "intimidation_bonus",
+            "current": 1,
+            "max": "",
+            "id": "-OKpLpRnApjCYb3UgfHo"
+        },
+        {
+            "name": "performance_bonus",
+            "current": 1,
+            "max": "",
+            "id": "-OKpLpRnApjCYb3UgfHp"
+        },
+        {
+            "name": "persuasion_bonus",
+            "current": 1,
+            "max": "",
+            "id": "-OKpLpRo2ZD-UPJPhnn5"
+        },
+        {
+            "name": "death_save_roll",
+            "current": "@{wtype}&{template:simple} {{rname=^{death-save-u}}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{death_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpLpRqNWK9Kk44LZoG"
+        },
+        {
+            "name": "passive_wisdom",
+            "current": 16,
+            "max": "",
+            "id": "-OKpLpS7hnuLKb47BQ2e"
+        },
+        {
+            "name": "hero_points",
+            "current": 11,
+            "max": "",
+            "id": "-OKpLpU6LxfdrclPjGwz"
+        },
+        {
+            "name": "class",
+            "current": "Rogue",
+            "max": "",
+            "id": "-OKpM5ovNJeMsG93KvxR"
+        },
+        {
+            "name": "subclass",
+            "current": "Phantom",
+            "max": "",
+            "id": "-OKpW6SqDMQ2BIaAyAVq"
+        },
+        {
+            "name": "race",
+            "current": "Elf",
+            "max": "",
+            "id": "-OKpW7xE9L9hoeGE7EmW"
+        },
+        {
+            "name": "race_display",
+            "current": "Wood",
+            "max": "",
+            "id": "-OKpW7ytLU2JR_Rf88kz"
+        },
+        {
+            "name": "subrace",
+            "current": "Wood",
+            "max": "",
+            "id": "-OKpW8U6YDO0i55TNydh"
+        },
+        {
+            "name": "tab",
+            "current": "core",
+            "max": "",
+            "id": "-OKpW8zufUGrs1Az80OE"
+        },
+        {
+            "name": "options-class-selection",
+            "current": "on",
+            "max": "",
+            "id": "-OKpfnHZW9dkJekhuw43"
+        },
+        {
+            "name": "background",
+            "current": "Astral Drifter",
+            "max": "",
+            "id": "-OKpfqdQGSm6Y7QopRz6"
+        },
+        {
+            "name": "alignment",
+            "current": "Chaotic Neutral",
+            "max": "",
+            "id": "-OKpg8aehLL9ukSa6FCP"
+        },
+        {
+            "name": "dexterity_base",
+            "current": "20",
+            "max": "",
+            "id": "-OKpgAiODcOi3vl0FGFu"
+        },
+        {
+            "name": "dexterity_flag",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgAkAS4hE4XLsmC3d"
+        },
+        {
+            "name": "dexterity",
+            "current": 20,
+            "max": "",
+            "id": "-OKpgAkBiZZ5KuBKG4Yr"
+        },
+        {
+            "name": "dexterity_mod",
+            "current": 5,
+            "max": "",
+            "id": "-OKpgAkCvQDbjZ9tRPnP"
+        },
+        {
+            "name": "npc_dex_negative",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgAm6mViRNyIY9O80"
+        },
+        {
+            "name": "armorwarningflag",
+            "current": "hide",
+            "max": "",
+            "id": "-OKpgAmBVbfUfU7sHUet"
+        },
+        {
+            "name": "customacwarningflag",
+            "current": "hide",
+            "max": "",
+            "id": "-OKpgAmCGSH53zrrGe66"
+        },
+        {
+            "name": "ac",
+            "current": "17",
+            "max": "",
+            "id": "-OKpgAmCGSH53zrrGe67"
+        },
+        {
+            "name": "intelligence_base",
+            "current": "18",
+            "max": "",
+            "id": "-OKpgCK3RxaVLqlmtAbi"
+        },
+        {
+            "name": "intelligence_flag",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgCLpdy4uNFpeg0rM"
+        },
+        {
+            "name": "intelligence",
+            "current": 18,
+            "max": "",
+            "id": "-OKpgCLrbhveBdjozIvH"
+        },
+        {
+            "name": "intelligence_mod",
+            "current": 4,
+            "max": "",
+            "id": "-OKpgCLrbhveBdjozIvI"
+        },
+        {
+            "name": "npc_int_negative",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgCNaqEYKr8fLVO_k"
+        },
+        {
+            "name": "wisdom_base",
+            "current": "14",
+            "max": "",
+            "id": "-OKpgCa8pEXyfGBVnRAn"
+        },
+        {
+            "name": "wisdom_flag",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgCc2gXLmslvZ9cIT"
+        },
+        {
+            "name": "wisdom",
+            "current": 14,
+            "max": "",
+            "id": "-OKpgCc3w5hl3FkprAJr"
+        },
+        {
+            "name": "wisdom_mod",
+            "current": 2,
+            "max": "",
+            "id": "-OKpgCc4cLuyiP9Wp-Ie"
+        },
+        {
+            "name": "npc_wis_negative",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgCdnCfP6sxBSA81K"
+        },
+        {
+            "name": "strength_base",
+            "current": "16",
+            "max": "",
+            "id": "-OKpgF8-PcLK4a-vkrIW"
+        },
+        {
+            "name": "strength_flag",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgFMbx1lxTqEPPoHQ"
+        },
+        {
+            "name": "strength",
+            "current": 16,
+            "max": "",
+            "id": "-OKpgFMc7ZI6hVJnLJj_"
+        },
+        {
+            "name": "strength_mod",
+            "current": 3,
+            "max": "",
+            "id": "-OKpgFMdl0LBwUICaK_J"
+        },
+        {
+            "name": "npc_str_negative",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgFOPTt0qtf9sHzSB"
+        },
+        {
+            "name": "weighttotal",
+            "current": 799.4,
+            "max": "",
+            "id": "-OKpgFOQzJz9NpG9JlZr"
+        },
+        {
+            "name": "encumberance",
+            "current": "OVER CARRYING CAPACITY",
+            "max": "",
+            "id": "-OKpgFOR2PEqNsF8S6Rh"
+        },
+        {
+            "name": "constitution_base",
+            "current": "16",
+            "max": "",
+            "id": "-OKpgJi7gqrc8dG9q3X7"
+        },
+        {
+            "name": "constitution_flag",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgJjvCSMyMVrKBF0Y"
+        },
+        {
+            "name": "constitution",
+            "current": 16,
+            "max": "",
+            "id": "-OKpgJjwHIdXN4TijA5M"
+        },
+        {
+            "name": "constitution_mod",
+            "current": 3,
+            "max": "",
+            "id": "-OKpgJjwHIdXN4TijA5N"
+        },
+        {
+            "name": "npc_con_negative",
+            "current": 0,
+            "max": "",
+            "id": "-OKpgJleOZaj_GO892bx"
+        },
+        {
+            "name": "stealth_prof",
+            "current": "(@{pb}*@{stealth_type})",
+            "max": "",
+            "id": "-OKpgS1JDJgaEva7xt8A"
+        },
+        {
+            "name": "hp",
+            "current": "107",
+            "max": "107",
+            "id": "-OKpgaPiwNt22yFHyVSx"
+        },
+        {
+            "name": "repeating_tool_-OKpghZBt2-n7MKWu6LN_toolname",
+            "current": "Light Armor",
+            "max": "",
+            "id": "-OKpgiow2hxCg-iV5I1u"
+        },
+        {
+            "name": "repeating_tool_-OKpghZBt2-n7MKWu6LN_toolattr",
+            "current": "DEXTERITY",
+            "max": "",
+            "id": "-OKpgiqnB8o-xiUy_RCG"
+        },
+        {
+            "name": "repeating_tool_-OKpghZBt2-n7MKWu6LN_toolbonus",
+            "current": 9,
+            "max": "",
+            "id": "-OKpgiqo-nfmrJGPwx83"
+        },
+        {
+            "name": "repeating_tool_-OKpghZBt2-n7MKWu6LN_toolbonus_display",
+            "current": 9,
+            "max": "",
+            "id": "-OKpgiqpPkF8qEudebQg"
+        },
+        {
+            "name": "repeating_tool_-OKpghZBt2-n7MKWu6LN_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpgiqrrQNp7ozOeyu7"
+        },
+        {
+            "name": "repeating_inventory_-OKpgxW6tfLrt1UACpYx_itemname",
+            "current": "Studded Leather Armor Poison",
+            "max": "",
+            "id": "-OKpgyr-TLFzBrkDQuQ_"
+        },
+        {
+            "name": "repeating_inventory_-OKpgxW6tfLrt1UACpYx_itemweight",
+            "current": "13",
+            "max": "",
+            "id": "-OKph-YR3Ga_P3s-qlqO"
+        },
+        {
+            "name": "dexterity_save_prof",
+            "current": "(@{pb})",
+            "max": "",
+            "id": "-OKph3ij7o1qRRO2t7BG"
+        },
+        {
+            "name": "intelligence_save_prof",
+            "current": "(@{pb})",
+            "max": "",
+            "id": "-OKph3sbXAN96-YK-ack"
+        },
+        {
+            "name": "insight_prof",
+            "current": "(@{pb}*@{insight_type})",
+            "max": "",
+            "id": "-OKphANSDqLgrMUoIAyw"
+        },
+        {
+            "name": "religion_prof",
+            "current": "(@{pb}*@{religion_type})",
+            "max": "",
+            "id": "-OKphAp_g-ogTHj1jB00"
+        },
+        {
+            "name": "repeating_proficiencies_-OKphFhp4lt5IbHosNmx_name",
+            "current": "Gith",
+            "max": "",
+            "id": "-OKphGYpsynE9bmAxRIS"
+        },
+        {
+            "name": "repeating_proficiencies_-OKphFhp4lt5IbHosNmx_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKphHMoI4fHXX0FRUn3"
+        },
+        {
+            "name": "age",
+            "current": "330 (but I look 250)",
+            "max": "",
+            "id": "-OKphTk47lrsWZdDkLWo"
+        },
+        {
+            "name": "repeating_tool_-OKpghZBt2-n7MKWu6LN_toolattr_base",
+            "current": "@{dexterity_mod}",
+            "max": "",
+            "id": "-OKphokqlDkBPvQg5f2s"
+        },
+        {
+            "name": "repeating_tool_-OKpghZBt2-n7MKWu6LN_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKphw_ZjicqhRtOiYnm"
+        },
+        {
+            "name": "repeating_tool_-OKpi-QeiMKcu2NtnFIv_toolname",
+            "current": "Thieves' Tools",
+            "max": "",
+            "id": "-OKpi1rYHXnF71zz2NBA"
+        },
+        {
+            "name": "repeating_tool_-OKpi-QeiMKcu2NtnFIv_toolattr",
+            "current": "DEXTERITY",
+            "max": "",
+            "id": "-OKpi1tVESO-8oT3nl7l"
+        },
+        {
+            "name": "repeating_tool_-OKpi-QeiMKcu2NtnFIv_toolbonus",
+            "current": 13,
+            "max": "",
+            "id": "-OKpi1tWj8FmL0xzN4uy"
+        },
+        {
+            "name": "repeating_tool_-OKpi-QeiMKcu2NtnFIv_toolbonus_display",
+            "current": 13,
+            "max": "",
+            "id": "-OKpi1tXCD3Knn3dRqME"
+        },
+        {
+            "name": "repeating_tool_-OKpi-QeiMKcu2NtnFIv_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpi1tYpWLsn51Mpqi9"
+        },
+        {
+            "name": "repeating_tool_-OKpi-QeiMKcu2NtnFIv_toolattr_base",
+            "current": "@{dexterity_mod}",
+            "max": "",
+            "id": "-OKpi26q6FcPY7rii5JM"
+        },
+        {
+            "name": "repeating_tool_-OKpi-QeiMKcu2NtnFIv_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpi2Oy0nWJm-lNcTk5"
+        },
+        {
+            "name": "investigation_prof",
+            "current": "(@{pb}*@{investigation_type})",
+            "max": "",
+            "id": "-OKpiAzbSJYnqUuuTRoo"
+        },
+        {
+            "name": "deception_prof",
+            "current": "(@{pb}*@{deception_type})",
+            "max": "",
+            "id": "-OKpiCAib0Y_wgI0Jy8k"
+        },
+        {
+            "name": "perception_prof",
+            "current": "(@{pb}*@{perception_type})",
+            "max": "",
+            "id": "-OKpiDxT5eDRkK9SI2W7"
+        },
+        {
+            "name": "survival_prof",
+            "current": "(@{pb}*@{survival_type})",
+            "max": "",
+            "id": "-OKpiFMvMzlI27B99UP7"
+        },
+        {
+            "name": "sleight_of_hand_prof",
+            "current": "0",
+            "max": "",
+            "id": "-OKpiFoBVSh5OonP-As2"
+        },
+        {
+            "name": "gp",
+            "current": "39320",
+            "max": "",
+            "id": "-OKpiOdAO194CLLGN0kW"
+        },
+        {
+            "name": "repeating_traits_-OKpiz9Utu3KOD8Sk79L_name",
+            "current": "Expertise",
+            "max": "",
+            "id": "-OKpizYakrxLHJK0Bsp9"
+        },
+        {
+            "name": "repeating_traits_-OKpiz9Utu3KOD8Sk79L_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKpj-EBslmdpCjipnkx"
+        },
+        {
+            "name": "repeating_traits_-OKpiz9Utu3KOD8Sk79L_source_type",
+            "current": "Rogue Lvl 1",
+            "max": "",
+            "id": "-OKpj1KV99525OvdPDCy"
+        },
+        {
+            "name": "repeating_traits_-OKpiz9Utu3KOD8Sk79L_description",
+            "current": "At 1st level, choose two of your skill proficiencies, or one of your skill proficiencies and your proficiency with thieves' tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.\n\nAt 6th level, you can choose two more of your proficiencies (in skills or with thieves' tools) to gain this benefit.\n\nSkills Chosen: Stealth, Perception, Insight, X",
+            "max": "",
+            "id": "-OKpj2qiWveQbF_vq-WB"
+        },
+        {
+            "name": "repeating_traits_-OKpiz9Utu3KOD8Sk79L_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpj3B0qnggNUICKcW-"
+        },
+        {
+            "name": "repeating_traits_-OKpj4AYLzo5J8VIv8TI_name",
+            "current": "Sneak Attack",
+            "max": "",
+            "id": "-OKpj4Yr5rgbGJ97QZRx"
+        },
+        {
+            "name": "repeating_traits_-OKpj4AYLzo5J8VIv8TI_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKpj4pX68EJa6v0UOpc"
+        },
+        {
+            "name": "repeating_traits_-OKpj4AYLzo5J8VIv8TI_source_type",
+            "current": "Rogue Lvl 1",
+            "max": "",
+            "id": "-OKpj5rNXQHdagAQWUux"
+        },
+        {
+            "name": "repeating_traits_-OKpj4AYLzo5J8VIv8TI_description",
+            "current": "Beginning at 1st level, you know how to strike subtly and exploit a foe's distraction. Once per turn, you can deal an extra 1d6 damage to one creature you hit with an attack if you have advantage on the attack roll. The attack must use a finesse or a ranged weapon.\n\nYou don't need advantage on the attack roll if another enemy of the target is within 5 feet of it, that enemy isn't incapacitated, and you don't have disadvantage on the attack roll.\n\nThe amount of the extra damage increases as you gain levels in this class, as shown in the Sneak Attack column of the Rogue table.",
+            "max": "",
+            "id": "-OKpj7Rz5PZ-9Void_wT"
+        },
+        {
+            "name": "repeating_traits_-OKpj4AYLzo5J8VIv8TI_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpj7T_ic_u2-z9epVp"
+        },
+        {
+            "name": "repeating_traits_-OKpj4AYLzo5J8VIv8TI_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpj8LV2WVHdleYTKck"
+        },
+        {
+            "name": "repeating_traits_-OKpiz9Utu3KOD8Sk79L_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpj8cLKUUUSjnF2iSh"
+        },
+        {
+            "name": "repeating_traits_-OKpj9QGkNLDhTWZYXmG_name",
+            "current": "Thieves' Cant",
+            "max": "",
+            "id": "-OKpj9i7kmseD_iHPYSq"
+        },
+        {
+            "name": "repeating_traits_-OKpj9QGkNLDhTWZYXmG_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKpjA-xAb2XvIkrm5KO"
+        },
+        {
+            "name": "repeating_traits_-OKpj9QGkNLDhTWZYXmG_source_type",
+            "current": "Rogue Lvl 1",
+            "max": "",
+            "id": "-OKpjAie5kj0tjhPTPdY"
+        },
+        {
+            "name": "repeating_traits_-OKpj9QGkNLDhTWZYXmG_description",
+            "current": "During your rogue training you learned thieves' cant, a secret mix of dialect, jargon, and code that allows you to hide messages in seemingly normal conversation. Only another creature that knows thieves' cant understands such messages. It takes four times longer to convey such a message than it does to speak the same idea plainly.\n\nIn addition, you understand a set of secret signs and symbols used to convey short, simple messages, such as whether an area is dangerous or the territory of a thieves' guild, whether loot is nearby, or whether the people in an area are easy marks or will provide a safe house for thieves on the run.\n",
+            "max": "",
+            "id": "-OKpjBz-S14suYWdsVvb"
+        },
+        {
+            "name": "repeating_traits_-OKpj9QGkNLDhTWZYXmG_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpjC-I3A2MVeF_Z5-X"
+        },
+        {
+            "name": "repeating_traits_-OKpj9QGkNLDhTWZYXmG_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpjCBD_hLkuAtDJTSM"
+        },
+        {
+            "name": "repeating_traits_-OKpjZBxrzzA8eEfsQCv_name",
+            "current": "Astral Drifter",
+            "max": "",
+            "id": "-OKpj_O3pbkth-FkUXyL"
+        },
+        {
+            "name": "repeating_traits_-OKpjZBxrzzA8eEfsQCv_source",
+            "current": "Background",
+            "max": "",
+            "id": "-OKpj_eOPzokqSS3xHKG"
+        },
+        {
+            "name": "repeating_traits_-OKpjZBxrzzA8eEfsQCv_source_type",
+            "current": "AAG",
+            "max": "",
+            "id": "-OKpjalm_n7vNnDs2nud"
+        },
+        {
+            "name": "repeating_traits_-OKpjZBxrzzA8eEfsQCv_description",
+            "current": "    Skill Proficiencies: Insight, Religion\n\n    Languages: Two of your choice (Celestial or Gith recommended)\n\n    Equipment: A set of traveler's clothes, a diary, an ink pen, a bottle of ink, and a pouch containing 10 gp",
+            "max": "",
+            "id": "-OKpjcblihHGqhXbb9Qy"
+        },
+        {
+            "name": "repeating_traits_-OKpjZBxrzzA8eEfsQCv_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpjf7PFhf4tIIxQOj4"
+        },
+        {
+            "name": "repeating_traits_-OKpjfWHh7QBVeDL8NA6_name",
+            "current": "Longevity",
+            "max": "",
+            "id": "-OKpjgVR5brJyUi1k3Wq"
+        },
+        {
+            "name": "repeating_traits_-OKpjfWHh7QBVeDL8NA6_source",
+            "current": "Background",
+            "max": "",
+            "id": "-OKpjgkv_ajDWV-d8mKV"
+        },
+        {
+            "name": "repeating_traits_-OKpjfWHh7QBVeDL8NA6_source_type",
+            "current": "Astral Drifter",
+            "max": "",
+            "id": "-OKpjhvc2JwG_BA7U9A-"
+        },
+        {
+            "name": "repeating_traits_-OKpjfWHh7QBVeDL8NA6_description",
+            "current": "You are 20d6 (80) years older than you look, because you have spent that much time in the Astral Sea without aging.",
+            "max": "",
+            "id": "-OKpjjxtjGTIhcvnAPqU"
+        },
+        {
+            "name": "repeating_traits_-OKpjfWHh7QBVeDL8NA6_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpjjzJAhs9b6nGH8aV"
+        },
+        {
+            "name": "repeating_traits_-OKpjlNGRkSNj7Oc9fI9_description",
+            "current": " Feature: Divine Contact\n\nYou gain the Magic Initiate feat from the Player's Handbook and must choose cleric for the feat.\n\nIn the Astral Sea, you crossed paths with a wandering deity. The encounter was brief and nonviolent, yet it made a lasting impression on you. This deity saw fit to share one secret or obscure bit of cosmic lore with you. Work with your DM to determine the details of this knowledge and its impact on the campaign.\n\nRoll on the Divine Contact table to determine which deity you encountered, or work with your DM to identify a more suitable choice.",
+            "max": "",
+            "id": "-OKpjmGhAcL7kG8-WZ1a"
+        },
+        {
+            "name": "repeating_traits_-OKpjlNGRkSNj7Oc9fI9_source_type",
+            "current": "Astral Drifter",
+            "max": "",
+            "id": "-OKpjnGHi4x8SSQ76UwQ"
+        },
+        {
+            "name": "repeating_traits_-OKpjlNGRkSNj7Oc9fI9_source",
+            "current": "Background",
+            "max": "",
+            "id": "-OKpjnaJwTBWPjrYySR_"
+        },
+        {
+            "name": "repeating_traits_-OKpjlNGRkSNj7Oc9fI9_name",
+            "current": "Feature: Divine Contact",
+            "max": "",
+            "id": "-OKpjpBWTaFSKcR22EUq"
+        },
+        {
+            "name": "repeating_traits_-OKpjlNGRkSNj7Oc9fI9_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpjpCZ_Xhx1rZSSIox"
+        },
+        {
+            "name": "repeating_traits_-OKpjlNGRkSNj7Oc9fI9_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpjq1ENv5_kihim651"
+        },
+        {
+            "name": "repeating_traits_-OKpjrj2ejFpr2l47fRZ_name",
+            "current": "Magic Initiate",
+            "max": "",
+            "id": "-OKpjs_2LqC0pc3WJ2Ha"
+        },
+        {
+            "name": "repeating_traits_-OKpjrj2ejFpr2l47fRZ_source",
+            "current": "Background",
+            "max": "",
+            "id": "-OKpjsq0EL2b-JXvSyFI"
+        },
+        {
+            "name": "repeating_traits_-OKpjrj2ejFpr2l47fRZ_source_type",
+            "current": "From Divine Contract",
+            "max": "",
+            "id": "-OKpju9qmSpo86n_7XW6"
+        },
+        {
+            "name": "repeating_traits_-OKpjrj2ejFpr2l47fRZ_description",
+            "current": "Choose a class: bard, cleric, druid, sorcerer, warlock, or wizard. You learn two cantrips of your choice from that class's spell list.\n\nIn addition, choose one 1st-level spell to learn from that same list. Using this feat, you can cast the spell once at its lowest level, and you must finish a long rest before you can cast it in this way again.\n\nYour spellcasting ability for these spells depends on the class you chose: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard.",
+            "max": "",
+            "id": "-OKpjvmv1FgcnAZ-Bkg4"
+        },
+        {
+            "name": "repeating_traits_-OKpjrj2ejFpr2l47fRZ_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpn88JFGwuHy8n8aGh"
+        },
+        {
+            "name": "repeating_traits_-OKpjrj2ejFpr2l47fRZ_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpn94EsPwwdHzKlnJw"
+        },
+        {
+            "name": "repeating_traits_-OKpjfWHh7QBVeDL8NA6_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpn9NsBxDy1L72U7o8"
+        },
+        {
+            "name": "repeating_traits_-OKpjZBxrzzA8eEfsQCv_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpn9aQEnb8f1BLzN1e"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_spellname",
+            "current": "Toll the Dead",
+            "max": "",
+            "id": "-OKpt-kd4QvA_euddeB7"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_spellschool",
+            "current": "necromancy",
+            "max": "",
+            "id": "-OKpt0PtR2CabWtsReOu"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_spellcastingtime",
+            "current": "1 Action",
+            "max": "",
+            "id": "-OKpt3ZSfUdrNC8d-r9J"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_spellrange",
+            "current": "60 Ft",
+            "max": "",
+            "id": "-OKpt4Np44TolCxukVsv"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_spelltarget",
+            "current": "1",
+            "max": "",
+            "id": "-OKpt60IdxYEFeYLXRGH"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_spellcomp_m",
+            "current": "0",
+            "max": "",
+            "id": "-OKpt61hvF0e86UJGGaH"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_spellduration",
+            "current": "Instantaneous",
+            "max": "",
+            "id": "-OKpt90wtSx_iZjRqd3p"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_spelldescription",
+            "current": "You point at one creature you can see within range, and the sound of a dolorous bell fills the air around it for a moment. The target must succeed on a Wisdom saving throw or take 1d8 necrotic damage. If the target is missing any of its hit points, it instead takes 1d12 necrotic damage.",
+            "max": "",
+            "id": "-OKptBmS2fYfN_Obqr0M"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_spellathigherlevels",
+            "current": "The spell's damage increases by one die when you reach 5th level (2d8 or 2d12), 11th level (3d8 or 3d12), and 17th level (4d8 or 4d12).",
+            "max": "",
+            "id": "-OKptDE_zEdLkq4K_9xW"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKptDFrurSyxqjcKCHm"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKpt-1kIe3xOoYD5je2_rollcontent",
+            "current": "@{wtype}&{template:spell} {{level=@{spellschool} ?{Cast at what level? @{spelllevel}}}} {{name=@{spellname}}} {{castingtime=@{spellcastingtime}}} {{range=@{spellrange}}} {{target=@{spelltarget}}} @{spellcomp_v} @{spellcomp_s} @{spellcomp_m} {{material=@{spellcomp_materials}}} {{duration=@{spellduration}}} {{description=@{spelldescription}}} {{athigherlevels=@{spellathigherlevels}}} @{spellritual} {{innate=@{innate}}} {{savedc=@{spell_save_dc}}} @{spellconcentration} @{charname_output}",
+            "max": "",
+            "id": "-OKptDHlCKkqr0WppC2M"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKptEaT7obnywAwLxYW_spellname",
+            "current": "Transfusion",
+            "max": "",
+            "id": "-OKptLEvCbn4UEKxDPkf"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKptEaT7obnywAwLxYW_spellschool",
+            "current": "necromancy",
+            "max": "",
+            "id": "-OKptLW2YltbC3D1hl1I"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKptEaT7obnywAwLxYW_spellcastingtime",
+            "current": "1 minute",
+            "max": "",
+            "id": "-OKptM_OJjcOYLBUfif-"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKptEaT7obnywAwLxYW_spellrange",
+            "current": "Touch",
+            "max": "",
+            "id": "-OKptNXghf-pFew93OVO"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKptEaT7obnywAwLxYW_spellcomp_materials",
+            "current": "a cursed leech",
+            "max": "",
+            "id": "-OKptzxJBLEqjddzTNq7"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKptEaT7obnywAwLxYW_spellconcentration",
+            "current": "{{concentration=1}}",
+            "max": "",
+            "id": "-OKpu-Xqxsy5Dk62HDjt"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKptEaT7obnywAwLxYW_spellduration",
+            "current": "10 mins",
+            "max": "",
+            "id": "-OKpu0ZhPQ4jdslY3IpO"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKptEaT7obnywAwLxYW_spelldescription",
+            "current": "You must be a humanoid possessing blood to cast this spell. You touch another humanoid possessing blood and siphon blood either into it or from it. Each turn after the spell is cast, the creature losing blood will lose 1d10 hipoints while the recipient will gain that amount.\n\nIf the creature is unwilling to transfer blood it must be grappled or restrained for this spell to work.",
+            "max": "",
+            "id": "-OKpu55JPL2KJGzGoXT7"
+        },
+        {
+            "name": "repeating_spell-cantrip_-OKptEaT7obnywAwLxYW_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpuHzTVclU4ZGnN-AE"
+        },
+        {
+            "name": "repeating_spell-1_-OKpuvWDo2Ev9OPF9LJD_spellname",
+            "current": "Shield of Faith",
+            "max": "",
+            "id": "-OKpuyc12_NQqZfw4X5h"
+        },
+        {
+            "name": "repeating_spell-1_-OKpuvWDo2Ev9OPF9LJD_spellcastingtime",
+            "current": "1 Bonus Action",
+            "max": "",
+            "id": "-OKpv-L4UjZVKqOtSiNm"
+        },
+        {
+            "name": "repeating_spell-1_-OKpuvWDo2Ev9OPF9LJD_spellrange",
+            "current": "60 feet",
+            "max": "",
+            "id": "-OKpv0QK0N7LT1-BonrW"
+        },
+        {
+            "name": "repeating_spell-1_-OKpuvWDo2Ev9OPF9LJD_spellcomp_materials",
+            "current": "(a small parchment with a bit of holy text written on it)",
+            "max": "",
+            "id": "-OKpv25-T89sWR8BFTpm"
+        },
+        {
+            "name": "repeating_spell-1_-OKpuvWDo2Ev9OPF9LJD_spellduration",
+            "current": "10 mins",
+            "max": "",
+            "id": "-OKpv44tWFYA_pENdual"
+        },
+        {
+            "name": "repeating_spell-1_-OKpuvWDo2Ev9OPF9LJD_spelldescription",
+            "current": "A shimmering field appears and surrounds a creature of your choice within range, granting it a +2 bonus to AC for the duration.",
+            "max": "",
+            "id": "-OKpv5gNUfXu82Pcx5T2"
+        },
+        {
+            "name": "repeating_spell-1_-OKpuvWDo2Ev9OPF9LJD_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpv6OPbxbaP7ddgyMf"
+        },
+        {
+            "name": "size",
+            "current": "Medium",
+            "max": "",
+            "id": "-OKpvKpQl6JfNgV_QYZM"
+        },
+        {
+            "name": "repeating_proficiencies_-OKpvUri1BOAYvZ6zBVO_name",
+            "current": "Common",
+            "max": "",
+            "id": "-OKpvVn0LGW82salp7-v"
+        },
+        {
+            "name": "repeating_proficiencies_-OKpvXHMBzXsT8-nN5Q1_name",
+            "current": "Elvish",
+            "max": "",
+            "id": "-OKpvYdFw_3HqZ7pQLDe"
+        },
+        {
+            "name": "repeating_proficiencies_-OKpvXHMBzXsT8-nN5Q1_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpvZu4ZCqtrIj4vEnV"
+        },
+        {
+            "name": "repeating_proficiencies_-OKpvUri1BOAYvZ6zBVO_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpv_9vN32aa1E3zFhQ"
+        },
+        {
+            "name": "charisma_base",
+            "current": "12",
+            "max": "",
+            "id": "-OKpwUC6MfwU-3fDS-5q"
+        },
+        {
+            "name": "charisma_flag",
+            "current": 0,
+            "max": "",
+            "id": "-OKpwUE1msvj_gNIOf09"
+        },
+        {
+            "name": "charisma",
+            "current": 12,
+            "max": "",
+            "id": "-OKpwUE2GchhQ56kHzov"
+        },
+        {
+            "name": "charisma_mod",
+            "current": 1,
+            "max": "",
+            "id": "-OKpwUE3EHhFmEb_RJd8"
+        },
+        {
+            "name": "npc_cha_negative",
+            "current": 0,
+            "max": "",
+            "id": "-OKpwUG-GsHQ6lNNrKPj"
+        },
+        {
+            "name": "repeating_traits_-OKpwhJFdlSazbrKY1Rq_name",
+            "current": "Cunning Action",
+            "max": "",
+            "id": "-OKpwhpbnzY-fB3XUqgW"
+        },
+        {
+            "name": "repeating_traits_-OKpwhJFdlSazbrKY1Rq_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKpwiL6AUMsgQan5KFU"
+        },
+        {
+            "name": "repeating_traits_-OKpwhJFdlSazbrKY1Rq_source_type",
+            "current": "Rogue Lvl 2",
+            "max": "",
+            "id": "-OKpwjW_NhqURroPeAJK"
+        },
+        {
+            "name": "repeating_traits_-OKpwhJFdlSazbrKY1Rq_description",
+            "current": "Starting at 2nd level, your quick thinking and agility allow you to move and act quickly. You can take a bonus action on each of your turns in combat. This action can be used only to take the Dash, Disengage, or Hide action.",
+            "max": "",
+            "id": "-OKpwkJraW0n9QSzorL6"
+        },
+        {
+            "name": "repeating_traits_-OKpwhJFdlSazbrKY1Rq_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpwkKt3JSIZwxmk424"
+        },
+        {
+            "name": "repeating_traits_-OKpwhJFdlSazbrKY1Rq_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpxBFobXAdrmpID1Fo"
+        },
+        {
+            "name": "repeating_traits_-OKpxH1rKNtCYDEM1aIf_name",
+            "current": "Roguish Archetype",
+            "max": "",
+            "id": "-OKpxHT3Vf5s-SEwB63w"
+        },
+        {
+            "name": "repeating_traits_-OKpxH1rKNtCYDEM1aIf_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKpxHlZByut67D9ATeH"
+        },
+        {
+            "name": "repeating_traits_-OKpxH1rKNtCYDEM1aIf_source_type",
+            "current": "Rogue Lvl 3",
+            "max": "",
+            "id": "-OKpxJM_Af223oxc3PUH"
+        },
+        {
+            "name": "repeating_traits_-OKpxH1rKNtCYDEM1aIf_description",
+            "current": "At 3rd level, you choose an archetype that you emulate in the exercise of your rogue abilities from the list of available archetypes. Your archetype choice grants you features at 3rd level and then again at 9th, 13th, and 17th level.",
+            "max": "",
+            "id": "-OKpxKV3hI8mAkPswLVK"
+        },
+        {
+            "name": "repeating_traits_-OKpxH1rKNtCYDEM1aIf_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpxKW6QDxTuD2SJRQJ"
+        },
+        {
+            "name": "repeating_traits_-OKpxH1rKNtCYDEM1aIf_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpxKth4jFDJjQy3W3e"
+        },
+        {
+            "name": "repeating_traits_-OKpxL8atmrdO3gh7cA8_name",
+            "current": "Phantom",
+            "max": "",
+            "id": "-OKpxMB-chm79WPdI_II"
+        },
+        {
+            "name": "repeating_traits_-OKpxL8atmrdO3gh7cA8_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKpxMk7UB1xYggMrZ0X"
+        },
+        {
+            "name": "repeating_traits_-OKpxL8atmrdO3gh7cA8_source_type",
+            "current": "Rogue Lvl 3",
+            "max": "",
+            "id": "-OKpxOF39w7y2ZzpnzYM"
+        },
+        {
+            "name": "repeating_traits_-OKpxL8atmrdO3gh7cA8_description",
+            "current": "Many rogues walk a fine line between life and death, risking their own lives and taking the lives of others. While adventuring on that line, some rogues discover a mystical connection to death itself. These rogues take knowledge from the dead and become immersed in negative energy, eventually becoming like ghosts. Thieves' guilds value them as highly effective information gatherers and spies.\n\nMany shadar-kai of the Shadowfell are masters of these macabre techniques, and some are willing to teach this path. In places like Thay in the Forgotten Realms and Karrnath in Eberron, where many necromancers practice their craft, a Phantom can become a wizard's confidant and right hand. In temples of gods of death, the Phantom might work as an agent to track down those who try to cheat death and to recover knowledge that might otherwise be lost to the grave.\n\nHow did you discover this grim power? Did you sleep in a graveyard and awaken to your new abilities? Or did you cultivate them in a temple or thieves' guild dedicated to a deity of death?",
+            "max": "",
+            "id": "-OKpxPN7aa3FZ9xDir93"
+        },
+        {
+            "name": "repeating_traits_-OKpxL8atmrdO3gh7cA8_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpxPbSoaUqE3ahU2TD"
+        },
+        {
+            "name": "repeating_traits_-OKpxL8atmrdO3gh7cA8_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpxPrDo424AXsAKqzT"
+        },
+        {
+            "name": "repeating_traits_-OKpxQ6Asm7uifw4X5OO_name",
+            "current": "Whispers of the Dead",
+            "max": "",
+            "id": "-OKpxRElCHV9YhtGDgHG"
+        },
+        {
+            "name": "repeating_traits_-OKpxQ6Asm7uifw4X5OO_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKpxRfnsGjW6zNJvaAS"
+        },
+        {
+            "name": "repeating_traits_-OKpxQ6Asm7uifw4X5OO_source_type",
+            "current": "Rogue Lvl 3",
+            "max": "",
+            "id": "-OKpxTv87SBBrmpJGd4z"
+        },
+        {
+            "name": "repeating_traits_-OKpxQ6Asm7uifw4X5OO_description",
+            "current": "3rd-level Phantom feature\n\nEchoes of those who have died cling to you. Whenever you finish a short or long rest, you can choose one skill or tool proficiency that you lack and gain it, as a ghostly presence shares its knowledge with you. You lose this proficiency when you use this feature to choose a different proficiency that you lack.",
+            "max": "",
+            "id": "-OKpxV59bHrxh0e4l2VT"
+        },
+        {
+            "name": "repeating_traits_-OKpxQ6Asm7uifw4X5OO_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpxVYvUMOMNdVzR8QE"
+        },
+        {
+            "name": "repeating_traits_-OKpxYaBL-ZJ1ooSLXwo_name",
+            "current": "Wails from the Grave",
+            "max": "",
+            "id": "-OKpxZiKXo-wOih2En8J"
+        },
+        {
+            "name": "repeating_traits_-OKpxYaBL-ZJ1ooSLXwo_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKpx_1BGphbDCshFxxv"
+        },
+        {
+            "name": "repeating_traits_-OKpxYaBL-ZJ1ooSLXwo_source_type",
+            "current": "Rogue Lvl 3",
+            "max": "",
+            "id": "-OKpxa_LlsuH4geuB-gw"
+        },
+        {
+            "name": "repeating_traits_-OKpxYaBL-ZJ1ooSLXwo_description",
+            "current": "3rd-level Phantom feature\n\nAs you nudge someone closer to the grave, you can channel the power of death to harm someone else as well. Immediately after you deal your Sneak Attack damage to a creature on your turn, you can target a second creature that you can see within 30 feet of the first creature. Roll half the number of Sneak Attack dice for your level (round up), and the second creature takes necrotic damage equal to the roll's total, as wails of the dead sound around them for a moment.\n\nYou can use this feature a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.",
+            "max": "",
+            "id": "-OKpxbMozr906FSfs4Uo"
+        },
+        {
+            "name": "repeating_traits_-OKpxYaBL-ZJ1ooSLXwo_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpxbOBMNI6_BwynZQL"
+        },
+        {
+            "name": "repeating_traits_-OKpxYaBL-ZJ1ooSLXwo_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpxbdRoYbyItFuKiLS"
+        },
+        {
+            "name": "repeating_traits_-OKpxQ6Asm7uifw4X5OO_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpxboQdzkBsl8c-uBW"
+        },
+        {
+            "name": "repeating_traits_-OKpxdr19tdS11BY37lN_name",
+            "current": "Steady Aim",
+            "max": "",
+            "id": "-OKpxeRA4ouIhzU73cJL"
+        },
+        {
+            "name": "repeating_traits_-OKpxdr19tdS11BY37lN_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKpxeq6aI0BG5F9GBQi"
+        },
+        {
+            "name": "repeating_traits_-OKpxdr19tdS11BY37lN_source_type",
+            "current": "Rogue Lvl 3",
+            "max": "",
+            "id": "-OKpxgxakf4njvAoTb38"
+        },
+        {
+            "name": "repeating_traits_-OKpxdr19tdS11BY37lN_description",
+            "current": "3rd-level rogue optional feature\n\nAs a bonus action, you give yourself advantage on your next attack roll on the current turn. You can use this bonus action only if you haven't moved during this turn, and after you use the bonus action, your speed is 0 until the end of the current turn.",
+            "max": "",
+            "id": "-OKpxhilt05fQJC_SLb0"
+        },
+        {
+            "name": "repeating_traits_-OKpxdr19tdS11BY37lN_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpxhkBdvRP7BabVxfI"
+        },
+        {
+            "name": "repeating_traits_-OKpxdr19tdS11BY37lN_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKpxhzUVC8yARqTUFbp"
+        },
+        {
+            "name": "repeating_attack_-OKpxmf9dquWsQoMVCiH_atkname",
+            "current": "Sneak Attack",
+            "max": "",
+            "id": "-OKpxp1TZuXWhqtfiPyH"
+        },
+        {
+            "name": "repeating_attack_-OKpxmf9dquWsQoMVCiH_atkdmgtype",
+            "current": "6d6+3  ",
+            "max": "",
+            "id": "-OKpxp3uNEB_bIXiYMeX"
+        },
+        {
+            "name": "repeating_attack_-OKpxmf9dquWsQoMVCiH_rollbase_dmg",
+            "current": "@{wtype}&{template:dmg} {{rname=@{atkname}}} @{atkflag} {{range=@{atkrange}}} @{dmgflag} {{dmg1=[[6d6 + 3[STR]]]}} {{dmg1type=}} @{dmg2flag} {{dmg2=[[0]]}} {{dmg2type=}} @{saveflag} {{desc=@{atk_desc}}} @{hldmg} {{spelllevel=@{spelllevel}}} {{innate=@{spell_innate}}} {{globaldamage=[[0]]}} {{globaldamagetype=@{global_damage_mod_type}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpxp3wMz6lmQYV8OyU"
+        },
+        {
+            "name": "repeating_attack_-OKpxmf9dquWsQoMVCiH_rollbase_crit",
+            "current": "@{wtype}&{template:dmg} {{crit=1}} {{rname=@{atkname}}} @{atkflag} {{range=@{atkrange}}} @{dmgflag} {{dmg1=[[6d6 + 3[STR]]]}} {{dmg1type=}} @{dmg2flag} {{dmg2=[[0]]}} {{dmg2type=}} {{crit1=[[6d6]]}} {{crit2=[[0]]}} @{saveflag} {{desc=@{atk_desc}}} @{hldmg}  {{spelllevel=@{spelllevel}}} {{innate=@{spell_innate}}} {{globaldamage=[[0]]}} {{globaldamagecrit=[[0]]}} {{globaldamagetype=@{global_damage_mod_type}}} @{charname_output}",
+            "max": "",
+            "id": "-OKpxp3xi6Z3YI7vCTxM"
+        },
+        {
+            "name": "repeating_attack_-OKpxmf9dquWsQoMVCiH_atkbonus",
+            "current": "+7",
+            "max": "",
+            "id": "-OKpxp3yXSedSquwII5m"
+        },
+        {
+            "name": "repeating_attack_-OKpxmf9dquWsQoMVCiH_rollbase",
+            "current": "@{wtype}&{template:atk} {{mod=@{atkbonus}}} {{rname=[@{atkname}](~repeating_attack_attack_dmg)}} {{rnamec=[@{atkname}](~repeating_attack_attack_crit)}} {{r1=[[@{d20}cs>@{atkcritrange} + 3[STR] + 4[PROF]]]}} @{rtype}cs>@{atkcritrange} + 3[STR] + 4[PROF]]]}} {{range=@{atkrange}}} {{desc=@{atk_desc}}} {{spelllevel=@{spelllevel}}} {{innate=@{spell_innate}}} {{globalattack=@{global_attack_mod}}} ammo=@{ammo} @{charname_output}",
+            "max": "",
+            "id": "-OKpxp4-6rePweuUsVeY"
+        },
+        {
+            "name": "repeating_attack_-OKpxmf9dquWsQoMVCiH_dmgbase",
+            "current": "6d6",
+            "max": "",
+            "id": "-OKpxxOqNZVjwp8g4UOH"
+        },
+        {
+            "name": "repeating_attack_-OKpxmf9dquWsQoMVCiH_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKpxyH4sgQLslVsZi7j"
+        },
+        {
+            "name": "repeating_traits_-OKqBcJKJbwwFX19gpui_description",
+            "current": "Starting at 5th level, when an attacker that you can see hits you with an attack, you can use your reaction to halve the attack's damage against you.",
+            "max": "",
+            "id": "-OKqBd5wknMcMpN43yNW"
+        },
+        {
+            "name": "repeating_traits_-OKqBcJKJbwwFX19gpui_name",
+            "current": "Uncanny Dodge",
+            "max": "",
+            "id": "-OKqBeZhNOWUCQVzRKtZ"
+        },
+        {
+            "name": "repeating_traits_-OKqBcJKJbwwFX19gpui_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKqBezm6CVHR6JvB4gY"
+        },
+        {
+            "name": "repeating_traits_-OKqBcJKJbwwFX19gpui_source_type",
+            "current": "Rogue Lvl 5",
+            "max": "",
+            "id": "-OKqBgOgDkNTpmiJ1ig0"
+        },
+        {
+            "name": "repeating_traits_-OKqBcJKJbwwFX19gpui_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqBgQ0yRLZnLhHdHjS"
+        },
+        {
+            "name": "repeating_traits_-OKqBcJKJbwwFX19gpui_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKqBgdCQ3Oxm6ZkIpZg"
+        },
+        {
+            "name": "repeating_tool_-OKpi-QeiMKcu2NtnFIv_toolbonus_base",
+            "current": "(@{pb}*2)",
+            "max": "",
+            "id": "-OKqBowhri81mqBRFV5R"
+        },
+        {
+            "name": "repeating_traits_-OKqC5vreSZmhHpbOgur_description",
+            "current": "Beginning at 7th level, you can nimbly dodge out of the way of certain area effects, such as a red dragon's fiery breath or an ice storm spell. When you are subjected to an effect that allows you to make a Dexterity saving throw to take only half damage, you instead take no damage if you succeed on the saving throw, and only half damage if you fail.",
+            "max": "",
+            "id": "-OKqC6_a2D4Wl-pI9UJC"
+        },
+        {
+            "name": "repeating_traits_-OKqC5vreSZmhHpbOgur_name",
+            "current": "Evasion",
+            "max": "",
+            "id": "-OKqC7qSbfzjF16_Owg3"
+        },
+        {
+            "name": "repeating_traits_-OKqC5vreSZmhHpbOgur_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKqC80O7iPnSCEVY2bA"
+        },
+        {
+            "name": "repeating_traits_-OKqC5vreSZmhHpbOgur_source_type",
+            "current": "Rogue Lvl 7",
+            "max": "",
+            "id": "-OKqC8mWVJ7ckxqIA-hS"
+        },
+        {
+            "name": "repeating_traits_-OKqC5vreSZmhHpbOgur_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqC9CfIaHofvOfpbEo"
+        },
+        {
+            "name": "repeating_traits_-OKqC5vreSZmhHpbOgur_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqC9aN-GVb-dD7ntfU"
+        },
+        {
+            "name": "repeating_traits_-OKqCRUI9eTv3owKXv7p_name",
+            "current": "Tokens of the Departed",
+            "max": "",
+            "id": "-OKqCS4QLq7N9aKTrrnB"
+        },
+        {
+            "name": "repeating_traits_-OKqCRUI9eTv3owKXv7p_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKqCSG41n0r1dCl3QZI"
+        },
+        {
+            "name": "repeating_traits_-OKqCRUI9eTv3owKXv7p_source_type",
+            "current": "Rogue Lvl 9",
+            "max": "",
+            "id": "-OKqCSwAR7EY6Z2EUaA4"
+        },
+        {
+            "name": "repeating_traits_-OKqCRUI9eTv3owKXv7p_description",
+            "current": "9th-level Phantom feature\n\nWhen a life ends in your presence, you're able to snatch a token from the departing soul, a sliver of its life essence that takes physical form: as a reaction when a creature you can see dies within 30 feet of you, you can open your free hand and cause a Tiny trinket to appear there, a soul trinket. The DM determines the trinket's form or has you roll on the Trinkets table in the Player's Handbook to generate it. You can have a maximum number of soul trinkets equal to your proficiency bonus, and you can't create one while at your maximum.\n\nYou can use soul trinkets in the following ways:\n\n    While a soul trinket is on your person, you have advantage on death saving throws and Constitution saving throws, for your vitality is enhanced by the life essence within the object.\n    When you deal Sneak Attack damage on your turn, you can destroy one of your soul trinkets that's on your person and then immediately use Wails from the Grave, without expending a use of that feature.\n    As an action, you can destroy one of your soul trinkets, no matter where it's located. When you do so, you can ask the spirit associated with the trinket one question. The spirit appears to you and answers in a language it knew in life. It's under no obligation to be truthful, and it answers as concisely as possible, eager to be free. The spirit knows only what it knew in life, as determined by the DM.",
+            "max": "",
+            "id": "-OKqCUreI0UoXS3zDVmj"
+        },
+        {
+            "name": "repeating_traits_-OKqCRUI9eTv3owKXv7p_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqCUt4pCXpUnW7Ci8p"
+        },
+        {
+            "name": "repeating_traits_-OKqCRUI9eTv3owKXv7p_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKqCVDz4KBTDFyuupUE"
+        },
+        {
+            "name": "repeating_traits_-OKqCmllzV7gg124eELj_description",
+            "current": "By 11th level, you have refined your chosen skills until they approach perfection. Whenever you make an ability check that lets you add your proficiency bonus, you can treat a d20 roll of 9 or lower as a 10.",
+            "max": "",
+            "id": "-OKqCnMM7RMxbTgux2xQ"
+        },
+        {
+            "name": "repeating_traits_-OKqCmllzV7gg124eELj_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKqCnjuSK99LsrFb_E5"
+        },
+        {
+            "name": "repeating_traits_-OKqCmllzV7gg124eELj_source_type",
+            "current": "Rogue Lvl 11",
+            "max": "",
+            "id": "-OKqCocmAl4mkZf4pp7b"
+        },
+        {
+            "name": "repeating_traits_-OKqCmllzV7gg124eELj_name",
+            "current": "Reliable Talent",
+            "max": "",
+            "id": "-OKqCprLgdD0vCP8sIGD"
+        },
+        {
+            "name": "repeating_traits_-OKqCmllzV7gg124eELj_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqCpsoSPE6v6BTbxwI"
+        },
+        {
+            "name": "repeating_traits_-OKqCmllzV7gg124eELj_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqCq6A62uVHkRVbdBi"
+        },
+        {
+            "name": "repeating_traits_-OKqD2uDPiluyZdd4Ug5_description",
+            "current": "13th-level Phantom feature\n\nYou can phase partially into the realm of the dead, becoming like a ghost. As a bonus action, you assume a spectral form. While in this form, you have a flying speed of 10 feet, you can hover, and attack rolls have disadvantage against you. You can also move through creatures and objects as if they were difficult terrain, but you take 1d10 force damage if you end your turn inside a creature or an object.\n\nYou stay in this form for 10 minutes or until you end it as a bonus action. To use this feature again, you must finish a long rest or destroy one of your soul trinkets as part of the bonus action you use to activate Ghost Walk.",
+            "max": "",
+            "id": "-OKqD3X0CZSflP6vhRga"
+        },
+        {
+            "name": "repeating_traits_-OKqD2uDPiluyZdd4Ug5_name",
+            "current": "Ghost Walk",
+            "max": "",
+            "id": "-OKqD4yGrud6rqIF-PRx"
+        },
+        {
+            "name": "repeating_traits_-OKqD2uDPiluyZdd4Ug5_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKqD5FSd-wVPig3s_UO"
+        },
+        {
+            "name": "repeating_traits_-OKqD2uDPiluyZdd4Ug5_source_type",
+            "current": "Rogue Lvl 13",
+            "max": "",
+            "id": "-OKqD61_InidpuM0m9MS"
+        },
+        {
+            "name": "repeating_traits_-OKqD2uDPiluyZdd4Ug5_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqD6ZJ9Dj0eFa2iJSY"
+        },
+        {
+            "name": "repeating_traits_-OKqD2uDPiluyZdd4Ug5_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqD7zUNINY3DCca2g6"
+        },
+        {
+            "name": "speed",
+            "current": "35",
+            "max": "",
+            "id": "-OKqETW7f5IFWLLstSjN"
+        },
+        {
+            "name": "history_prof",
+            "current": "0",
+            "max": "",
+            "id": "-OKqEeZAgjVCnHCT2rbi"
+        },
+        {
+            "name": "acrobatics_prof",
+            "current": "(@{pb}*@{acrobatics_type})",
+            "max": "",
+            "id": "-OKqEfh6ltq15UAqdCrr"
+        },
+        {
+            "name": "repeating_traits_-OKqFga8U4pD0cExk1ul_name",
+            "current": "Expertise",
+            "max": "",
+            "id": "-OKqFi09UDILmJ1Mdmg7"
+        },
+        {
+            "name": "repeating_traits_-OKqFga8U4pD0cExk1ul_source",
+            "current": "Class",
+            "max": "",
+            "id": "-OKqFiEky5iXzsaXqGK0"
+        },
+        {
+            "name": "repeating_traits_-OKqFga8U4pD0cExk1ul_source_type",
+            "current": "Rogue Lvl 6",
+            "max": "",
+            "id": "-OKqFjHWrYCLMHmejOvG"
+        },
+        {
+            "name": "repeating_traits_-OKqFga8U4pD0cExk1ul_description",
+            "current": "At 6th level, you can choose two more of your proficiencies (in skills or with thieves' tools) to gain the benefit of Expertise.\n\nThieves' Tools chosen\n",
+            "max": "",
+            "id": "-OKqFlfBaWLtDKWGCkRF"
+        },
+        {
+            "name": "repeating_traits_-OKqFga8U4pD0cExk1ul_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqFmFprGQh00BeIYGq"
+        },
+        {
+            "name": "athletics_prof",
+            "current": "(@{pb}*@{athletics_type})",
+            "max": "",
+            "id": "-OKqPGhXA0p7QyFzZcx8"
+        },
+        {
+            "name": "repeating_traits_-OKqFga8U4pD0cExk1ul_display_flag",
+            "current": "on",
+            "max": "",
+            "id": "-OKqSQk2PymGfjyWzMo2"
+        },
+        {
+            "name": "repeating_inventory_-OKqhVcrZHUv4v4u4OwA_inventorysubflag",
+            "current": "0",
+            "max": "",
+            "id": "-OKqhXz46_PS8bWMz_ae"
+        },
+        {
+            "name": "repeating_inventory_-OKqhVcrZHUv4v4u4OwA_itemname",
+            "current": "Hand Crossbow",
+            "max": "",
+            "id": "-OKqh_0Dw7BKKKGDGHkl"
+        },
+        {
+            "name": "rtype",
+            "current": "@{queryadvantage}",
+            "max": "",
+            "id": "-OLDvwRcLop-_rPZQX4Y"
+        },
+        {
+            "name": "repeating_traits_-OLNvl5eJa3zT1V8-3hy_name",
+            "current": "The Nose",
+            "max": "",
+            "id": "-OLNvm-tHi1lEDkazekJ"
+        },
+        {
+            "name": "repeating_traits_-OLNvl5eJa3zT1V8-3hy_description",
+            "current": "The Dungeoneer\nGains Prof. in Mason's Tools, Carpenter's Tools and Survival\nGains the Dungeon Delver Feat\nWhen short resting can speed up the process for upto 6 people to 10 minutes.",
+            "max": "",
+            "id": "-OLNvoJIaxX-i86a7S9D"
+        },
+        {
+            "name": "repeating_traits_-OLNvl5eJa3zT1V8-3hy_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLNvpsX8O6bSBHwQ9WN"
+        },
+        {
+            "name": "repeating_tool_-OLNvrZYjzbAaiENYuJo_toolname",
+            "current": "Mason's Tools",
+            "max": "",
+            "id": "-OLNvtTGDU4U9b3s4ITn"
+        },
+        {
+            "name": "repeating_tool_-OLNvrZYjzbAaiENYuJo_toolattr",
+            "current": "STRENGTH",
+            "max": "",
+            "id": "-OLNvtVF9Nti9nydUEio"
+        },
+        {
+            "name": "repeating_tool_-OLNvrZYjzbAaiENYuJo_toolbonus",
+            "current": 7,
+            "max": "",
+            "id": "-OLNvtVH5xsBXd2vX_pD"
+        },
+        {
+            "name": "repeating_tool_-OLNvrZYjzbAaiENYuJo_toolbonus_display",
+            "current": 7,
+            "max": "",
+            "id": "-OLNvtVIkU-ABavkMBeY"
+        },
+        {
+            "name": "repeating_tool_-OLNvrZYjzbAaiENYuJo_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OLNvtVK2UhZRvCgN8qg"
+        },
+        {
+            "name": "repeating_tool_-OLNvuwuIbw4uvuNwVob_toolname",
+            "current": "Carpenter's Tools",
+            "max": "",
+            "id": "-OLNvwVbaMwktjKbwtKQ"
+        },
+        {
+            "name": "repeating_tool_-OLNvuwuIbw4uvuNwVob_toolattr",
+            "current": "STRENGTH",
+            "max": "",
+            "id": "-OLNvwXZTQaSYExrNG_W"
+        },
+        {
+            "name": "repeating_tool_-OLNvuwuIbw4uvuNwVob_toolbonus",
+            "current": 7,
+            "max": "",
+            "id": "-OLNvwX_8Cg7mDIEJ6KG"
+        },
+        {
+            "name": "repeating_tool_-OLNvuwuIbw4uvuNwVob_toolbonus_display",
+            "current": 7,
+            "max": "",
+            "id": "-OLNvwXaIcrjQ0zXaRwO"
+        },
+        {
+            "name": "repeating_tool_-OLNvuwuIbw4uvuNwVob_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OLNvwXbXbfYkQ9icu4p"
+        },
+        {
+            "name": "repeating_tool_-OLNvuwuIbw4uvuNwVob_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLNvwvG6lffkCH76rmX"
+        },
+        {
+            "name": "repeating_tool_-OLNvrZYjzbAaiENYuJo_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLNvxC_3yBpjyWoZLod"
+        },
+        {
+            "name": "repeating_tool_-OLNwAL-HP1ZLhIdRk36_toolname",
+            "current": "Simple Weapons",
+            "max": "",
+            "id": "-OLNwBlipmKXx6wwAYn4"
+        },
+        {
+            "name": "repeating_tool_-OLNwAL-HP1ZLhIdRk36_toolattr",
+            "current": "STRENGTH",
+            "max": "",
+            "id": "-OLNwBndlHRmOoT52Emr"
+        },
+        {
+            "name": "repeating_tool_-OLNwAL-HP1ZLhIdRk36_toolbonus",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwBnfmrTVYOgdX7Zz"
+        },
+        {
+            "name": "repeating_tool_-OLNwAL-HP1ZLhIdRk36_toolbonus_display",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwBngqW7vXSUTHzXT"
+        },
+        {
+            "name": "repeating_tool_-OLNwAL-HP1ZLhIdRk36_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OLNwBnh4ur2OBDhi-Vg"
+        },
+        {
+            "name": "repeating_tool_-OLNwCceLLOEftFxnclg_toolname",
+            "current": "Hand Crossbows",
+            "max": "",
+            "id": "-OLNwDr8TJ_DF2gMrAGR"
+        },
+        {
+            "name": "repeating_tool_-OLNwCceLLOEftFxnclg_toolattr",
+            "current": "STRENGTH",
+            "max": "",
+            "id": "-OLNwDtARwg8t-NwnrPn"
+        },
+        {
+            "name": "repeating_tool_-OLNwCceLLOEftFxnclg_toolbonus",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwDtCZW7J1cHYfmMV"
+        },
+        {
+            "name": "repeating_tool_-OLNwCceLLOEftFxnclg_toolbonus_display",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwDtCZW7J1cHYfmMW"
+        },
+        {
+            "name": "repeating_tool_-OLNwCceLLOEftFxnclg_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OLNwDtWBZe8M82YAwCf"
+        },
+        {
+            "name": "repeating_tool_-OLNwGECzU0mQDM-MkcV_toolname",
+            "current": "Long Swords",
+            "max": "",
+            "id": "-OLNwH-HgubQTCakIkll"
+        },
+        {
+            "name": "repeating_tool_-OLNwGECzU0mQDM-MkcV_toolattr",
+            "current": "STRENGTH",
+            "max": "",
+            "id": "-OLNwH1N5ZuRqueCxWUi"
+        },
+        {
+            "name": "repeating_tool_-OLNwGECzU0mQDM-MkcV_toolbonus",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwH1OOOLQcWitv-SH"
+        },
+        {
+            "name": "repeating_tool_-OLNwGECzU0mQDM-MkcV_toolbonus_display",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwH1OOOLQcWitv-SI"
+        },
+        {
+            "name": "repeating_tool_-OLNwGECzU0mQDM-MkcV_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OLNwH1PPlgQOoKlvb9K"
+        },
+        {
+            "name": "repeating_tool_-OLNwHz9raQC4oSVKQZY_toolname",
+            "current": "Rapiers",
+            "max": "",
+            "id": "-OLNwIo13_VOVGV3S_YY"
+        },
+        {
+            "name": "repeating_tool_-OLNwHz9raQC4oSVKQZY_toolattr",
+            "current": "STRENGTH",
+            "max": "",
+            "id": "-OLNwIpu8F5b1kHh7iTi"
+        },
+        {
+            "name": "repeating_tool_-OLNwHz9raQC4oSVKQZY_toolbonus",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwIpvBNUUI_R1PkYE"
+        },
+        {
+            "name": "repeating_tool_-OLNwHz9raQC4oSVKQZY_toolbonus_display",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwIpwy_qT-BH46eC6"
+        },
+        {
+            "name": "repeating_tool_-OLNwHz9raQC4oSVKQZY_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OLNwIpyDv1xE3e9ZrW4"
+        },
+        {
+            "name": "repeating_tool_-OLNwJ8p3YDXSwC1q0u7_toolname",
+            "current": "Shortswords",
+            "max": "",
+            "id": "-OLNwKNCPT5ZSTYZyyOw"
+        },
+        {
+            "name": "repeating_tool_-OLNwJ8p3YDXSwC1q0u7_toolattr",
+            "current": "STRENGTH",
+            "max": "",
+            "id": "-OLNwKPEIgGTe_V1AbMv"
+        },
+        {
+            "name": "repeating_tool_-OLNwJ8p3YDXSwC1q0u7_toolbonus",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwKPGE8MCh2yimIIh"
+        },
+        {
+            "name": "repeating_tool_-OLNwJ8p3YDXSwC1q0u7_toolbonus_display",
+            "current": 7,
+            "max": "",
+            "id": "-OLNwKPGE8MCh2yimIIi"
+        },
+        {
+            "name": "repeating_tool_-OLNwJ8p3YDXSwC1q0u7_toolroll",
+            "current": "@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{query=1}} ?{Advantage?|Normal Roll,&#123&#123normal=1&#125&#125 &#123&#123r2=[[0d20|Advantage,&#123&#123advantage=1&#125&#125 &#123&#123r2=[[@{d20}|Disadvantage,&#123&#123disadvantage=1&#125&#125 &#123&#123r2=[[@{d20}}+@{toolbonus}[Mods]@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}",
+            "max": "",
+            "id": "-OLNwKPIkHgsiIrZ0J9t"
+        },
+        {
+            "name": "repeating_tool_-OLNwJ8p3YDXSwC1q0u7_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLNwLfzXqn-MH0WiFWd"
+        },
+        {
+            "name": "repeating_tool_-OLNwHz9raQC4oSVKQZY_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLNwLqrlKoo6-ybE1Zc"
+        },
+        {
+            "name": "repeating_tool_-OLNwGECzU0mQDM-MkcV_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLNwM1ZXfDEue5DZSa5"
+        },
+        {
+            "name": "repeating_tool_-OLNwCceLLOEftFxnclg_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLNwMJ67J6zGSdwXCEV"
+        },
+        {
+            "name": "repeating_tool_-OLNwAL-HP1ZLhIdRk36_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLNwNJtQs2B-kOA7C9x"
+        },
+        {
+            "name": "repeating_inventory_-OLQ5FZJSEZZdMykFEyw_itemname",
+            "current": "Frost Brand Rapier",
+            "max": "",
+            "id": "-OLQ5IhO9FAS984gfbEz"
+        },
+        {
+            "name": "repeating_inventory_-OLQ5PFZzzAZVv3ttTad_itemname",
+            "current": "Warrior's Passkey",
+            "max": "",
+            "id": "-OLQ5QrQc4qsib0mMg9w"
+        },
+        {
+            "name": "repeating_inventory_-OLQ5ToCuLyoKz0sppbT_itemname",
+            "current": "Gloves of Missile Snaring",
+            "max": "",
+            "id": "-OLQ5VUSnHH39hsM2J28"
+        },
+        {
+            "name": "repeating_inventory_-OLQ5YlgsxdtaKGKGcUy_itemname",
+            "current": "Thieves' Tools",
+            "max": "",
+            "id": "-OLQ5ZjQrZrasU7NuY6b"
+        },
+        {
+            "name": "repeating_inventory_-OLQ5ZQRONBdjKgLqKdp_itemname",
+            "current": "Burglar's Pack",
+            "max": "",
+            "id": "-OLQ5az6ItnyBYSVawCF"
+        },
+        {
+            "name": "repeating_inventory_-OLQ5bfAy8ll6ip3mVx6_itemcount",
+            "current": "2",
+            "max": "",
+            "id": "-OLQ5cWiEccd8BEyitSE"
+        },
+        {
+            "name": "repeating_inventory_-OLQ5bfAy8ll6ip3mVx6_itemname",
+            "current": "Dagger",
+            "max": "",
+            "id": "-OLQ5d9VPQMLHm6oFZY5"
+        },
+        {
+            "name": "repeating_traits_-OLQKaYYe4SHrQytOPWl_name",
+            "current": "Dungeon Delver",
+            "max": "",
+            "id": "-OLQKbafGw5Ksz4CmCaB"
+        },
+        {
+            "name": "repeating_traits_-OLQKaYYe4SHrQytOPWl_description",
+            "current": "\n\nAlert to the hidden traps and secret doors found in many dungeons, you gain the following benefits:\n\n    You have advantage on Wisdom (Perception) and Intelligence (Investigation) checks made to detect the presence of secret doors.\n    You have advantage on saving throws made to avoid or resist traps.\n    You have resistance to the damage dealt by traps.\n    Traveling at a fast pace doesn't impose the normal -5 penalty on your passive Wisdom (Perception) score.",
+            "max": "",
+            "id": "-OLQKfeXyHt8Ia3ZSObP"
+        },
+        {
+            "name": "repeating_traits_-OLQKaYYe4SHrQytOPWl_options-flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLQKhUGbXqto-RO7Ppd"
+        },
+        {
+            "name": "repeating_traits_-OLQKaYYe4SHrQytOPWl_display_flag",
+            "current": "0",
+            "max": "",
+            "id": "-OLQKi8Rd__P4rYQ8q6_"
+        }
+    ],
+    "abilities": [],
+    "defaulttoken": {
+        "imgsrc": "https://s3.amazonaws.com/files.d20.io/images/432919630/yxksvSJMioaGb3QPfcgznQ/med.png?1742057557",
+        "width": 70,
+        "height": 70
+    }
+}

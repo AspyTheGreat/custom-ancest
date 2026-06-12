@@ -143,13 +143,19 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Tolivric/On Rails/Elisreia.json",
+  "../../Character Sheets/Tolivric/On Rails/Jasper.json"
+];
+const characterImages = {
+  "Elisreia Ilineiros": "../../assets/Character_images/On_rails/Elisreia.jpg",
+  "Jasper Stewart": "../../assets/Character_images/On_rails/Jasper.png"
+};
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><p>Content coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Content coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Content coming soon.</p>`,
   notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
 };
 </script>

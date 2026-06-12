@@ -143,13 +143,24 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Tolivric/Project Zomboid/Xu.json",
+  "../../Character Sheets/Tolivric/Project Zomboid/Steven.json",
+  "../../Character Sheets/Tolivric/Project Zomboid/Kelvyre.json",
+  "../../Character Sheets/Tolivric/Project Zomboid/John.json",
+  "../../Character Sheets/Tolivric/Project Zomboid/Christopher.json"
+];
+const characterImages = {
+  "Xu Ling": "../../assets/Character_images/Project_zomboid/Xu.png",
+  "Steven, shredder of shamblers": "../../assets/Character_images/Project_zomboid/Steven.png",
+  "Kelvyre Quickcrest": "../../assets/Character_images/Project_zomboid/Kelvyre.jpg",
+  "Christopher Crimsonfield": "../../assets/Character_images/Project_zomboid/Christopher.png"
+};
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><p>Content coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Content coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Content coming soon.</p>`,
   notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
 };
 </script>

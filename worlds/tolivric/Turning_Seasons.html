@@ -143,13 +143,27 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Tolivric/Turning Seasons/Xistao.json",
+  "../../Character Sheets/Tolivric/Turning Seasons/Tanyth.json",
+  "../../Character Sheets/Tolivric/Turning Seasons/Rexia.json",
+  "../../Character Sheets/Tolivric/Turning Seasons/Myth.json",
+  "../../Character Sheets/Tolivric/Turning Seasons/Fishel.json",
+  "../../Character Sheets/Tolivric/Turning Seasons/Carrion.json"
+];
+const characterImages = {
+  "Xistao Eaussor": "../../assets/Character_images/Turning_seasons/Xistao.png",
+  "Tanyth Rubenera": "../../assets/Character_images/Turning_seasons/Tanyth.jpg",
+  "Rexia Lifon": "../../assets/Character_images/Turning_seasons/Rexia.webp",
+  "Myth": "../../assets/Character_images/Turning_seasons/Myth.jpg",
+  "Fishel Iven": "../../assets/Character_images/Turning_seasons/Fishel.png",
+  "Carrion (It/That)": "../../assets/Character_images/Turning_seasons/Carrion.png"
+};
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><p>Content coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Content coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Content coming soon.</p>`,
   notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
 };
 </script>

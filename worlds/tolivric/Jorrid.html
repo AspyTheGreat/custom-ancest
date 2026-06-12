@@ -143,13 +143,30 @@ function goToBattle() {
 <script src="../../js/renderer.js"></script>
 <script src="../../Shared/campaign-utils.js"></script>
 <script>
-const files = [];
-const characterImages = {};
+const files = [
+  "../../Character Sheets/Tolivric/Jorrid/Ulad.json",
+  "../../Character Sheets/Tolivric/Jorrid/Sumar.json",
+  "../../Character Sheets/Tolivric/Jorrid/Lilith.json",
+  "../../Character Sheets/Tolivric/Jorrid/Hoid.json",
+  "../../Character Sheets/Tolivric/Jorrid/Haleth.json",
+  "../../Character Sheets/Tolivric/Jorrid/Gyobu.json",
+  "../../Character Sheets/Tolivric/Jorrid/Ember.json",
+  "../../Character Sheets/Tolivric/Jorrid/Aileen.json"
+];
+const characterImages = {
+  "Ulad Equinox": "../../assets/Character_images/Jorrid/Ulad.png",
+  "Sumar the Slaughterer": "../../assets/Character_images/Jorrid/Sumar.jpg",
+  "Hoid Lotfell": "../../assets/Character_images/Jorrid/Hoid.png",
+  "Haleth Dredarius": "../../assets/Character_images/Jorrid/Haleth.jpg",
+  "Gyobu Masataka": "../../assets/Character_images/Jorrid/Gyobu.jpg",
+  "Ember Asteria": "../../assets/Character_images/Jorrid/Ember.jpg",
+  "Aileen Ashkeeper": "../../assets/Character_images/Jorrid/Aileen.png"
+};
 const campaignData = {
-  synopsis: `<h2>Campaign Synopsis</h2><p>Campaign synopsis coming soon.</p>`,
-  characters: `<h2>Characters</h2><div id="characters-container"><p style="text-align:center;padding:40px;color:#888;">Character data coming soon.</p></div>`,
-  npcs: `<h2>NPCs Encountered</h2><p>NPC data coming soon.</p>`,
-  discoveries: `<h2>Discoveries</h2><p>Discoveries coming soon.</p>`,
+  synopsis: `<h2>Campaign Synopsis</h2><p>Content coming soon.</p>`,
+  characters: `<h2>Characters</h2><div id="characters-container"></div>`,
+  npcs: `<h2>NPCs Encountered</h2><p>Content coming soon.</p>`,
+  discoveries: `<h2>Discoveries</h2><p>Content coming soon.</p>`,
   notes: `<h2>Player Notes</h2><p>Player notes coming soon.</p>`
 };
 </script>
