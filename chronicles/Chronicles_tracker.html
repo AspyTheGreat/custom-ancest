@@ -89,6 +89,14 @@
     .resourceList .resEntry { margin-bottom: 4px; }
     #templateStatus { margin-top: 6px; font-size: 13px; color: var(--text-muted); }
 
+    /* live "typed but not yet committed" indicator */
+    .pending {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    #turnTotalsCounter b { color: var(--accent); }
+    #turnTotalsCounter b.dirty { color: #ffd54f; }
+
     #characterBar {
       position: fixed;
       left: 0;
@@ -424,26 +432,22 @@
   </div>
 </div>
 
-<div class="box" style="margin-top:0;">
+<div class="box" id="turnTotalsBox" style="margin-top:0;">
   <h3>Turn Totals</h3>
   <div class="btn-group">
     <label>Damage</label>
-    <input onkeydown="if(event.key==='Enter'){ commitInput('damage', this) }" style="width:70px;">
+    <input id="damageInput" type="number" min="0" step="1" style="width:70px;">
   </div>
   <div class="btn-group">
     <label>Healing</label>
-    <input onkeydown="if(event.key==='Enter'){ commitInput('healing', this) }" style="width:70px;">
+    <input id="healingInput" type="number" min="0" step="1" style="width:70px;">
   </div>
   <div class="btn-group">
     <label>CC</label>
-    <input onkeydown="if(event.key==='Enter'){ commitInput('cc', this) }" style="width:70px;">
+    <input id="ccInput" type="number" min="0" step="1" style="width:70px;">
   </div>
+  <div id="turnTotalsCounter" class="counter"></div>
 </div>
-
-    Damage <input onkeydown="if(event.key==='Enter'){ commitInput('damage', this) }">
-Healing <input onkeydown="if(event.key==='Enter'){ commitInput('healing', this) }">
-CC <input onkeydown="if(event.key==='Enter'){ commitInput('cc', this) }">
-
 
   </div>
  
@@ -469,7 +473,7 @@ CC <input onkeydown="if(event.key==='Enter'){ commitInput('cc', this) }">
         <button onclick="changeGlobal('nat20',1)">+</button>
       </div>
       <div style="margin-top:8px;">
-        <div class="btn-group"><label>Damage Taken</label><input onkeydown="if(event.key==='Enter'){ commitInput('damageTaken', this) }" style="width:70px;"></div>
+        <div class="btn-group"><label>Damage Taken</label><input id="damageTakenInput" type="number" min="0" step="1" style="width:70px;"></div>
         <div class="btn-group"><label>Conditions</label><input id="conditionsInput" type="text" style="width:140px;"></div>
       </div>
     </div>
@@ -1169,6 +1173,8 @@ function renderHP() {
 function changeHP(delta) {
   const c = characters[selectedCharacter];
 
+  if (!c) return;
+
   c.stats.hp.current = Math.max(
     0,
     Math.min(c.stats.hp.max, c.stats.hp.current + delta)
@@ -1176,10 +1182,13 @@ function changeHP(delta) {
 
   renderHP();
   updateLiveSummary();
+  autoSave();
 }
 
 function setHP(value) {
   const c = characters[selectedCharacter];
+
+  if (!c) return;
 
   c.stats.hp.current = Math.max(
     0,
@@ -1188,6 +1197,7 @@ function setHP(value) {
 
   renderHP();
   updateLiveSummary();
+  autoSave();
 }
 
 function addCondition(text) {
@@ -1459,12 +1469,40 @@ function setResource(name, value) {
   updateLiveSummary();
 }
 
+// Give every character a stable key so buffered turn totals stay
+// attached to the right character across sorts and (re)loads.
+function ensureCharacterKeys() {
+  characters.forEach((c, i) => {
+    if (!c._key) c._key = `c${i}`;
+  });
+}
+
 function sortByInitiative() {
+  ensureCharacterKeys();
+
+  // tempGlobal is index-keyed, so snapshot it by key before reordering
+  const byKey = {};
+
+  characters.forEach((c, i) => {
+    const existing = tempGlobal[c._key] ?? tempGlobal[i];
+
+    byKey[c._key] = existing ?? createEmptyGlobal();
+  });
+
   characters.forEach(c => {
     c.initiative = Number(c.initiative) || 0;
   });
 
   characters.sort((a, b) => b.initiative - a.initiative);
+
+  // re-key by the new sort order
+  const remapped = {};
+
+  characters.forEach((c, i) => {
+    remapped[i] = byKey[c._key] ?? createEmptyGlobal();
+  });
+
+  tempGlobal = remapped;
 }
 
 function createEmptyTurn() {
@@ -1535,6 +1573,7 @@ const currentHP = +blocks[i].querySelector(".currentHP")?.value || maxHP;
 characters.push({
   rounds: [],
     _roundTemp: createEmptyTurn(),
+  _key: `c${i}`,
   name: names[i].value,
   initiative: +inits[i].value,
   portrait: blocks[i].querySelector(".portraitData")?.value || null,
@@ -1571,8 +1610,6 @@ characters.push({
   }
 });
   }
-
-  characters.sort((a,b)=>b.initiative-a.initiative);
 
 selectedCharacter = 0;
 
@@ -1623,17 +1660,117 @@ function createEmptyGlobal() {
   };
 }
 
-function commitInput(type, el) {
-  const val = +el.value || 0;
-  if (!val) return;
+// =========================
+// TURN TOTAL INPUTS
+// Single source of truth for the one and only
+// damage / healing / cc entry window.
+// =========================
+
+const PENDING_INPUTS = {
+  damage: "damageInput",
+  healing: "healingInput",
+  cc: "ccInput",
+  damageTaken: "damageTakenInput"
+};
+
+// value currently typed but not yet folded into the turn buffer
+function livePending(type) {
+  const id = PENDING_INPUTS[type];
+
+  if (!id) return 0;
+
+  const el = document.getElementById(id);
+
+  if (!el) return 0;
+
+  const v = parseFloat(el.value);
+
+  return isFinite(v) ? v : 0;
+}
+
+// move one typed value into the turn buffer, then wipe the field
+function absorbInput(type, el) {
+  const val = parseFloat(el.value) || 0;
+
+  el.value = "";
+
+  if (!val) return false;
+
+  if (!suppressSnapshots) saveSnapshot();
 
   const g = getGlobal();
 
   g[type] = (g[type] || 0) + val;
 
-  el.value = ""; // 🔥 critical: prevents double counting
+  return true;
+}
 
+let suppressSnapshots = false;
+
+function commitInput(type, el) {
+  const changed = absorbInput(type, el);
+
+  if (changed) afterValueChange();
+}
+
+// true when any entry-window field holds an unsubmitted value
+function hasTypedTurnTotals() {
+  return Object.values(PENDING_INPUTS).some((id) => {
+    const el = document.getElementById(id);
+
+    return el && el.value.trim() !== "";
+  });
+}
+
+// fold anything still sitting in the fields into the turn buffer.
+// called before the turn advances / combat ends / character changes
+function flushPendingInputs() {
+  let changed = false;
+
+  for (const type of Object.keys(PENDING_INPUTS)) {
+    const el = document.getElementById(PENDING_INPUTS[type]);
+
+    if (!el) continue;
+
+    if (absorbInput(type, el)) changed = true;
+  }
+
+  if (changed) afterValueChange();
+  else refreshLiveViews();
+}
+
+function afterValueChange() {
+  updateTurnTotalsCounter();
   updateLiveSummary();
+  autoSave();
+}
+
+function refreshLiveViews() {
+  updateTurnTotalsCounter();
+  updateLiveSummary();
+}
+
+function updateTurnTotalsCounter() {
+  const el = document.getElementById("turnTotalsCounter");
+
+  if (!el) return;
+
+  const g = getGlobal(selectedCharacter);
+
+  const rows = [
+    ["Damage", (g.damage || 0) + livePending("damage")],
+    ["Healing", (g.healing || 0) + livePending("healing")],
+    ["CC", (g.cc || 0) + livePending("cc")]
+  ];
+
+  el.innerHTML =
+    "Pending this turn — " +
+    rows
+      .map(
+        ([label, val]) =>
+          `${label}: <b class="${val ? "dirty" : ""}">${val}</b>`
+      )
+      .join(" · ");
 }
 
 function formatCounter(obj) {
@@ -1775,35 +1912,15 @@ if (input && input !== document.activeElement) {
   const c = characters[currentTurn];
 
   document.getElementById("turnHeader").innerText =
-    `Round ${round} — ${c.name}`;
+    c ? `Round ${round} — ${c.name}` : `Round ${round}`;
 
-
-if (selectedCharacter === currentTurn) {
-  [
-  "attacksHit",
-  "attacksTotal",
-  "savesForced",
-  "savesSucceeded",
-  "damage",
-  "healing",
-  "cc",
-  "attacksDodgedInput",
-  "attacksTakenInput",
-  "savesMadeInput",
-  "savesTotalInput",
-  "damageTaken"
-  
-].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.value = "";
-});
-}
   updateCounters();
   renderResources();
-  updateLiveSummary();
   updateSpellSlotUI();
   updateCounterUI();
   renderHP();
+  updateTurnTotalsCounter();
+  updateLiveSummary();
 }
 
 function changeAction(type, sub, delta, index = selectedCharacter) {
@@ -1827,11 +1944,26 @@ function changeCounter(path, key, delta, index = selectedCharacter) {
 }
 
 function saveSnapshot() {
-  history.push(JSON.stringify({characters,currentTurn,round}));
+  history.push(
+    JSON.stringify({
+      characters,
+      tempGlobal,
+      roundLog,
+      selectedCharacter,
+      currentTurn,
+      round
+    })
+  );
+
+  while (history.length > 200) history.shift();
 }
 
 function addSpellSlot() {
-  const level = +document.getElementById("spellLevelSelect").value;
+  const select = document.getElementById("spellLevelSelect");
+
+  if (!select) return;
+
+  const level = +select.value;
   if (!level) return;
 
   const g = getGlobal();
@@ -1839,7 +1971,9 @@ function addSpellSlot() {
   g.spellSlots[level]++;
 
   updateSpellSlotUI();
+  updateTurnTotalsCounter();
   updateLiveSummary();
+  autoSave();
 
   select.value = "";
 }
@@ -1864,12 +1998,35 @@ function updateSpellSlotUI() {
 }
 
 function undoTurn() {
-  if(!history.length) return;
-  let prev = JSON.parse(history.pop());
-  characters = prev.characters;
-  currentTurn = prev.currentTurn;
-  round = prev.round;
+  if (!history.length) {
+    alert("Nothing to undo.");
+    return;
+  }
+
+  let prev;
+
+  try {
+    prev = JSON.parse(history.pop());
+  } catch (err) {
+    console.error(err);
+    return;
+  }
+
+  characters = prev.characters || [];
+  tempGlobal = prev.tempGlobal || {};
+  roundLog = prev.roundLog || {};
+
+  round = prev.round || 1;
+
+  const lastIndex = Math.max(characters.length - 1, 0);
+
+  currentTurn = Math.min(prev.currentTurn || 0, lastIndex);
+  selectedCharacter = Math.min(prev.selectedCharacter || 0, lastIndex);
+
   updateTurnUI();
+  updateTurnTotalsCounter();
+  updateLiveSummary();
+  autoSave();
 }
 
 function updateLiveSummary() {
@@ -1916,7 +2073,31 @@ let reactionSum = Object.values(g.reactions || {}).reduce((a,b)=>a+b,0);
   let tempActionTotal = Object.values(getGlobal(selectedCharacter).actions).reduce((a,b)=>a+b,0);
   let tempbonusActionsTotal = Object.values(getGlobal(selectedCharacter).bonusActions).reduce((a,b)=>a+b,0);
 
-  let dpr = (c.stats.damage / rounds).toFixed(2);
+// =========================
+// LIVE TOTALS
+// committed stats + buffered turn values + whatever is
+// typed in the entry window right now (not yet committed)
+// =========================
+
+const typedDamage = livePending("damage");
+const typedHealing = livePending("healing");
+const typedCC = livePending("cc");
+
+const liveDamage =
+  (c.stats.damage || 0) + (g.damage || 0) + typedDamage;
+
+const liveHealing =
+  (c.stats.healing || 0) + (g.healing || 0) + typedHealing;
+
+const liveCC =
+  (c.stats.cc || 0) + (g.cc || 0) + typedCC;
+
+const typedDamageTaken = livePending("damageTaken");
+
+const liveDamageTaken =
+  (c.stats.damageTaken || 0) + (g.damageTaken || 0) + typedDamageTaken;
+
+  let dpr = rounds ? (liveDamage / rounds).toFixed(2) : "0.00";
 
   let spellHTML = "<br><b>Spell Slots Used</b><br>";
 
@@ -1943,7 +2124,7 @@ if (allConds.length === 0) {
     conditionHTML += `R${cond.round}T${cond.turn}: ${cond.text}<br>`;
   });
 }
-  document.getElementById("liveSummary").innerHTML = `
+document.getElementById("liveSummary").innerHTML = `
   ${portraitHTML}
 <b>${c.name}</b><br>
 ${levelClassHTML}
@@ -1955,16 +2136,16 @@ ${hpHTML}
     Attacks: ${c.stats.attacksHit}/${c.stats.attacksTotal}<br>
     Saves: ${c.stats.savesForced}/${c.stats.savesSucceeded}<br><br>
 
-    Damage: ${c.stats.damage + getGlobal(selectedCharacter).damage}<br>
-    Healing: ${c.stats.healing + getGlobal(selectedCharacter).healing}
-DPR: ${dpr}<br>
-CC: ${c.stats.cc + getGlobal(selectedCharacter).cc}<br><br>
+    Damage: ${liveDamage}${typedDamage ? `<span class="pending"> (+${typedDamage} typed)</span>` : ""}<br>
+    Healing: ${liveHealing}${typedHealing ? `<span class="pending"> (+${typedHealing} typed)</span>` : ""}<br>
+    DPR: ${dpr}<br>
+    CC: ${liveCC}${typedCC ? `<span class="pending"> (+${typedCC} typed)</span>` : ""}<br><br>
 ${summonHTML}
 <b>Incoming</b><br>
 Off-turn reactions: ${reactionSum}<br>
 Dodged: ${c.stats.attacksDodged}/${c.stats.attacksTaken}<br>
 Saves Made: ${c.stats.savesMade}/${c.stats.savesTotal}<br>
-Damage Taken: ${c.stats.damageTaken}<br>
+Damage Taken: ${liveDamageTaken}${typedDamageTaken ? `<span class="pending"> (+${typedDamageTaken} typed)</span>` : ""}<br>
 ${conditionHTML}
     ${resourceHTML}
     
@@ -1977,10 +2158,11 @@ ${conditionHTML}
 function captureInputsToTemp() {
   const g = getGlobal(selectedCharacter);
 
-  // existing
+  // ✅ fold damage / healing / cc / damage taken into the turn buffer
+  // otherwise anything typed without pressing Enter is silently lost
+  flushPendingInputs();
 
-
-  // ✅ NEW: capture condition input
+  // ✅ capture condition input
 const condInput = document.getElementById("conditionsInput");
 const text = condInput?.value?.trim();
 
@@ -2000,6 +2182,8 @@ if (text) {
 
   condInput.value = "";
 }
+
+  refreshLiveViews();
 }
 
 function nextTurn() {
@@ -2095,16 +2279,52 @@ function hasGlobalData(g) {
   });
 }
 
+// true when a buffered round holds any non-zero value. used to avoid
+// recording a phantom (all-zero) round when combat ends on an untouched turn
+function hasRoundData(rt) {
+  if (!rt) return false;
+
+  if (Array.isArray(rt.conditions) && rt.conditions.length) return true;
+
+  return Object.entries(rt).some(([key, val]) => {
+    if (key === "conditions" || key === "round") return false;
+    if (typeof val === "number") return val !== 0;
+    if (val && typeof val === "object") {
+      return Object.values(val).some(v => v !== 0);
+    }
+    return false;
+  });
+}
+
 function commitTurn() {
   if (!characters.length) return;
 
+  const i = selectedCharacter;
+  const c = characters[i];
+  let g = tempGlobal[i];
+
+  if (!c || !g) return;
+
+  // ✅ ONE snapshot of the pre-turn state, taken before anything
+  // (including still-typed values) is absorbed. this makes a single
+  // Undo revert the whole turn instead of needing many presses.
+  const typed =
+    (g.damage || 0) ||
+    (g.healing || 0) ||
+    (g.cc || 0) ||
+    (g.damageTaken || 0) ||
+    hasTypedTurnTotals();
+
+  if (typed) saveSnapshot();
+
+  // ✅ capture anything still sitting in the entry window
+  suppressSnapshots = true;
+  flushPendingInputs();
+  suppressSnapshots = false;
+
+  g = tempGlobal[i] || createEmptyGlobal();
+
   if (!roundLog[round]) roundLog[round] = [];
-
-const i = selectedCharacter;
-const c = characters[i];
-const g = tempGlobal[i];
-
-if (!g) return;
 
 // ensure temp exists
 if (!c._roundTemp) c._roundTemp = createEmptyTurn();
@@ -2270,48 +2490,21 @@ function getTotals(obj) {
 }
 
 function endCombat() {
+// ✅ CAPTURE anything still typed (conditions + turn totals) BEFORE committing.
+// nextTurn() already did this; endCombat() did not, so anything typed without
+// pressing Enter was dropped from the final report.
+captureInputsToTemp();
+
 // ✅ FORCE COMMIT CURRENT TURN BEFORE ENDING
 commitTurn();
 
-// ✅ If mid-round, finalize partial round
-if (currentTurn !== 0) {
-  
-  characters.forEach(c => {
-    if (!c._roundTemp) return;
+// ✅ If mid-round, finalize partial round.
+// NOTE: this block used to be gated on `currentTurn !== 0`, which threw away
+// every pending total when combat ended on the FIRST character's turn of a
+// round (the common case of ending right after the last round wrapped).
+// The totals are now always applied to stats.
+const endingMidRound = currentTurn !== 0;
 
-    // 🔥 APPLY TOTALS HERE
-    c.stats.damage += c._roundTemp.damage;
-    c.stats.healing += c._roundTemp.healing;
-    c.stats.cc += c._roundTemp.cc;
-    c.stats.damageTaken += c._roundTemp.damageTaken;
-
-    // attacks / saves
-    c.stats.attacksHit += c._roundTemp.attacks.hit;
-    c.stats.attacksTotal += c._roundTemp.attacks.total;
-
-    c.stats.savesForced += c._roundTemp.saves.forced;
-    c.stats.savesSucceeded += c._roundTemp.saves.succeeded;
-
-    c.stats.attacksDodged += c._roundTemp.defense.attacksDodged;
-    c.stats.attacksTaken += c._roundTemp.defense.attacksTaken;
-
-    c.stats.savesMade += c._roundTemp.defense.savesMade;
-    c.stats.savesTotal += c._roundTemp.defense.savesTotal;
-// =========================
-// 🔥 APPLY ACTION TOTALS (FIX)
-// =========================
-
-for (let k in c._roundTemp.actions) {
-  c.stats.actions[k] = (c.stats.actions[k] || 0) + (c._roundTemp.actions[k] || 0);
-}
-
-for (let k in c._roundTemp.bonusActions) {
-  c.stats.bonusActions[k] = (c.stats.bonusActions[k] || 0) + (c._roundTemp.bonusActions[k] || 0);
-}
-
-for (let k in c._roundTemp.reactions) {
-  c.stats.reactions[k] = (c.stats.reactions[k] || 0) + (c._roundTemp.reactions[k] || 0);
-}
 // ✅ FORCE FLUSH ALL CONDITIONS (FINAL SAFETY)
 characters.forEach((c, i) => {
   const g = tempGlobal[i];
@@ -2331,19 +2524,62 @@ characters.forEach((c, i) => {
     g.conditions = [];
   }
 });
-    // push round snapshot
+
+characters.forEach(c => {
+  if (!c._roundTemp) return;
+
+  const rt = c._roundTemp;
+
+  // 🔥 APPLY TOTALS HERE
+  c.stats.damage += rt.damage;
+  c.stats.healing += rt.healing;
+  c.stats.cc += rt.cc;
+  c.stats.damageTaken += rt.damageTaken;
+
+  // attacks / saves
+  c.stats.attacksHit += rt.attacks.hit;
+  c.stats.attacksTotal += rt.attacks.total;
+
+  c.stats.savesForced += rt.saves.forced;
+  c.stats.savesSucceeded += rt.saves.succeeded;
+
+  c.stats.attacksDodged += rt.defense.attacksDodged;
+  c.stats.attacksTaken += rt.defense.attacksTaken;
+
+  c.stats.savesMade += rt.defense.savesMade;
+  c.stats.savesTotal += rt.defense.savesTotal;
+// =========================
+// 🔥 APPLY ACTION TOTALS (FIX)
+// =========================
+
+for (let k in rt.actions) {
+  c.stats.actions[k] = (c.stats.actions[k] || 0) + (rt.actions[k] || 0);
+}
+
+for (let k in rt.bonusActions) {
+  c.stats.bonusActions[k] = (c.stats.bonusActions[k] || 0) + (rt.bonusActions[k] || 0);
+}
+
+for (let k in rt.reactions) {
+  c.stats.reactions[k] = (c.stats.reactions[k] || 0) + (rt.reactions[k] || 0);
+}
+
+  // only record a round entry when that round actually has data,
+  // otherwise ending on an untouched turn appends a phantom round
+  if (endingMidRound || hasRoundData(rt)) {
     c.rounds.push({
       round: round,
-      ...c._roundTemp
+      ...rt
     });
+  }
 
-    // reset for next round
-    c._roundTemp = createEmptyTurn();
-  });
+  // reset for next round
+  c._roundTemp = createEmptyTurn();
+});
 
-  currentTurn = 0;
-  round++;
-}
+currentTurn = 0;
+round++;
+
 console.log("FINAL CONDITIONS:",
   characters.map(c => ({
     name: c.name,
@@ -2632,7 +2868,64 @@ try {
     alert("Error uploading battle.");
   }
 }
+// =========================
+// LIVE BREAKDOWN UPDATES
+// Repaint the character breakdown + pending counter on every
+// keystroke so it is always obvious whether a value registered.
+// =========================
+
+function wireLiveBreakdown() {
+  const combat = document.getElementById("combat");
+
+  if (!combat || combat.dataset.liveWired) return;
+
+  combat.dataset.liveWired = "1";
+
+  // any typing anywhere in the combat panel refreshes the readouts
+  combat.addEventListener("input", () => {
+    updateTurnTotalsCounter();
+    updateLiveSummary();
+  });
+
+  // leave/blur commits the entry window so nothing is stranded
+  combat.addEventListener(
+    "focusout",
+    (e) => {
+      const type = PENDING_INPUTS_BY_ID[e.target?.id];
+
+      if (!type) return;
+
+      const el = document.getElementById(type);
+
+      if (el && el.value.trim() !== "") commitInput(type, el);
+      else refreshLiveViews();
+    },
+    true
+  );
+
+  // Enter anywhere in the entry window commits it too
+  combat.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+
+    const type = PENDING_INPUTS_BY_ID[e.target?.id];
+
+    if (type) {
+      e.preventDefault();
+      commitInput(type, e.target);
+    }
+  });
+}
+
+const PENDING_INPUTS_BY_ID = Object.entries(PENDING_INPUTS).reduce(
+  (acc, [type, id]) => {
+    acc[id] = type;
+    return acc;
+  },
+  {}
+);
+
 window.onload = () => {
+  wireLiveBreakdown();
   loadTemplateList();
   loadAutoSave(); // keep your autosave too
 };

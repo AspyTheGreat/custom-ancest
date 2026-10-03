@@ -133,32 +133,63 @@
 
     z-index: 99; /* ensures it stays above content */
 }
-.tooltip {
-    position: relative;
-    cursor: help;
-}
+/* ==========================================================
+   HOVER DESCRIPTION TOOLTIP
+   One delegated tooltip for every element carrying
+   data-desc / data-prereq / data-exclusive. Works inside
+   dropdowns, popups and on <select> controls alike.
+   ========================================================== */
 
-.tooltip .tooltip-text {
-    visibility: hidden;
-    opacity: 0;
+#hover-tip {
+    display: none;
+    position: fixed;
+    z-index: 99999;
 
-    position: absolute;
-    left: 105%;
-    top: 50%;
-    transform: translateY(-50%);
+    max-width: 340px;
+    width: max-content;
 
-    width: 220px;
-    background-color: rgba(42,42,42,0.9);
-    color: #ddd;
-    padding: 8px;
+    background-color: rgba(30, 30, 30, 0.97);
+    color: #e4e4e4;
+
+    padding: 9px 11px;
     border-radius: 6px;
-    border: 1px solid #555;
+    border: 1px solid #689FD9;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
 
     font-size: 12px;
-    line-height: 1.4;
+    line-height: 1.45;
 
-    transition: opacity 0.2s ease;
-    z-index: 200;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+
+    pointer-events: none;
+}
+
+#hover-tip.visible {
+    display: block;
+}
+
+#hover-tip .tip-desc {
+    margin: 0;
+}
+
+#hover-tip .tip-req,
+#hover-tip .tip-excl {
+    margin: 6px 0 0;
+    padding-top: 6px;
+    border-top: 1px solid rgba(104, 159, 217, 0.4);
+    color: #e8c97a;
+    font-weight: bold;
+}
+
+#hover-tip .tip-excl {
+    color: #ff9c9c;
+}
+
+[data-desc],
+[data-prereq] {
+    cursor: help;
 }
 
 #description-panel {
@@ -186,11 +217,6 @@
     padding-left: 6px;
     border-left: 2px solid #689FD9;
     font-size: 12px;
-}
-
-.tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
 }
 
 /* Popup Modal Styles */
@@ -301,31 +327,6 @@
 .popup-search:focus {
     outline: none;
     border-color: #689FD9;
-}
-
-/* Popup Trait Tooltips */
-.popup-body label {
-    position: relative;
-}
-
-.popup-body label[data-tooltip]:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: 0;
-    top: 100%;
-    width: 100%;
-    max-width: 400px;
-    background-color: rgba(42,42,42,0.95);
-    color: #ddd;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #689FD9;
-    font-size: 11px;
-    line-height: 1.4;
-    z-index: 1001;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    white-space: normal;
-    word-wrap: break-word;
 }
     </style>
 </head>
@@ -446,7 +447,7 @@
     <label>Movement Speed:</label>
 
     <select id="creature-speed" onchange="updateValue(); updateSpeedDesc();">
-        <option data-value="-40" data-prereq="Tortle" data-desc="Very slow movement. Must have tortle primary race.">
+        <option data-value="-40" data-prereq="Tortle" data-desc="Very slow movement. A shelled, heavy frame trades any burst of speed for a natural protective shell.">
             20 ft. (-40)
         </option>
         <option data-value="-20" data-desc="Below average movement speed.">
@@ -458,7 +459,7 @@
         <option data-value="20" data-desc="Faster than average movement speed.">
             35 ft. (20)
         </option>
-        <option data-value="40" data-desc="Exceptional speed. Must have the equine build racial trait.">
+        <option data-value="40" data-prereq="Centaur" data-desc="Exceptional speed. A four-legged frame of about horse size crosses open ground far faster than a bipedal humanoid.">
             40 ft. (40)
         </option>
     </select>
@@ -470,22 +471,22 @@
         <div class="control-group">
             <label>Darkvision:</label>
             <select id="creature-darkvision" onchange="updateValue()">
-                <option data-value="0">None (0)</option>
-                <option data-value="9">60 ft. (9)</option>
-                <option data-value="14">120 ft. (14)</option>
+                <option data-value="0" data-desc="No special vision. The creature relies on whatever senses it already has and cannot see in darkness or in dim light beyond the normal range for its size.">None (0)</option>
+                <option data-value="9" data-desc="The creature sees in dim light within 60 feet as if it were bright light, and in darkness within 60 feet as if it were dim light. Darkness is not total concealment to it. This range does not apply to creatures that are blinded or incapacitated.">60 ft. (9)</option>
+                <option data-value="14" data-desc="The creature sees in dim light within 120 feet as if it were bright light, and in darkness within 120 feet as if it were dim light. Darkness is not total concealment to it. The extended range makes no difference against creatures that are blinded or incapacitated.">120 ft. (14)</option>
             </select>
         </div>
 
         <div class="control-group">
             <label>Ability Scores:</label>
             <select id="creature-abilityscores" onchange="updateValue()">
-                <option data-value="-23">+1, +1 (-23)</option>
-                <option data-value="-21">+2 (-21)</option>
-                <option data-value="0" selected>+2, +1 (0)</option>
-                <option data-value="0">+1, +1, +1 (0)</option>
-                <option data-value="23">+2, +1, +1 (23)</option>
-                <option data-value="25">+2, +2 (25)</option>
-                <option data-value="40">+1 All (40)</option>
+                <option data-value="-23" data-desc="A weaker spread than the baseline: two of the creature's ability scores are raised by +1 each. Refunds 23 trait points compared with the standard spread.">+1, +1 (-23)</option>
+                <option data-value="-21" data-desc="Concentrated in a single ability: one of the creature's ability scores is raised by +2. Refunds 21 trait points, at the cost of breadth.">+2 (-21)</option>
+                <option data-value="0" selected data-desc="The standard spread for a creature ancestry: one ability score is raised by +2 and another by +1, at no adjustment to the trait point total.">+2, +1 (0)</option>
+                <option data-value="0" data-desc="Breadth over power: three of the creature's ability scores are raised by +1 each, with no score raised by +2. Costs the same as the standard spread.">+1, +1, +1 (0)</option>
+                <option data-value="23" data-desc="An upgraded spread: one ability score is raised by +2 and two others by +1. Costs 23 additional trait points.">+2, +1, +1 (23)</option>
+                <option data-value="25" data-desc="Concentrated power: two of the creature's ability scores are raised by +2 each. Costs 25 additional trait points and leaves the remaining four scores untouched.">+2, +2 (25)</option>
+                <option data-value="40" data-desc="The strongest spread available: all six ability scores are raised by +1, with further increases typically layered on top by the ancestry's traits. Costs 40 additional trait points.">+1 All (40)</option>
             </select>
         </div>
 
@@ -759,59 +760,59 @@ Warforged: Specialized Design (8)
 
         <label> <input type="radio" name="skill-trait" value="0" checked onchange="updateValue();"> None (0) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Bugbear" value="7" data-desc="You have proficiency in Stealth, and can move through and stop in spaces large enough for small creatures without squeezing." onchange="updateValue();"> Bugbear: Sneaky (7) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" data-prereq="Bugbear" value="7" data-desc="You have proficiency in Stealth, and can move through and stop in spaces large enough for small creatures without squeezing." onchange="updateValue();"> Bugbear: Sneaky (7) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Reborn" value="12" data-desc="Gain two proficiencies of your choice." onchange="updateValue();"> Reborn: Ancestral Legacy (12) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" data-prereq="Reborn" value="12" data-desc="Gain two proficiencies of your choice." onchange="updateValue();"> Reborn: Ancestral Legacy (12) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Gnome" value="5" data-desc="You can make Stealth checks with advantage a number of times equal to your proficiency bonus, regaining expended uses when you finish a long rest." onchange="updateValue();"> Deep gnome: Svirfneblin Camouflage (5) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" data-prereq="Gnome" value="5" data-desc="You can make Stealth checks with advantage a number of times equal to your proficiency bonus, regaining expended uses when you finish a long rest." onchange="updateValue();"> Deep gnome: Svirfneblin Camouflage (5) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Dragonborn" value="5" data-desc="You can make intimidation or persuasion checks with advantage once per short or long rest." onchange="updateValue();"> Draconblood: Chromatic Warding (5) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" data-prereq="Dragonborn" value="5" data-desc="You can make intimidation or persuasion checks with advantage once per short or long rest." onchange="updateValue();"> Draconblood: Chromatic Warding (5) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to investigation and thieves' tools checks." onchange="updateValue();"> Warder's Intuition (6) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to investigation and thieves' tools checks." onchange="updateValue();"> Warder's Intuition (6) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to performance and stealth checks." onchange="updateValue();"> Cunning Intuition (6) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to performance and stealth checks." onchange="updateValue();"> Cunning Intuition (6) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Elf" value="6" data-desc="You have advantage on investigation and insight checks." onchange="updateValue();"> Elf(Pallid): Incisive sense (6) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" data-prereq="Elf" value="6" data-desc="You have advantage on investigation and insight checks." onchange="updateValue();"> Elf(Pallid): Incisive sense (6) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Giff" value="14" data-desc="Advantage on strength checks and saves. Count as one size larger while carrying, pushing, lifting, etc." onchange="updateValue();"> Giff: Hippo build (14) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" data-prereq="Giff" value="14" data-desc="Advantage on strength checks and saves. Count as one size larger while carrying, pushing, lifting, etc." onchange="updateValue();"> Giff: Hippo build (14) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="2" data-desc="Must have a dragonmark spell list. You can add a d4 to history and calligrapher's supplies checks." onchange="updateValue();"> Gifted scribe (2) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="2" data-desc="Must have a dragonmark spell list. You can add a d4 to history and calligrapher's supplies checks." onchange="updateValue();"> Gifted scribe (2) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Gnome" value="1" data-desc="Add twice your proficiency bonus to history checks related to magic items, alchemical objects or technological devices." onchange="updateValue();"> Gnome(Rock): Artificer's Lore (1) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" data-prereq="Gnome" value="1" data-desc="Add twice your proficiency bonus to history checks related to magic items, alchemical objects or technological devices." onchange="updateValue();"> Gnome(Rock): Artificer's Lore (1) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Goliath" value="4" data-desc="Gain proficiency in athletics, and count as once size larger when lifting, carrying, pushing etc." onchange="updateValue();"> Goliath: Little giant (4) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" data-prereq="Goliath" value="4" data-desc="Gain proficiency in athletics, and count as once size larger when lifting, carrying, pushing etc." onchange="updateValue();"> Goliath: Little giant (4) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="10" data-desc="Must have a dragonmark spell list. You can add a d4 to investigation and insight checks." onchange="updateValue();"> Deductive intuition (10) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="10" data-desc="Must have a dragonmark spell list. You can add a d4 to investigation and insight checks." onchange="updateValue();"> Deductive intuition (10) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="4" data-desc="Must have a dragonmark spell list. You can add a d4 to acrobatics and navigator's tools checks." onchange="updateValue();"> Windwright's Intuition (4) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="4" data-desc="Must have a dragonmark spell list. You can add a d4 to acrobatics and navigator's tools checks." onchange="updateValue();"> Windwright's Intuition (4) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="9" data-desc="Must have a dragonmark spell list. You can add a d4 to survival and perception checks." onchange="updateValue();"> Hunter's intuition (9) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="9" data-desc="Must have a dragonmark spell list. You can add a d4 to survival and perception checks." onchange="updateValue();"> Hunter's intuition (9) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="3" data-desc="Must have a dragonmark spell list. You can add a d4 to medicine and herbalism kit checks." onchange="updateValue();"> Medical intuition (3) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="3" data-desc="Must have a dragonmark spell list. You can add a d4 to medicine and herbalism kit checks." onchange="updateValue();"> Medical intuition (3) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to persuasion, brewer's supplies and cook's utensils checks." onchange="updateValue();"> Ever hospitable (6) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="6" data-desc="Must have a dragonmark spell list. You can add a d4 to persuasion, brewer's supplies and cook's utensils checks." onchange="updateValue();"> Ever hospitable (6) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="4" data-desc="Must have a dragonmark spell list. You can add a d4 to animal handling and nature checks." onchange="updateValue();"> Wild intuition (4) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="4" data-desc="Must have a dragonmark spell list. You can add a d4 to animal handling and nature checks." onchange="updateValue();"> Wild intuition (4) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="10" data-desc="Must have a dragonmark spell list. You can add a d4 to arcana and any artisan's tools checks." onchange="updateValue();"> Artisan's intuition (10) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="10" data-desc="Must have a dragonmark spell list. You can add a d4 to arcana and any artisan's tools checks." onchange="updateValue();"> Artisan's intuition (10) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="4" data-desc="Must have a dragonmark spell list. You can add a d4 to acrobatics and checks to use and maintain land vehicles." onchange="updateValue();"> Intuitive motion (4) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="4" data-desc="Must have a dragonmark spell list. You can add a d4 to acrobatics and checks to use and maintain land vehicles." onchange="updateValue();"> Intuitive motion (4) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="9" data-desc="Must have a dragonmark spell list. You can add a d4 to insight and perception checks." onchange="updateValue();"> Sentinel's intuition (9) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="9" data-desc="Must have a dragonmark spell list. You can add a d4 to insight and perception checks." onchange="updateValue();"> Sentinel's intuition (9) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="23" data-desc="You gain proficiency in two skills of your choice. You can give yourself advantage on any checks that you are proficient in. You can do so a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue();"> Kenku recall (23) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="23" data-desc="You gain proficiency in two skills of your choice. You can give yourself advantage on any checks that you are proficient in. You can do so a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue();"> Kenku recall (23) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" data-prereq="Loxodon" value="3" data-desc="You have advantage on perception, survival and investigation checks that involve smell." onchange="updateValue();"> Loxodon: Keen smell (3) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" data-prereq="Loxodon" value="3" data-desc="You have advantage on perception, survival and investigation checks that involve smell." onchange="updateValue();"> Loxodon: Keen smell (3) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="2" data-desc="You always know which direction is north, and you have advantage on survival checks made in order to navigate or track." onchange="updateValue();"> Labyrinthine recall (2) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="2" data-desc="You always know which direction is north, and you have advantage on survival checks made in order to navigate or track." onchange="updateValue();"> Labyrinthine recall (2) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="16" data-desc="You can add a d6 to any skill check. You can do so a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue();"> Knowledge from a past life (16) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="16" data-desc="You can add a d6 to any skill check. You can do so a number of times equal to your proficiency bonus, regaining expended uses on a long rest." onchange="updateValue();"> Knowledge from a past life (16) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="10" data-desc="You gain proficiency in one of the following skills: arcana, history, investigation, medicine, performance, sleight of hand and a tool of your choice. When you make an ability check with the chosen skill or tool, you can add a d4 to the check's total." onchange="updateValue();"> Skilled Proficiency (10) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="10" data-desc="You gain proficiency in one of the following skills: arcana, history, investigation, medicine, performance, sleight of hand and a tool of your choice. When you make an ability check with the chosen skill or tool, you can add a d4 to the check's total." onchange="updateValue();"> Skilled Proficiency (10) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="12" data-desc="You gain proficiency in Stealth. you can walk on two feet or four without impediment and can move through non-magical terrain or a creature's space without penalty to your movement." onchange="updateValue();"> Sneaky scurry (12) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="12" data-desc="You gain proficiency in Stealth. you can walk on two feet or four without impediment and can move through non-magical terrain or a creature's space without penalty to your movement." onchange="updateValue();"> Sneaky scurry (12) </label>
 
-        <label class="tooltip"> <input type="radio" name="skill-trait" value="6" data-desc="You gain proficiency in persuasion, and can gain advantage on a persuasion roll once per short or long rest." onchange="updateValue();"> Bright-eyed and bushy-tailed (6) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="skill-trait" value="6" data-desc="You gain proficiency in persuasion, and can gain advantage on a persuasion roll once per short or long rest." onchange="updateValue();"> Bright-eyed and bushy-tailed (6) </label>
 
         <!-- Optional: None option -->
 
@@ -828,19 +829,19 @@ Warforged: Specialized Design (8)
 
         <label> <input type="radio" name="natural-weapon" value="0" checked onchange="updateValue();"> None (0) </label>
 
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="7" data-desc="You have claws that deal 1d6 + strength slashing damage." onchange="updateValue();"> Talons (7) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="natural-weapon" value="7" data-desc="You have claws that deal 1d6 + strength slashing damage." onchange="updateValue();"> Talons (7) </label>
 
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="10" data-desc="Must have a primary race with powerful build or adjacent feature. You have hooves that deal 1d6 + strength bludgeoning damage." onchange="updateValue();"> Hooves (10) <span class="tooltip-text">1d6 piercing damage.</span> </label>
+        <label> <input type="radio" name="natural-weapon" value="10" data-desc="Must have a primary race with powerful build or adjacent feature. You have hooves that deal 1d6 + strength bludgeoning damage." onchange="updateValue();"> Hooves (10) </label>
 
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="3" data-desc="You have Claws that deal 1d4 + strength slashing damage and can be used for special attacks." onchange="updateValue();"> Claws (3) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="natural-weapon" value="3" data-desc="You have Claws that deal 1d4 + strength slashing damage and can be used for special attacks." onchange="updateValue();"> Claws (3) </label>
 
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="10" data-desc="You have a powerful bite that deals 1d6 + strength slashing damage." onchange="updateValue();"> Bite (10) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="natural-weapon" value="10" data-desc="You have a powerful bite that deals 1d6 + strength slashing damage." onchange="updateValue();"> Bite (10) </label>
 
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="10" data-desc="You have sharp horns that deals 1d6 + strength piercing damage." onchange="updateValue();"> Horns (10) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="natural-weapon" value="10" data-desc="You have sharp horns that deals 1d6 + strength piercing damage." onchange="updateValue();"> Horns (10) </label>
 
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="10" data-desc="You have Sturdy horns that deals 1d6 + strength bludgeoning damage." onchange="updateValue();"> Ram (10) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="natural-weapon" value="10" data-desc="You have Sturdy horns that deals 1d6 + strength bludgeoning damage." onchange="updateValue();"> Ram (10) </label>
 
-        <label class="tooltip"> <input type="radio" name="natural-weapon" value="5" data-desc="You have claws that deal 1d6 + strength slashing damage." onchange="updateValue();"> Cat's claws (5) <span class="tooltip-text"></span> </label>
+        <label> <input type="radio" name="natural-weapon" value="5" data-desc="You have claws that deal 1d6 + strength slashing damage." onchange="updateValue();"> Cat's claws (5) </label>
 
     </div>
 </div>
@@ -2012,19 +2013,232 @@ function updateTraitsCount() {
 
 
 
-// Initialize tooltips for racial traits
-function initRacialTraitTooltips() {
-    const labels = document.querySelectorAll('#racial-traits-list label');
-    labels.forEach(label => {
-        const checkbox = label.querySelector('input[type="checkbox"]');
-        if (checkbox && checkbox.dataset.desc) {
-            label.setAttribute('data-tooltip', checkbox.dataset.desc);
+// ==========================================================
+// HOVER DESCRIPTION TOOLTIP
+// One delegated tooltip driven entirely by data attributes.
+// Replaces the previous racial-traits-only wiring, which was
+// scoped to the popup and therefore showed nothing at all for
+// the ability, prerequisite and dropdown controls.
+// ==========================================================
+
+let hoverTipEl = null;
+let hoverTipFor = null;
+
+// read a tooltip payload off an element (or a <select>'s chosen option)
+function readTipSource(node) {
+    if (!node || node.nodeType !== 1) return null;
+
+    // a <select> describes whichever option is currently selected
+    if (node.tagName === "SELECT") {
+        const opt = node.options[node.selectedIndex];
+        return opt ? readTipSource(opt) : null;
+    }
+
+    const desc = node.getAttribute("data-desc") || "";
+    const prereq = node.getAttribute("data-prereq") || "";
+    const excl = node.getAttribute("data-exclusive") || "";
+
+    if (!desc && !prereq && !excl) return null;
+
+    return { desc: desc, prereq: prereq, excl: excl };
+}
+
+// climb from the hovered node to the nearest element carrying the data
+function resolveTipTarget(node) {
+    let cur = node;
+
+    while (cur && cur.nodeType === 1) {
+        if (readTipSource(cur)) return cur;
+
+        // A label wraps its own input, so look one level in for labels
+        // only. Using querySelector() here would also reach into
+        // containers such as .dropdown-content and hand back the first
+        // trait they happen to hold, lighting up a tooltip when the
+        // cursor is over a container's padding or empty space.
+        if (cur.tagName === "LABEL" && cur.children) {
+            const kids = Array.prototype.slice.call(cur.children);
+            const inner = kids.find(kid => readTipSource(kid));
+
+            if (inner) return inner;
         }
+
+        cur = cur.parentElement;
+    }
+
+    return null;
+}
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+// "Elf|Goblin|Fairy" -> "Elf / Goblin / Fairy"
+function formatPrereq(prereq) {
+    return prereq
+        .split("|")
+        .map(s => s.trim())
+        .filter(Boolean)
+        .join(" / ");
+}
+
+function buildTipHtml(src) {
+    let html = "";
+
+    if (src.desc) {
+        html += '<p class="tip-desc">' + escapeHtml(src.desc) + "</p>";
+    }
+
+    if (src.prereq) {
+        html +=
+            '<p class="tip-req">Requires primary race: ' +
+            escapeHtml(formatPrereq(src.prereq)) +
+            "</p>";
+    }
+
+    if (src.excl) {
+        html +=
+            '<p class="tip-excl">Cannot be combined with another "' +
+            escapeHtml(src.excl) +
+            '" option</p>';
+    }
+
+    return html;
+}
+
+function hideHoverTip() {
+    if (hoverTipEl) hoverTipEl.classList.remove("visible");
+
+    hoverTipFor = null;
+}
+
+// The trait checkboxes sit at the far left of a wide label, so measuring
+// the input alone would drop the panel on top of the trait's own text.
+// Centre on the enclosing label when there is one.
+function tipAnchorRect(anchor) {
+    let node = anchor;
+
+    if (node.tagName === "INPUT" && node.closest) {
+        const label = node.closest("label");
+
+        if (label) node = label;
+    }
+
+    return node.getBoundingClientRect();
+}
+
+function positionHoverTip(anchor) {
+    const tip = hoverTipEl;
+    const rect = tipAnchorRect(anchor);
+
+    // measure only after the content has been written
+    const tipRect = tip.getBoundingClientRect();
+
+    const margin = 10;
+
+    // below the hovered option, centred on it, so the option stays readable
+    let left = rect.left + rect.width / 2 - tipRect.width / 2;
+    let top = rect.bottom + margin;
+
+    // keep the panel fully on screen horizontally
+    if (left + tipRect.width > window.innerWidth - margin) {
+        left = window.innerWidth - tipRect.width - margin;
+    }
+
+    if (left < margin) left = margin;
+
+    // only flip above when the option is low enough that below will not fit
+    if (top + tipRect.height > window.innerHeight - margin) {
+        const above = rect.top - tipRect.height - margin;
+
+        top = above >= margin
+            ? above
+            : Math.max(margin, window.innerHeight - tipRect.height - margin);
+    }
+
+    tip.style.left = left + "px";
+    tip.style.top = top + "px";
+}
+
+function showHoverTip(target) {
+    const src = readTipSource(target);
+
+    if (!src) {
+        hideHoverTip();
+        return;
+    }
+
+    const html = buildTipHtml(src);
+
+    if (!html) {
+        hideHoverTip();
+        return;
+    }
+
+    if (!hoverTipEl) {
+        hoverTipEl = document.createElement("div");
+        hoverTipEl.id = "hover-tip";
+        hoverTipEl.setAttribute("role", "tooltip");
+        document.body.appendChild(hoverTipEl);
+    }
+
+    hoverTipEl.innerHTML = html;
+
+    // must be visible before it can be measured
+    hoverTipEl.classList.add("visible");
+    positionHoverTip(target);
+    hoverTipFor = target;
+}
+
+function initHoverTips() {
+    document.addEventListener("mouseover", function (e) {
+        const target = resolveTipTarget(e.target);
+
+        if (!target) {
+            hideHoverTip();
+            return;
+        }
+
+        // moving within the same control should not rebuild the tooltip
+        if (target === hoverTipFor) return;
+
+        showHoverTip(target);
     });
+
+    document.addEventListener("mouseout", function (e) {
+        const target = hoverTipFor;
+
+        if (!target) return;
+
+        // still inside the same control? keep it up
+        if (target.contains && target.contains(e.relatedTarget)) return;
+
+        hideHoverTip();
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") hideHoverTip();
+    });
+
+    // scrolling or resizing invalidates the anchor
+    window.addEventListener("scroll", hideHoverTip, true);
+    window.addEventListener("resize", hideHoverTip);
+
+    // a <select> description must follow the new selection
+    document.addEventListener("change", function (e) {
+        const target = resolveTipTarget(e.target);
+
+        if (target && target === hoverTipFor) showHoverTip(target);
+    });
+
+    document.addEventListener("click", hideHoverTip);
 }
 
 // Run on DOM load
-document.addEventListener("DOMContentLoaded", initRacialTraitTooltips);
+document.addEventListener("DOMContentLoaded", initHoverTips);
 
 function getRaceState() {
     const state = {};
