@@ -6,30 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.cdnfonts.com/css/forgore" rel="stylesheet">
-    <link rel="icon" type="image/png" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" href="../assets/favicon.ico">
     <link rel="stylesheet" href="../css/main_styles.css">
+    <link rel="stylesheet" href="../css/worlds_styles.css">
 
 </head>
 
 <body>
-    <div id="worlds" class="page">
+    <div id="worlds" class="page worlds-page">
         <div class="world-header">
             <div class="back back-top-left" onclick="window.location.href='../index.html'">← Back</div>
         </div>
         <h2>WORLDS</h2>
-        <div class="grid">
-            <div class="world-card" onclick="window.location.href='tolivric/tolivric_world.html'">Tolivric</div>
-            <div class="world-card" onclick="window.location.href='infinitum/infinitum_world.html'">Infinitum</div>
-            <div class="world-card" onclick="window.location.href='epalux/epalux_world.html'">Epalux</div>
-            <div class="world-card" onclick="window.location.href='convulux/convulux_world.html'">The Convulux</div>
-            <div class="world-card" onclick="window.location.href='midgard/midgard_world.html'">Midgard / Ravenfall</div>
+
+        <div class="worlds-stage">
+            <img class="worlds-map-img" src="../assets/IMAGE ASSETS/Menues/Cosmicmap.png" alt="Map of the worlds of NAT1">
+
+            <div class="worlds-tiles">
+                <a class="world-tile" style="--x: 11.3%; --y: 37.5%;" href="tolivric/tolivric_world.html">
+                    <span class="world-tile-name">Tolivric</span>
+                    <svg class="world-tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                    <span class="world-tile-line">A renaissance world with an inkling of the mysterious</span>
+                </a>
+
+                <a class="world-tile" style="--x: 42.4%; --y: 29.5%;" href="infinitum/infinitum_world.html">
+                    <span class="world-tile-name">Infinitum</span>
+                    <svg class="world-tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                    <span class="world-tile-line">A place of 'infinitum' opportunities.</span>
+                </a>s
+
+                <a class="world-tile" style="--x: 73.2%; --y: 44.9%;" href="convulux/convulux_world.html">
+                    <span class="world-tile-name">The Convulux</span>
+                    <svg class="world-tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                    <span class="world-tile-line">A world where rules make little sense, and enemies are unfair</span>
+                </a>
+
+                <a class="world-tile" style="--x: 8.9%; --y: 76.4%;" href="epalux/epalux_world.html">
+                    <span class="world-tile-name">Epalux</span>
+                    <svg class="world-tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                    <span class="world-tile-line">Multi-dimensional place with spontaneous timelines.</span>
+                </a>
+
+                <a class="world-tile" style="--x: 40.5%; --y: 84.8%;" href="midgard/midgard_world.html">
+                    <span class="world-tile-name">Midgard</span>
+                    <svg class="world-tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                    <span class="world-tile-line">The Norse realm of dream and power</span>
+                </a>
+
+                <a class="world-tile" style="--x: 75.5%; --y: 81.0%;" href="travelers-nat1.html">
+                    <span class="world-tile-name">Travelers in NAT1</span>
+                    <svg class="world-tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                    <span class="world-tile-line">Outsiders who strayed into the archive's worlds.</span>
+                </a>
+            </div>
         </div>
-
-        <div class="world-card" style="margin: 40px auto;" onclick="window.location.href='travelers-nat1.html'">Travelers in NAT1</div>
-
     </div>
-
-
-    
-<script src="../js/main_scripts.js"></script>
 </body>
