@@ -25,7 +25,8 @@ const timelineData = {
     { name: "Turning Seasons", url: "../campaign.html?slug=turning-seasons" },
     { name: "Sha'terra: The 11th Wave", url: "../campaign.html?slug=shaterra" },
     { name: "The Siege of Torr Myrdmal", url: "../campaign.html?slug=the-siege-of-torr-myrdmal" },
-    { name: "Project Zomboid", url: "../campaign.html?slug=project-zomboid" }
+    { name: "Project Zomboid", url: "../campaign.html?slug=project-zomboid" },
+    { name: "Hierich", url: "../campaign.html?slug=hierich-old-horizons" }
   ],
   Epalux: [
     { name: "Trauerspiel", url: "../campaign.html?slug=trauerspiel" },

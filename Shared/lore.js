@@ -19,6 +19,20 @@ const loreData = {
   ]
 };
 
+const pantheonWorldSlugs = {
+  "Infinitum": "infinitum",
+  "Tolivric": "tolivric",
+  "Convulux": "convulux",
+  "Ravenfall": "midgard",
+  "Midgard / Ravenfall": "midgard",
+  "Epalux": "epalux"
+};
+
+function openPantheon(worldName) {
+  const slug = pantheonWorldSlugs[worldName] || worldName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  window.location.href = `../../pantheons/${slug}.html`;
+}
+
 function openLore(worldName) {
   const panel = document.getElementById("lorePanel");
   const overlay = document.getElementById("loreOverlay");
