@@ -1,5 +1,7 @@
 let characters = [];
 let currentCharacterIndex = 0;
+let charactersLoaded = false;
+let charactersLoading = false;
 let itemRarityMap = null;
 
 function loadItemRarityMap() {
@@ -49,19 +51,37 @@ function getRarityColor(rarity) {
 
 function loadSection(section) {
   const panel = document.getElementById("content-panel");
-  if (campaignData[section]) {
-    panel.innerHTML = campaignData[section];
-    if (section === "characters") {
+  if (!panel) return;
+
+  const data = window.campaignData || {};
+
+  if (!Object.prototype.hasOwnProperty.call(data, section)) {
+    panel.innerHTML = "<p>Section not found.</p>";
+    return;
+  }
+
+  panel.innerHTML = data[section];
+
+  if (section === "characters") {
+    if (charactersLoaded) {
+      renderCurrentCharacter();
+    } else if (!charactersLoading) {
       loadCharacters();
     }
-  } else {
-    panel.innerHTML = "<p>Section not found.</p>";
   }
 }
 
 async function loadCharacters() {
+  if (charactersLoading) return;
+
+  charactersLoading = true;
   characters = [];
-  for (const file of files) {
+  currentCharacterIndex = 0;
+  charactersLoaded = false;
+
+  const fileList = window.files || [];
+
+  for (const file of fileList) {
     try {
       const response = await fetch(file);
       const data = await response.json();
@@ -76,20 +96,13 @@ async function loadCharacters() {
       console.warn("Could not load character:", file);
     }
   }
+
+  charactersLoaded = true;
+  charactersLoading = false;
   renderCurrentCharacter();
 }
 
 loadItemRarityMap();
-if (characters.length) {
-    characters.forEach(c => {
-      c.items = c.items.map(item => {
-        let r = lookupItemRarity(item.lookupName || item.name);
-        if (r === "mundane" && item.suffixRarity) r = item.suffixRarity;
-        return { ...item, rarity: r };
-      });
-    });
-  renderCurrentCharacter();
-}
 
 function renderCurrentCharacter() {
   const container = document.getElementById("characters-container");
@@ -124,8 +137,11 @@ function applyCharacterTheme() {
   const img = document.getElementById("character-portrait");
   const card = document.getElementById("character-card");
   if (!img || !card) return;
-  const colorThief = new ColorThief();
-  if (img.complete) {
+  if (typeof ColorThief === "undefined") return;
+  if (!img.complete || !img.naturalWidth) return;
+
+  try {
+    const colorThief = new ColorThief();
     const palette = colorThief.getPalette(img, 4);
     let primary = palette[0];
     const color2 = palette[1] || palette[0];
@@ -140,5 +156,7 @@ function applyCharacterTheme() {
     card.style.background = `linear-gradient(to right, rgb(${color2[0]},${color2[1]},${color2[2]}), rgb(${color3[0]},${color3[1]},${color3[2]}), rgb(${color4[0]},${color4[1]},${color4[2]}))`;
     card.style.setProperty("--glow-from", primaryRGB);
     card.style.setProperty("--glow-to", `rgba(${primary[0]}, ${primary[1]}, ${primary[2]}, 0.3)`);
+  } catch (e) {
+    console.warn("Could not theme character card:", e);
   }
 }

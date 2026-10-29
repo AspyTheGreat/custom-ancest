@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Campaign - Nat 1 Archive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.cdnfonts.com/css/forgore" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="stylesheet" href="../css/main_styles.css">
+<link rel="stylesheet" href="../css/campaign_styles.css">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<div class="campaign-header">
+  <a id="back-link" class="back" href="worlds.html">&larr; Back</a>
+  <div class="campaign-title" id="campaign-title">Loading...</div>
+</div>
+
+<!-- ================= IMAGE ================= -->
+<div class="campaign-image" id="campaign-image">
+  <img id="campaign-hero" src="" alt="Campaign Image">
+</div>
+
+<!-- ================= BODY ================= -->
+<div class="campaign-body">
+
+  <!-- LEFT -->
+  <div class="side-panel" id="side-panel">
+    <button type="button" class="side-tile" data-section="synopsis">Campaign Synopsis</button>
+    <button type="button" class="side-tile" data-section="characters">Characters</button>
+    <button type="button" class="side-tile" data-section="npcs">NPC's Encountered</button>
+    <button type="button" class="side-tile" data-section="discoveries">Discoveries</button>
+    <button type="button" class="side-tile" data-section="notes">Player Notes</button>
+    <img src="../assets/combat icon.webp" class="battle-tile" id="battle-tile" alt="Battles" role="button" tabindex="0">
+  </div>
+
+  <!-- RIGHT -->
+  <div class="content-panel" id="content-panel">
+    <noscript>This page requires JavaScript to display campaign content.</noscript>
+  </div>
+
+</div>
+
+<script src="../js/colourthief.js"></script>
+<script src="../js/items_rarity_data.js"></script>
+<script src="../js/Parser.js"></script>
+<script src="../js/Renderer.js"></script>
+<script src="../Shared/campaign-utils.js"></script>
+<script src="../js/campaign-page.js"></script>
+</body>
+</html>
