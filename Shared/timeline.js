@@ -1,51 +1,51 @@
 const timelineData = {
   Infinitum: [
-    { name: "The Wish of Death", url: "The_Wish_of_death.html" },
-    { name: "Infinitum", url: "Infinitumcamp.html" },
-    { name: "The Plane Shift Conundrum", url: "The_Planeshift_Conundrum.html" },
-    { name: "Redo of Wizard", url: "Redo_of_Wizard.html" },
-    { name: "Ascension of Vecna 1: The Gith in the Sun", url: "Ascension_of_Vecna_1.html" },
-    { name: "The Lost Pearl of Luscany", url: "The_Lost_Pearl_of_Luscany.html" },
-    { name: "Ascension of Vecna 2: The Rites of Apotheosis", url: "Ascension_of_Vecna_2.html" },
-    { name: "the Boros Legionnaire", url: "The_Boros_Legionnair.html" },
-    { name: "Dawn Cataclysm", url: "Dawn_cataclysm.html" },
-    { name: "The Break of Dawn", url: "The_Break_of_Dawn.html" },
-    { name: "Vecna's Boys: Quenching the Wish", url: "Vecna's_Boys.html" },
-    { name: "At Hell's Gate : The Styxian Serpent", url: "At_Hell's_Gate.html" },
-    { name: "Heart of The Styx", url: "Heart_of_The_Styx.html" }
+    { name: "The Wish of Death", url: "../campaign.html?slug=the-wish-of-death" },
+    { name: "Infinitum", url: "../campaign.html?slug=infinitumcamp" },
+    { name: "The Plane Shift Conundrum", url: "../campaign.html?slug=the-planeshift-conundrum" },
+    { name: "Redo of Wizard", url: "../campaign.html?slug=redo-of-wizard" },
+    { name: "Ascension of Vecna 1: The Gith in the Sun", url: "../campaign.html?slug=ascension-of-vecna-1" },
+    { name: "The Lost Pearl of Luscany", url: "../campaign.html?slug=the-lost-pearl-of-luscany" },
+    { name: "Ascension of Vecna 2: The Rites of Apotheosis", url: "../campaign.html?slug=ascension-of-vecna-2" },
+    { name: "the Boros Legionnaire", url: "../campaign.html?slug=the-boros-legionnair" },
+    { name: "Dawn Cataclysm", url: "../campaign.html?slug=dawn-cataclysm" },
+    { name: "The Break of Dawn", url: "../campaign.html?slug=the-break-of-dawn" },
+    { name: "Vecna's Boys: Quenching the Wish", url: "../campaign.html?slug=vecnas-boys" },
+    { name: "At Hell's Gate : The Styxian Serpent", url: "../campaign.html?slug=at-hells-gate" },
+    { name: "Heart of The Styx", url: "../campaign.html?slug=heart-of-the-styx" }
   ],
   Tolivric: [
-    { name: "Jorrid", url: "Jorrid.html" },
-    { name: "Jorrid 2", url: "Jorrid_2.html" },
-    { name: "On Rails", url: "On_rails.html" },
-    { name: "Coast is Clear", url: "Coast_Is_Clear.html" },
-    { name: "Foray of Fable", url: "Foray_of_Fable.html" },
-    { name: "Paths Less Travelled", url: "Paths_Less_Travelled.html" },
-    { name: "Lynhowen's Last Lineage", url: "Lynhowens_Last_Lineage.html" },
-    { name: "Turning Seasons", url: "Turning_Seasons.html" },
-    { name: "Sha'terra: The 11th Wave", url: "Shaterra.html" },
-    { name: "The Siege of Torr Myrdmal", url: "The_siege_of_Torr_Myrdmal.html" },
-    { name: "Project Zomboid", url: "Project_zomboid.html" }
+    { name: "Jorrid", url: "../campaign.html?slug=jorrid" },
+    { name: "Jorrid 2", url: "../campaign.html?slug=jorrid-2" },
+    { name: "On Rails", url: "../campaign.html?slug=on-rails" },
+    { name: "Coast is Clear", url: "../campaign.html?slug=coast-is-clear" },
+    { name: "Foray of Fable", url: "../campaign.html?slug=foray-of-fable" },
+    { name: "Paths Less Travelled", url: "../campaign.html?slug=paths-less-travelled" },
+    { name: "Lynhowen's Last Lineage", url: "../campaign.html?slug=lynhowens-last-lineage" },
+    { name: "Turning Seasons", url: "../campaign.html?slug=turning-seasons" },
+    { name: "Sha'terra: The 11th Wave", url: "../campaign.html?slug=shaterra" },
+    { name: "The Siege of Torr Myrdmal", url: "../campaign.html?slug=the-siege-of-torr-myrdmal" },
+    { name: "Project Zomboid", url: "../campaign.html?slug=project-zomboid" }
   ],
   Epalux: [
-    { name: "Trauerspiel", url: "Trauerspiel.html" },
-    { name: "The Hiest", url: "The_hiest.html" },
-    { name: "Echoes From the Deep", url: "Echoes_From_the_past.html" },
-    { name: "Trials of Trusth", url: "Trials_of_Truth.html" }
+    { name: "Trauerspiel", url: "../campaign.html?slug=trauerspiel" },
+    { name: "The Hiest", url: "../campaign.html?slug=the-hiest" },
+    { name: "Echoes From the Deep", url: "../campaign.html?slug=echoes-from-the-past" },
+    { name: "Trials of Trusth", url: "../campaign.html?slug=trials-of-truth" }
   ],
   Convulux: [
-    { name: "Theron's Games", url: "Therons_games.html" },
-    { name: "The Lost Tomb of Arkhanis", url: "The_Lost_tomb_of_Arkhanis_1.html" },
-    { name: "Into the wilds", url: "Into_the_wilds.html" },
-    { name: "The Tomb of Arkhanis", url: "The_Lost_tomb_of_Arkhanis_2.html" }
+    { name: "Theron's Games", url: "../campaign.html?slug=therons-games" },
+    { name: "The Lost Tomb of Arkhanis", url: "../campaign.html?slug=the-lost-tomb-of-arkhanis-1" },
+    { name: "Into the wilds", url: "../campaign.html?slug=into-the-wilds" },
+    { name: "The Tomb of Arkhanis", url: "../campaign.html?slug=the-lost-tomb-of-arkhanis-2" }
   ],
   Ravenfall: [
-    { name: "Ravenfall", url: "Ravenfall.html" },
-    { name: "Ravenfall Returns", url: "Ravenfall_returns.html" },
-    { name: "Sands of Aranie", url: "Sands_of_aranie.html" },
-    { name: "Cerebrus Must Fall", url: "Cerberus_must_fall.html" },
-    { name: "The Initial Wishes", url: "The_Initial_wishes.html" },
-    { name: "Hell's Gate", url: "Hells_gate.html" }
+    { name: "Ravenfall", url: "../campaign.html?slug=ravenfall" },
+    { name: "Ravenfall Returns", url: "../campaign.html?slug=ravenfall-returns" },
+    { name: "Sands of Aranie", url: "../campaign.html?slug=sands-of-aranie" },
+    { name: "Cerebrus Must Fall", url: "../campaign.html?slug=cerberus-must-fall" },
+    { name: "The Initial Wishes", url: "../campaign.html?slug=the-initial-wishes" },
+    { name: "Hell's Gate", url: "../campaign.html?slug=hells-gate" }
   ]
 };
 
