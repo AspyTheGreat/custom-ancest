@@ -2,19 +2,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nat 1 Archive - Worlds</title>
+    <title>Nat 1 Archive - Tolivric</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.cdnfonts.com/css/forgore" rel="stylesheet">
-    <link rel="icon" type="image/png" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="../../css/main_styles.css">
+    <link rel="stylesheet" href="tolivric_styles.css">
     <link rel="stylesheet" href="../../Shared/Timeline.css">
     <link rel="stylesheet" href="../../Shared/Lore.css">
 </head>
 
 <body>
     <div id="timelinePanel" class="timeline-panel hidden"></div>
-<div id="timelineOverlay" class="timeline-overlay hidden"></div>
+    <div id="timelineOverlay" class="timeline-overlay hidden"></div>
     <div id="lorePanel" class="lore-panel hidden"></div>
     <div id="loreOverlay" class="lore-overlay hidden"></div>
     <div id="worldDetail" class="detail">
@@ -31,27 +32,131 @@
         </div>
 
         <div id="worldContent">
-            <div class="grid">
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=jorrid'">Jorrid</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=jorrid-2'">Jorrid 2</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=on-rails'">On Rails</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=coast-is-clear'">Coast is Clear</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=foray-of-fable'">Foray of Fable</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=paths-less-travelled'">Paths Less Traveled</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=lynhowens-last-lineage'">Lynhowen's Last Lineage</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=turning-seasons'">Turning Seasons</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=shaterra'">Sha'terra: The 11th Wave</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=the-siege-of-torr-myrdmal'">The Siege of Torr Myrdmal</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=project-zomboid'">Project Zomboid</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=hierich-old-horizons'">Hierich</div>
-            </div>
+            <section class="world-cosmology">
+                <p class="cosmology-intro">
+                    Hover over a point to reveal the campaign tied to it.
+                </p>
+
+                <div class="cosmology-stage" id="tolivricMap">
+                    <img class="cosmology-map" src="../../assets/IMAGE%20ASSETS/Menues/Tollivric%20world.png" alt="Tolivric world map">
+
+                    <div class="campaign-point" style="left: 17.9%; top: 45.5%;" tabindex="0">
+                        <span class="point-label">Jorrid</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=jorrid">Jorrid</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 47.7%; top: 25.7%;" tabindex="0">
+                        <span class="point-label">Jorrid 2</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=jorrid-2">Jorrid 2</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 66.2%; top: 29.6%;" tabindex="0">
+                        <span class="point-label">On Rails</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=on-rails">On Rails</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 69.5%; top: 62.0%;" tabindex="0">
+                        <span class="point-label">Coast Is Clear</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=coast-is-clear">Coast Is Clear</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 83.0%; top: 26.6%;" tabindex="0">
+                        <span class="point-label">Foray Of Fable</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=foray-of-fable">Foray Of Fable</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 63.3%; top: 84.9%;" tabindex="0">
+                        <span class="point-label">Lynhowen's Last Lineage</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=lynhowens-last-lineage">Lynhowen's Last Lineage</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 63.3%; top: 84.9%;" tabindex="0">
+                        <span class="point-label">Sha'terra : The 11th Wave</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=lynhowens-last-lineage">Lynhowen's Last Lineage</a>
+                                <a href="../campaign.html?slug=shaterra">Sha'terra : The 11th Wave</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 2.6%; top: 4.3%;" tabindex="0">
+                        <span class="point-label">Project Zomboid</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=project-zomboid">Project Zomboid</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 52.2%; top: 12.3%;" tabindex="0">
+                        <span class="point-label">Hierich</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=hierich-old-horizons">Hierich</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 59.8%; top: 24.8%;" tabindex="0">
+                        <span class="point-label">Paths Less Travelled</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=paths-less-travelled">Paths Less Travelled</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 59.8%; top: 24.8%;" tabindex="0">
+                        <span class="point-label">Turning Seasons</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=paths-less-travelled">Paths Less Travelled</a>
+                                <a href="../campaign.html?slug=turning-seasons">Turning Seasons</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 61.1%; top: 25.6%;" tabindex="0">
+                        <span class="point-label">Siege of Torr Myrdmal</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=the-siege-of-torr-myrdmal">Siege of Torr Myrdmal</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
     </div>
 
-
-
-    <script src="../../js/main_scripts.js"></script>
     <script src="../../Shared/timeline.js"></script>
     <script src="../../Shared/lore.js"></script>
 </body>
+
+</html>

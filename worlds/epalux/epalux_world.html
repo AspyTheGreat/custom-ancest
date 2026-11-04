@@ -2,19 +2,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nat 1 Archive - Worlds</title>
+    <title>Nat 1 Archive - Epalux</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.cdnfonts.com/css/forgore" rel="stylesheet">
-    <link rel="icon" type="image/png" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="../../css/main_styles.css">
+    <link rel="stylesheet" href="epalux_styles.css">
     <link rel="stylesheet" href="../../Shared/Timeline.css">
     <link rel="stylesheet" href="../../Shared/Lore.css">
 </head>
 
 <body>
     <div id="timelinePanel" class="timeline-panel hidden"></div>
-<div id="timelineOverlay" class="timeline-overlay hidden"></div>
+    <div id="timelineOverlay" class="timeline-overlay hidden"></div>
     <div id="lorePanel" class="lore-panel hidden"></div>
     <div id="loreOverlay" class="lore-overlay hidden"></div>
     <div id="worldDetail" class="detail">
@@ -31,19 +32,57 @@
         </div>
 
         <div id="worldContent">
-            <div class="grid">
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=trauerspiel'">Trauerspiel</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=the-hiest'">The Hiest</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=echoes-from-the-past'">Echoes From The Deep</div>
-                <div class="world-card" onclick="window.location.href='../campaign.html?slug=trials-of-truth'">Trials of Truth</div>
-            </div>
+            <section class="world-cosmology">
+                <p class="cosmology-intro">
+                    Hover over a point to reveal the campaign tied to it.
+                </p>
+
+                <div class="cosmology-stage" id="epaluxMap">
+                    <img class="cosmology-map" src="../../assets/IMAGE%20ASSETS/Menues/Epalux-world-image.png" alt="Epalux world map">
+
+                    <div class="campaign-point" style="left: 35.1%; top: 48.0%;" tabindex="0">
+                        <span class="point-label">Trauerspiel</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=trauerspiel">Trauerspiel</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 31.1%; top: 26.3%;" tabindex="0">
+                        <span class="point-label">Trials of Truth</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=trials-of-truth">Trials of Truth</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 68.3%; top: 60.3%;" tabindex="0">
+                        <span class="point-label">The Hiest</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=the-hiest">The Hiest</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-point" style="left: 81.8%; top: 80.1%;" tabindex="0">
+                        <span class="point-label">Echoes from the Deep</span>
+                        <div class="point-popup">
+                            <div class="campaign-links">
+                                <a href="../campaign.html?slug=echoes-from-the-past">Echoes from the Deep</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
     </div>
 
-
-
-    <script src="../../js/main_scripts.js"></script>
     <script src="../../Shared/timeline.js"></script>
     <script src="../../Shared/lore.js"></script>
 </body>
+
+</html>
