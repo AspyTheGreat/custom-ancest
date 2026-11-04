@@ -1,0 +1,177 @@
+/* ================= TOLIVRIC WORLD MAP ================= */
+
+.world-cosmology {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.cosmology-intro {
+  opacity: 0.75;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.cosmology-stage {
+  position: relative;
+  width: 80%;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.cosmology-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(220, 80, 80, 0.5);
+  border-radius: 18px;
+  box-shadow: 0 0 40px rgba(220, 80, 80, 0.2);
+}
+
+/* Campaign point base */
+.campaign-point {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 3;
+}
+
+.campaign-point::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(220, 60, 60, 0.95);
+  box-shadow:
+    0 0 10px rgba(255, 120, 120, 0.9),
+    0 0 24px rgba(220, 60, 60, 0.7);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.campaign-point::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 120, 120, 0.85);
+  box-shadow:
+    0 0 12px rgba(255, 120, 120, 0.75),
+    0 0 28px rgba(220, 60, 60, 0.65);
+  transform: translate(-50%, -50%) scale(0.8);
+  transform-origin: center;
+  animation: campaignPointPulse 2.5s ease-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes campaignPointPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.75);
+    opacity: 0.95;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.4);
+    opacity: 0;
+  }
+}
+
+.campaign-point:hover::before,
+.campaign-point:focus::before {
+  width: 16px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 0 14px rgba(255, 255, 255, 0.9),
+    0 0 36px rgba(255, 120, 120, 0.9);
+}
+
+.point-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #f0f0ff;
+  font-family: 'Forgore', sans-serif;
+  font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+  letter-spacing: 1px;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: 0.25s ease;
+  text-shadow: 0 0 8px #000;
+}
+
+.campaign-point:hover .point-label,
+.campaign-point:focus .point-label {
+  opacity: 1;
+}
+
+/* Popup tile */
+.point-popup {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 14px);
+  transform: translateX(-50%) translateY(10px);
+  width: 220px;
+  padding: 14px;
+  text-align: left;
+
+  background: rgba(22, 8, 8, 0.94);
+  border: 1px solid rgba(255, 120, 120, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(220, 60, 60, 0.35);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: 0.25s ease;
+  z-index: 10;
+}
+
+.campaign-point:hover .point-popup,
+.campaign-point:focus .point-popup {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.point-popup h3 {
+  margin: 0 0 8px;
+  color: #ffd6d6;
+  letter-spacing: 1px;
+}
+
+.campaign-links {
+  display: grid;
+  gap: 8px;
+}
+
+.campaign-links a {
+  color: #f0f0ff;
+  text-decoration: none;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 120, 120, 0.55);
+  border-radius: 6px;
+  background: rgba(220, 60, 60, 0.12);
+  transition: 0.2s;
+}
+
+.campaign-links a:hover {
+  background: #dc3c3c;
+  color: #0b0b0f;
+}
