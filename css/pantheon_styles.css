@@ -1,5 +1,14 @@
 /* ================= PANTHEON PAGES ================= */
 
+body.pantheon-page {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+    url("../assets/IMAGE ASSETS/Background images/Background 7.jpg") center / cover no-repeat fixed;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
 .pantheon-header {
   position: relative;
   padding: 40px 20px 20px 20px;
@@ -28,3 +37,144 @@
 .pantheon-section p {
   line-height: 1.6;
 }
+
+/* ================= PANTHEON DETAIL BLOCKS ================= */
+
+.pantheon-subtitle {
+  color: #689FD9;
+  text-align: center;
+  margin: 32px 0 16px 0;
+  font-size: 1.4rem;
+}
+
+.pantheon-block,
+.god-block {
+  background-color: rgba(55, 55, 55, 0.65);
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.pantheon-block h3,
+.god-block h4 {
+  color: #689FD9;
+  margin-top: 0;
+}
+
+.god-block__body h4 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+}
+
+.god-block__body p {
+  margin: 0 0 16px 0;
+  line-height: 1.6;
+}
+
+.god-block__body p:last-child {
+  margin-bottom: 0;
+}
+
+.god-block__body p strong {
+  font-size: 1.05em;
+  font-weight: 700;
+  color: #e05a5a;
+}
+
+.pantheon-block p,
+.god-block p {
+  line-height: 1.6;
+  margin: 0;
+}
+
+.pantheon-block__row,
+.god-block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.pantheon-block__media,
+.god-block__media {
+  flex: 0 0 40%;
+  max-width: 360px;
+}
+
+.pantheon-block__media img,
+.god-block__media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #444;
+  display: block;
+}
+
+.pantheon-block__text,
+.god-block__body {
+  flex: 1 1 55%;
+  min-width: 240px;
+}
+
+.god-block--image-right {
+  flex-direction: row-reverse;
+}
+
+/* ================= HISTORY BLOCK ================= */
+
+.pantheon-block--history .pantheon-block__row {
+  flex-direction: column;
+  align-items: center;
+}
+
+.pantheon-block--history .pantheon-block__media {
+  flex: 0 0 auto;
+  max-width: 720px;
+  width: 100%;
+}
+
+.pantheon-block--history .pantheon-block__media img {
+  aspect-ratio: 16 / 9;
+}
+
+.pantheon-block--history .pantheon-block__text {
+  flex: 1 1 100%;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.pantheon-block--history .pantheon-block__text p {
+  margin: 0 0 1em 0;
+  line-height: 1.75;
+  text-indent: 2em;
+}
+
+.pantheon-block--history .pantheon-block__text p:first-child {
+  margin-top: 0;
+}
+
+.pantheon-block--history .pantheon-block__text p:last-child {
+  margin-bottom: 0;
+}
+
+/* ================= SCROLL REVEAL ================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(36px) scale(0.98);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.god-block:nth-child(odd) { transition-delay: 0.05s; }
+.god-block:nth-child(even) { transition-delay: 0.15s; }
